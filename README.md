@@ -1,33 +1,36 @@
-# 25-1 웹플밍 기말팀플 - Moomu
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## 🔗 Commit Convention
-[타입] 부연 설명 및 이유
+## Getting Started
 
-[FEAT] 새로운 기능 추가 <br>
-[FIX] 기능 수정 (겉으로 동작하는 것이 달라짐) <br>
-[REFACTOR] 코드 리펙토링 (겉으로 동작하는 것이 달라지지 않고 코드만 변경할 때) <br>
-[BUG] 버그 수정 <br>
-[UI] CSS 수정, UI수정 <br>
-[STYLE] 코드 포맷팅, 세미 콜론 누락, 코드 변경이 없는 경우 <br>
-[CONFIG] 설정, 환경 변수 변경 <br>
-[TYPO] 오타 수정 <br>
-[DOCS] 문서 수정 <br>
-[COMMENT] Todo, Highlight, Question 등 기타 주석 추가/삭제 <br>
-[PACKAGE] 새로운 라이브러리 추가 <br>
-[REMOVE] 코드나 파일 삭제 <br>
+First, run the development server:
 
-## 📁 폴더 구조
-- `public/`: 최종 실행 파일 폴더
-- `src/`: 각종 소스 모음 폴더
-- `src/assets/`: 폰트, 아이콘 등 각종 프로젝트 자산 관리 폴더
-- `src/pages/`: 각 페이지 별 코딩 폴더
-- `src/styles/`: 공용 스타일 폴더
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## ✨ 컨벤션
-- 파일 이름은 소문자, 단어는 `-`로 구분해주세요. (예: `main-style.css`)
-- 브랜치는 `feat_OOO` 형식으로 만들어주세요. `feat` 이후에 오는 첫 알파벳은 대문자로 해주세요 (예: `feat_Home`)
-- 이미지 파일 이름도 소문자로 관리해주세요.
-- 폴더를 만들어 두었으니 알맞게 분리해주세요.
-- 각 HTML 파일에서 상대 경로로 CSS 및 JS 파일을 연결해주세요!
-- `index.html` 파일은 최종 실행 파일입니다.
-- `src/pages/`에 각각 페이지 별로 폴더를 만들어 두었으니, 각 폴더 내부에서 맞는 페이지를 개발해 주시기 바랍니다.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
