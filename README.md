@@ -22,6 +22,7 @@ yarn dev
 public/              # 정적 파일 (이미지, favicon 등)
 src/
 ├── assets/          # 폰트, 아이콘 등 프로젝트 자산
+├── components/      # 컴포넌트 관리
 ├── pages/           # 각 페이지 파일 (Next.js 자동 라우팅)
 ├── styles/          # 전역 스타일, 공용 CSS 파일 등
 ```
