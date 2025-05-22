@@ -1,0 +1,51 @@
+.container {
+    display: flex;
+    width: 343px;
+    padding: 16px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+.imageArea {
+    flex: 1 0 0;
+    align-self: stretch;
+    background-color: #000; /* 임시 검정 배경 */
+    border-radius: 4px;
+    }
+
+.infoArea {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1 0 0;
+    }
+
+.title {
+    color: #000;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px; /* 140% */
+    align-self: stretch;
+    }
+
+.colorPreview {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    }
+
+.description {
+    align-self: stretch;
+    color: #000;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+}
