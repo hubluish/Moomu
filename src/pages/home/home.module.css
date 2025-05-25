@@ -1,0 +1,25 @@
+    .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    }
+
+    .gridContainer {
+    display: flex;
+    flex-direction: column;
+    width: 1118px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    margin: 60 auto;
+    gap: 40px;
+    }
+
+    .row {
+    display: flex;
+    width: 1118px;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}

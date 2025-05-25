@@ -17,7 +17,7 @@ const TitleBlock: React.FC<TitleBlockProps> = ({ title, subtitle }) => {
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     width: '1100px',
-    margin: '0 auto',
+    margin: '150px auto 0 auto',
     textAlign: 'center',
   },
   title: {
