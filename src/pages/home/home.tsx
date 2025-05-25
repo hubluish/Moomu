@@ -6,35 +6,105 @@ import ColorOption from '../../components/section/home/ColorOption';
 import TitleBlock from '../../components/section/home/TitleBlock';
 import Button from '../../components/section/home/Button';
 import ProgressBar from '../../components/section/home/ProgressBar';
+import MoodOption from '../../components/section/home/MoodOption';
+
+const stepContents = [
+    {
+        title: '어떤 색상이 들어가면 좋을까요?',
+        subtitle: <>컬러는 무드의 시작이에요. 마음을 끄는 색을 골라보세요.<br/>처음 떠오른 색이 정답일 수 있어요 !</>,
+        options: [
+        { title: 'Monotone', description: 'Neutral tones that keep it simple and clean.' },
+        { title: 'Warm', description: 'Cozy and inviting, with soft earthy tones.' },
+        { title: 'Cool', description: 'Refreshing blues for a calming mood.' },
+        { title: 'Vivid', description: 'Bold and bright colors that pop.' },
+        { title: 'Pastel', description: 'Soft and sweet, like a spring day.' },
+        { title: 'Dark', description: 'Deep, moody tones with strong presence.' },
+        ],
+    },
+    {
+        title: <>이 무드를 사진으로 표현한다면<br /> 어떤 모습인가요?</>,
+        subtitle: 'Define the vibe of your moodboard by selecting emotional tags.',
+        options: [
+        { title: 'Energetic', description: 'Full of life and movement.' },
+        { title: 'Romantic', description: 'Soft, dreamy, and heartfelt.' },
+        { title: 'Minimal', description: 'Sleek, simple, and modern.' },
+        { title: 'Retro', description: 'Nostalgic, old-school flavor.' },
+        ],
+    },
+    {
+        title: '텍스트는 어떤 느낌인가요?',
+        subtitle: 'Select additional styles for fonts and image concepts',
+        options: [
+        { title: 'Cafe', description: 'Warm and cozy corners with coffee aroma.' },
+        { title: 'Studio', description: 'Creative and raw energy all around.' },
+        { title: 'Park', description: 'Open skies and peaceful nature.' },
+        { title: 'Room', description: 'Personal, quiet and reflective.' },
+        ],
+    },
+    {
+        title: '마지막으로, 무드보드를 완성시킬 요소가 있을까요?',
+        subtitle: 'Select additional styles for fonts and image concepts.',
+        options: [
+        { title: 'Cafe', description: 'Warm and cozy corners with coffee aroma.' },
+        { title: 'Studio', description: 'Creative and raw energy all around.' },
+        { title: 'Park', description: 'Open skies and peaceful nature.' },
+        { title: 'Room', description: 'Personal, quiet and reflective.' },
+        ],
+    },
+];
+
 
 function Hello() {
     const [step, setStep] = useState(1);
-
     const handleNext = () => {
         if (step < 4) {
             setStep(step + 1);
         }
     };
 
+    const content = stepContents[step - 1];
+
     return (
         <main>
             <ProgressBar step={step}/>
-            <TitleBlock
-                title={<>이 무드를 사진으로 표현한다면<br/> 어떤 모습인가요?</>}
-                subtitle="Choose your favorite tone to match your style."
+            <TitleBlock title={content.title} subtitle= {content.subtitle}/>
+            <Button
+                onClick={handleNext}
+                variant={step < 4 ? 'black' : 'gradient'}
             />
-            <Button variant="black" onClick={handleNext}/>
-            <div className={styles.gridContainer}>
-                <div className={styles.row}>
-                    <ColorOption title="Monotone" description="Neutral tones that keep it simple and clean." />
-                    <ColorOption title="Warm" description="Cozy and inviting, with soft earthy tones." />
-                    <ColorOption title="Cool" description="Refreshing blues for a calming mood." />
-                </div>
-                <div className={styles.row}>
-                    <ColorOption title="Vivid" description="Bold and bright colors that pop." />
-                    <ColorOption title="Pastel" description="Soft and sweet, like a spring day." />
-                    <ColorOption title="Dark" description="Deep, moody tones with strong presence." />
-                </div>
+                <div className={styles.gridContainer}>
+                {step === 1 ? (
+                    <>
+                        <div className={styles.row}>
+                            {content.options.slice(0, 3).map((opt, index) => (
+                                <ColorOption
+                                    key={index}
+                                    title={opt.title}
+                                    description={opt.description}
+                                />
+                            ))}
+                        </div>
+                        <div className={styles.row}>
+                            {content.options.slice(3).map((opt, index) => (
+                                <ColorOption
+                                    key={index + 3}
+                                    title={opt.title}
+                                    description={opt.description}
+                                />
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <div className={styles.grid2x2}>
+                        {content.options.map((opt, index) => (
+                            <MoodOption
+                                key={index}
+                                title={opt.title}
+                                subtitle={opt.description}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
 
         </main>

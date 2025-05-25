@@ -2,7 +2,7 @@ import React from 'react';
 
 interface TitleBlockProps {
   title: React.ReactNode;
-  subtitle: string;
+  subtitle: React.ReactNode;
 }
 
 const TitleBlock: React.FC<TitleBlockProps> = ({ title, subtitle }) => {
