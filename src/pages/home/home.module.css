@@ -8,7 +8,6 @@
     .gridContainer {
     display: flex;
     flex-direction: column;
-    width: 1118px;
     justify-content: center;
     align-items: center;
     padding: 20px 0;

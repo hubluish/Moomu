@@ -12,7 +12,7 @@
 .imageArea {
     flex: 1 0 0;
     align-self: stretch;
-    background-color: #000; /* 임시 검정 배경 */
+    background-color: #a4a4a4; /* 임시 검정 배경 */
     border-radius: 4px;
     }
 
