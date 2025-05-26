@@ -1,6 +1,7 @@
 'use client';
 
 import React, {useState} from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './home.module.css';
 import ColorOption from '../../components/section/home/ColorOption';
 import TitleBlock from '../../components/section/home/TitleBlock';
@@ -56,7 +57,7 @@ const stepContents = [
 
 function Home() {
     const [step, setStep] = useState(1);
-
+    const router = useRouter();
     const [selections, setSelections] = useState<(string | null)[]>([null, null, null, null]);
     const content = stepContents[step - 1];
 
@@ -71,6 +72,7 @@ function Home() {
         '이미지/감정': [selections[1], selections[3]].filter(Boolean),
         };
         console.log('✅ 선택된 결과:', jsonResult);
+        router.push('/home/loading');
     }
     };
 
