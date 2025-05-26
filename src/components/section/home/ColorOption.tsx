@@ -1,5 +1,4 @@
-// components/common/ColorOption.tsx
-
+import { useState } from 'react';
 import styles from './ColorOption.module.css';
 
 type ColorOptionProps = {
@@ -8,12 +7,19 @@ type ColorOptionProps = {
 };
 
 export default function ColorOption({ title, description }: ColorOptionProps) {
+    const [isSelected, setIsSelected] = useState(false);
+
+    const handleClick = () => {
+        setIsSelected(prev => !prev);
+    };
+    
     return (
-        <div className={styles.container}>
+            <div
+        className={`${styles.container} ${isSelected ? styles.selected : ''}`} onClick={handleClick}>
         <div className={styles.imageArea}></div>
 
         <div className={styles.infoArea}>
-            <div className={styles.title}>{title}</div>
+            <div className={`${styles.title} ${isSelected ? styles.selectedText : ''}`}>{title}</div>
 
             <div className={styles.colorPreview}>
             {Array.from({ length: 4 }).map((_, index) => (
@@ -30,7 +36,9 @@ export default function ColorOption({ title, description }: ColorOptionProps) {
             ))}
             </div>
 
-            <div className={styles.description}>{description}</div>
+            <div className={`${styles.description} ${isSelected ? styles.selectedText : ''}`}>
+                    {description}
+            </div>
         </div>
         </div>
     );

@@ -1,6 +1,7 @@
 /* components/common/MoodOption.module.css */
 
 .container {
+    cursor: pointer;
     display: flex;
     padding: 16px;
     justify-content: center;
@@ -8,10 +9,24 @@
     gap: 16px;
     flex: 1 0 0;
     border-radius: 6px;
-    border: 1px solid rgba(0, 0, 0, 0.10);
+    border: 2px solid rgba(0, 0, 0, 0.10);
     box-sizing: border-box;
     width: 530px;
     height: 132px;
+    transition: border 0.2s ease;
+    transition: background-color 0.2s ease;
+}
+
+.container:not(.selected):hover {
+    border: 2px solid var(--main, #3D38F5);
+}
+
+.selected {
+    background: var(--point, #7B68EE);
+}
+
+.selectedText {
+    color: var(--point, #ffffff) !important;
 }
 
 .imageArea {
