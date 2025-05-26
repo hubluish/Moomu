@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link"; // Next.js 라우팅용 Link
+import { usePathname } from "next/navigation"; // Next.js 13+ 경로 감지
 
 const isLoggedIn = true; // 로그인 상태 임의 관리 ..ㅎㅎ 테스트용(실제 구현 시 상태/props로 관리)
 
@@ -48,12 +49,33 @@ const Nav = styled.nav`
 
 // 네비게이션 링크 스타일
 const NavLink = styled.a`
+  position: relative;
   text-decoration: none;
   font: var(--text-body1);
   color: var(--color-text-sub);
+  padding: 0 4px;
+  transition: color 0.2s;
+
   &:hover {
     color: var(--color-point);
   }
+
+  /* 활성화된 메뉴에만 바 표시 */
+  ${({ $active }) =>
+    $active &&
+    `
+    color: var(--color-main);
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -20px;
+      height: 1px;
+      background: var(--color-main);
+    }
+  `}
 `;
 
 // 가장 오른쪽(로그인/회원가입 또는 계정) 영역
@@ -132,6 +154,7 @@ const AccountWrapper = styled.div`
 
 // 헤더 내용
 export default function Header() {
+  const pathname = usePathname();
   const [showDropdown, setShowDropdown] = useState(false);
 
   // 로그아웃 함수 예시
@@ -151,13 +174,13 @@ export default function Header() {
       {/* 가운데: 네비게이션 */}
       <Nav>
         <Link href="/" passHref legacyBehavior>
-          <NavLink>home</NavLink>
+          <NavLink $active={pathname === "/"}>home</NavLink>
         </Link>
         <Link href="/article" passHref legacyBehavior>
-          <NavLink>article</NavLink>
+          <NavLink $active={pathname === "/article"}>article</NavLink>
         </Link>
         <Link href="/mymoodboard" passHref legacyBehavior>
-          <NavLink>mymoodboard</NavLink>
+          <NavLink $active={pathname === "/mymoodboard"}>mymoodboard</NavLink>
         </Link>
         {/* 오른쪽: 로그인/회원가입 또는 계정 */}
         <RightSection>
