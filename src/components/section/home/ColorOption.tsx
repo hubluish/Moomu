@@ -1,21 +1,18 @@
 import { useState } from 'react';
 import styles from './ColorOption.module.css';
+import { on } from 'events';
 
 type ColorOptionProps = {
     title: string;
     description: string;
+    isSelected?: boolean;
+    onClick?: () => void;
 };
 
-export default function ColorOption({ title, description }: ColorOptionProps) {
-    const [isSelected, setIsSelected] = useState(false);
-
-    const handleClick = () => {
-        setIsSelected(prev => !prev);
-    };
-    
+export default function ColorOption({ title, description, isSelected, onClick }: ColorOptionProps) {
     return (
             <div
-        className={`${styles.container} ${isSelected ? styles.selected : ''}`} onClick={handleClick}>
+        className={`${styles.container} ${isSelected ? styles.selected : ''}`} onClick={onClick}>
         <div className={styles.imageArea}></div>
 
         <div className={styles.infoArea}>

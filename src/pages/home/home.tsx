@@ -54,24 +54,39 @@ const stepContents = [
 ];
 
 
-function Hello() {
+function Home() {
     const [step, setStep] = useState(1);
+
+    const [selections, setSelections] = useState<(string | null)[]>([null, null, null, null]);
+    const content = stepContents[step - 1];
+
     const handleNext = () => {
         if (step < 4) {
             setStep(step + 1);
-        }
+        } else {
+        // JSON 생성
+        const jsonResult = {
+        색상: selections[0],
+        폰트: selections[2],
+        '이미지/감정': [selections[1], selections[3]].filter(Boolean),
+        };
+        console.log('✅ 선택된 결과:', jsonResult);
+    }
     };
 
-    const content = stepContents[step - 1];
+        const handleSelect = (option: string) => {
+        setSelections(prev => {
+        const updated = [...prev];
+        updated[step - 1] = prev[step - 1] === option ? null : option; // 선택 취소 가능
+        return updated;
+        });
+    };
 
     return (
         <main>
             <ProgressBar step={step}/>
             <TitleBlock title={content.title} subtitle= {content.subtitle}/>
-            <Button
-                onClick={handleNext}
-                variant={step < 4 ? 'black' : 'gradient'}
-            />
+            <Button onClick={handleNext} variant={step < 4 ? 'black' : 'gradient'} />
                 <div className={styles.gridContainer}>
                 {step === 1 ? (
                     <>
@@ -81,6 +96,8 @@ function Hello() {
                                     key={index}
                                     title={opt.title}
                                     description={opt.description}
+                                    isSelected={selections[0] === opt.title}
+                                    onClick={() => handleSelect(opt.title)}
                                 />
                             ))}
                         </div>
@@ -90,6 +107,8 @@ function Hello() {
                                     key={index + 3}
                                     title={opt.title}
                                     description={opt.description}
+                                    isSelected={selections[0] === opt.title}
+                                    onClick={() => handleSelect(opt.title)}
                                 />
                             ))}
                         </div>
@@ -101,6 +120,8 @@ function Hello() {
                                 key={index}
                                 title={opt.title}
                                 subtitle={opt.description}
+                                isSelected={selections[step - 1] === opt.title}
+                                onClick={() => handleSelect(opt.title)}
                             />
                         ))}
                     </div>
@@ -111,4 +132,4 @@ function Hello() {
     );
 }
 
-export default Hello;
+export default Home;
