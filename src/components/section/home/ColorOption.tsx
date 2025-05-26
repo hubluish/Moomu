@@ -18,8 +18,9 @@ export default function ColorOption({ title, description, isSelected, onClick }:
         <div className={styles.infoArea}>
             <div className={`${styles.title} ${isSelected ? styles.selectedText : ''}`}>{title}</div>
 
+        <div className={styles.colorPreviewWrapper}>
             <div className={styles.colorPreview}>
-            {Array.from({ length: 4 }).map((_, index) => (
+            {['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#8B00FF'].map((color, index) => (
                 <svg
                 key={index}
                 xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +33,7 @@ export default function ColorOption({ title, description, isSelected, onClick }:
                 </svg>
             ))}
             </div>
-
+        </div>
             <div className={`${styles.description} ${isSelected ? styles.selectedText : ''}`}>
                     {description}
             </div>

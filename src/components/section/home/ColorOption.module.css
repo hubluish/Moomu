@@ -50,11 +50,36 @@
     align-self: stretch;
     }
 
+.colorPreviewWrapper {
+    width: 192px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+
+    scrollbar-width: thin;
+    -ms-overflow-style: auto;
+}
+
+.colorPreviewWrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.colorPreviewWrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
 .colorPreview {
     display: flex;
-    align-items: flex-start;
     gap: 8px;
-    }
+    width: max-content;
+}
+
+.colorCircle {
+    flex: 0 0 auto;
+}
+
+
 
 .description {
     align-self: stretch;
