@@ -1,0 +1,48 @@
+[
+  {
+    "keywords": [
+      "Pastel",
+      "Cream",
+      "Skin"
+    ],
+    "palette_link": "https://colorhunt.co/palette/ffdcdcfff2ebffe8cdffd6ba",
+    "colors": [
+      "#ffdcdc",
+      "#fff2eb",
+      "#ffe8cd",
+      "#ffd6ba"
+    ]
+  },
+  {
+    "keywords": [
+      "Pastel",
+      "Pink",
+      "Peach"
+    ],
+    "palette_link": "https://colorhunt.co/palette/ffdcdcfff2ebffe8cdffd6ba",
+    "colors": [
+      "#ffdcdc",
+      "#fff2eb",
+      "#ffe8cd",
+      "#ffd6ba"
+    ]
+  },
+  {
+    "keywords": [
+      "Pastel",
+      "Mint",
+      "Light"
+    ],
+    "error": "키워드 'Pastel' 입력 중 오류 발생: HTTPConnectionPool(host='localhost', port=52854): Read timed out. (read timeout=120)"
+  },
+  {
+    "keywords": [
+      "Pastel",
+      "Mint",
+      "Light"
+    ],
+    "palette_link": null,
+    "colors": [],
+    "error": "data-code 수집 실패: HTTPConnectionPool(host='localhost', port=52854): Read timed out. (read timeout=120)"
+  }
+]
