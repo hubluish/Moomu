@@ -18,11 +18,11 @@
 }
 
 .container:not(.selected):hover {
-    border: 2px solid var(--main, #3D38F5);
+    border: 2px solid var(--point, rgba(123, 104, 238, 0.76));
 }
 
 .selected {
-    background: var(--point, #7B68EE);
+    background: var(--point, rgba(123, 104, 238, 0.76));
 }
 
 .selectedText {

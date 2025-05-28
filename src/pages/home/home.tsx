@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './home.module.css';
 import PopAlert from '../../components/section/home/PopAlert';
@@ -10,6 +10,7 @@ import NextButton from '../../components/section/home/NextButton';
 import PreviousButton from '../../components/section/home/PreviousButton';
 import ProgressBar from '../../components/section/home/ProgressBar';
 import MoodOption from '../../components/section/home/MoodOption';
+import TagGuideModal from '../../components/section/home/TagGuideModal';
 
 const stepContents = [
     {
@@ -63,12 +64,20 @@ function Home() {
     const [selections, setSelections] = useState<(string | null)[]>([null, null, null, null]);
     const content = stepContents[step - 1];
     const [showAlert, setShowAlert] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
+    useEffect(() => {
+    const timer = setTimeout(() => {
+        setShowModal(true);
+        }, 10000);
+
+        return () => clearTimeout(timer); // step 바뀌면 타이머 초기화
+    }, [step]);
 
     const handleNext = () => {
         if (!selections[step - 1]) {
         setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 4000);
+        setTimeout(() => setShowAlert(false), 1000);
         return;
         }
 
@@ -92,6 +101,10 @@ function Home() {
         updated[step - 1] = prev[step - 1] === option ? null : option; // 선택 취소 가능
         return updated;
         });
+    };
+
+    const goToFeed = () => {
+    router.push('/feed'); // ✅ 원하는 피드 경로로 수정
     };
 
     return (
@@ -141,7 +154,14 @@ function Home() {
                     </div>
                 )}
             </div>
-
+            {showModal && (
+                <div className={styles.modalOverlay}>
+                <TagGuideModal
+                    onClose={() => setShowModal(false)}
+                    onConfirm={goToFeed}
+                />
+                </div>
+            )}
         </main>
     );
 }
