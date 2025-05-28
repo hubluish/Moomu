@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import styles from './home.module.css';
 import ColorOption from '../../components/section/home/ColorOption';
 import TitleBlock from '../../components/section/home/TitleBlock';
-import Button from '../../components/section/home/Button';
+import NextButton from '../../components/section/home/NextButton';
+import PreviousButton from '../../components/section/home/PreviousButton';
 import ProgressBar from '../../components/section/home/ProgressBar';
 import MoodOption from '../../components/section/home/MoodOption';
 
@@ -88,7 +89,8 @@ function Home() {
         <main>
             <ProgressBar step={step}/>
             <TitleBlock title={content.title} subtitle= {content.subtitle}/>
-            <Button onClick={handleNext} variant={step < 4 ? 'black' : 'gradient'} />
+            <NextButton onClick={handleNext} variant={step < 4 ? 'black' : 'gradient'} />
+            <PreviousButton onClick={() => setStep(step > 1 ? step - 1 : step)} />
                 <div className={styles.gridContainer}>
                 {step === 1 ? (
                     <>

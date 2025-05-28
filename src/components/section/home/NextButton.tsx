@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Button.module.css';
+import styles from './NextButton.module.css';
 
 interface ButtonProps {
     variant: 'black' | 'gradient';
