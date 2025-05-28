@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import ArticleTabs from "@/components/common/pagenation"; // 추가
+import ArticleTabs from "@/components/section/article/bigCard/big"; // 추가
 
 
 export default function Home() {
@@ -15,7 +15,13 @@ export default function Home() {
           height={38}
           priority
         />
-                <ArticleTabs /> {/* 탭 컴포넌트 추가 */}
+                <ArticleTabs
+                  imageUrl="https://i.pinimg.com/736x/25/ac/3c/25ac3ccbc96fef8a03d95c64b039e3a0.jpg"
+                  title="테스트 뉴스 제목"
+                  description="이것은 테스트용 설명입니다."
+                  category="카드뉴스"
+                  date="2024.05.28"
+                />
 
         <ol>
           <li>
