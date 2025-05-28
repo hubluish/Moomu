@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import ArticleTabs from "@/components/section/article/bigCard/big"; // 추가
+import ArticleTabs from "@/components/section/article/smallCard/small"; // 추가
 
 
 export default function Home() {
