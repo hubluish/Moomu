@@ -14,7 +14,7 @@ interface PinterestItem {
     const itemsPerPage = 6;
 
     useEffect(() => {
-        fetch('../section/pinterest.json')
+        fetch('/data/pinterest_images.json')
         .then(res => res.json())
         .then(setData)
         .catch(err => console.error('Failed to load JSON:', err));
@@ -45,10 +45,10 @@ interface PinterestItem {
             <div className={styles.grid}>
             {displayedItems.map((item, idx) => (
                 <a key={idx} href={item.pin_url} target="_blank" rel="noopener noreferrer" className={styles.imageWrapper}>
-                {item.thumbnail_url ? (
-                    <img src={item.thumbnail_url} alt="pinterest thumbnail" className={styles.image} />
+                {item.thumbnail_url?.trim() ? (
+                <img src={item.thumbnail_url} alt="pinterest thumbnail" className={styles.image} />
                 ) : (
-                    <div className={styles.placeholder} />
+                <div className={styles.placeholder} />
                 )}
                 </a>
             ))}

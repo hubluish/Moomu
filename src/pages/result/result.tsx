@@ -4,6 +4,7 @@ import ActionButtons from '../../components/result/ActionButtons';
 import ConceptBox from '../../components/result/ConceptBox';
 import FontBox from '../../components/result/FontBox';
 import ImageBox from '../../components/result/ImageBox';
+import ColorPaletteBox from '../../components/result/ColorPaletteBox';
 import styles from './result.module.css';
 import React from 'react';
 
@@ -21,9 +22,20 @@ export default function ResultPage() {
                 </div>
             </div>
         </div>
-        <ConceptBox />
-        <FontBox />
-        <ImageBox />
+        <div className={styles.gridContainer}>
+            <div className={styles.conceptBox}>
+                <ConceptBox />
+            </div>
+            <div className={styles.fontBox}>
+                <FontBox />
+            </div>
+            <div className={styles.imageBox}>
+                <ImageBox />
+            </div>
+            <div className={styles.paletteBox}>
+                <ColorPaletteBox />
+            </div>
+        </div>
         </main>
     );
 }

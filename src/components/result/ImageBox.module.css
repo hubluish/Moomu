@@ -25,6 +25,7 @@
     align-items: center;
     justify-content: space-between;
     position: relative;
+    margin: 0 -10px;
     }
 
     .navButton {

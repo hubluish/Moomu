@@ -6,15 +6,12 @@ import React from 'react';
 export default function ColorPalleteBox() {
     return (
         <div style={styles.container}>
-        <div style={styles.title}>Concepts</div>
+        <div style={styles.title}>Color Pallete</div>
         <div style={styles.content}>
-            <p style={styles.text}>- 불필요한 장식을 덜어내 감정에 집중할 여백을 제공</p>
-            <p style={styles.text}>- 미니멀한 요소로 환상적인 분위기 속에서 시선을 정돈하는 균형감 제공</p>
-            <p style={styles.text}>- 미니멀하고 깨끗한 구조 위에 핸드드로잉과 파스텔이 조화를 이룸</p>
         </div>
         </div>
     );
-}
+}   
 
 const styles: { [key: string]: React.CSSProperties } = {
     container: {
