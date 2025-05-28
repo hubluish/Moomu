@@ -3,6 +3,7 @@ import Chips from '../../components/result/Chips';
 import ActionButtons from '../../components/result/ActionButtons';
 import ConceptBox from '../../components/result/ConceptBox';
 import FontBox from '../../components/result/FontBox';
+import ImageBox from '../../components/result/ImageBox';
 import styles from './result.module.css';
 import React from 'react';
 
@@ -22,6 +23,7 @@ export default function ResultPage() {
         </div>
         <ConceptBox />
         <FontBox />
+        <ImageBox />
         </main>
     );
 }
