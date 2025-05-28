@@ -3,6 +3,7 @@
 import React, {useState} from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './home.module.css';
+import PopAlert from '../../components/section/home/PopAlert';
 import ColorOption from '../../components/section/home/ColorOption';
 import TitleBlock from '../../components/section/home/TitleBlock';
 import NextButton from '../../components/section/home/NextButton';
@@ -61,8 +62,16 @@ function Home() {
     const router = useRouter();
     const [selections, setSelections] = useState<(string | null)[]>([null, null, null, null]);
     const content = stepContents[step - 1];
+    const [showAlert, setShowAlert] = useState(false);
+
 
     const handleNext = () => {
+        if (!selections[step - 1]) {
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 4000);
+        return;
+        }
+
         if (step < 4) {
             setStep(step + 1);
         } else {
@@ -88,6 +97,7 @@ function Home() {
     return (
         <main>
             <ProgressBar step={step}/>
+            <PopAlert visible={showAlert} />
             <TitleBlock title={content.title} subtitle= {content.subtitle}/>
             <NextButton onClick={handleNext} variant={step < 4 ? 'black' : 'gradient'} />
             <PreviousButton onClick={() => setStep(step > 1 ? step - 1 : step)} />
