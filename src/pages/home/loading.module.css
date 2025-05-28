@@ -9,7 +9,7 @@
 .spinner {
     width: 48px;
     height: 48px;
-    margin-bottom: 45px;
+    margin-bottom: 20px;
     }
 
     .spinnerSvg {
@@ -37,7 +37,7 @@
     font-weight: 700;
     line-height: 48px;
     height: 48px;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     white-space: pre; 
 }
 
