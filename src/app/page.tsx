@@ -1,5 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import ArticleTabs from "@/components/section/article/tab/tab"; // 추가
+
 
 export default function Home() {
   return (
@@ -13,6 +15,8 @@ export default function Home() {
           height={38}
           priority
         />
+                <ArticleTabs /> {/* 탭 컴포넌트 추가 */}
+
         <ol>
           <li>
             Get started by editing <code>src/app/page.tsx</code>.
