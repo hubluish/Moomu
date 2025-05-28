@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import ArticleTabs from "@/components/section/article/tab/tab"; // 추가
+import ArticleTabs from "@/components/common/pagenation"; // 추가
 
 
 export default function Home() {
