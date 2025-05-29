@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import Link from "next/link";
 
 // 헤더 전체
 export const HeaderWrapper = styled.header`
@@ -37,16 +38,13 @@ export const Nav = styled.nav`
   align-items: center;
 `;
 
-// 네비게이션 링크 (active 상태 반영을 위한 prop 타입 선언)
-interface NavLinkProps {
-  $active?: boolean;
-}
-
-export const NavLink = styled.a<NavLinkProps>`
+// 네비게이션 링크
+export const NavLink = styled(Link)<{ $active: boolean }>`
   position: relative;
   text-decoration: none;
   font: var(--text-body1);
-  color: var(--color-text-sub);
+  color: ${({ $active }) => $active ? 'var(--color-main)' : 'var(--color-text-sub)'};
+
   padding: 0 4px;
   transition: color 0.2s;
 
@@ -54,47 +52,44 @@ export const NavLink = styled.a<NavLinkProps>`
     color: var(--color-point);
   }
 
-  ${({ $active }) =>
-    $active &&
-    `
-    color: var(--color-main);
-    &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -4px;
-      height: 2px;
-      background: var(--color-main);
-    }
-  `}
+  &::after {
+    content: ${({ $active }) => $active ? "''" : "none"};
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 2px;
+    background: var(--color-main);
+  }
 `;
 
-// 오른쪽(로그인/회원가입 또는 계정) 영역
+// 오른쪽 영역
 export const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
 `;
 
-// 로그인/회원가입 버튼
-export const Button = styled.a`
+// 로그인 버튼
+export const LoginButton = styled(Link)`
   font: var(--text-notice);
   padding: 6px 16px;
   border: none;
   border-radius: 4px;
   background: var(--color-main);
-  &:hover {
-    background: var(--color-point);
-  }
+
   color: #fff;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
+
+  &:hover {
+    background: var(--color-point);
+  }
 `;
 
-// 계정 영역
+// 계정
 export const AccountWrapper = styled.div`
   position: relative;
   display: flex;
@@ -116,13 +111,12 @@ export const Dropdown = styled.div`
   border: 1px solid var(--color-outline);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  min-width: 140px;
+  min-width: 165px;
   z-index: 10;
   padding: 8px 0;
 `;
 
-// 드롭다운 아이템
-export const DropdownItem = styled.a`
+export const DropdownItem = styled(Link)`
   display: block;
   width: 100%;
   padding: 10px 20px;
@@ -130,9 +124,9 @@ export const DropdownItem = styled.a`
   text-decoration: none;
   font: var(--text-body2);
   background: none;
-  border: none;
   text-align: left;
   cursor: pointer;
+
   &:hover {
     color: var(--color-point);
   }
