@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";// Next.js 13+ 경로 감지
 import {
   HeaderWrapper, LogoSection, LogoImg, LogoName, Nav, NavLink,
   RightSection, Button, AccountWrapper, Avatar, Dropdown, DropdownItem
-} from "./header.styles";
+} from "./header.styled";
 
 const isLoggedIn = false; // 로그인 상태 임의 관리 ..ㅎㅎ 테스트용(실제 구현 시 상태/props로 관리)
 

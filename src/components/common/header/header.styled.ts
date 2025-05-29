@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 // 헤더 전체
 export const HeaderWrapper = styled.header`
@@ -27,7 +27,7 @@ export const LogoName = styled.span`
   font-size: 32px;
   font-weight: bold;
   color: var(--color-text-main);
-  font-family: var(--font-family-logo), "MuseoModerno", sans-serif;
+  font-family: var(--font-family-logo), 'MuseoModerno', sans-serif;
 `;
 
 // 네비게이션 영역
@@ -37,8 +37,12 @@ export const Nav = styled.nav`
   align-items: center;
 `;
 
-// 네비게이션 링크부분
-export const NavLink = styled.a`
+// 네비게이션 링크 (active 상태 반영을 위한 prop 타입 선언)
+interface NavLinkProps {
+  $active?: boolean;
+}
+
+export const NavLink = styled.a<NavLinkProps>`
   position: relative;
   text-decoration: none;
   font: var(--text-body1);
@@ -50,7 +54,6 @@ export const NavLink = styled.a`
     color: var(--color-point);
   }
 
-  /* 활성화된 메뉴에만 바 표시 */
   ${({ $active }) =>
     $active &&
     `
@@ -61,13 +64,14 @@ export const NavLink = styled.a`
       position: absolute;
       left: 0;
       right: 0;
-      bottom: -20px;
-      height: 1px;
+      bottom: -4px;
+      height: 2px;
       background: var(--color-main);
     }
   `}
 `;
-// 가장 오른쪽(로그인/회원가입 또는 계정) 영역
+
+// 오른쪽(로그인/회원가입 또는 계정) 영역
 export const RightSection = styled.div`
   display: flex;
   align-items: center;
@@ -103,7 +107,7 @@ export const Avatar = styled.img`
   border-radius: 50%;
 `;
 
-// 프로필 클릭시 드롭다운 메뉴
+// 드롭다운 메뉴
 export const Dropdown = styled.div`
   position: absolute;
   top: 48px;
@@ -117,7 +121,7 @@ export const Dropdown = styled.div`
   padding: 8px 0;
 `;
 
-// 프로필 클릭시 드롭다운 속 아이템
+// 드롭다운 아이템
 export const DropdownItem = styled.a`
   display: block;
   width: 100%;
