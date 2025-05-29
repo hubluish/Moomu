@@ -33,7 +33,10 @@ const stepContents = [
         { title: 'Romantic', description: 'Soft, dreamy, and heartfelt.' },
         { title: 'Minimal', description: 'Sleek, simple, and modern.' },
         { title: 'Retro', description: 'Nostalgic, old-school flavor.' },
+        { title: 'Nature', description: 'Organic, earthy, and natural.' },
+        
         ],
+    
     },
     {
         title: '텍스트는 어떤 느낌인가요?',
@@ -65,6 +68,8 @@ function Home() {
     const content = stepContents[step - 1];
     const [showAlert, setShowAlert] = useState(false);
     const [showModal, setShowModal] = useState(false);
+
+    
 
     useEffect(() => {
     const timer = setTimeout(() => {
@@ -116,30 +121,17 @@ function Home() {
             <PreviousButton onClick={() => setStep(step > 1 ? step - 1 : step)} />
                 <div className={styles.gridContainer}>
                 {step === 1 ? (
-                    <>
-                        <div className={styles.row}>
-                            {content.options.slice(0, 3).map((opt, index) => (
-                                <ColorOption
-                                    key={index}
-                                    title={opt.title}
-                                    description={opt.description}
-                                    isSelected={selections[0] === opt.title}
-                                    onClick={() => handleSelect(opt.title)}
-                                />
-                            ))}
-                        </div>
-                        <div className={styles.row}>
-                            {content.options.slice(3).map((opt, index) => (
-                                <ColorOption
-                                    key={index + 3}
-                                    title={opt.title}
-                                    description={opt.description}
-                                    isSelected={selections[0] === opt.title}
-                                    onClick={() => handleSelect(opt.title)}
-                                />
-                            ))}
-                        </div>
-                    </>
+                    <div className={styles.grid3columns}>
+                        {content.options.map((opt, index) => (
+                        <ColorOption
+                            key={index}
+                            title={opt.title}
+                            description={opt.description}
+                            isSelected={selections[0] === opt.title}
+                            onClick={() => handleSelect(opt.title)}
+                        />
+                        ))}
+                    </div>
                 ) : (
                     <div className={styles.grid2x2}>
                         {content.options.map((opt, index) => (

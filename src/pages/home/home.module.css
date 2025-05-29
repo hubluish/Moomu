@@ -15,13 +15,14 @@
     gap: 40px;
     }
 
-    .row {
-    display: flex;
-    width: 1118px;
-    justify-content: center;
-    align-items: center;
+    .grid3columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3열 고정 */
     gap: 40px;
-}
+    width: 1118px;
+    justify-items: center;
+    }
+
 
     .grid2x2{
     display: grid;
