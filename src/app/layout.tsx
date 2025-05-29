@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../variable.css";
 import Header from '../components/common/header/header';
+import Bottom from "@/components/common/bottom/bottom";
+
 
 export const metadata = {
   title: 'Moomu',
@@ -14,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Header />
         {children}
+        <Bottom />
       </body>
     </html>
   );
