@@ -11,14 +11,18 @@ export const MoodboardCard = styled.div`
   overflow: hidden;
 `;
 
-export const ImageSection = styled.div`
+export const MoodboardSection = styled.div`
   width: 100%;
   height: 100%;
   background-color: #f5f5f5;
+  position: relative;
+  overflow: hidden;
+
+  &:hover div {
+    display: flex;  // MoodboardOverlay의 display
+  }
 
   img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
   }
 `;
@@ -27,7 +31,7 @@ export const TitleSection = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 12px 15px;
   width: 100%;
   height: 45px;
   background: var(--color-background);

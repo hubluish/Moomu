@@ -22,7 +22,7 @@ export default function Home() {
 
         {/* 메인 콘텐츠 */}
         <main style={{ flex: 1, padding: '50px 70px' }}>
-          <h1>내 무드보드</h1>
+          <h1 style={{ marginBottom: '30px' }}>내 무드보드</h1>
           <Moodboard />
         </main>
         

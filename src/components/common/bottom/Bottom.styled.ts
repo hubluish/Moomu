@@ -7,9 +7,9 @@ export const Wrapper = styled.footer`
   display: flex;
   justify-content: center;
   gap: 140px;
-  background-color: var(--color-background);
+  background-color: #efefef;
   font-family: var(--font-family-base);
-  font-size: var(--font-body1);
+  font-size: var(--font-body2);
   font-weight: var(--font-weight-regular);
   color: var(--color-text-main);
 `

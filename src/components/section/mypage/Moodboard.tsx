@@ -1,10 +1,11 @@
 // components/section/mypage/Moodboard.tsx
 'use client';
 
+import MoodboardOverlay from './MoodboardOverlay';
 import React from 'react';
 import {
   MoodboardCard,
-  ImageSection,
+  MoodboardSection,
   TitleSection,
   Title,
   DateText,
@@ -13,11 +14,11 @@ import {
 const Moodboard = () => {
   return (
     <MoodboardCard>
-      <ImageSection>
-        <img src="/assets/images/santa.png" alt="santa" />
-      </ImageSection>
+      <MoodboardSection>
+        <MoodboardOverlay /> {/* Hover 시 나타남 */}
+      </MoodboardSection>
       <TitleSection>
-        <Title>My&nbsp;&nbsp;Moodboard</Title>
+        <Title>mmmmooooommmuuuuu</Title>
         <DateText>2025. 05. 20.</DateText>
       </TitleSection>
     </MoodboardCard>
