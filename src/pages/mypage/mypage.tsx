@@ -3,6 +3,7 @@
 
 import SideBar from '@/components/section/mypage/Sidebar';
 import Bottom from '@/components/common/bottom/bottom';
+import Header from '@/components/common/header/header';
 import Moodboard from '@/components/section/mypage/Moodboard';
 
 const mockData = [
@@ -14,40 +15,44 @@ const mockData = [
 export default function Mypage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      {/* 본문 영역 */}
-      <div style={{ display: 'flex', flex: 1 }}>
-        {/* 좌측 사이드바 */}
-        <div
-          style={{
-            width: '230px',
-            borderRight: '1px solid #eee',
-            backgroundColor: '#fefeff',
-          }}
-        >
-          <SideBar />
+        <div style={{ zIndex: 30 }}>
+            <Header />
         </div>
-
-        {/* 메인 콘텐츠 */}
-        <main style={{ flex: 1, padding: '50px 70px' }}>
-          <h1 style={{ marginBottom: '30px' }}>내 무드보드</h1>
-          <div
+        
+        {/* 본문 영역 */}
+        <div style={{ display: 'flex', flex: 1 }}>
+            {/* 좌측 사이드바 */}
+            <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(332px, 1fr))',
-              gap: '24px',
+                width: '230px',
+                borderRight: '1px solid #eee',
+                backgroundColor: '#fefeff',
             }}
-          >
-            {mockData.map((item, index) => (
-              <Moodboard
-                key={index}
-                title={item.title}
-                date={item.date}
-                image={item.image}
-              />
-            ))}
-          </div>
-        </main>
-      </div>
+            >
+                <SideBar />
+            </div>
+
+            {/* 메인 콘텐츠 */}
+            <main style={{ flex: 1, padding: '50px 70px' }}>
+                <h1 style={{ marginBottom: '30px' }}>내 무드보드</h1>
+                <div
+                    style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(332px, 1fr))',
+                    gap: '24px',
+                    }}
+                >
+                    {mockData.map((item, index) => (
+                    <Moodboard
+                        key={index}
+                        title={item.title}
+                        date={item.date}
+                        image={item.image}
+                    />
+                    ))}
+                </div>
+            </main>
+        </div>
 
       {/* 하단 바 */}
       <Bottom />
