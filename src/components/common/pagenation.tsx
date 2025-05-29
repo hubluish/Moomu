@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+interface PagenationProps {
+  pageCount: number;
+  current: number;
+  onChange: (idx: number) => void;
+}
 
-const PAGE_COUNT = 5;
-
-export default function Pagenation() {
-  const [current, setCurrent] = useState(0);
-
+export default function Pagenation({ pageCount, current, onChange }: PagenationProps) {
   return (
     <div
       style={{
@@ -16,15 +16,15 @@ export default function Pagenation() {
         gap: "6.364px",
       }}
     >
-      {Array.from({ length: PAGE_COUNT }).map((_, idx) => (
+      {Array.from({ length: pageCount }).map((_, idx) => (
         <button
           key={idx}
-          onClick={() => setCurrent(idx)}
+          onClick={() => onChange(idx)}
           style={{
             width: current === idx ? "31.818px" : "6.364px",
             height: "6.364px",
             borderRadius: "159.091px",
-            background: current === idx ? "#FFF" : "#DEDEDE",
+            background: "#DEDEDE",
             border: "none",
             padding: 0,
             cursor: "pointer",
