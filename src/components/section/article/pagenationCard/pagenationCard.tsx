@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Pagenation from "../../../common/pagenation";
 import styles from "./pagenation.module.css";
-
 
 const SLIDES = [
   {
@@ -38,45 +37,85 @@ const SLIDES = [
 
 export default function ImageSlider() {
   const [current, setCurrent] = useState(0);
-  const slide = SLIDES[current];
+  const [paused, setPaused] = useState(false);
+  const [fade, setFade] = useState(true);
   const lastIdx = SLIDES.length - 1;
 
-  // 오른쪽(다음)으로 이동
-  const goNext = () => setCurrent(current === lastIdx ? 0 : current + 1);
-  // 왼쪽(이전)으로 이동
-  const goPrev = () => setCurrent(current === 0 ? lastIdx : current - 1);
+  // 자동 슬라이드 (3초)
+  useEffect(() => {
+    if (paused) return;
+    const timer = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setCurrent((prev) => (prev === lastIdx ? 0 : prev + 1));
+        setFade(true);
+      }, 200); // 페이드 아웃 후 이미지 변경
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [lastIdx, paused]);
+
+  // 페이지네이션 클릭 시 페이드 인
+  const handleChange = (idx: number) => {
+    setFade(false);
+    setTimeout(() => {
+      setCurrent(idx);
+      setFade(true);
+    }, 200);
+  };
+
+  const slide = SLIDES[current];
 
   return (
     <div className={styles.frame}>
-      <div className={styles.imageFrame}>
-        {/* 왼쪽 화살표 버튼 */}
-        <button className={styles.arrowLeft} onClick={goPrev} aria-label="이전 슬라이드">
-          &lt;
-        </button>
-        <div className={styles.imageWrap}>
-          <img src={slide.imageUrl} alt={slide.title1} className={styles.image} />
+      <div
+        className={styles.imageFrame}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        style={{ overflow: "hidden", position: "relative" }}
+      >
+        <div
+          className={styles.imageWrap}
+          style={{
+            opacity: fade ? 1 : 0,
+            transition: "opacity 0.3s var(--anim-ease-default)",
+            width: "100%",
+            height: "100%",
+            position: "relative",
+          }}
+        >
+          
           <div className={styles.gradient1} />
           <div className={styles.gradient2} />
-        </div>
-        {/* 오른쪽 화살표 버튼 */}
-        <button className={styles.arrowRight} onClick={goNext} aria-label="다음 슬라이드">
-          &gt;
-        </button>
-        <div className={styles.textFrame}>
-          <div className={styles.text1}>
-            <div className={styles.text1_1}>{slide.title1}</div>
-            <div className={styles.text1_2}>{slide.title2}</div>
-          </div>
-          <div className={styles.text2}>
-            <div className={styles.text2_1}>{slide.desc1}</div>
-            <div className={styles.text2_2}>{slide.desc2}</div>
+          <img
+            src={slide.imageUrl}
+            alt={slide.title1}
+            className={styles.image}
+            draggable={false}
+            style={{
+              userSelect: "none",
+              pointerEvents: "none",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              borderRadius: "16px",
+            }}
+          />
+          <div className={styles.textFrame}>
+            <div className={styles.text1}>
+              <div className={styles.text1_1}>{slide.title1}</div>
+              <div className={styles.text1_2}>{slide.title2}</div>
+            </div>
+            <div className={styles.text2}>
+              <div className={styles.text2_1}>{slide.desc1}</div>
+              <div className={styles.text2_2}>{slide.desc2}</div>
+            </div>
           </div>
         </div>
       </div>
       <Pagenation
         pageCount={SLIDES.length}
         current={current}
-        onChange={setCurrent}
+        onChange={handleChange}
       />
     </div>
   );

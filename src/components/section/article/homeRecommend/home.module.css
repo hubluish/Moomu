@@ -1,0 +1,67 @@
+
+@import '../../../../variable.css';
+
+.container {
+  display: flex;
+  width: 1200px;
+  height: 100%;
+  max-width: 1200px;
+  margin: 30px auto;
+  gap: 24px;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.textContainer{
+  display: flex;
+padding-top: 0.034px;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+gap: 6px;
+align-self: stretch;
+}
+
+.text1Container{
+  display: flex;
+justify-content: space-between;
+align-items: center;  
+}
+
+.title {
+  font:var(--text-title2);;
+}
+
+.sub{
+  font: var(--text-body1);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 370px;
+}
+
+.button{
+  display: flex;
+width: 240px;
+padding: 12px;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+border-radius: 8px;
+border: 1px solid var(--color-main);
+}
+
+.buttonText{
+  font:var(--text-notice);
+  color:var(--color-main);
+}
