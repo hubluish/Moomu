@@ -12,7 +12,7 @@ export const HeaderWrapper = styled.header`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 `;
 
-// 로고 영역
+// 로고 영역(이미지+이름)
 export const LogoSection = styled.div`
   display: flex;
   align-items: center;
@@ -31,7 +31,7 @@ export const LogoName = styled.span`
   font-family: var(--font-family-logo), 'MuseoModerno', sans-serif;
 `;
 
-// 네비게이션
+// 네비게이션 영역
 export const Nav = styled.nav`
   display: flex;
   gap: 32px;
@@ -44,6 +44,7 @@ export const NavLink = styled(Link)<{ $active: boolean }>`
   text-decoration: none;
   font: var(--text-body1);
   color: ${({ $active }) => $active ? 'var(--color-main)' : 'var(--color-text-sub)'};
+
   padding: 0 4px;
   transition: color 0.2s;
 
@@ -77,6 +78,7 @@ export const LoginButton = styled(Link)`
   border: none;
   border-radius: 4px;
   background: var(--color-main);
+
   color: #fff;
   cursor: pointer;
   text-decoration: none;
@@ -100,7 +102,7 @@ export const Avatar = styled.img`
   border-radius: 50%;
 `;
 
-// 드롭다운
+// 드롭다운 메뉴
 export const Dropdown = styled.div`
   position: absolute;
   top: 48px;

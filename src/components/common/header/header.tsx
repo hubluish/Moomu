@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: "/mymoodboard", label: "mymoodboard" },
 ];
 
+// 헤더 내용
 export default function Header() {
   const pathname = usePathname();
   const [showDropdown, setShowDropdown] = useState(false);
