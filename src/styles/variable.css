@@ -5,19 +5,30 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'MuseoModerno';
+  src: url('../../public/assets/fonts/MuseoModerno-VariableFont_wght.ttf') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
 :root {
   /* 🎨 Color System */
   --color-main: #3D38F5; /*타이틀 텍스트, 기본 버튼, 헤더*/
+  --color-main-hover: #2E2AD8;
   --color-point: #7B68EE; /*호버, 포인트 텍스트*/
   --color-background: #FEFEFF;
   --color-text-main: #1C1C1E;
   --color-text-sub: #6B7280;
   --color-outline: #E6E8EC; /*모달, 네모 박스 등 (weight : 2)로 사용하세요*/
   --color-notice: #F1F3F5; /*비활성, 논모달, 안내*/
-  --color-disable-button: #3D38F5; /*비활성 버튼*/
+  --color-disable-button: rgba(61, 56, 245, 0.40); /*비활성 버튼*/
+  --color-disable-sub: #C7C7C7; /*비활성 서브*/
+  --color-disable-sub-button: #EBEBFF;
 
   /* 🅰️ Font Family */
   --font-family-base: 'Pretendard', sans-serif;
+  --font-family-logo: 'MuseoModerno', Pretendard;
 
   /* 🔤 Font Sizes */
   --font-title1: 45px;
@@ -25,10 +36,13 @@
   --font-body1: 30px;
   --font-body2: 20px;
   --font-notice: 20px;
+  --font-caption: 16px;
+  --font-small: 14px;
 
   /* 🏋️ Font Weights */
   --font-weight-extrabold: 800;
   --font-weight-bold: 700;
+  --font-weight-semibold: 600;
   --font-weight-medium: 500;
   --font-weight-regular: 400;
 

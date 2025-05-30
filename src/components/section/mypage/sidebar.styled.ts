@@ -25,7 +25,7 @@ export const MenuItem = styled.li<{ $active?: boolean }>`
   transition: background 0.2s ease;
 
   &:hover {
-    background-color: #efefef;
+    background-color: var(--color-disable-sub-button);
   }
 `;
 
@@ -37,7 +37,7 @@ export const Icon = styled.img`
 
 export const Label = styled.span`
   font-family: var(--font-family-base);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: var(--font-weight-regular);
   color: var(--color-text-main);
 `;

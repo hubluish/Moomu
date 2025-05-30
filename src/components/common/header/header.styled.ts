@@ -25,10 +25,11 @@ export const LogoImg = styled.img`
 `;
 
 export const LogoName = styled.span`
-  font-size: 32px;
-  font-weight: bold;
+  font-size: var(--font-body1);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-text-main);
-  font-family: var(--font-family-logo), 'MuseoModerno', sans-serif;
+  font-family: var(--font-family-logo);
+  letter-spacing: -0.1em;
 `;
 
 // 네비게이션

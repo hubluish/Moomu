@@ -1,7 +1,11 @@
 // components/section/mypage/MoodboardOverlay.tsx
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
+import FolderModal from './FolderModal';
+import FolderCreateModal from './FolderCreateModal';
 
 const OverlayWrapper = styled.div`
   position: absolute;
@@ -29,15 +33,56 @@ const IconButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background-color: var(--color-main-hover);
+  }
 `;
 
 const MoodboardOverlay = () => {
+  const [showFolderModal, setShowFolderModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [folders, setFolders] = useState<string[]>([]);
+
+  const handleCreateFolder = (name: string) => {
+    setFolders((prev) => [...prev, name]);
+    setShowCreateModal(false);
+    setShowFolderModal(true); // 다시 폴더 모달 띄우기
+  };
+
   return (
-    <OverlayWrapper>
-      <IconButton><Image src="/assets/icons/fill-folder.svg" alt="fill-folder" width={35} height={35} /></IconButton>
-      <IconButton><Image src="/assets/icons/fill-star.svg" alt="fill-star" width={35} height={35} /></IconButton>
-      <IconButton><Image src="/assets/icons/fill-trash.svg" alt="fill-trash" width={35} height={35} /></IconButton>
-    </OverlayWrapper>
+    <>
+      <OverlayWrapper>
+        <IconButton onClick={() => setShowFolderModal(true)}>
+          <Image src="/assets/icons/fill-folder.svg" alt="folder" width={35} height={35} />
+        </IconButton>
+        <IconButton>
+          <Image src="/assets/icons/fill-star.svg" alt="fill-star" width={35} height={35} />
+        </IconButton>
+        <IconButton>
+          <Image src="/assets/icons/fill-trash.svg" alt="fill-trash" width={35} height={35} />
+        </IconButton>
+      </OverlayWrapper>
+
+      {showFolderModal && (
+        <FolderModal
+          folders={folders}
+          onAddClick={() => {
+            setShowFolderModal(false); // 폴더 모달 닫고
+            setShowCreateModal(true); // 생성 모달 열기
+          }}
+          onClose={() => setShowFolderModal(false)}
+        />
+      )}
+
+      {showCreateModal && (
+        <FolderCreateModal
+          onSubmit={handleCreateFolder}
+          onClose={() => setShowCreateModal(false)}
+        />
+      )}
+    </>
   );
 };
 
