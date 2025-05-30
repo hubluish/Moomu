@@ -30,8 +30,6 @@ const ModalWrapper = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 `;
 
 const ContentSection = styled.div`
@@ -40,18 +38,38 @@ const ContentSection = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  gap: 15px
+  margin-bottom: 25px;
+
+  max-height: 290px; /* 폴더 최대 5개까지 보여주는 높이 */
+  overflow-y: auto;  /* 5개 초과 시 스크롤 생성 */
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-main) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-main);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
 `;
 
 const Text = styled.p`
   color: var(--color-text-sub);
   font-family: var(--font-family-base);
   font-size: var(--font-caption);
+  margin-top: 150px;
 `;
 
 const FolderItem = styled.div`
   width: 100%;
-  height: 46px;
+  min-height: 46px;
   padding: 6px 72px;
   background-color: var(--color-disable-sub-button);
   border-radius: 6px;
@@ -63,6 +81,8 @@ const FolderItem = styled.div`
   border: 1px solid transparent;
   box-sizing: border-box;
   transition: border 0.2s ease;
+
+  margin-bottom: 15px;
 
   &:hover {
     border: 1px solid var(--color-main);
