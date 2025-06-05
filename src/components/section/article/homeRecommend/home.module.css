@@ -24,8 +24,9 @@ align-self: stretch;
 
 .text1Container{
   display: flex;
-justify-content: space-between;
-align-items: center;  
+  justify-content: space-between;
+  align-items: center;  
+  width: 100%;
 }
 
 .title {
@@ -47,7 +48,7 @@ align-items: center;
   display: flex;
   flex-direction: column;
   gap: 28px;
-  width: 370px;
+  width: 100%;
 }
 
 .button{

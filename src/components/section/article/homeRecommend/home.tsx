@@ -16,9 +16,12 @@ export default function Articlehome() {
         </div>
         <h2 className={styles.sub}>Browse through a collection of trending design resources.</h2>
       </div>
-          <div className={styles.Container} style={{ flexDirection: "column", justifyContent: "space-between" }}>
+          <div className={styles.Container} style={{ flexDirection: "row", justifyContent: "space-between" }}>
       {/* 왼쪽 */}
-      <h1 className={styles.title}>추천 뉴스</h1> 
+        <img
+          src="https://i.pinimg.com/736x/bb/3d/52/bb3d52d066f119341e1e3a3cb9d2f8da.jpg" // public 폴더 기준 경로로 수정
+          style={{ width: "auto", height: "370px", marginRight: "8px", verticalAlign: "middle" }}
+        />
           {/* 오른쪽 */}
           <div className={styles.row}>
             <ArticleTab

@@ -83,9 +83,6 @@ export default function ImageSlider() {
             position: "relative",
           }}
         >
-          
-          <div className={styles.gradient1} />
-          <div className={styles.gradient2} />
           <img
             src={slide.imageUrl}
             alt={slide.title1}
@@ -100,6 +97,8 @@ export default function ImageSlider() {
               borderRadius: "16px",
             }}
           />
+          <div className={styles.gradient1} />
+          <div className={styles.gradient2} />
           <div className={styles.textFrame}>
             <div className={styles.text1}>
               <div className={styles.text1_1}>{slide.title1}</div>
