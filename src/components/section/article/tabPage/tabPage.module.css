@@ -74,7 +74,8 @@
   align-self: stretch;
   width: 100%;
   margin-bottom: 24px;
-  gap: 27px; /* 카드 사이 간격 추가 */
+  gap: 19px; /* 카드 사이 간격 추가 */
+
 }
 
 .moreBtnWrap {

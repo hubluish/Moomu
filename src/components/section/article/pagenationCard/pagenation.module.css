@@ -1,5 +1,5 @@
 .frame {
-  width: 1200px;
+  width: 1180px;
   height: 540px;
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@
 }
 
 .imageFrame {
-  width: 1200px;
+  width: 1180px;
   height: 540px;
   position: relative;
   overflow: hidden;
@@ -27,7 +27,7 @@
 }
 
 .slide {
-  width: 1200px;
+  width: 1180px;
   height: 540px;
   flex-shrink: 0;
   position: relative;
@@ -77,7 +77,7 @@
 .image {
   z-index: 0;
   position: relative;
-  width: 1200px;
+  width: 1180px;
   height: 540px;
   object-fit: cover;
   display: block;

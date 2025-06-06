@@ -2,14 +2,48 @@
 import ArticleTab from "@/components/section/article/bigCard/big";
 import ArticleTabs from "@/components/section/article/smallCard/small";
 import styles from "@/components/section/article/homeRecommend/home.module.css";
+import { useRef } from "react";
+import gsap from "gsap";
+import confetti from "canvas-confetti";
+
+// 세모 shape 등록
+confetti.shape = confetti.shape || {};
+confetti.shape.triangle = function (ctx) {
+  ctx.beginPath();
+  ctx.moveTo(0, -1);
+  ctx.lineTo(1, 1);
+  ctx.lineTo(-1, 1);
+  ctx.closePath();
+  ctx.fill();
+};
 
 function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }) {
+  const btnRef = useRef(null);
+
+  // 호버 애니메이션
+  const handleMouseEnter = () => {
+    gsap.to(btnRef.current, { scale: 1.08, duration: 0.18, ease: "power1.out" });
+  };
+  const handleMouseLeave = () => {
+    gsap.to(btnRef.current, { scale: 1, duration: 0.18, ease: "power1.in" });
+  };
+
+  const handleClick = () => {
+    if (onMoreClick) onMoreClick();
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.textContainer}>
         <div className={styles.text1Container}>
           <div className={styles.title}>{title}</div>
-          <button className={styles.button} onClick={onMoreClick}>
+          <button
+            className={styles.button}
+            ref={btnRef}
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
             <div className={styles.buttonText}>더보기</div>
           </button>
         </div>
@@ -83,7 +117,7 @@ export default function Articlehome({ setActiveTab }) {
         ]}
         onMoreClick={() => setActiveTab(4)} // 용어사전 탭(4번)
       />
-    <div className={styles.line} />
+      <div className={styles.line} />
       <Section
         title="트렌드 탐험대 🔍 "
         imageUrl="https://i.pinimg.com/736x/9c/19/d1/9c19d1cc03ca1ebfd8507afdb483b272.jpg"
