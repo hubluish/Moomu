@@ -29,7 +29,7 @@ export default function Tab({ activeTab, setActiveTab }: TabProps) {
         {TAB_LABELS.map((label, idx) => (
           <button
             key={label}
-            ref={el => (btnRefs.current[idx] = el)}
+            ref={el => { btnRefs.current[idx] = el; }}
             className={`${styles.tabBtn} ${activeTab === idx ? styles.active : ""}`}
             onClick={() => setActiveTab(idx)}
           >

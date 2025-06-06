@@ -2,23 +2,29 @@
 import ArticleTab from "@/components/section/article/bigCard/big";
 import ArticleTabs from "@/components/section/article/smallCard/small";
 import styles from "@/components/section/article/homeRecommend/home.module.css";
+import Image from "next/image";
 import { useRef } from "react";
 import gsap from "gsap";
-import confetti from "canvas-confetti";
 
-// 세모 shape 등록
-confetti.shape = confetti.shape || {};
-confetti.shape.triangle = function (ctx) {
-  ctx.beginPath();
-  ctx.moveTo(0, -1);
-  ctx.lineTo(1, 1);
-  ctx.lineTo(-1, 1);
-  ctx.closePath();
-  ctx.fill();
-};
 
-function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }) {
-  const btnRef = useRef(null);
+interface CardData {
+  imageUrl: string;
+  title: string;
+  description: string;
+  category: string;
+  date: string;
+}
+
+interface SectionProps {
+  title: string;
+  imageUrl: string;
+  bigCard: CardData;
+  smallCards: CardData[];
+  onMoreClick: () => void;
+}
+
+function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }: SectionProps) {
+  const btnRef = useRef<HTMLButtonElement>(null);
 
   // 호버 애니메이션
   const handleMouseEnter = () => {
@@ -52,12 +58,12 @@ function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }) {
         </h2>
       </div>
       <div className={styles.container2}>
-        <img
+        <Image
           src={imageUrl}
           alt="추천 이미지"
+          width={510}   // 원하는 값으로 지정
+          height={400}
           style={{
-            maxWidth: "510px",
-            height: "410px",
             marginRight: "8px",
             verticalAlign: "middle",
           }}
@@ -65,7 +71,7 @@ function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }) {
         <div className={styles.row}>
           <ArticleTab {...bigCard} />
           <div className={styles.col}>
-            {smallCards.map((card, idx) => (
+            {smallCards.map((card: CardData, idx: number) => (
               <ArticleTabs key={idx} {...card} />
             ))}
           </div>
@@ -75,7 +81,11 @@ function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }) {
   );
 }
 
-export default function Articlehome({ setActiveTab }) {
+interface ArticlehomeProps {
+  setActiveTab: (idx: number) => void;
+}
+
+export default function Articlehome({ setActiveTab }: ArticlehomeProps) {
   return (
     <div className={styles.container}>
       <Section

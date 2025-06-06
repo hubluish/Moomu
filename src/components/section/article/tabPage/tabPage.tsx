@@ -12,7 +12,22 @@ const TAB_INFO = [
   { label: "트렌드", title: "트렌드 🔍", desc: "Exploring the latest trends and innovations in design trends." },
 ];
 
-export default function TabPage({ tabIdx, articles }) {
+interface ArticleCardProps {
+  imageUrl: string;
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+}
+
+type Article = ArticleCardProps;
+
+interface TabPageProps {
+  tabIdx: number;
+  articles: Article[];
+}
+
+export default function TabPage({ tabIdx, articles }: TabPageProps) {
   // tabIdx: 1~5 (0은 전체)
   const [showAll, setShowAll] = useState(false);
   const [sort, setSort] = useState("추천순");
@@ -46,7 +61,7 @@ export default function TabPage({ tabIdx, articles }) {
         {/* 3-2~3-4. big카드 3개씩 묶음 */}
         {visibleChunks.map((chunk, idx) => (
           <div className={styles.cardRow} key={idx}>
-            {chunk.map((article, i) => (
+            {chunk.map((article: Article, i: number) => (
               <ArticleCard key={i} {...article} />
             ))}
           </div>

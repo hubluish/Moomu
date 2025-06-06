@@ -1,9 +1,10 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Pagenation from "../../../common/pagenation";
 import styles from "./pagenation.module.css";
+import Image from "next/image";
+
 
 const SLIDES = [
   {
@@ -100,16 +101,17 @@ export default function ImageSlider() {
             position: "relative",
           }}
         >
-          <img
+          <Image
             src={slide.imageUrl}
             alt={slide.title1}
             className={styles.image}
             draggable={false}
+            width={1200}
+            height={400} 
             style={{
               userSelect: "none",
               pointerEvents: "none",
-              width: "100%",
-              height: "100%",
+              
               objectFit: "cover",
               borderRadius: "16px",
             }}
