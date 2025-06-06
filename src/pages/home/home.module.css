@@ -45,3 +45,7 @@
     align-items: center;
     justify-content: center;
     }
+
+    .seeMoreButton {
+        display: flex;
+    }

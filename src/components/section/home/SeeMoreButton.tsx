@@ -7,11 +7,7 @@ const SeeMoreButton = ({ onClick }: { onClick?: () => void }) => {
         <button
         onClick={onClick}
         style={{
-            top: '100%',
-            marginTop: '20px', 
-            marginBottom: '20px',
-            left: '50%',
-            transform: 'translateX(-50%)',
+            margin: '50px auto',
             display: 'flex',
             width: '130px',
             height: '30px',

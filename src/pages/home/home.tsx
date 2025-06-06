@@ -152,9 +152,6 @@ function Home() {
                                 onClick={() => handleSelect(opt.title)}
                             />
                         ))}
-                        {!showAllOptions && stepOptions.length > 4 && (
-                            <SeeMoreButton onClick={() => setShowAllOptions(true)} />
-                        )}
                     </div>
                 ) : (
                     <div className={styles.grid2x2}>
@@ -167,12 +164,15 @@ function Home() {
                                 onClick={() => handleSelect(opt.title)}
                             />
                         ))}
-                        {!showAllOptions && stepOptions.length > 4 && (
-                            <SeeMoreButton onClick={() => setShowAllOptions(true)} />
-                        )}
                     </div>
                 )}
             </div>
+            {!showAllOptions && stepOptions.length > 4 && (
+                            <div className={styles.seeMoreWrapper}>
+                                <SeeMoreButton onClick={() => setShowAllOptions(true)} />
+                            </div>
+            )}
+
             {showModal && (
                 <div className={styles.modalOverlay}>
                     <TagGuideModal
