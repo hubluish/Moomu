@@ -90,7 +90,7 @@ function Home() {
         const jsonResult = {
         색상: selections[0],
         폰트: selections[2],
-        '이미지/감정': [selections[1], selections[3]].filter(Boolean),
+        '이미지/감정': [selections[1], ...(selections[3]?.split(',') || [])].filter(Boolean),
         };
         console.log('선택된 결과:', jsonResult);
         router.push('/home/loading');
@@ -100,9 +100,28 @@ function Home() {
     const handleSelect = (option: string) => {
         setSelections(prev => {
         const updated = [...prev];
-        updated[step - 1] = prev[step - 1] === option ? null : option;
-        for (let i = step; i < updated.length; i++) {
-            updated[i] = null;
+
+        if (step === 4) {
+            const current = updated[3]; // step 4의 인덱스는 3
+            const selected = current ? current.split(',') : [];
+
+            if (selected.includes(option)) {
+                
+                const filtered = selected.filter(item => item !== option);
+                updated[3] = filtered.join(',') || null;
+            } else {
+                if (selected.length < 2) {
+                    updated[3] = [...selected, option].join(',');
+                } else {
+                    return prev;
+                }
+            }
+
+        } else {
+            updated[step - 1] = prev[step - 1] === option ? null : option;
+            for (let i = step; i < updated.length; i++) {
+                updated[i] = null;
+            }
         }
         
         return updated;
@@ -144,7 +163,7 @@ function Home() {
                                 key={index}
                                 title={opt.title}
                                 subtitle={opt.description}
-                                isSelected={selections[step - 1] === opt.title}
+                                isSelected={step===4? selections[3]?.split(',').includes(opt.title) : selections[step - 1] === opt.title}
                                 onClick={() => handleSelect(opt.title)}
                             />
                         ))}
