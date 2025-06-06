@@ -16,7 +16,7 @@ import stepMeta from '../../../public/data/stepMeta.json';
 import colorThemes from '../../../public/data/colorThemes.json';
 import fontThemes from '../../../public/data/fontThemes.json';
 import imageThemes from '../../../public/data/imageThemes.json';
-
+import imagePriority from '../../../public/data/imagePriority.json';    
 
 
 function Home() {
@@ -30,10 +30,28 @@ function Home() {
 
     const getStepContent = (): Array<{ title: string; description: string; colors?: string[] }> => {
         if (step === 1) return colorThemes;
-        if (step === 2 || step === 4) return imageThemes;
+        
+        if (step === 2) {
+            const selectedColor = selections[0]?.toLowerCase() || '';
+            const priority = imagePriority[selectedColor as keyof typeof imagePriority] || [];
+
+            const priorityOptions = imageThemes.filter(opt => priority.includes(opt.title));
+            const remainingOptions = imageThemes.filter(opt => !priority.includes(opt.title));
+
+            return [...priorityOptions, ...remainingOptions];
+        }
+
         if (step === 3) return fontThemes;
+        
+        if (step === 4) {
+            const tagUsedInStep2 = selections[1];
+            return imageThemes.filter(opt => opt.title !== tagUsedInStep2);
+        }
+        
         return [];
     };
+
+    const stepOptions = getStepContent();
 
     useEffect(() => {
     const timer = setTimeout(() => {
@@ -75,8 +93,6 @@ function Home() {
     const goToFeed = () => {
     router.push('/feed'); // ✅ 원하는 피드 경로로 수정
     };
-
-    const stepOptions = getStepContent();
 
     return (
         <main>
