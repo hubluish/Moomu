@@ -5,6 +5,8 @@
     padding: 40px 0;
     }
 
+    .html, body {overflow: hidden; }
+
     .gridContainer {
     display: flex;
     flex-direction: column;
@@ -13,14 +15,16 @@
     padding: 20px 0;
     margin: 45px auto;
     gap: 40px;
+    position: relative;
     }
 
     .grid3columns {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3열 고정 */
-    gap: 40px;
-    width: 1118px;
-    justify-items: center;
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3열 고정 */
+        gap: 40px;
+        width: 1118px;
+        justify-items: center;
     }
 
 

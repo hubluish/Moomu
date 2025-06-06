@@ -11,6 +11,7 @@ import PreviousButton from '../../components/section/home/PreviousButton';
 import ProgressBar from '../../components/section/home/ProgressBar';
 import MoodOption from '../../components/section/home/MoodOption';
 import TagGuideModal from '../../components/section/home/TagGuideModal';
+import SeeMoreButton from '../../components/section/home/SeeMoreButton';
 
 import stepMeta from '../../../public/data/stepMeta.json';
 import colorThemes from '../../../public/data/colorThemes.json';
@@ -25,6 +26,7 @@ function Home() {
     const [selections, setSelections] = useState<(string | null)[]>([null, null, null, null]);
     const [showAlert, setShowAlert] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [showAllOptions, setShowAllOptions] = useState(false);
 
     const meta = stepMeta[step - 1];
 
@@ -60,6 +62,11 @@ function Home() {
     };
 
     const stepOptions = getStepContent();
+    const visibleOptions = showAllOptions
+        ? stepOptions
+        : step === 1
+            ? stepOptions.slice(0, 6)
+            : stepOptions.slice(0, 4);
 
     useEffect(() => {
     const timer = setTimeout(() => {
@@ -78,23 +85,22 @@ function Home() {
 
         if (step < 4) {
             setStep(step + 1);
+            setShowAllOptions(false);
         } else {
-        // JSON 생성
         const jsonResult = {
         색상: selections[0],
         폰트: selections[2],
         '이미지/감정': [selections[1], selections[3]].filter(Boolean),
         };
-        console.log('✅ 선택된 결과:', jsonResult);
+        console.log('선택된 결과:', jsonResult);
         router.push('/home/loading');
     }
     };
 
-        const handleSelect = (option: string) => {
+    const handleSelect = (option: string) => {
         setSelections(prev => {
         const updated = [...prev];
-        updated[step - 1] = prev[step - 1] === option ? null : option; // 선택 취소 가능
-        
+        updated[step - 1] = prev[step - 1] === option ? null : option;
         for (let i = step; i < updated.length; i++) {
             updated[i] = null;
         }
@@ -104,7 +110,7 @@ function Home() {
     };
 
     const goToFeed = () => {
-    router.push('/feed'); // ✅ 원하는 피드 경로로 수정
+    router.push('/feed');
     };
 
     return (
@@ -114,23 +120,26 @@ function Home() {
             <TitleBlock title={meta.title} subtitle= {meta.subtitle}/>
             <NextButton onClick={handleNext} variant={step < 4 ? 'black' : 'gradient'} />
             <PreviousButton onClick={() => setStep(step > 1 ? step - 1 : step)} />
-                <div className={styles.gridContainer}>
+            <div className={styles.gridContainer}>
                 {step === 1 ? (
                     <div className={styles.grid3columns}>
-                        {stepOptions.map((opt: any, index: number) => (
-                        <ColorOption
-                            key={index}
-                            title={opt.title}
-                            description={opt.description}
-                            colors={opt.colors}
-                            isSelected={selections[0] === opt.title}
-                            onClick={() => handleSelect(opt.title)}
-                        />
+                        {visibleOptions.map((opt: any, index: number) => (
+                            <ColorOption
+                                key={index}
+                                title={opt.title}
+                                description={opt.description}
+                                colors={opt.colors}
+                                isSelected={selections[0] === opt.title}
+                                onClick={() => handleSelect(opt.title)}
+                            />
                         ))}
+                        {!showAllOptions && stepOptions.length > 4 && (
+                            <SeeMoreButton onClick={() => setShowAllOptions(true)} />
+                        )}
                     </div>
                 ) : (
                     <div className={styles.grid2x2}>
-                        {stepOptions.map((opt: any, index: number) => (
+                        {visibleOptions.map((opt: any, index: number) => (
                             <MoodOption
                                 key={index}
                                 title={opt.title}
@@ -139,15 +148,18 @@ function Home() {
                                 onClick={() => handleSelect(opt.title)}
                             />
                         ))}
+                        {!showAllOptions && stepOptions.length > 4 && (
+                            <SeeMoreButton onClick={() => setShowAllOptions(true)} />
+                        )}
                     </div>
                 )}
             </div>
             {showModal && (
                 <div className={styles.modalOverlay}>
-                <TagGuideModal
-                    onClose={() => setShowModal(false)}
-                    onConfirm={goToFeed}
-                />
+                    <TagGuideModal
+                        onClose={() => setShowModal(false)}
+                        onConfirm={goToFeed}
+                    />
                 </div>
             )}
         </main>
