@@ -11,59 +11,29 @@ import PreviousButton from '../../components/section/home/PreviousButton';
 import ProgressBar from '../../components/section/home/ProgressBar';
 import MoodOption from '../../components/section/home/MoodOption';
 import TagGuideModal from '../../components/section/home/TagGuideModal';
-import colorThemes from '../../../public/data/colorThemes.json'; // Assuming you have a JSON file with color themes
 
-const stepContents = [
-    {
-        title: '어떤 색상이 들어가면 좋을까요?',
-        subtitle: <>컬러는 무드의 시작이에요. 마음을 끄는 색을 골라보세요.<br/>처음 떠오른 색이 정답일 수 있어요 !</>,
-        options:[]
-    },
-    {
-        title: <>이 무드를 사진으로 표현한다면<br /> 어떤 모습인가요?</>,
-        subtitle: 'Define the vibe of your moodboard by selecting emotional tags.',
-        options: [
-        { title: 'Energetic', description: 'Full of life and movement.' },
-        { title: 'Romantic', description: 'Soft, dreamy, and heartfelt.' },
-        { title: 'Minimal', description: 'Sleek, simple, and modern.' },
-        { title: 'Retro', description: 'Nostalgic, old-school flavor.' },
-        { title: 'Nature', description: 'Organic, earthy, and natural.' },
-        
-        ],
-    
-    },
-    {
-        title: '텍스트는 어떤 느낌인가요?',
-        subtitle: 'Select additional styles for fonts and image concepts',
-        options: [
-        { title: 'Cafe', description: 'Warm and cozy corners with coffee aroma.' },
-        { title: 'Studio', description: 'Creative and raw energy all around.' },
-        { title: 'Park', description: 'Open skies and peaceful nature.' },
-        { title: 'Room', description: 'Personal, quiet and reflective.' },
-        ],
-    },
-    {
-        title: '마지막으로, 무드보드를 완성시킬 요소가 있을까요?',
-        subtitle: 'Select additional styles for fonts and image concepts.',
-        options: [
-        { title: 'Cafe', description: 'Warm and cozy corners with coffee aroma.' },
-        { title: 'Studio', description: 'Creative and raw energy all around.' },
-        { title: 'Park', description: 'Open skies and peaceful nature.' },
-        { title: 'Room', description: 'Personal, quiet and reflective.' },
-        ],
-    },
-];
+import stepMeta from '../../../public/data/stepMeta.json';
+import colorThemes from '../../../public/data/colorThemes.json';
+import fontThemes from '../../../public/data/fontThemes.json';
+import imageThemes from '../../../public/data/imageThemes.json';
+
 
 
 function Home() {
     const [step, setStep] = useState(1);
     const router = useRouter();
     const [selections, setSelections] = useState<(string | null)[]>([null, null, null, null]);
-    const content = stepContents[step - 1];
     const [showAlert, setShowAlert] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
-    
+    const meta = stepMeta[step - 1];
+
+    const getStepContent = (): Array<{ title: string; description: string; colors?: string[] }> => {
+        if (step === 1) return colorThemes;
+        if (step === 2 || step === 4) return imageThemes;
+        if (step === 3) return fontThemes;
+        return [];
+    };
 
     useEffect(() => {
     const timer = setTimeout(() => {
@@ -106,17 +76,19 @@ function Home() {
     router.push('/feed'); // ✅ 원하는 피드 경로로 수정
     };
 
+    const stepOptions = getStepContent();
+
     return (
         <main>
             <ProgressBar step={step}/>
             <PopAlert visible={showAlert} />
-            <TitleBlock title={content.title} subtitle= {content.subtitle}/>
+            <TitleBlock title={meta.title} subtitle= {meta.subtitle}/>
             <NextButton onClick={handleNext} variant={step < 4 ? 'black' : 'gradient'} />
             <PreviousButton onClick={() => setStep(step > 1 ? step - 1 : step)} />
                 <div className={styles.gridContainer}>
                 {step === 1 ? (
                     <div className={styles.grid3columns}>
-                        {colorThemes.map((opt, index) => (
+                        {stepOptions.map((opt: any, index: number) => (
                         <ColorOption
                             key={index}
                             title={opt.title}
@@ -129,7 +101,7 @@ function Home() {
                     </div>
                 ) : (
                     <div className={styles.grid2x2}>
-                        {content.options.map((opt, index) => (
+                        {stepOptions.map((opt: any, index: number) => (
                             <MoodOption
                                 key={index}
                                 title={opt.title}
