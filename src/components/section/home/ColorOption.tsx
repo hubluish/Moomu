@@ -5,11 +5,12 @@ import { on } from 'events';
 type ColorOptionProps = {
     title: string;
     description: string;
+    colors: string[];
     isSelected?: boolean;
     onClick?: () => void;
 };
 
-export default function ColorOption({ title, description, isSelected, onClick }: ColorOptionProps) {
+export default function ColorOption({ title, description, colors, isSelected, onClick }: ColorOptionProps) {
     return (
             <div
         className={`${styles.container} ${isSelected ? styles.selected : ''}`} onClick={onClick}>
@@ -20,7 +21,7 @@ export default function ColorOption({ title, description, isSelected, onClick }:
 
         <div className={styles.colorPreviewWrapper}>
             <div className={styles.colorPreview}>
-            {['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#8B00FF'].map((color, index) => (
+            {colors.map((color, index) => (
                 <svg
                 key={index}
                 xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +30,7 @@ export default function ColorOption({ title, description, isSelected, onClick }:
                 viewBox="0 0 42 42"
                 fill="none"
                 >
-                <circle cx="21" cy="21" r="21" fill="#D9D9D9" />
+                <circle cx="21" cy="21" r="21" fill={color} />
                 </svg>
             ))}
             </div>

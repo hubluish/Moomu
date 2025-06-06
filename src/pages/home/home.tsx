@@ -11,19 +11,13 @@ import PreviousButton from '../../components/section/home/PreviousButton';
 import ProgressBar from '../../components/section/home/ProgressBar';
 import MoodOption from '../../components/section/home/MoodOption';
 import TagGuideModal from '../../components/section/home/TagGuideModal';
+import colorThemes from '../../../public/data/colorThemes.json'; // Assuming you have a JSON file with color themes
 
 const stepContents = [
     {
         title: '어떤 색상이 들어가면 좋을까요?',
         subtitle: <>컬러는 무드의 시작이에요. 마음을 끄는 색을 골라보세요.<br/>처음 떠오른 색이 정답일 수 있어요 !</>,
-        options: [
-        { title: 'Monotone', description: 'Neutral tones that keep it simple and clean.' },
-        { title: 'Warm', description: 'Cozy and inviting, with soft earthy tones.' },
-        { title: 'Cool', description: 'Refreshing blues for a calming mood.' },
-        { title: 'Vivid', description: 'Bold and bright colors that pop.' },
-        { title: 'Pastel', description: 'Soft and sweet, like a spring day.' },
-        { title: 'Dark', description: 'Deep, moody tones with strong presence.' },
-        ],
+        options:[]
     },
     {
         title: <>이 무드를 사진으로 표현한다면<br /> 어떤 모습인가요?</>,
@@ -122,11 +116,12 @@ function Home() {
                 <div className={styles.gridContainer}>
                 {step === 1 ? (
                     <div className={styles.grid3columns}>
-                        {content.options.map((opt, index) => (
+                        {colorThemes.map((opt, index) => (
                         <ColorOption
                             key={index}
                             title={opt.title}
                             description={opt.description}
+                            colors={opt.colors}
                             isSelected={selections[0] === opt.title}
                             onClick={() => handleSelect(opt.title)}
                         />
