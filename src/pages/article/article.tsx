@@ -5,8 +5,10 @@ import Articlehome from "@/components/section/article/homeRecommend/home";
 import SearchField from "@/components/common/searchField/SearchField";
 import ImageSlider from "@/components/section/article/pagenationCard/pagenationCard";
 import TabPage from "@/components/section/article/tabPage/tabPage";
+import ArticleCreate from "@/components/section/article/ArticleCreate";
 import styles from "./article.module.css";
 import confetti from "canvas-confetti";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Article {
   _id: string;
@@ -18,65 +20,67 @@ interface Article {
   description?: string;
 }
 
-// 예시 데이터
-const initialArticles = [
-  {
-    id: 1,
-    title: "Get the latest updates",
-    content: "Card News Template",
-    category: "카드뉴스",
-    date: "25.05.28",
-    imageUrl: "",
-    description: "Card News Template",
-  },
-  {
-    id: 2,
-    title: "Get the latest updates",
-    content: "Card News Template",
-    category: "카드뉴스",
-    date: "25.05.30",
-    imageUrl: "",
-    description: "Card News Template",
-  },
-  {
-    id: 3,
-    title: "Get the latest updates",
-    content: "Card News Template",
-    category: "UI",
-    date: "25.05.25",
-    imageUrl: "",
-    description: "Card News Template",
-  },
-  {
-    id: 4,
-    title: "Get the latest updates",
-    content: "Card News Template",
-    category: "용어사전",
-    date: "25.05.25",
-    imageUrl: "",
-    description: "Card News Template",
-  },
-  {
-    id: 5,
-    title: "Get the latest updates",
-    content: "Card News Template",
-    category: "카드뉴스",
-    date: "25.05.28",
-    imageUrl: "",
-    description: "Card News Template",
-  },
-  {
-    id: 6,
-    title: "Get the latest updates",
-    content: "Card News Template",
-    category: "카드뉴스",
-    date: "25.05.30",
-    imageUrl: "",
-    description: "Card News Template",
-  },
+// // 예시 데이터
+// const initialArticles = [
+//   {
+//     _id: 1, // id → _id로 변경
+//     title: "Get the latest updates",
+//     content: "Card News Template",
+//     category: "카드뉴스",
+//     date: "25.05.28",
+//     imageUrl: "",
+//     description: "Card News Template",
+//   },
+//   {
+//     _id: 2,
+//     title: "Get the latest updates",
+//     content: "Card News Template",
+//     category: "카드뉴스",
+//     date: "25.05.30",
+//     imageUrl: "",
+//     description: "Card News Template",
+//   },
+//   {
+//     _id: 3,
+//     title: "Get the latest updates",
+//     content: "Card News Template",
+//     category: "UI",
+//     date: "25.05.25",
+//     imageUrl: "",
+//     description: "Card News Template",
+//   },
+//   {
+//     _id: 4,
+//     title: "Get the latest updates",
+//     content: "Card News Template",
+//     category: "용어사전",
+//     date: "25.05.25",
+//     imageUrl: "",
+//     description: "Card News Template",
+//   },
+//   {
+//     _id: 5,
+//     title: "Get the latest updates",
+//     content: "Card News Template",
+//     category: "카드뉴스",
+//     date: "25.05.28",
+//     imageUrl: "",
+//     description: "Card News Template",
+//   },
+//   {
+//     _id: 6,
+//     title: "Get the latest updates",
+//     content: "Card News Template",
+//     category: "카드뉴스",
+//     date: "25.05.30",
+//     imageUrl: "",
+//     description: "Card News Template",
+//   },
   
-  // ...더 추가 가능
-];
+//   // ...더 추가 가능
+// ];
+
+const CATEGORY_OPTIONS = ["전체", "UI", "카드뉴스", "포스터", "용어사전", "트렌드"];
 
 // 예시: 탭 인덱스와 카테고리 매핑
 const TAB_LABELS = ["전체", "UI", "카드뉴스", "포스터", "용어사전", "트렌드"];
@@ -85,7 +89,10 @@ export default function Article() {
   const [activeTab, setActiveTab] = useState(0);
   const [search, setSearch] = useState("");
   const [articles, setArticles] = useState<Article[]>([]);
+  const [showCreate, setShowCreate] = useState(false);
   const titleRef = useRef<HTMLSpanElement | null>(null); // 타입 명시!
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Article 텍스트 호버 시 콘페티
   const handleTitleHover = () => {
@@ -110,6 +117,14 @@ export default function Article() {
       .then(res => res.json())
       .then(data => setArticles(data));
   }, []);
+
+  useEffect(() => {
+    const category = searchParams.get("category");
+    if (category) {
+      const idx = CATEGORY_OPTIONS.indexOf(category);
+      if (idx !== -1) setActiveTab(idx);
+    }
+  }, [searchParams]);
 
   const filteredArticles = activeTab === 0
     ? articles
@@ -144,20 +159,40 @@ export default function Article() {
             <Articlehome setActiveTab={setActiveTab} />
           </>
         ) : (
-          <TabPage tabIdx={activeTab} articles={articles} />
+          <TabPage
+            tabIdx={activeTab}
+            articles={articles.map(article => ({
+              ...article,
+              imageUrl: article.imageUrl ?? "",
+            }))}
+          />
         )}
         {activeTab !== 0 && filteredArticles.length === 0 ? (
           <div className={styles.centerMessage}>게시글이 없습니다.</div>
         ) : (
           <ul>
-            {/* {filteredArticles.map(article => (
-              <li key={article._id}>
-                <div>{article.title}</div>
-                <div>{article.category}</div>
-                <div>{article.date}</div>
-              </li>
-            ))} */}
+            {filteredArticles
+              .filter(article => !!article && !!article.category)
+              .map(article => (
+                <li key={article._id}>
+                  <div>{article.title}</div>
+                  <div>{article.category}</div>
+                  <div>{article.date}</div>
+                </li>
+              ))}
           </ul>
+        )}
+        <button onClick={() => setShowCreate(true)}>글쓰기</button>
+        {showCreate && (
+          <ArticleCreate
+            onCreated={() => {
+              setShowCreate(false);
+              // 새 글 등록 후 목록 새로고침
+              fetch("/api/articles")
+                .then(res => res.json())
+                .then(data => setArticles(data));
+            }}
+          />
         )}
       </div>
     </div>

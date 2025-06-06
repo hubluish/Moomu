@@ -9,8 +9,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     await client.connect();
     const db = client.db(dbName);
-    const articles = await db.collection("article").find().toArray();
-    res.status(200).json(articles);
+
+    if (req.method === "GET") {
+      const articles = await db.collection("article").find().toArray();
+      res.status(200).json(articles);
+    } else if (req.method === "POST") {
+      const { title, content, category, date, imageUrl, description, keywords } = req.body;
+      const result = await db.collection("article").insertOne({
+        title,
+        content,
+        category,
+        date,
+        imageUrl,
+        description,
+        keywords, 
+      });
+      res.status(201).json({ insertedId: result.insertedId });
+    } else {
+      res.status(405).json({ error: "Method Not Allowed" });
+    }
   } catch (err) {
     res.status(500).json({ error: "DB 연결 오류" });
   } finally {
