@@ -17,7 +17,7 @@ import colorThemes from '../../../public/data/colorThemes.json';
 import fontThemes from '../../../public/data/fontThemes.json';
 import imageThemes from '../../../public/data/imageThemes.json';
 import imagePriority from '../../../public/data/imagePriority.json';    
-
+import fontPriority from '../../../public/data/fontPriority.json';
 
 function Home() {
     const [step, setStep] = useState(1);
@@ -41,8 +41,16 @@ function Home() {
             return [...priorityOptions, ...remainingOptions];
         }
 
-        if (step === 3) return fontThemes;
-        
+        if (step === 3) {
+            const selectedColor = selections[0]?.toLowerCase() || '';
+            const priority = (fontPriority as Record<string, string[]>)[selectedColor] || [];
+
+            const priorityOptions = fontThemes.filter(opt => priority.includes(opt.title));
+            const remainingOptions = fontThemes.filter(opt => !priority.includes(opt.title));
+
+            return [...priorityOptions, ...remainingOptions];
+        }
+
         if (step === 4) {
             const tagUsedInStep2 = selections[1];
             return imageThemes.filter(opt => opt.title !== tagUsedInStep2);
@@ -86,6 +94,11 @@ function Home() {
         setSelections(prev => {
         const updated = [...prev];
         updated[step - 1] = prev[step - 1] === option ? null : option; // 선택 취소 가능
+        
+        for (let i = step; i < updated.length; i++) {
+            updated[i] = null;
+        }
+        
         return updated;
         });
     };
