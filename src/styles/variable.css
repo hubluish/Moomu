@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@700&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+/* @font-face {
+  font-family: 'Pretendard';
+  src: url('../../public/assets/fonts/PretendardVariable.ttf') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+} */
+
 :root {
   /* 🎨 Color System */
   --color-main: #3D38F5; /*타이틀 텍스트, 기본 버튼, 헤더*/
@@ -11,18 +20,21 @@
 
   /* 🅰️ Font Family */
   --font-family-base: 'Pretendard', sans-serif;
+  --font-family-logo: 'MuseoModerno', sans-serif;
+
 
   /* 🔤 Font Sizes */
-  --font-title1: 45px;
-  --font-title2: 40px;
-  --font-body1: 30px;
-  --font-body2: 20px;
-  --font-notice: 20px;
+  --font-title1: 32px;
+  --font-title2: 24px;
+  --font-body1: 18px;
+  --font-body2: 16px;
+  --font-notice: 16px;
 
   /* 🏋️ Font Weights */
   --font-weight-extrabold: 800;
   --font-weight-bold: 700;
   --font-weight-medium: 500;
+  --font-weight-regular: 400;
 
   /* 🧩 Text Style Shorthands */
   --text-title1: var(--font-weight-extrabold) var(--font-title1)/1.2 var(--font-family-base);

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Tab from "@/components/section/article/tab/tab";
-import Home from "@/components/section/article/homeRecommend/home";
+import Articlehome from "@/components/section/article/homeRecommend/home";
 import SearchField from "@/components/common/searchField/SearchField";
 import ImageSlider from "@/components/section/article/pagenationCard/pagenationCard";
 import TabPage from "@/components/section/article/tabPage/tabPage";
@@ -73,18 +73,30 @@ export default function Article() {
   const [articles, setArticles] = useState(initialArticles);
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Article</h1>
-      <SearchField value={search} onChange={e => setSearch(e.target.value)} />
-      <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab === 0 ? (
-        <>
-          <ImageSlider />
-          <Home />
-        </>
-      ) : (
-        <TabPage tabIdx={activeTab} articles={articles} />
-      )}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        // minHeight: "230vh", 
+        width: "100%",
+      }}
+    >
+      <div className={styles.container}>
+        <button className={styles.button} onClick={() => setActiveTab(0)}>
+          <h1 className={styles.title}>Article</h1>
+        </button>
+        <SearchField value={search} onChange={e => setSearch(e.target.value)} />
+        <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
+        {activeTab === 0 ? (
+          <>
+            <ImageSlider />
+            <Articlehome setActiveTab={setActiveTab} />
+          </>
+        ) : (
+          <TabPage tabIdx={activeTab} articles={articles} />
+        )}
+      </div>
     </div>
   );
 }
