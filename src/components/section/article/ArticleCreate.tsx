@@ -1,5 +1,7 @@
 import React, { useState, FormEvent, ChangeEvent, KeyboardEvent, useRef } from "react";
 import styles from "./ArticleList.module.css";
+import Image from "next/image";
+import crypto from "crypto";
 
 const CATEGORY_OPTIONS = ["UI", "카드뉴스", "포스터", "용어사전", "트렌드"];
 
@@ -9,7 +11,6 @@ interface ArticleCreateProps {
 
 export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const [category, setCategory] = useState(CATEGORY_OPTIONS[0]);
   const [date, setDate] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -17,6 +18,8 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
   const [description, setDescription] = useState("");
   const [keywordInput, setKeywordInput] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
+  const [isComposing, setIsComposing] = useState(false);
+  const [content, setContent] = useState(""); // 추가
   const contentRef = useRef<HTMLDivElement>(null);
 
   // 파일 선택/드래그앤드롭 핸들러
@@ -93,7 +96,8 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
     const range = sel.getRangeAt(0);
     const img = document.createElement("img");
     img.src = src;
-    img.style.maxWidth = "300px";
+    img.style.height = "300px";
+    img.style.width = "auto";
     img.style.display = "block";
     range.insertNode(img);
     // 커서 이동
@@ -103,8 +107,35 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
     sel.addRange(range);
   };
 
-  // #, ##, ###, #### 스타일 적용
-  const handleInput = () => {};
+  // #, ##, ###, #### 스타일 자동 적용
+  const handleInput = () => {
+    const el = contentRef.current;
+    if (!el) return;
+    setContent(el.innerText); // 입력값을 state에 저장
+
+    // 각 줄을 div로 분리
+    const lines = el.innerText.split('\n');
+    let html = "";
+    lines.forEach(line => {
+      if (/^####\s/.test(line)) {
+        html += `<div class="markdown-body2">${line.replace(/^####\s*/, "")}</div>`;
+      } else if (/^###\s/.test(line)) {
+        html += `<div class="markdown-body1">${line.replace(/^###\s*/, "")}</div>`;
+      } else if (/^##\s/.test(line)) {
+        html += `<div class="markdown-title2">${line.replace(/^##\s*/, "")}</div>`;
+      } else if (/^#\s/.test(line)) {
+        html += `<div class="markdown-title1">${line.replace(/^#\s*/, "")}</div>`;
+      } else {
+        html += `<div>${line}</div>`;
+      }
+    });
+    // 커서 위치 보존 없이 전체 갱신 (간단 구현)
+    el.innerHTML = html;
+  };
+
+  function toSlug(text: string) {
+    return crypto.createHash("sha256").update(text).digest("hex");
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -115,7 +146,14 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
     }
 
     // 1. innerHTML을 줄 단위로 파싱
-    const htmlRaw = contentRef.current?.innerHTML || "";
+    let htmlRaw = contentRef.current?.innerHTML || "";
+
+    // 이미지 태그 크기 고정 (세로 300px, 가로 auto)
+    htmlRaw = htmlRaw.replace(
+      /<img([^>]*)>/g,
+      '<img style="height:300px;width:auto;display:block;"$1>'
+    );
+
     // <div>...</div> 또는 <br> 기준으로 분리
     const lines = htmlRaw
       .replace(/<div>/g, "\n")
@@ -127,19 +165,26 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
     // 2. 마크다운 스타일 적용
     const html = lines
       .map(line => {
-        if (line.startsWith("####")) return `<div style="font-size:16px;font-weight:500;">${line.replace(/^####\s*/, "")}</div>`;
-        if (line.startsWith("###")) return `<div style="font-size:18px;font-weight:500;">${line.replace(/^###\s*/, "")}</div>`;
-        if (line.startsWith("##")) return `<div style="font-size:24px;font-weight:700;">${line.replace(/^##\s*/, "")}</div>`;
-        if (line.startsWith("#")) return `<div style="font-size:32px;font-weight:800;">${line.replace(/^#\s*/, "")}</div>`;
+        // 이미지 URL만 입력된 줄이면 <img>로 변환
+        if (/^https?:\/\/.*\.(jpg|jpeg|png|gif|webp)$/i.test(line)) {
+          return `<img src="${line}" style="height:300px;width:auto;display:block;" />`;
+        }
+        if (line.startsWith("####")) return `<div class="markdown-body2">${line.replace(/^####\s*/, "")}</div>`;
+        if (line.startsWith("###")) return `<div class="markdown-body1">${line.replace(/^###\s*/, "")}</div>`;
+        if (line.startsWith("##")) return `<div class="markdown-title2">${line.replace(/^##\s*/, "")}</div>`;
+        if (line.startsWith("#")) return `<div class="markdown-title1">${line.replace(/^#\s*/, "")}</div>`;
         return `<div>${line}</div>`;
       })
       .join("");
+
+    const slug = toSlug(title);
 
     await fetch("/api/articles", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title,
+        slug, // slug도 같이 보냄
         content: html,
         category,
         date: formattedDate,
@@ -148,6 +193,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
         keywords,
       }),
     });
+    alert("추가되었습니다!");
     onCreated();
   };
 
@@ -158,8 +204,20 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
         placeholder="제목"
         value={title}
         onChange={e => {
-          // 12글자(띄어쓰기 포함) 제한
-          if (e.target.value.length <= 12) setTitle(e.target.value);
+          if (!isComposing) {
+            if (e.target.value.length <= 12) setTitle(e.target.value);
+            else setTitle(e.target.value.slice(0, 12));
+          } else {
+            setTitle(e.target.value);
+          }
+        }}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={e => {
+          setIsComposing(false);
+          // 조합 끝나면 길이 제한 적용
+          if (e.currentTarget.value.length > 12) {
+            setTitle(e.currentTarget.value.slice(0, 12));
+          }
         }}
         required
       />
@@ -212,10 +270,12 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
         />
         {/* 미리보기 */}
         {imageUrl && (
-          <img
+          <Image
+            width={(120)}
+            height={(120)}
             src={imageUrl}
             alt="미리보기"
-            style={{ maxWidth: 120, maxHeight: 120, display: "block", margin: "8px auto" }}
+            style={{ display: "block", margin: "8px auto" }}
           />
         )}
       </div>
@@ -270,7 +330,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
       </div>
       <div style={{ position: "relative" }}>
         {/* 커스텀 placeholder */}
-        {(!contentRef.current || !contentRef.current.innerText.trim()) && (
+        {content.trim() === "" && (
           <div
             style={{
               position: "absolute",
@@ -291,12 +351,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
           contentEditable
           ref={contentRef}
           onPaste={handlePaste}
-          onInput={() => {
-            // 강제로 리렌더링해서 placeholder가 사라지게 함
-            // (state를 하나 만들어서 setState해도 됨)
-            // 여기서는 강제로 setContent를 호출
-            setContent(contentRef.current?.innerText || "");
-          }}
+          onInput={handleInput}
           style={{
             minHeight: 120,
             border: "1px solid #ddd",

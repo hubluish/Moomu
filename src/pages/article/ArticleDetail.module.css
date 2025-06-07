@@ -109,7 +109,6 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
   align-self: stretch;
 }
 
@@ -206,7 +205,6 @@
   font-weight: 400;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
   align-self: stretch;
 }
 

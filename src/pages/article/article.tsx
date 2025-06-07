@@ -8,7 +8,7 @@ import TabPage from "@/components/section/article/tabPage/tabPage";
 import ArticleCreate from "@/components/section/article/ArticleCreate";
 import styles from "./article.module.css";
 import confetti from "canvas-confetti";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 interface Article {
   _id: string;
@@ -91,7 +91,6 @@ export default function Article() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [showCreate, setShowCreate] = useState(false);
   const titleRef = useRef<HTMLSpanElement | null>(null); // 타입 명시!
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   // Article 텍스트 호버 시 콘페티
@@ -119,6 +118,7 @@ export default function Article() {
   }, []);
 
   useEffect(() => {
+    if (!searchParams) return;
     const category = searchParams.get("category");
     if (category) {
       const idx = CATEGORY_OPTIONS.indexOf(category);
@@ -164,6 +164,7 @@ export default function Article() {
             articles={articles.map(article => ({
               ...article,
               imageUrl: article.imageUrl ?? "",
+              description: article.description ?? "", // 이 부분 추가
             }))}
           />
         )}
@@ -171,15 +172,6 @@ export default function Article() {
           <div className={styles.centerMessage}>게시글이 없습니다.</div>
         ) : (
           <ul>
-            {filteredArticles
-              .filter(article => !!article && !!article.category)
-              .map(article => (
-                <li key={article._id}>
-                  <div>{article.title}</div>
-                  <div>{article.category}</div>
-                  <div>{article.date}</div>
-                </li>
-              ))}
           </ul>
         )}
         <button onClick={() => setShowCreate(true)}>글쓰기</button>

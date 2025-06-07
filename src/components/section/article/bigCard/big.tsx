@@ -4,6 +4,7 @@ import styles from "./big.module.css";
 import { useRouter } from "next/navigation";
 
 interface ArticleCardProps {
+  _id : string; // MongoDB의 ObjectId는 string으로 처리
   imageUrl: string;
   title: string;
   description: string;
@@ -12,6 +13,7 @@ interface ArticleCardProps {
 }
 
 export default function ArticleCard({
+  _id,
   imageUrl,
   title,
   description,
@@ -22,7 +24,7 @@ export default function ArticleCard({
 
   // 카드 클릭 시 이동
   const handleClick = () => {
-    router.push(`/article/${encodeURIComponent(title)}`);
+    router.push(`/article/${_id}`);
   };
 
   return (
