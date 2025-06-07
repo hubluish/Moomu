@@ -13,6 +13,7 @@ const TAB_INFO = [
 ];
 
 interface ArticleCardProps {
+  _id: string;
   imageUrl: string;
   title: string;
   description: string;
@@ -25,17 +26,26 @@ type Article = ArticleCardProps;
 interface TabPageProps {
   tabIdx: number;
   articles: Article[];
+  search?: string; // 추가
 }
 
-export default function TabPage({ tabIdx, articles }: TabPageProps) {
-  // tabIdx: 1~5 (0은 전체)
+export default function TabPage({ tabIdx, articles, search = "" }: TabPageProps) {
   const [showAll, setShowAll] = useState(false);
   const [sort, setSort] = useState("추천순");
 
-  // 예시: 탭별 더미 데이터 필터링
-  const filtered = articles.filter(a => a.category === TAB_INFO[tabIdx - 1].label);
+  // 1. 탭 필터
+  let filtered = articles;
+  if (tabIdx > 0) {
+    filtered = filtered.filter(a => a.category === TAB_INFO[tabIdx - 1].label);
+  }
 
-  // 3개씩 묶어서 보여주기
+  // 2. 검색어 필터
+  const searchLower = search.trim().toLowerCase();
+  if (searchLower) {
+    filtered = filtered.filter(a => a.title.toLowerCase().includes(searchLower));
+  }
+
+  // 3. 4개씩 묶기
   const chunked = [];
   for (let i = 0; i < filtered.length; i += 4) {
     chunked.push(filtered.slice(i, i + 4));
@@ -50,8 +60,7 @@ export default function TabPage({ tabIdx, articles }: TabPageProps) {
           <div className={styles.bigTitle}>{TAB_INFO[tabIdx - 1].title}</div>
           <div className={styles.desc}>{TAB_INFO[tabIdx - 1].desc}</div>
         </div>
-        {/* 2. Line */}
-      <div className={styles.line} />
+        <div className={styles.line} />
       </div>
       
       {/* 3. Field */}

@@ -1,5 +1,5 @@
 "use client";
-import "@/styles/variable.css"; 
+import "@/styles/variable.css";
 import React, { useEffect, useState, useRef } from "react";
 import Tab from "@/components/section/article/tab/tab";
 import Articlehome from "@/components/section/article/homeRecommend/home";
@@ -20,40 +20,42 @@ interface Article {
   imageUrl?: string;
   description?: string;
 }
+
 const TAB_LABELS = ["전체", "UI", "카드뉴스", "포스터", "용어사전", "트렌드"];
 
 export default function Article() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [search, setSearch] = useState("");
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [showCreate, setShowCreate] = useState(false);
-  const titleRef = useRef<HTMLSpanElement | null>(null); // 타입 명시!
+  const [activeTab, setActiveTab] = useState(0); // 현재 선택된 탭 인덱스
+  const [search, setSearch] = useState(""); // 실제 검색어
+  const [inputValue, setInputValue] = useState(""); // 검색 입력값
+  const [articles, setArticles] = useState<Article[]>([]); // 전체 게시글 목록
+  const [showCreate, setShowCreate] = useState(false); // 글쓰기 모달 표시 여부
+  const titleRef = useRef<HTMLSpanElement | null>(null);
   const searchParams = useSearchParams();
 
-  // Article 텍스트 호버 시 콘페티
+  // Article 텍스트에 마우스 호버 시 콘페티 효과
   const handleTitleHover = () => {
-    if (titleRef.current) {
-      const rect = titleRef.current.getBoundingClientRect();
-      // 화면 내에서 글씨의 중앙 좌표를 구함
-      const x = (rect.left + rect.width / 2) / window.innerWidth;
-      const y = (rect.top + rect.height / 2) / window.innerHeight;
-      confetti({
-        particleCount: 50,
-        spread: 50,
-        origin: { x, y },
-        shapes: ["circle", "square"],
-        startVelocity: 20, 
-        gravity: 1.5,     
-      });
-    }
+    if (!titleRef.current) return;
+    const rect = titleRef.current.getBoundingClientRect();
+    const x = (rect.left + rect.width / 2) / window.innerWidth;
+    const y = (rect.top + rect.height / 2) / window.innerHeight;
+    confetti({
+      particleCount: 50,
+      spread: 50,
+      origin: { x, y },
+      shapes: ["circle", "square"],
+      startVelocity: 20,
+      gravity: 1.5,
+    });
   };
 
+  // 게시글 목록 불러오기
   useEffect(() => {
     fetch("/api/articles")
       .then(res => res.json())
       .then(data => setArticles(data));
   }, []);
 
+  // URL 파라미터(category)로 탭 자동 선택
   useEffect(() => {
     if (!searchParams) return;
     const category = searchParams.get("category");
@@ -63,9 +65,13 @@ export default function Article() {
     }
   }, [searchParams]);
 
+  // 현재 탭에 해당하는 게시글만 필터링
   const filteredArticles = activeTab === 0
     ? articles
     : articles.filter(article => article.category === TAB_LABELS[activeTab]);
+
+  // 검색 실행 (검색 아이콘 또는 엔터키)
+  const handleSearch = () => setSearch(inputValue);
 
   return (
     <div
@@ -77,6 +83,7 @@ export default function Article() {
       }}
     >
       <div className={styles.container}>
+        {/* 상단 Article 타이틀 */}
         <button className={styles.button} onClick={() => setActiveTab(0)}>
           <h1 className={styles.title}>
             <span
@@ -88,8 +95,15 @@ export default function Article() {
             </span>
           </h1>
         </button>
-        <SearchField value={search} onChange={e => setSearch(e.target.value)} />
+        {/* 검색 입력창 */}
+        <SearchField
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
+          onSearch={handleSearch}
+        />
+        {/* 탭 메뉴 */}
         <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
+        {/* 탭별 콘텐츠 */}
         {activeTab === 0 ? (
           <>
             <ImageSlider />
@@ -101,16 +115,18 @@ export default function Article() {
             articles={articles.map(article => ({
               ...article,
               imageUrl: article.imageUrl ?? "",
-              description: article.description ?? "", // 이 부분 추가
+              description: article.description ?? "",
             }))}
+            search={search}
           />
         )}
+        {/* 게시글 없을 때 메시지 */}
         {activeTab !== 0 && filteredArticles.length === 0 ? (
           <div className={styles.centerMessage}>게시글이 없습니다.</div>
         ) : (
-          <ul>
-          </ul>
+          <ul />
         )}
+        {/* 글쓰기 버튼 및 모달 */}
         <button onClick={() => setShowCreate(true)}>글쓰기</button>
         {showCreate && (
           <ArticleCreate
