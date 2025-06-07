@@ -23,7 +23,7 @@ export default function Header() {
   return (
     <HeaderWrapper>
       <LogoSection>
-        <LogoImg src="/assets/icons/logo.png" alt="로고" />
+        <LogoImg src="/assets/icons/logo.svg" alt="로고" />
         <LogoName>Moomu</LogoName>
       </LogoSection>
 

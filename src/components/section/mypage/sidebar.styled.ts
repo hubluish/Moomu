@@ -9,8 +9,7 @@ export const SidebarWrapper = styled.nav`
   border-right: 1px solid #EEE;
 `;
 
-export const MenuList = styled.ul`
-  list-style: none;
+export const MenuList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;

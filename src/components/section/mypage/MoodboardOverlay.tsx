@@ -7,6 +7,16 @@ import Image from 'next/image';
 import FolderModal from './FolderModal';
 import FolderCreateModal from './FolderCreateModal';
 
+interface Moodboard {
+  id: string;
+  title: string;
+  date: string;
+  image: string;
+  isFavorite: boolean;
+  isDeleted: boolean;
+  deletedAt?: Date;
+}
+
 const OverlayWrapper = styled.div`
   position: absolute;
   top: 0;
@@ -40,15 +50,49 @@ const IconButton = styled.button`
   }
 `;
 
-const MoodboardOverlay = () => {
+interface MoodboardOverlayProps {
+  moodboard?: Moodboard;
+  onUpdate?: (updatedMoodboard: Moodboard) => void;
+}
+
+const defaultMoodboard: Moodboard = {
+  id: '',
+  title: '',
+  date: '',
+  image: '',
+  isFavorite: false,
+  isDeleted: false
+};
+
+const MoodboardOverlay: React.FC<MoodboardOverlayProps> = ({ 
+  moodboard = defaultMoodboard, 
+  onUpdate = () => {} 
+}) => {
   const [showFolderModal, setShowFolderModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [folders, setFolders] = useState<string[]>([]);
 
   const handleCreateFolder = (name: string) => {
-    setFolders((prev) => [...prev, name]);
     setShowCreateModal(false);
-    setShowFolderModal(true); // 다시 폴더 모달 띄우기
+    setShowFolderModal(true);
+  };
+
+  const handleFavorite = () => {
+    if (moodboard.id) {
+      onUpdate({
+        ...moodboard,
+        isFavorite: !moodboard.isFavorite
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    if (moodboard.id) {
+      onUpdate({
+        ...moodboard,
+        isDeleted: true,
+        deletedAt: new Date()
+      });
+    }
   };
 
   return (
@@ -57,20 +101,25 @@ const MoodboardOverlay = () => {
         <IconButton onClick={() => setShowFolderModal(true)}>
           <Image src="/assets/icons/fill-folder.svg" alt="folder" width={35} height={35} />
         </IconButton>
-        <IconButton>
-          <Image src="/assets/icons/fill-star.svg" alt="fill-star" width={35} height={35} />
+        <IconButton onClick={handleFavorite}>
+          <Image 
+            src={moodboard.isFavorite ? "/assets/icons/fill-star-active.svg" : "/assets/icons/fill-star.svg"} 
+            alt="fill-star" 
+            width={35} 
+            height={35} 
+          />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={handleDelete}>
           <Image src="/assets/icons/fill-trash.svg" alt="fill-trash" width={35} height={35} />
         </IconButton>
       </OverlayWrapper>
 
       {showFolderModal && (
         <FolderModal
-          folders={folders}
+          moodboardId={moodboard.id}
           onAddClick={() => {
-            setShowFolderModal(false); // 폴더 모달 닫고
-            setShowCreateModal(true); // 생성 모달 열기
+            setShowFolderModal(false);
+            setShowCreateModal(true);
           }}
           onClose={() => setShowFolderModal(false)}
         />

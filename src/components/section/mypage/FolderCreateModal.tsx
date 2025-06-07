@@ -3,6 +3,7 @@
 
 import styled from 'styled-components';
 import React, { useState } from 'react';
+import { createFolder } from '@/utils/localStorage';
 
 interface StyledButtonProps {
   $isActive: boolean;
@@ -43,7 +44,6 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  width: 100%;
   padding: 12px 20px;
   border: 1px solid var(--color-disable-button);
   border-radius: 6px;
@@ -89,7 +89,15 @@ export default function FolderCreateModal({ onSubmit, onClose }: Props) {
   const [name, setName] = useState('');
 
   const handleWrapperClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Wrapper 클릭 시 상위(backdrop)로 이벤트 전파 막음
+    e.stopPropagation();
+  };
+
+  const handleSubmit = () => {
+    if (name.trim() !== '') {
+      createFolder(name.trim());
+      onSubmit(name.trim());
+      onClose();
+    }
   };
 
   return (
@@ -106,10 +114,7 @@ export default function FolderCreateModal({ onSubmit, onClose }: Props) {
         <Button
           disabled={name.trim() === ''}
           $isActive={name.trim() !== ''}
-          onClick={() => {
-            onSubmit(name);
-            onClose();
-          }}
+          onClick={handleSubmit}
         >
           폴더 추가하기
         </Button>

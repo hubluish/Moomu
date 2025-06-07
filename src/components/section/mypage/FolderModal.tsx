@@ -3,7 +3,8 @@
 
 import styled from 'styled-components';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getFolders, addMoodboardToFolder } from '@/utils/localStorage';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -23,7 +24,7 @@ const ModalWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 369px;
-  height: 441px;
+  height: 370px;
   padding: 45px 30px 30px 30px;
   background: white;
   border-radius: 10px;
@@ -70,7 +71,7 @@ const Text = styled.p`
 const FolderItem = styled.div`
   width: 100%;
   min-height: 46px;
-  padding: 6px 72px;
+  padding: 6px 100px;
   background-color: var(--color-disable-sub-button);
   border-radius: 6px;
   display: flex;
@@ -141,11 +142,30 @@ const AddButton = styled.button`
 
 interface FolderModalProps {
   onClose: () => void;
-  onAddClick: () => void; // AddFolderButton 클릭 시 실행
-  folders: string[];
+  onAddClick: () => void;
+  moodboardId: string;
 }
 
-export default function FolderModal({ onClose, onAddClick, folders }: FolderModalProps) {
+export default function FolderModal({ onClose, onAddClick, moodboardId }: FolderModalProps) {
+  const [folders, setFolders] = useState<Array<{ id: string; name: string }>>([]);
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedFolders = getFolders();
+    setFolders(storedFolders);
+  }, []);
+
+  const handleFolderSelect = (folderId: string) => {
+    setSelectedFolderId(folderId);
+  };
+
+  const handleAddToFolder = () => {
+    if (selectedFolderId) {
+      addMoodboardToFolder(selectedFolderId, moodboardId);
+      onClose();
+    }
+  };
+
   return (
     <>
       <ModalBackdrop onClick={onClose} />
@@ -154,10 +174,16 @@ export default function FolderModal({ onClose, onAddClick, folders }: FolderModa
           {folders.length === 0 ? (
             <Text>현재 생성된 폴더가 없습니다.</Text>
           ) : (
-            folders.map((name, i) => (
-              <FolderItem key={i}>
+            folders.map((folder) => (
+              <FolderItem 
+                key={folder.id}
+                onClick={() => handleFolderSelect(folder.id)}
+                style={{
+                  border: selectedFolderId === folder.id ? '1px solid var(--color-main)' : '1px solid transparent'
+                }}
+              >
                 <Image src="/assets/icons/folder.svg" alt="folder" width={25} height={25} />
-                {name}
+                {folder.name}
               </FolderItem>
             ))
           )}
@@ -167,7 +193,14 @@ export default function FolderModal({ onClose, onAddClick, folders }: FolderModa
           <AddFolderButton onClick={onAddClick}>
             <Image src="/assets/icons/add-folder.svg" alt="folder" width={20} height={20} />
           </AddFolderButton>
-          <AddButton>
+          <AddButton 
+            onClick={handleAddToFolder}
+            disabled={!selectedFolderId}
+            style={{
+              backgroundColor: selectedFolderId ? 'var(--color-main)' : 'var(--color-disable-button)',
+              cursor: selectedFolderId ? 'pointer' : 'not-allowed'
+            }}
+          >
             <Image src="/assets/icons/fill-folder.svg" alt="folder" width={25} height={25} />
             이 폴더에 추가하기
           </AddButton>

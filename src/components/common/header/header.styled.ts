@@ -22,14 +22,16 @@ export const LogoImg = styled.img`
   width: 40px;
   height: 40px;
   margin-right: 12px;
+
 `;
 
 export const LogoName = styled.span`
-  font-size: var(--font-body1);
+  font-size: 25px;
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-main);
   font-family: var(--font-family-logo);
   letter-spacing: -0.1em;
+  height: 40px;
 `;
 
 // 네비게이션 영역

@@ -32,8 +32,8 @@ export const TitleSection = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 12px 15px;
-  width: 100%;
   height: 45px;
+  box-sizing: border-box;
   background: var(--color-background);
 `;
 
