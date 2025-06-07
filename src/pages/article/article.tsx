@@ -1,4 +1,5 @@
 "use client";
+import "@/styles/variable.css"; 
 import React, { useEffect, useState, useRef } from "react";
 import Tab from "@/components/section/article/tab/tab";
 import Articlehome from "@/components/section/article/homeRecommend/home";

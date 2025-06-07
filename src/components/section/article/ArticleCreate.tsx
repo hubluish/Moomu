@@ -1,5 +1,6 @@
 import React, { useState, FormEvent, ChangeEvent, KeyboardEvent, useRef } from "react";
 import styles from "./ArticleList.module.css";
+import "@/styles/variable.css";
 import Image from "next/image";
 import crypto from "crypto";
 
@@ -112,25 +113,6 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
     const el = contentRef.current;
     if (!el) return;
     setContent(el.innerText); // 입력값을 state에 저장
-
-    // 각 줄을 div로 분리
-    const lines = el.innerText.split('\n');
-    let html = "";
-    lines.forEach(line => {
-      if (/^####\s/.test(line)) {
-        html += `<div class="markdown-body2">${line.replace(/^####\s*/, "")}</div>`;
-      } else if (/^###\s/.test(line)) {
-        html += `<div class="markdown-body1">${line.replace(/^###\s*/, "")}</div>`;
-      } else if (/^##\s/.test(line)) {
-        html += `<div class="markdown-title2">${line.replace(/^##\s*/, "")}</div>`;
-      } else if (/^#\s/.test(line)) {
-        html += `<div class="markdown-title1">${line.replace(/^#\s*/, "")}</div>`;
-      } else {
-        html += `<div>${line}</div>`;
-      }
-    });
-    // 커서 위치 보존 없이 전체 갱신 (간단 구현)
-    el.innerHTML = html;
   };
 
   function toSlug(text: string) {
@@ -146,33 +128,28 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
     }
 
     // 1. innerHTML을 줄 단위로 파싱
-    let htmlRaw = contentRef.current?.innerHTML || "";
-
-    // 이미지 태그 크기 고정 (세로 300px, 가로 auto)
-    htmlRaw = htmlRaw.replace(
-      /<img([^>]*)>/g,
-      '<img style="height:300px;width:auto;display:block;"$1>'
-    );
+    const htmlRaw = contentRef.current?.innerText || ""; // ← let → const
 
     // <div>...</div> 또는 <br> 기준으로 분리
-    const lines = htmlRaw
-      .replace(/<div>/g, "\n")
-      .replace(/<\/div>/g, "")
-      .replace(/<br>/g, "\n")
-      .split("\n")
-      .map(line => line.trim());
+    const lines = htmlRaw.split("\n").map(line => line.trim());
 
-    // 2. 마크다운 스타일 적용
     const html = lines
       .map(line => {
-        // 이미지 URL만 입력된 줄이면 <img>로 변환
         if (/^https?:\/\/.*\.(jpg|jpeg|png|gif|webp)$/i.test(line)) {
           return `<img src="${line}" style="height:300px;width:auto;display:block;" />`;
         }
-        if (line.startsWith("####")) return `<div class="markdown-body2">${line.replace(/^####\s*/, "")}</div>`;
-        if (line.startsWith("###")) return `<div class="markdown-body1">${line.replace(/^###\s*/, "")}</div>`;
-        if (line.startsWith("##")) return `<div class="markdown-title2">${line.replace(/^##\s*/, "")}</div>`;
-        if (line.startsWith("#")) return `<div class="markdown-title1">${line.replace(/^#\s*/, "")}</div>`;
+        if (/^####\s*/.test(line)) {
+          return `<div class="markdown-body2">${line.replace(/^####\s*/, "")}</div>`;
+        }
+        else if (/^###\s*/.test(line)) {
+          return `<div class="markdown-body1">${line.replace(/^###\s*/, "")}</div>`;
+        }
+        else if (/^##\s*/.test(line)) {
+          return `<div class="markdown-title2">${line.replace(/^##\s*/, "")}</div>`;
+        }
+        else if (/^#\s*/.test(line)) {
+          return `<div class="markdown-title1">${line.replace(/^#\s*/, "")}</div>`;
+        }
         return `<div>${line}</div>`;
       })
       .join("");

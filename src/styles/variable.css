@@ -54,25 +54,22 @@
   --anim-ease-default: ease-in-out;
   --anim-ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --anim-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
 }
 
 .markdown-title1 {
   font: var(--text-title1);
-  color: var(--color-text-main);
-  margin: 16px 0 8px 0;
+  margin: 24px 0 12px 0;
 }
 .markdown-title2 {
   font: var(--text-title2);
-  color: var(--color-text-main);
-  margin: 12px 0 6px 0;
+  margin: 20px 0 10px 0;
 }
 .markdown-body1 {
   font: var(--text-body1);
-  color: var(--color-text-main);
-  margin: 8px 0 4px 0;
+  margin: 16px 0 8px 0;
 }
 .markdown-body2 {
   font: var(--text-body2);
-  color: var(--color-text-main);
-  margin: 6px 0 2px 0;
+  margin: 12px 0 6px 0;
 }
