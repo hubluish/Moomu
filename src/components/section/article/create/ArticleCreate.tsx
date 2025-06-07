@@ -20,11 +20,11 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
   const [keywordInput, setKeywordInput] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
   const [isComposing, setIsComposing] = useState(false);
-  const [content, setContent] = useState(""); 
+  const [content, setContent] = useState("");
   const contentRef = useRef<HTMLDivElement>(null);
   const [isRecommended, setIsRecommended] = useState(false);
 
-  // 파일 선택/드래그앤드롭 핸들러
+  // 파일 선택 시 이미지 미리보기 처리
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -34,6 +34,8 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
       reader.readAsDataURL(file);
     }
   };
+
+  // 드래그앤드롭으로 이미지 업로드
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
@@ -45,17 +47,18 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
     }
   };
 
-  // 이미지 URL 직접 입력 핸들러
+  // 이미지 URL 직접 입력
   const handleImageUrlInput = (e: ChangeEvent<HTMLInputElement>) => {
     setImageUrl(e.target.value);
-    setImageFile(null); // URL 입력 시 파일 선택 해제
+    setImageFile(null);
   };
 
-  // 키워드 입력 핸들러
+  // 키워드 입력값 변경
   const handleKeywordInput = (e: ChangeEvent<HTMLInputElement>) => {
     setKeywordInput(e.target.value);
   };
 
+  // 엔터로 키워드 추가
   const handleKeywordKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && keywordInput.trim()) {
       e.preventDefault();
@@ -68,11 +71,12 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
     }
   };
 
+  // 키워드 삭제
   const handleRemoveKeyword = (removeIdx: number) => {
     setKeywords(keywords.filter((_, idx) => idx !== removeIdx));
   };
 
-  // 붙여넣기 시 이미지 처리
+  // 에디터에 이미지 붙여넣기 지원
   const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
     const items = e.clipboardData.items;
     for (let i = 0; i < items.length; i++) {
@@ -80,10 +84,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
         const file = items[i].getAsFile();
         if (file) {
           const reader = new FileReader();
-          reader.onload = ev => {
-            // 커서 위치에 이미지 삽입
-            insertImageAtCursor(ev.target?.result as string);
-          };
+          reader.onload = ev => insertImageAtCursor(ev.target?.result as string);
           reader.readAsDataURL(file);
           e.preventDefault();
         }
@@ -102,24 +103,25 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
     img.style.width = "auto";
     img.style.display = "block";
     range.insertNode(img);
-    // 커서 이동
     range.setStartAfter(img);
     range.setEndAfter(img);
     sel.removeAllRanges();
     sel.addRange(range);
   };
 
-  // #, ##, ###, #### 스타일 자동 적용
+  // 에디터 입력 시 내용 저장
   const handleInput = () => {
     const el = contentRef.current;
     if (!el) return;
-    setContent(el.innerText); // 입력값을 state에 저장
+    setContent(el.innerText);
   };
 
+  // 제목을 해시로 변환(slug)
   function toSlug(text: string) {
     return crypto.createHash("sha256").update(text).digest("hex");
   }
 
+  // 폼 제출 및 게시글 등록
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     let formattedDate = date;
@@ -128,12 +130,9 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
       formattedDate = `${y.slice(2)}.${m}.${d}`;
     }
 
-    // 1. innerHTML을 줄 단위로 파싱
-    const htmlRaw = contentRef.current?.innerText || ""; // ← let → const
-
-    // <div>...</div> 또는 <br> 기준으로 분리
+    // 에디터 내용을 줄 단위로 파싱하여 HTML 변환
+    const htmlRaw = contentRef.current?.innerText || "";
     const lines = htmlRaw.split("\n").map(line => line.trim());
-
     const html = lines
       .map(line => {
         if (/^https?:\/\/.*\.(jpg|jpeg|png|gif|webp)$/i.test(line)) {
@@ -142,13 +141,13 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
         if (/^####\s*/.test(line)) {
           return `<div class="markdown-body2">${line.replace(/^####\s*/, "")}</div>`;
         }
-        else if (/^###\s*/.test(line)) {
+        if (/^###\s*/.test(line)) {
           return `<div class="markdown-body1">${line.replace(/^###\s*/, "")}</div>`;
         }
-        else if (/^##\s*/.test(line)) {
+        if (/^##\s*/.test(line)) {
           return `<div class="markdown-title2">${line.replace(/^##\s*/, "")}</div>`;
         }
-        else if (/^#\s*/.test(line)) {
+        if (/^#\s*/.test(line)) {
           return `<div class="markdown-title1">${line.replace(/^#\s*/, "")}</div>`;
         }
         return `<div>${line}</div>`;
@@ -162,14 +161,14 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title,
-        slug, 
+        slug,
         content: html,
         category,
         date: formattedDate,
         imageUrl,
         description,
         keywords,
-        isRecommended, // 추가!
+        isRecommended,
       }),
     });
     alert("추가되었습니다!");
@@ -178,6 +177,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      {/* 제목 입력 */}
       <input
         className={styles.input}
         placeholder="제목"
@@ -193,13 +193,13 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
         onCompositionStart={() => setIsComposing(true)}
         onCompositionEnd={e => {
           setIsComposing(false);
-          // 조합 끝나면 길이 제한 적용
           if (e.currentTarget.value.length > 12) {
             setTitle(e.currentTarget.value.slice(0, 12));
           }
         }}
         required
       />
+      {/* 카테고리 선택 */}
       <select
         className={styles.input}
         value={category}
@@ -210,6 +210,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
           <option key={option} value={option}>{option}</option>
         ))}
       </select>
+      {/* 날짜 입력 */}
       <input
         className={styles.input}
         type="date"
@@ -217,7 +218,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
         onChange={e => setDate(e.target.value)}
         required
       />
-      {/* 이미지 업로드 & URL 입력 */}
+      {/* 이미지 업로드 및 URL 입력 */}
       <div
         style={{
           border: "1px dashed #bbb",
@@ -247,24 +248,25 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
           value={imageFile ? "" : imageUrl}
           onChange={handleImageUrlInput}
         />
-        {/* 미리보기 */}
+        {/* 이미지 미리보기 */}
         {imageUrl && (
           <Image
-            width={(120)}
-            height={(120)}
+            width={120}
+            height={120}
             src={imageUrl}
             alt="미리보기"
             style={{ display: "block", margin: "8px auto" }}
           />
         )}
       </div>
+      {/* 설명 입력 */}
       <input
         className={styles.input}
         placeholder="설명"
         value={description}
         onChange={e => setDescription(e.target.value)}
       />
-      {/* 추천 키워드 입력 */}
+      {/* 키워드 입력 */}
       <div style={{ marginBottom: 8 }}>
         <input
           className={styles.input}
@@ -307,8 +309,8 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
           ))}
         </div>
       </div>
+      {/* 본문 에디터 */}
       <div style={{ position: "relative" }}>
-        {/* 커스텀 placeholder */}
         {content.trim() === "" && (
           <div
             style={{
@@ -345,6 +347,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
           suppressContentEditableWarning
         />
       </div>
+      {/* 추천글 체크박스 */}
       <div style={{ margin: "12px 0" }}>
         <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <input
@@ -356,6 +359,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
           <span style={{ fontSize: 16 }}>추천글로 등록</span>
         </label>
       </div>
+      {/* 등록 버튼 */}
       <button type="submit" className={styles.submit}>등록</button>
     </form>
   );

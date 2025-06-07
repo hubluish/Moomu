@@ -64,14 +64,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-async function resetFields() {
-  const client = new MongoClient(uri);
-  try {
-    await client.connect();
-    const db = client.db(dbName);
-    await db.collection("article").updateMany({}, { $set: { views: 0, isRecommended: false } });
-  } finally {
-    await client.close();
-  }
-}
-// resetFields();

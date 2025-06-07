@@ -28,7 +28,9 @@ export default function Article() {
   const [search, setSearch] = useState(""); // 실제 검색어
   const [inputValue, setInputValue] = useState(""); // 검색 입력값
   const [articles, setArticles] = useState<Article[]>([]); // 전체 게시글 목록
-  const [showCreate, setShowCreate] = useState(false); // 글쓰기 모달 표시 여부
+  const [showCreate, setShowCreate] = useState(false);
+  const [, setRCount] = useState(0);
+  const rTimeout = useRef<NodeJS.Timeout | null>(null);
   const titleRef = useRef<HTMLSpanElement | null>(null);
   const searchParams = useSearchParams();
 
@@ -72,6 +74,31 @@ export default function Article() {
 
   // 검색 실행 (검색 아이콘 또는 엔터키)
   const handleSearch = () => setSearch(inputValue);
+
+  // R 세 번 누르면 글쓰기 모달 열기
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "r") {
+        setRCount(prev => {
+          const next = prev + 1;
+          if (next === 3) {
+            setShowCreate(true);
+            return 0;
+          }
+          if (rTimeout.current) clearTimeout(rTimeout.current);
+          rTimeout.current = setTimeout(() => setRCount(0), 1000);
+          return next;
+        });
+      } else {
+        setRCount(0);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      if (rTimeout.current) clearTimeout(rTimeout.current);
+    };
+  }, []);
 
   return (
     <div
@@ -127,7 +154,6 @@ export default function Article() {
           <ul />
         )}
         {/* 글쓰기 버튼 및 모달 */}
-        <button onClick={() => setShowCreate(true)}>글쓰기</button>
         {showCreate && (
           <ArticleCreate
             onCreated={() => {

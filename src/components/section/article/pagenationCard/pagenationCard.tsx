@@ -7,7 +7,7 @@ import Image from "next/image";
 
 // 여기에 사용할 ObjectId들을 배열로 입력하세요!
 const OBJECT_IDS = [
-  "6843a9c1291c7592981c2b99",
+  "6843a9c1291c7592981c2b99 ",
   "6843a9c1291c7592981c2b99",
   "6843a9c1291c7592981c2b99",
   "6843a9c1291c7592981c2b99",

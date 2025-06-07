@@ -10,6 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: "잘못된 id 형식입니다." });
   }
   const client = new MongoClient(uri);
+
   try {
     await client.connect();
     const db = client.db(dbName);
@@ -18,21 +19,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // 게시글 상세 조회
       const article = await db.collection("article").findOne({ _id: new ObjectId(id) });
       if (!article) return res.status(404).json({ error: "Not found" });
-      res.status(200).json(article);
-    } else if (req.method === "POST") {
+      return res.status(200).json(article);
+    }
+
+    if (req.method === "POST") {
       // 게시글 클릭 시 조회수 증가
       await db.collection("article").updateOne(
         { _id: new ObjectId(id) },
         { $inc: { views: 1 } }
       );
-      res.status(200).json({ success: true });
-    } else if (req.method === "DELETE") {
+      return res.status(200).json({ success: true });
+    }
+
+    if (req.method === "DELETE") {
       // 게시글 삭제
       await db.collection("article").deleteOne({ _id: new ObjectId(id) });
       return res.status(200).json({ success: true });
-    } else {
-      res.status(405).end();
     }
+
+    // 허용되지 않은 메서드 처리
+    res.status(405).end();
   } catch {
     res.status(500).json({ error: "DB 오류" });
   } finally {

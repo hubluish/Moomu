@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./big.module.css";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,7 @@ export default function ArticleCard({
   const [hovered, setHovered] = useState(false);
   const qCount = useRef(0);
 
-  // 카드 클릭 시 이동
+  // 카드 클릭 시 조회수 증가 후 상세 페이지로 이동
   const handleClick = async () => {
     // 조회수 증가 요청
     await fetch(`/api/articles/${_id}`, { method: "POST" });
@@ -35,10 +35,11 @@ export default function ArticleCard({
     router.push(`/article/${_id}`);
   };
 
-  React.useEffect(() => {
+  // 카드 hover 상태에서 Q를 3번 누르면 게시글 삭제
+  useEffect(() => {
     if (!hovered) return;
     const onKeyDown = async (e: KeyboardEvent) => {
-      if (e.key === "q" || e.key === "Q") {
+      if (e.key.toLowerCase() === "q") {
         qCount.current += 1;
         if (qCount.current === 3) {
           // 1. DB에서 삭제

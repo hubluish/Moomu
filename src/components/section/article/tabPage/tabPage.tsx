@@ -27,7 +27,7 @@ interface Article {
 interface TabPageProps {
   tabIdx: number;
   articles: Article[];
-  search?: string; // 추가
+  search?: string; 
 }
 
 export default function TabPage({ tabIdx, articles, search = "" }: TabPageProps) {
@@ -94,7 +94,7 @@ export default function TabPage({ tabIdx, articles, search = "" }: TabPageProps)
         {/* 3-2~3-4. big카드 3개씩 묶음 */}
         {visibleChunks.map((chunk, idx) => (
           <div className={styles.cardRow} key={idx}>
-            {chunk.map((article: Article, i: number) => (
+            {chunk.map((article: Article) => (
               <ArticleCard
                 key={article._id}
                 {...article}
