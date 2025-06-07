@@ -5,65 +5,80 @@ import Pagenation from "../../../common/pagenation";
 import styles from "./pagenation.module.css";
 import Image from "next/image";
 
-
-const SLIDES = [
-  {
-    imageUrl: "https://i.pinimg.com/736x/ad/5c/e8/ad5ce8a1990f789e86bfc9d67129990e.jpg",
-    title1: "신뢰도 있는 기업 UI 디자인",
-    title2: "이렇게해보세요!",
-    desc1: "Lorem Ipsum Dolor Sit Amet Ipsum",
-    desc2: "Consectetur. Lorem Ipsum",
-    category: "UI", // 추가
-    title: "신뢰도 있는 기업 UI 디자인", // 추가 (URL에 쓸 title)
-  },
-  {
-    imageUrl: "https://i.pinimg.com/736x/61/4a/8a/614a8a38d0202ab842c5823c91234f78.jpg",
-    title1: "혁신적인 UI 트렌드",
-    title2: "지금 확인하세요!",
-    desc1: "최신 디자인 적용",
-    desc2: "사용자 경험 향상",
-    category: "UI", // 추가
-    title: "혁신적인 UI 트렌드", // 추가 (URL에 쓸 title)
-  },
-  {
-    imageUrl: "https://i.pinimg.com/736x/2c/5c/ea/2c5cea1edd154001b9d3c78dc638e0c7.jpg",
-    title1: "신뢰도 있는 기업 카드뉴스 디자인",
-    title2: "이렇게해보세요!",
-    desc1: "Lorem Ipsum Dolor Sit Amet Ipsum",
-    desc2: "Consectetur. Lorem Ipsum",
-    category: "Card News", // 추가
-    title: "신뢰도 있는 기업 카드뉴스 디자인", // 추가 (URL에 쓸 title)
-  },
-  {
-    imageUrl: "https://i.pinimg.com/736x/84/ad/22/84ad220a3eb0f5e0e35ff7e03736857c.jpg",
-    title1: "혁신적인 UI 트렌드",
-    title2: "지금 확인하세요!",
-    desc1: "최신 디자인 적용",
-    desc2: "사용자 경험 향상",
-    category: "UI", // 추가
-    title: "혁신적인 UI 트렌드", // 추가 (URL에 쓸 title)
-  },
+// 여기에 사용할 ObjectId들을 배열로 입력하세요!
+const OBJECT_IDS = [
+  "6843a9c1291c7592981c2b99",
+  "6843a9c1291c7592981c2b99",
+  "6843a9c1291c7592981c2b99",
+  "6843a9c1291c7592981c2b99",
 ];
 
+interface SlideData {
+  _id: string;
+  imageUrl?: string;
+  title1: string;
+  title2: string;
+  desc1: string;
+  desc2: string;
+  category: string;
+}
+
 export default function ImageSlider() {
+  const [slides, setSlides] = useState<SlideData[]>([]);
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const [fade, setFade] = useState(true);
-  const lastIdx = SLIDES.length - 1;
   const router = useRouter();
 
-  // 자동 슬라이드 (3초)
+  // 여러 ObjectId로 DB에서 데이터 받아오기
   useEffect(() => {
-    if (paused) return;
+    Promise.all(
+      OBJECT_IDS.map((id) =>
+        fetch(`/api/articles/${id}`)
+          .then((res) => res.json())
+          .then((data) => {
+            // title, description 2개로 쪼개기
+            const titleArr = data.title ? data.title.split(" ") : [""];
+            const titleMid = Math.ceil(titleArr.length / 2);
+            const title1 = titleArr.slice(0, titleMid).join(" ");
+            const title2 = titleArr.slice(titleMid).join(" ");
+
+            const descArr = data.description ? data.description.split(" ") : [""];
+            const descMid = Math.ceil(descArr.length / 2);
+            const desc1 = descArr.slice(0, descMid).join(" ");
+            const desc2 = descArr.slice(descMid).join(" ");
+
+            return {
+              _id: data._id,
+              imageUrl: data.imageUrl,
+              title1,
+              title2,
+              desc1,
+              desc2,
+              category: data.category,
+            } as SlideData;
+          })
+          .catch(() => null)
+      )
+    ).then((results) => {
+      setSlides(results.filter((s): s is SlideData => !!s));
+    });
+  }, []);
+
+  const lastIdx = slides.length - 1;
+
+  // 자동 슬라이드 (2초)
+  useEffect(() => {
+    if (paused || slides.length === 0) return;
     const timer = setInterval(() => {
       setFade(false);
       setTimeout(() => {
         setCurrent((prev) => (prev === lastIdx ? 0 : prev + 1));
         setFade(true);
-      }, 200); // 페이드 아웃 후 이미지 변경
+      }, 200);
     }, 2000);
     return () => clearInterval(timer);
-  }, [lastIdx, paused]);
+  }, [lastIdx, paused, slides.length]);
 
   // 페이지네이션 클릭 시 페이드 인
   const handleChange = (idx: number) => {
@@ -74,13 +89,14 @@ export default function ImageSlider() {
     }, 200);
   };
 
-  const slide = SLIDES[current];
+  const slide = slides[current];
 
   // 카드 클릭 시 이동
   const handleCardClick = () => {
-    // encodeURIComponent로 안전하게 변환
-    router.push(`/article/${encodeURIComponent(slide.category)}/${encodeURIComponent(slide.title)}`);
+    if (slide?._id) router.push(`/article/${slide._id}`);
   };
+
+  if (!slide) return null;
 
   return (
     <div className={styles.frame}>
@@ -102,16 +118,15 @@ export default function ImageSlider() {
           }}
         >
           <Image
-            src={slide.imageUrl}
+            src={slide.imageUrl || "/assets/icons/placeholder.png"}
             alt={slide.title1}
             className={styles.image}
             draggable={false}
             width={1200}
-            height={400} 
+            height={400}
             style={{
               userSelect: "none",
               pointerEvents: "none",
-              
               objectFit: "cover",
               borderRadius: "16px",
             }}
@@ -131,7 +146,7 @@ export default function ImageSlider() {
           {/* 페이지네이션을 이미지 하단 위에 겹치게 */}
           <div className={styles.pagenationOverlay}>
             <Pagenation
-              pageCount={SLIDES.length}
+              pageCount={slides.length}
               current={current}
               onChange={handleChange}
             />

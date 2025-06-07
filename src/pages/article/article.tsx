@@ -6,7 +6,7 @@ import Articlehome from "@/components/section/article/homeRecommend/home";
 import SearchField from "@/components/common/searchField/SearchField";
 import ImageSlider from "@/components/section/article/pagenationCard/pagenationCard";
 import TabPage from "@/components/section/article/tabPage/tabPage";
-import ArticleCreate from "@/components/section/article/ArticleCreate";
+import ArticleCreate from "@/components/section/article/create/ArticleCreate";
 import styles from "./article.module.css";
 import confetti from "canvas-confetti";
 import { useSearchParams } from "next/navigation";
@@ -20,70 +20,6 @@ interface Article {
   imageUrl?: string;
   description?: string;
 }
-
-// // 예시 데이터
-// const initialArticles = [
-//   {
-//     _id: 1, // id → _id로 변경
-//     title: "Get the latest updates",
-//     content: "Card News Template",
-//     category: "카드뉴스",
-//     date: "25.05.28",
-//     imageUrl: "",
-//     description: "Card News Template",
-//   },
-//   {
-//     _id: 2,
-//     title: "Get the latest updates",
-//     content: "Card News Template",
-//     category: "카드뉴스",
-//     date: "25.05.30",
-//     imageUrl: "",
-//     description: "Card News Template",
-//   },
-//   {
-//     _id: 3,
-//     title: "Get the latest updates",
-//     content: "Card News Template",
-//     category: "UI",
-//     date: "25.05.25",
-//     imageUrl: "",
-//     description: "Card News Template",
-//   },
-//   {
-//     _id: 4,
-//     title: "Get the latest updates",
-//     content: "Card News Template",
-//     category: "용어사전",
-//     date: "25.05.25",
-//     imageUrl: "",
-//     description: "Card News Template",
-//   },
-//   {
-//     _id: 5,
-//     title: "Get the latest updates",
-//     content: "Card News Template",
-//     category: "카드뉴스",
-//     date: "25.05.28",
-//     imageUrl: "",
-//     description: "Card News Template",
-//   },
-//   {
-//     _id: 6,
-//     title: "Get the latest updates",
-//     content: "Card News Template",
-//     category: "카드뉴스",
-//     date: "25.05.30",
-//     imageUrl: "",
-//     description: "Card News Template",
-//   },
-  
-//   // ...더 추가 가능
-// ];
-
-const CATEGORY_OPTIONS = ["전체", "UI", "카드뉴스", "포스터", "용어사전", "트렌드"];
-
-// 예시: 탭 인덱스와 카테고리 매핑
 const TAB_LABELS = ["전체", "UI", "카드뉴스", "포스터", "용어사전", "트렌드"];
 
 export default function Article() {
@@ -122,7 +58,7 @@ export default function Article() {
     if (!searchParams) return;
     const category = searchParams.get("category");
     if (category) {
-      const idx = CATEGORY_OPTIONS.indexOf(category);
+      const idx = TAB_LABELS.indexOf(category);
       if (idx !== -1) setActiveTab(idx);
     }
   }, [searchParams]);
