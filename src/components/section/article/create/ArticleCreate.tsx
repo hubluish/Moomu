@@ -22,6 +22,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
   const [isComposing, setIsComposing] = useState(false);
   const [content, setContent] = useState(""); 
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isRecommended, setIsRecommended] = useState(false);
 
   // 파일 선택/드래그앤드롭 핸들러
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -168,6 +169,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
         imageUrl,
         description,
         keywords,
+        isRecommended, // 추가!
       }),
     });
     alert("추가되었습니다!");
@@ -342,6 +344,17 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
           }}
           suppressContentEditableWarning
         />
+      </div>
+      <div style={{ margin: "12px 0" }}>
+        <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <input
+            type="checkbox"
+            checked={isRecommended}
+            onChange={e => setIsRecommended(e.target.checked)}
+            style={{ width: 18, height: 18 }}
+          />
+          <span style={{ fontSize: 16 }}>추천글로 등록</span>
+        </label>
       </div>
       <button type="submit" className={styles.submit}>등록</button>
     </form>

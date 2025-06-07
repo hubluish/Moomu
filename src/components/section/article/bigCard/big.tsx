@@ -1,15 +1,17 @@
 "use client";
-import React from "react";
+import React, { useRef, useState } from "react";
+import axios from "axios";
 import styles from "./big.module.css";
 import { useRouter } from "next/navigation";
 
 interface ArticleCardProps {
-  _id : string; // MongoDB의 ObjectId는 string으로 처리
+  _id: string; // MongoDB의 ObjectId는 string으로 처리
   imageUrl: string;
   title: string;
   description: string;
   category: string;
   date: string;
+  onDelete: (_id: string) => void;
 }
 
 export default function ArticleCard({
@@ -19,20 +21,50 @@ export default function ArticleCard({
   description,
   category,
   date,
+  onDelete,
 }: ArticleCardProps) {
   const router = useRouter();
+  const [hovered, setHovered] = useState(false);
+  const qCount = useRef(0);
 
   // 카드 클릭 시 이동
-  const handleClick = () => {
+  const handleClick = async () => {
+    // 조회수 증가 요청
+    await fetch(`/api/articles/${_id}`, { method: "POST" });
+    // 상세 페이지로 이동
     router.push(`/article/${_id}`);
   };
+
+  React.useEffect(() => {
+    if (!hovered) return;
+    const onKeyDown = async (e: KeyboardEvent) => {
+      if (e.key === "q" || e.key === "Q") {
+        qCount.current += 1;
+        if (qCount.current === 3) {
+          // 1. DB에서 삭제
+          await axios.delete(`/api/articles/${_id}`);
+          // 2. UI에서 제거
+          onDelete(_id);
+          qCount.current = 0;
+        }
+      } else {
+        qCount.current = 0;
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      qCount.current = 0;
+    };
+  }, [hovered, _id, onDelete]);
 
   return (
     // 카드 전체 컨테이너 (hover, click 이벤트)
     <div
-      className={styles.card}
       onClick={handleClick}
-      style={{ cursor: "pointer" }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={styles.card}
     >
       {/* 이미지 컨테이너 */}
       <div className={styles.imageContainer}>

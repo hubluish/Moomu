@@ -12,16 +12,17 @@ const TAB_INFO = [
   { label: "트렌드", title: "트렌드 🔍", desc: "Exploring the latest trends and innovations in design trends." },
 ];
 
-interface ArticleCardProps {
+interface Article {
   _id: string;
-  imageUrl: string;
   title: string;
-  description: string;
-  date: string;
+  content: string;
   category: string;
+  date: string;
+  imageUrl?: string;
+  description?: string;
+  views?: number;         // 인기순용
+  isRecommended?: boolean; // 추천순용
 }
-
-type Article = ArticleCardProps;
 
 interface TabPageProps {
   tabIdx: number;
@@ -32,9 +33,14 @@ interface TabPageProps {
 export default function TabPage({ tabIdx, articles, search = "" }: TabPageProps) {
   const [showAll, setShowAll] = useState(false);
   const [sort, setSort] = useState("추천순");
+  const [articleList, setArticleList] = useState(articles);
+
+  const handleDelete = (_id: string) => {
+    setArticleList(prev => prev.filter(a => a._id !== _id));
+  };
 
   // 1. 탭 필터
-  let filtered = articles;
+  let filtered = articleList;
   if (tabIdx > 0) {
     filtered = filtered.filter(a => a.category === TAB_INFO[tabIdx - 1].label);
   }
@@ -45,7 +51,25 @@ export default function TabPage({ tabIdx, articles, search = "" }: TabPageProps)
     filtered = filtered.filter(a => a.title.toLowerCase().includes(searchLower));
   }
 
-  // 3. 4개씩 묶기
+  // 3. 정렬
+  if (sort === "최신순") {
+    // 최신순: 최신 날짜가 위로
+    filtered = [...filtered].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  } else if (sort === "인기순") {
+    // 인기순: 조회수 많은 게 위로
+    filtered = [...filtered].sort((a, b) => (b.views ?? 0) - (a.views ?? 0));
+  } else if (sort === "추천순") {
+    // 추천된 글이 먼저, 그 안에서는 인기순
+    filtered = [...filtered].sort((a, b) => {
+      if ((b.isRecommended ? 1 : 0) !== (a.isRecommended ? 1 : 0)) {
+        return (b.isRecommended ? 1 : 0) - (a.isRecommended ? 1 : 0);
+      }
+      // 추천글/비추천글 그룹 내에서 인기순(views 내림차순)
+      return (b.views ?? 0) - (a.views ?? 0);
+    });
+  }
+
+  // 4. 4개씩 묶기
   const chunked = [];
   for (let i = 0; i < filtered.length; i += 4) {
     chunked.push(filtered.slice(i, i + 4));
@@ -71,7 +95,13 @@ export default function TabPage({ tabIdx, articles, search = "" }: TabPageProps)
         {visibleChunks.map((chunk, idx) => (
           <div className={styles.cardRow} key={idx}>
             {chunk.map((article: Article, i: number) => (
-              <ArticleCard key={i} {...article} />
+              <ArticleCard
+                key={article._id}
+                {...article}
+                onDelete={handleDelete}
+                imageUrl={article.imageUrl ?? ""}
+                description={article.description ?? ""}
+              />
             ))}
           </div>
         ))}

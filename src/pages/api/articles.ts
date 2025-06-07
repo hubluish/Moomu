@@ -51,7 +51,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         date,
         imageUrl,
         description,
-        keywords, 
+        keywords,
+        views: 0, // 조회수 기본값
+        isRecommended: false, // 추천글 여부 기본값
       });
       res.status(201).json({ insertedId: result.insertedId });
     } else {
@@ -61,3 +63,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await client.close();
   }
 }
+
+async function resetFields() {
+  const client = new MongoClient(uri);
+  try {
+    await client.connect();
+    const db = client.db(dbName);
+    await db.collection("article").updateMany({}, { $set: { views: 0, isRecommended: false } });
+  } finally {
+    await client.close();
+  }
+}
+// resetFields();

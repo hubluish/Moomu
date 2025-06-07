@@ -21,9 +21,13 @@
 
 .icon {
   width: 14px;
-  height: 17.5px;
-  transform: rotate(90deg);
+  height: 17px;
 }
+
+.open {
+  transform: rotate(180deg);
+}
+
 
 .text {
   color: #000;
