@@ -1,7 +1,7 @@
 "use client";
 import ArticleTab from "@/components/section/article/bigCard/big";
 import ArticleTabs from "@/components/section/article/smallCard/small";
-import styles from "@/components\\section\\article\\homeRecommend\\home.module.css";
+import styles from "@/components/section/article/homeRecommend/home.module.css";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";

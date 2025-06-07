@@ -7,10 +7,10 @@ import Image from "next/image";
 
 // 여기에 사용할 ObjectId들을 배열로 입력하세요!
 const OBJECT_IDS = [
-  "6843a9c1291c7592981c2b99 ",
-  "6843a9c1291c7592981c2b99",
-  "6843a9c1291c7592981c2b99",
-  "6843a9c1291c7592981c2b99",
+  "6844010f4f25673b0fe2858d ",
+  "684400134f25673b0fe2858c",
+  "6843f5fa4f25673b0fe2857c",
+  "6844018b4f25673b0fe2858e",
 ];
 
 interface SlideData {
