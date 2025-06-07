@@ -8,7 +8,7 @@ const dbName = "article";
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: '10mb', // 또는 더 크게
+      sizeLimit: '10mb', 
     },
   },
 };
@@ -33,14 +33,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // 기존 목록 조회
     if (req.method === "GET") {
-      const articles = await db.collection("article").find().toArray();
+      const { category, limit } = req.query;
+      const query: Record<string, unknown> = {};
+      if (category) query.category = category;
+      let cursor = db.collection("article").find(query).sort({ date: -1 });
+      if (limit) cursor = cursor.limit(Number(limit));
+      const articles = await cursor.toArray();
       return res.status(200).json(articles);
     } else if (req.method === "POST") {
       const { title, content, category, date, imageUrl, description, keywords } = req.body;
-      const slug = toSlug(title); // slug 생성
+      const slug = toSlug(title); 
       const result = await db.collection("article").insertOne({
         title,
-        slug, // slug 필드 저장!
+        slug,
         content,
         category,
         date,

@@ -3,7 +3,7 @@ import ArticleTab from "@/components/section/article/bigCard/big";
 import ArticleTabs from "@/components/section/article/smallCard/small";
 import styles from "@/components/section/article/homeRecommend/home.module.css";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 
 
@@ -13,6 +13,7 @@ interface CardData {
   description: string;
   category: string;
   date: string;
+  _id?: string;
 }
 
 interface SectionProps {
@@ -69,11 +70,11 @@ function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }: SectionP
           }}
         />
         <div className={styles.row}>
-          <ArticleTab {...bigCard} />
+          <ArticleTab {...{ ...bigCard, _id: bigCard._id ?? "" }} />
           <div className={styles.col}>
             {smallCards.map((card: CardData, idx: number) => (
-              <ArticleTabs key={idx} {...card} />
-            ))}
+            <ArticleTabs key={idx} {...{ ...card, _id: card._id ?? "" }} />
+          ))}
           </div>
         </div>
       </div>
@@ -86,82 +87,54 @@ interface ArticlehomeProps {
 }
 
 export default function Articlehome({ setActiveTab }: ArticlehomeProps) {
+  const [dictArticles, setDictArticles] = useState<CardData[]>([]);
+  const [trendArticles, setTrendArticles] = useState<CardData[]>([]);
+
+  useEffect(() => {
+    // 최근 용어사전 4개
+    fetch("/api/articles?category=용어사전&limit=4")
+      .then(res => res.json())
+      .then(data => setDictArticles(data));
+    // 최근 트렌드 4개
+    fetch("/api/articles?category=트렌드&limit=4")
+      .then(res => res.json())
+      .then(data => setTrendArticles(data));
+  }, []);
+
   return (
     <div className={styles.container}>
       <Section
         title="디자인 용어 사전 ✒️"
-        imageUrl="https://i.pinimg.com/736x/5b/ae/c4/5baec48bdac5e5f23a3f91aeaab1166b.jpg"
-        bigCard={{
-          imageUrl:
-            "https://i.pinimg.com/736x/25/ac/3c/25ac3ccbc96fef8a03d95c64b039e3a0.jpg",
-          title: "테스트 뉴스 제목22",
-          description: "이것은 테스트용 설명입니다.22",
-          category: "카드뉴스",
-          date: "2024.05.28",
+        imageUrl={
+          // 대표사진은 고정!
+          "https://i.pinimg.com/736x/5b/ae/c4/5baec48bdac5e5f23a3f91aeaab1166b.jpg"
+        }
+        bigCard={dictArticles[0] || {
+          imageUrl: "",
+          title: "",
+          description: "",
+          category: "",
+          date: "",
         }}
-        smallCards={[
-          {
-            imageUrl:
-              "https://i.pinimg.com/736x/25/ac/3c/25ac3ccbc96fef8a03d95c64b039e3a0.jpg",
-            title: "테스트 뉴스 제목",
-            description: "이것은 테스트용 설명입니다.",
-            category: "카드뉴스",
-            date: "2024.05.28",
-          },
-          {
-            imageUrl:
-              "https://i.pinimg.com/736x/25/ac/3c/25ac3ccbc96fef8a03d95c64b039e3a0.jpg",
-            title: "테스트 뉴스 제목2",
-            description: "이것은 테스트용 설명입니다.2",
-            category: "카드뉴스",
-            date: "2024.05.29",
-          },
-          {
-            imageUrl:
-              "https://i.pinimg.com/736x/25/ac/3c/25ac3ccbc96fef8a03d95c64b039e3a0.jpg",
-            title: "테스트 뉴스 제목3",
-            description: "이것은 테스트용 설명입니다.3",
-            category: "카드뉴스",
-            date: "2024.05.30",
-          },
-        ]}
-        onMoreClick={() => setActiveTab(4)} // 용어사전 탭(4번)
+        smallCards={dictArticles.slice(1, 4)}
+        onMoreClick={() => setActiveTab(4)}
       />
       <div className={styles.line} />
       <Section
         title="트렌드 탐험대 🔍 "
-        imageUrl="https://i.pinimg.com/736x/9c/19/d1/9c19d1cc03ca1ebfd8507afdb483b272.jpg"
-        bigCard={{
-          imageUrl: "https://i.pinimg.com/736x/e3/0c/71/e30c7143f557f7ae91ffc2d34cafa8c2.jpg",
-          title: "최신 트렌드",
-          description: "2024년 트렌드 총정리",
-          category: "트렌드",
-          date: "2024.06.01",
+        imageUrl={
+          // 대표사진은 고정!
+          "https://i.pinimg.com/736x/9c/19/d1/9c19d1cc03ca1ebfd8507afdb483b272.jpg"
+        }
+        bigCard={trendArticles[0] || {
+          imageUrl: "",
+          title: "",
+          description: "",
+          category: "",
+          date: "",
         }}
-        smallCards={[
-          {
-            imageUrl: "https://i.pinimg.com/736x/b6/0e/aa/b60eaaea090376ace0c03fb5ed9d9f38.jpg",
-            title: "UI 트렌드 카드1",
-            description: "UI 트렌드 카드 설명1",
-            category: "UI",
-            date: "2024.06.01",
-          },
-          {
-            imageUrl: "https://i.pinimg.com/736x/16/0e/3b/160e3b540112a0426aed76aa9691c278.jpg",
-            title: "UI 트렌드 카드2",
-            description: "UI 트렌드 카드 설명2",
-            category: "UI",
-            date: "2024.06.02",
-          },
-          {
-            imageUrl: "https://i.pinimg.com/736x/e5/52/8f/e5528f043dea28180e593bd28e703b2c.jpg",
-            title: "UI 트렌드 카드3",
-            description: "UI 트렌드 카드 설명3",
-            category: "UI",
-            date: "2024.06.03",
-          },
-        ]}
-        onMoreClick={() => setActiveTab(5)} // 트렌드 탭(5번)
+        smallCards={trendArticles.slice(1, 4)}
+        onMoreClick={() => setActiveTab(5)}
       />
     </div>
   );

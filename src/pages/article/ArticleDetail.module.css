@@ -1,21 +1,23 @@
+@import "../../styles/variable.css";
+
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: 1200px;
-  font-family: 'Pretendard', sans-serif;
   margin: 0 auto;
 }
 
 .imageWrap {
   position: relative;
   width: 1200px;
-  height: 556px;
+  height: 550px;
 }
 
 .mainImage {
   width: 1200px;
-  height: 556px;
+  height: 550px;
   object-fit: cover;
   border-radius: 0;
   display: block;
@@ -26,23 +28,20 @@
   top: 0;
   left: 0;
   width: 1200px;
-  height: 556px;
+  height: 550px;
   background: rgba(0,0,0,0.20);
   pointer-events: none;
 }
 
-.iconBox {
+.backIcon {
   position: absolute;
-  top: 56px;
-  left: 39px;
-  width: 60px;
-  height: 60px;
-  background: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  left: 40px;
+  top: 55px;
+  width: 23px;
+  height: 39px;
+  aspect-ratio: 23/39;
+  cursor: pointer;
+  z-index: 10;
 }
 
 .titleSection {
@@ -54,7 +53,7 @@
   justify-content: center;
   align-items: flex-start;
   gap: 40px;
-  border-bottom: 1px solid #E6E8EC;
+  border-bottom: 1px solid var(--outline, #E6E8EC);
 }
 
 .titleInner {
@@ -74,18 +73,18 @@
 }
 
 .titleText {
-  color: #000;
-  font-family: Roboto, Pretendard, sans-serif;
+  color: var(--color-text-main);
+  font-family: var(--font-family-base);
   font-size: 40px;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   line-height: 48px;
 }
 
 .dateText {
-  color: #6B7280;
-  font-family: Pretendard, sans-serif;
+  color: var(--color-text-sub);
+  font-family: var(--font-family-base);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
 }
 
 .categoryBox {
@@ -96,20 +95,14 @@
   align-items: center;
   gap: 4px;
   border-radius: 76px;
-  background: rgba(61, 56, 245, 0.10);
+  background: var(--button, rgba(61, 56, 245, 0.10));
 }
 
 .categoryText {
-  color: #000;
-  text-align: center;
-  font-family: Pretendard, sans-serif;
+  color: var(--color-text-main);
+  font-family: var(--font-family-base);
   font-size: 16px;
-  font-weight: 400;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  align-self: stretch;
+  font-weight: var(--font-weight-regular);
 }
 
 .contentSection {
@@ -123,7 +116,6 @@
 
 .contentHtml {
   width: 100%;
-  font-family: Pretendard, sans-serif;
   color: #000;
   font-size: 18px;
   font-weight: 400;
@@ -150,29 +142,19 @@
   align-items: center;
   gap: 4px;
   border-radius: 30px;
-  background: rgba(61, 56, 245, 0.10);
+  background: var(--button, rgba(61, 56, 245, 0.10));
 }
 
 .keywordTitle {
-  height: 69px;
-  align-self: stretch;
-  overflow: hidden;
-  color: #000;
-  text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: Pretendard, sans-serif;
+  color: var(--color-text-main);
   font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 8px;
+  font-weight: var(--font-weight-bold);
 }
 
 .keywordDesc {
-  font-family: Pretendard, sans-serif;
   font-size: 18px;
-  font-weight: 500;
-  color: #000;
-  margin-bottom: 16px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-main);
 }
 
 .keywordList {
@@ -196,16 +178,9 @@
 }
 
 .keywordText {
-  overflow: hidden;
   color: #FFF;
-  text-align: center;
-  text-overflow: ellipsis;
-  font-family: Pretendard, sans-serif;
   font-size: 16px;
-  font-weight: 400;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  align-self: stretch;
+  font-weight: var(--font-weight-regular);
 }
 
 .copiedMsg {
@@ -238,9 +213,14 @@
   border-radius: 8px;
   border: 1px solid var(--color-point, rgba(123, 104, 238, 0.76));
   background: #fff;
-  color: var(--color-point, rgba(123, 104, 238, 0.76));
-  font-family: Pretendard, sans-serif;
+  color: var(--color-point);
+  font-family: var(--font-family-base);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.backBtn:hover {
+  background: #f5f5ff88;
 }

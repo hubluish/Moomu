@@ -20,7 +20,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
   const [keywordInput, setKeywordInput] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
   const [isComposing, setIsComposing] = useState(false);
-  const [content, setContent] = useState(""); // 추가
+  const [content, setContent] = useState(""); 
   const contentRef = useRef<HTMLDivElement>(null);
 
   // 파일 선택/드래그앤드롭 핸들러
@@ -161,7 +161,7 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title,
-        slug, // slug도 같이 보냄
+        slug, 
         content: html,
         category,
         date: formattedDate,

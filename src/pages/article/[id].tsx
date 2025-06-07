@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import styles from "./ArticleDetail.module.css";
 
 interface Article {
   _id: string;
@@ -17,6 +18,7 @@ export default function ArticleDetail() {
   const router = useRouter();
   const { id } = router.query;
   const [article, setArticle] = useState<Article | null>(null);
+  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -32,39 +34,92 @@ export default function ArticleDetail() {
       });
   }, [id]);
 
+  const handleCopyKeyword = (kw: string, idx: number) => {
+    navigator.clipboard.writeText(kw);
+    setCopiedIdx(idx);
+    setTimeout(() => setCopiedIdx(null), 1200);
+  };
+
   if (!article) return <div>로딩중...</div>;
 
+  const formattedDate = article.date.replace(/-/g, ".");
+
   return (
-    <div style={{ maxWidth: 900, margin: "40px auto", padding: 24 }}>
-      <h1>{article.title}</h1>
-      <div style={{ color: "#888", marginBottom: 12 }}>
-        {article.category} | {article.date}
-      </div>
-      {article.imageUrl && (
+    <div className={styles.container}>
+      {/* 대표 이미지 */}
+      <div className={styles.imageWrap}>
         <Image
-          width={900}
-          height={400}
-          src={article.imageUrl}
+          src={article.imageUrl || "/assets/icons/placeholder.png"}
           alt="대표 이미지"
-          style={{ width: "100%", maxHeight: 400, objectFit: "cover", marginBottom: 24 }}
+          width={1200}
+          height={400}
+          className={styles.mainImage}
         />
-      )}
-      <div
-        style={{ margin: "32px 0", fontSize: 18, lineHeight: 1.7 }}
-        dangerouslySetInnerHTML={{ __html: article.content }}
-      />
-      {article.description && (
-        <div style={{ margin: "24px 0", color: "#666" }}>{article.description}</div>
-      )}
+        <div className={styles.imageOverlay} />
+        <Image
+          width={24}
+          height={24}
+          src="/assets/icons/left.svg"
+          alt="이전"
+          className={styles.backIcon}
+          onClick={() => router.back()}
+        />
+      </div>
+
+      {/* 제목/카테고리/날짜 */}
+      <div className={styles.titleSection}>
+        <div className={styles.titleInner}>
+          <div className={styles.titleRow}>
+            <div className={styles.titleText}>{article.title}</div>
+            <div className={styles.dateText}>{formattedDate}</div>
+          </div>
+          <div className={styles.categoryBox}>
+            <span className={styles.categoryText}>{article.category}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 본문 */}
+      <div className={styles.contentSection}>
+        <div
+          className={styles.contentHtml}
+          dangerouslySetInnerHTML={{ __html: article.content }}
+        />
+        {article.description && (
+          <div className={styles.articleDesc}>{article.description}</div>
+        )}
+      </div>
+
+      {/* 추천 키워드 */}
       {article.keywords && article.keywords.length > 0 && (
-        <div style={{ marginTop: 24 }}>
-          <b>키워드:</b>{" "}
-          {article.keywords.map((kw, i) => (
-            <span key={i} style={{ marginRight: 8, color: "#3D38F5" }}>#{kw}</span>
-          ))}
+        <div className={styles.keywordSection}>
+          <div className={styles.keywordBox}>
+            <div className={styles.keywordTitle}>추천 키워드</div>
+            <div className={styles.keywordDesc}>무드보드 제작시 활용해보세요!</div>
+            <div className={styles.keywordList}>
+              {article.keywords.map((kw, i) => (
+                <div
+                  key={i}
+                  className={styles.keywordItem}
+                  onClick={() => handleCopyKeyword(kw, i)}
+                >
+                  <span className={styles.keywordText}>#{kw}</span>
+                  {copiedIdx === i && (
+                    <span className={styles.copiedMsg}>복사됨!</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
-      <button style={{ marginTop: 40 }} onClick={() => router.back()}>목록으로</button>
+
+      {/* 목록으로 버튼 */}
+      <div className={styles.backSection}>
+        <button className={styles.backBtn} onClick={() => router.back()}>
+          목록으로
+        </button>
+      </div>
     </div>
   );
 }
