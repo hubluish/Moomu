@@ -160,6 +160,8 @@ function Home() {
                                 key={index}
                                 title={opt.title}
                                 subtitle={opt.description}
+                                keyName={opt.key}
+                                step={step}
                                 isSelected={step===4? selections[3]?.split(',').includes(opt.title) : selections[step - 1] === opt.title}
                                 onClick={() => handleSelect(opt.title)}
                             />
