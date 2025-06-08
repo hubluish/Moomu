@@ -9,6 +9,7 @@ export const FolderCard = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 `;
 
 export const ThumbnailGrid = styled.div`

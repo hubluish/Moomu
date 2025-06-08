@@ -59,6 +59,7 @@ export default function Mypage_Folder() {
               return (
                 <MyFolder
                   key={folder.id}
+                  id={folder.id}
                   name={folder.name}
                   date={date}
                   thumbnails={thumbnails}

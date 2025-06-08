@@ -6,7 +6,7 @@ import Bottom from '@/components/common/bottom/bottom';
 import Header from '@/components/common/header/header';
 import Moodboard from '@/components/section/mypage/Moodboard';
 import { useState, useEffect } from 'react';
-import { MoodboardData, initializeMoodboards, updateMoodboard } from '@/utils/localStorage';
+import { MoodboardData, initializeMoodboards, updateMoodboard, getMoodboards } from '@/utils/localStorage';
 
 const mockData: MoodboardData[] = [
   { id: '1', title: '여행의 추억', date: '2025.05.01', image: '/assets/images/santa.png', isFavorite: false, isDeleted: false },
@@ -16,14 +16,25 @@ const mockData: MoodboardData[] = [
   { id: '5', title: '감성 모음3', date: '2025.05.20', image: '/assets/images/sky.png', isFavorite: false, isDeleted: false },
   { id: '6', title: '감성 모음4', date: '2025.05.20', image: '/assets/images/sky.png', isFavorite: false, isDeleted: false },
   { id: '7', title: '감성 모음5', date: '2025.05.20', image: '/assets/images/sky.png', isFavorite: false, isDeleted: false },
+  { id: '8', title: '여름 휴가', date: '2025.06.01', image: '/assets/images/santa.png', isFavorite: false, isDeleted: false },
+  { id: '9', title: '겨울 추억', date: '2025.06.05', image: '/assets/images/moon.png', isFavorite: false, isDeleted: false },
+  { id: '10', title: '가을 감성', date: '2025.06.10', image: '/assets/images/sky.png', isFavorite: false, isDeleted: false },
+  { id: '11', title: '봄의 시작', date: '2025.06.15', image: '/assets/images/santa.png', isFavorite: false, isDeleted: false },
+  { id: '12', title: '일상의 기록', date: '2025.06.20', image: '/assets/images/moon.png', isFavorite: false, isDeleted: false },
 ];
 
 export default function Mypage_Moodboard() {
   const [moodboards, setMoodboards] = useState<MoodboardData[]>([]);
 
   useEffect(() => {
-    const initializedMoodboards = initializeMoodboards(mockData);
-    setMoodboards(initializedMoodboards);
+    // 로컬 스토리지가 비어있을 때만 mockData로 초기화
+    const storedMoodboards = getMoodboards();
+    if (storedMoodboards.length === 0) {
+      const initializedMoodboards = initializeMoodboards(mockData);
+      setMoodboards(initializedMoodboards);
+    } else {
+      setMoodboards(storedMoodboards);
+    }
   }, []);
 
   const handleMoodboardUpdate = (updatedMoodboard: MoodboardData) => {
