@@ -1,22 +1,22 @@
 'use client';
 
-import "../../../../styles/variable.css"
+import "../../../styles/variable.css"
 import SideBar from '@/components/section/mypage/Sidebar';
 import Bottom from '@/components/common/bottom/bottom';
 import Header from '@/components/common/header/header';
 import Moodboard from '@/components/section/mypage/Moodboard';
 import { useState, useEffect } from 'react';
 import { MoodboardData, getMoodboards, updateMoodboard, getFolders } from '@/utils/localStorage';
-import { useParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 export default function FolderDetail() {
   const [moodboards, setMoodboards] = useState<MoodboardData[]>([]);
   const [folderName, setFolderName] = useState('');
-  const params = useParams();
-  const folderId = params?.id as string;
+  const router = useRouter();
+  const { id: folderId } = router.query;
 
   useEffect(() => {
-    if (!folderId) return;
+    if (!folderId || typeof folderId !== 'string') return;
     
     const storedMoodboards = getMoodboards();
     const folders = getFolders();
