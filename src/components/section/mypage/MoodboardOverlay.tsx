@@ -72,6 +72,8 @@ const MoodboardOverlay: React.FC<MoodboardOverlayProps> = ({
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   const handleCreateFolder = (name: string) => {
+    // TODO: API 호출을 통해 폴더 생성 로직 구현
+    console.log(`Creating folder with name: ${name}`);
     setShowCreateModal(false);
     setShowFolderModal(true);
   };

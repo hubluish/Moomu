@@ -70,6 +70,7 @@ export default function Mypage_Moodboard() {
                 title={item.title}
                 date={item.date}
                 image={item.image}
+                isFavorite={item.isFavorite}
                 onUpdate={handleMoodboardUpdate}
               />
             ))}

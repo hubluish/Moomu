@@ -17,7 +17,7 @@
 :root {
   /* 🎨 Color System */
   --color-main: #3D38F5; /*타이틀 텍스트, 기본 버튼, 헤더*/
-  --color-main-hover: #2E2AD8;
+  --color-main-hover: #16149c;
   --color-point: #7B68EE; /*호버, 포인트 텍스트*/
   --color-background: #FEFEFF;
   --color-text-main: #1C1C1E;

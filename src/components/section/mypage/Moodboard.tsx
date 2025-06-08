@@ -27,16 +27,17 @@ type Props = {
   title: string;
   date: string;
   image: string;
+  isFavorite?: boolean;
   onUpdate?: (updatedMoodboard: MoodboardData) => void;
 };
 
-const Moodboard = ({ id, title, date, image, onUpdate }: Props) => {
+const Moodboard = ({ id, title, date, image, isFavorite = false, onUpdate }: Props) => {
   const [moodboardData, setMoodboardData] = useState<MoodboardData>({
     id,
     title,
     date,
     image,
-    isFavorite: false,
+    isFavorite,
     isDeleted: false
   });
 

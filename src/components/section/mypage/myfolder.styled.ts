@@ -5,7 +5,7 @@ export const FolderCard = styled.div`
   height: 226px;
   border-radius: 10px;
   background: #fff;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
+  box-shadow: 0px 3.569px 3.569px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -31,7 +31,7 @@ export const FolderInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 50px;
+  height: 45px;
   padding: 0 16px;
   background: #fff;
 `;

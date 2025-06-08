@@ -60,6 +60,7 @@ export default function Mypage_Favorite() {
                 title={item.title}
                 date={item.date}
                 image={item.image}
+                isFavorite={item.isFavorite}
                 onUpdate={handleMoodboardUpdate}
               />
             ))}
