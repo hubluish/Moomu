@@ -187,6 +187,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                   placeholder="비밀번호를 입력해 주세요"
                   value={password}
                   onChange={handlePasswordChange}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSubmit();
+                    }
+                  }}
                   $hasError={!!passwordError}
                 />
                 <PasswordToggle onClick={() => setShowPassword(prev => !prev)}>
