@@ -137,6 +137,19 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     setPasswordError('');
   };
 
+  const handleGoogleLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin, // 현재 페이지로 리디렉션
+      },
+    });
+
+    if (error) {
+      alert(`구글 로그인 실패: ${error.message}`);
+    }
+  };
+
   if (!isOpen) {
     return null;
   }
@@ -208,7 +221,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             <Separator>or</Separator>
 
             <SocialLoginButtons>
-              <SocialButton>
+              <SocialButton onClick={handleGoogleLogin}>
                 <img src="/assets/icons/google.svg" alt="Google" />
               </SocialButton>
               <SocialButton>

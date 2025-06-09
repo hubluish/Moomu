@@ -37,8 +37,10 @@ export default function Header() {
           .eq('id', session.user.id)
           .single();
 
-        if (profile) {
+        if (profile?.name) {
           setUserName(profile.name);
+        } else if (session.user.user_metadata?.full_name) { // user_metadata에서 이름 가져오기
+          setUserName(session.user.user_metadata.full_name);
         } else if (error) {
           console.error('프로필 로드 실패:', error.message);
         }
@@ -60,8 +62,10 @@ export default function Header() {
           .eq('id', session.user.id)
           .single();
 
-        if (profile) {
+        if (profile?.name) {
           setUserName(profile.name);
+        } else if (session.user.user_metadata?.full_name) { // user_metadata에서 이름 가져오기
+          setUserName(session.user.user_metadata.full_name);
         } else if (error) {
           console.error('프로필 로드 실패:', error.message);
         }
