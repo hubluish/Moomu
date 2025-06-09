@@ -150,6 +150,19 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleKakaoLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options: {
+        redirectTo: window.location.origin, // 현재 페이지로 리디렉션
+      },
+    });
+
+    if (error) {
+      alert(`카카오 로그인 실패: ${error.message}`);
+    }
+  };
+
   if (!isOpen) {
     return null;
   }
@@ -227,7 +240,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
               <SocialButton>
                 <img src="/assets/icons/naver.svg" alt="Naver" />
               </SocialButton>
-              <SocialButton>
+              <SocialButton onClick={handleKakaoLogin}>
                 <img src="/assets/icons/kakao.svg" alt="Kakao" />
               </SocialButton>
             </SocialLoginButtons>
