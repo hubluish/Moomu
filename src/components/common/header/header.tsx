@@ -6,8 +6,9 @@ import {
   HeaderWrapper, LogoSection, LogoImg, LogoName, Nav, NavLink,
   RightSection, LoginButton, AccountWrapper, Avatar, Dropdown, DropdownItem
 } from "./header.styled";
+import LoginModal from "../Login/LoginModal";
 
-const isLoggedIn = true; // 로그인 상태를 나타내는 변수 (예시로 true로 설정)
+const isLoggedIn = false; // 로그인 상태를 나타내는 변수 (예시로 false로 설정)
 
 const NAV_ITEMS = [
   { href: "/", label: "home" },
@@ -19,6 +20,15 @@ const NAV_ITEMS = [
 export default function Header() {
   const pathname = usePathname();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleLoginClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <HeaderWrapper>
@@ -51,10 +61,12 @@ export default function Header() {
               )}
             </AccountWrapper>
           ) : (
-            <LoginButton href="/login">로그인/회원가입</LoginButton>
+            <LoginButton href="#" onClick={handleLoginClick}>로그인/회원가입</LoginButton>
           )}
         </RightSection>
       </Nav>
+
+      <LoginModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </HeaderWrapper>
   );
 }
