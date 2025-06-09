@@ -237,7 +237,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
               <SocialButton onClick={handleGoogleLogin}>
                 <img src="/assets/icons/google.svg" alt="Google" />
               </SocialButton>
-              <SocialButton>
+              <SocialButton onClick={() => {
+                alert(isLoginMode 
+                  ? '아직 기능 준비중입니다!\n이메일, 구글, 카카오 로그인을 이용해 주세요.'
+                  : '아직 기능 준비중입니다!\n이메일, 구글, 카카오 회원가입을 이용해 주세요.');
+              }}>
                 <img src="/assets/icons/naver.svg" alt="Naver" />
               </SocialButton>
               <SocialButton onClick={handleKakaoLogin}>
