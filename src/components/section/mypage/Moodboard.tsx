@@ -3,7 +3,7 @@
 
 import MoodboardOverlay from './MoodboardOverlay';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   MoodboardCard,
   MoodboardSection,
@@ -12,18 +12,50 @@ import {
   DateText,
 } from './moodboard.styled';
 
-type Props = {
+interface MoodboardData {
+  id: string;
   title: string;
   date: string;
   image: string;
+  isFavorite: boolean;
+  isDeleted: boolean;
+  deletedAt?: Date;
+}
+
+type Props = {
+  id: string;
+  title: string;
+  date: string;
+  image: string;
+  isFavorite?: boolean;
+  onUpdate?: (updatedMoodboard: MoodboardData) => void;
 };
 
-const Moodboard = ({ title, date, image }: Props) => {
+const Moodboard = ({ id, title, date, image, isFavorite = false, onUpdate }: Props) => {
+  const [moodboardData, setMoodboardData] = useState<MoodboardData>({
+    id,
+    title,
+    date,
+    image,
+    isFavorite,
+    isDeleted: false
+  });
+
+  const handleUpdate = (updatedMoodboard: MoodboardData) => {
+    setMoodboardData(updatedMoodboard);
+    if (onUpdate) {
+      onUpdate(updatedMoodboard);
+    }
+  };
+
   return (
     <MoodboardCard>
       <MoodboardSection>
         <Image src={image} alt={title} width={332} height={181} />
-        <MoodboardOverlay /> {/* Hover 시 나타남 */}
+        <MoodboardOverlay 
+          moodboard={moodboardData}
+          onUpdate={handleUpdate}
+        />
       </MoodboardSection>
       <TitleSection>
         <Title>{title}</Title>

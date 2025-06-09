@@ -1,7 +1,21 @@
 // components/section/mypage/MoodboardOverlay.tsx
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
+import FolderModal from './FolderModal';
+import FolderCreateModal from './FolderCreateModal';
+
+interface Moodboard {
+  id: string;
+  title: string;
+  date: string;
+  image: string;
+  isFavorite: boolean;
+  isDeleted: boolean;
+  deletedAt?: Date;
+}
 
 const OverlayWrapper = styled.div`
   position: absolute;
@@ -29,15 +43,97 @@ const IconButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background-color: var(--color-main-hover);
+  }
 `;
 
-const MoodboardOverlay = () => {
+interface MoodboardOverlayProps {
+  moodboard?: Moodboard;
+  onUpdate?: (updatedMoodboard: Moodboard) => void;
+}
+
+const defaultMoodboard: Moodboard = {
+  id: '',
+  title: '',
+  date: '',
+  image: '',
+  isFavorite: false,
+  isDeleted: false
+};
+
+const MoodboardOverlay: React.FC<MoodboardOverlayProps> = ({ 
+  moodboard = defaultMoodboard, 
+  onUpdate = () => {} 
+}) => {
+  const [showFolderModal, setShowFolderModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const handleCreateFolder = (name: string) => {
+    // TODO: API 호출을 통해 폴더 생성 로직 구현
+    console.log(`Creating folder with name: ${name}`);
+    setShowCreateModal(false);
+    setShowFolderModal(true);
+  };
+
+  const handleFavorite = () => {
+    if (moodboard.id) {
+      onUpdate({
+        ...moodboard,
+        isFavorite: !moodboard.isFavorite
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    if (moodboard.id) {
+      onUpdate({
+        ...moodboard,
+        isDeleted: true,
+        deletedAt: new Date()
+      });
+    }
+  };
+
   return (
-    <OverlayWrapper>
-      <IconButton><Image src="/assets/icons/fill-folder.svg" alt="fill-folder" width={35} height={35} /></IconButton>
-      <IconButton><Image src="/assets/icons/fill-star.svg" alt="fill-star" width={35} height={35} /></IconButton>
-      <IconButton><Image src="/assets/icons/fill-trash.svg" alt="fill-trash" width={35} height={35} /></IconButton>
-    </OverlayWrapper>
+    <>
+      <OverlayWrapper>
+        <IconButton onClick={() => setShowFolderModal(true)}>
+          <Image src="/assets/icons/fill-folder.svg" alt="folder" width={35} height={35} />
+        </IconButton>
+        <IconButton onClick={handleFavorite}>
+          <Image 
+            src={moodboard.isFavorite ? "/assets/icons/fill-star-active.svg" : "/assets/icons/fill-star.svg"} 
+            alt="fill-star" 
+            width={35} 
+            height={35} 
+          />
+        </IconButton>
+        <IconButton onClick={handleDelete}>
+          <Image src="/assets/icons/fill-trash.svg" alt="fill-trash" width={35} height={35} />
+        </IconButton>
+      </OverlayWrapper>
+
+      {showFolderModal && (
+        <FolderModal
+          moodboardId={moodboard.id}
+          onAddClick={() => {
+            setShowFolderModal(false);
+            setShowCreateModal(true);
+          }}
+          onClose={() => setShowFolderModal(false)}
+        />
+      )}
+
+      {showCreateModal && (
+        <FolderCreateModal
+          onSubmit={handleCreateFolder}
+          onClose={() => setShowCreateModal(false)}
+        />
+      )}
+    </>
   );
 };
 
