@@ -1,6 +1,5 @@
-'use client';
-import { redirect } from 'next/navigation';
+import Home from '../pages/home/home';
 
-export default function Home() {
-  redirect('/mypage/moodboard/page');
+export default function Page() {
+  return <Home />;
 }
