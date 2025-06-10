@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './ColorOption.module.css';
 import { on } from 'events';
+import styles from './ColorOption.module.css';
 
 type ColorOptionProps = {
     title: string;
@@ -11,10 +12,14 @@ type ColorOptionProps = {
 };
 
 export default function ColorOption({ title, description, colors, isSelected, onClick }: ColorOptionProps) {
+    
+    const imageUrl = `/data/images/color/${title.toLowerCase()}.jpg`;
+    
     return (
-            <div
-        className={`${styles.container} ${isSelected ? styles.selected : ''}`} onClick={onClick}>
-        <div className={styles.imageArea}></div>
+        <div className={`${styles.container} ${isSelected ? styles.selected : ''}`} onClick={onClick}>
+        <div className={styles.imageArea}>
+            <img src={imageUrl} alt={title} className={styles.image} />
+        </div>
 
         <div className={styles.infoArea}>
             <div className={`${styles.title} ${isSelected ? styles.selectedText : ''}`}>{title}</div>

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@700&display=swap');
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-/* @font-face {
+@font-face {
   font-family: 'Pretendard';
   src: url('../../public/assets/fonts/PretendardVariable.ttf') format('woff2-variations');
   font-weight: 100 900;
@@ -12,7 +12,7 @@
   src: url('../../public/assets/fonts/MuseoModerno-VariableFont_wght.ttf') format('woff2-variations');
   font-weight: 100 900;
   font-style: normal;
-} */
+}
 
 :root {
   /* 🎨 Color System */
@@ -67,3 +67,5 @@
   --anim-ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --anim-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+
