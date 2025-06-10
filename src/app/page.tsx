@@ -1,12 +1,5 @@
-"use client";
-import Header from "@/components/common/header/header";
-import "@/styles/variable.css";
+import Home from '../pages/home/home';
 
-export default function Home() {
-
-  return (
-    <>
-    <Header />
-    </>
-  );
+export default function Page() {
+  return <Home />;
 }
