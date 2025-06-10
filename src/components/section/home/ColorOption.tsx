@@ -8,6 +8,7 @@ type ColorOptionProps = {
     onClick?: () => void;
 };
 
+
 export default function ColorOption({ title, description, colors, isSelected, onClick }: ColorOptionProps) {
     
     const imageUrl = `/data/images/color/${title.toLowerCase()}.jpg`;
