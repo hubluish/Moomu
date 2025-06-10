@@ -103,7 +103,7 @@ const HomeIntro = () => {
         <div className={styles.section1ButtonWrap}>
           <button
             className={styles.moodBtn}
-            onClick={() => router.push("/mood")}
+            onClick={() => router.push("/home")}
           >
             <span className={styles.moodBtnText}>무드보드 만들기</span>
             <span className={styles.moodBtnIcon}>
@@ -260,7 +260,7 @@ const HomeIntro = () => {
         <div className={styles.section5Logo}>
           <span>moomu</span>
         </div>
-        <button className={styles.startBtn} onClick={() => router.push("/mood")}>
+        <button className={styles.startBtn} onClick={() => router.push("/home")}>
           <div className={styles.startBtnInner}>
             <span className={styles.startBtnText}>지금 바로 시작하기</span>
           </div>
