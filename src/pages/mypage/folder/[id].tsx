@@ -6,12 +6,15 @@ import Bottom from '@/components/common/bottom/bottom';
 import Header from '@/components/common/header/header';
 import Moodboard from '@/components/section/mypage/Moodboard';
 import { useState, useEffect } from 'react';
-import { MoodboardData, getMoodboards, updateMoodboard, getFolders } from '@/utils/localStorage';
+import { MoodboardData, getMoodboards, updateMoodboard, getFolders, updateFolder } from '@/utils/localStorage';
 import { useRouter } from 'next/router';
+import { FiEdit2 } from 'react-icons/fi';
 
 export default function FolderDetail() {
   const [moodboards, setMoodboards] = useState<MoodboardData[]>([]);
   const [folderName, setFolderName] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState('');
   const router = useRouter();
   const { id: folderId } = router.query;
 
@@ -24,7 +27,7 @@ export default function FolderDetail() {
     
     if (currentFolder) {
       setFolderName(currentFolder.name);
-      // 해당 폴더에 속한 무드보드만 필터링
+      setEditedName(currentFolder.name);
       const folderMoodboards = storedMoodboards.filter(mb => mb.folderId === folderId);
       setMoodboards(folderMoodboards);
     }
@@ -33,6 +36,24 @@ export default function FolderDetail() {
   const handleMoodboardUpdate = (updatedMoodboard: MoodboardData) => {
     const updatedMoodboards = updateMoodboard(updatedMoodboard);
     setMoodboards(updatedMoodboards.filter(mb => mb.folderId === folderId));
+  };
+
+  const handleNameEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleNameSave = () => {
+    if (folderId && typeof folderId === 'string') {
+      updateFolder(folderId, editedName);
+      setFolderName(editedName);
+      setIsEditing(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleNameSave();
+    }
   };
 
   return (
@@ -56,8 +77,44 @@ export default function FolderDetail() {
 
         {/* 메인 콘텐츠 */}
         <main style={{ flex: 1, padding: '50px 70px' }}>
-          <div style={{ marginBottom: '30px', fontSize: 'var(--font-title1)', fontWeight: 'bold' }}>
-            {folderName}
+          <div style={{ marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {isEditing ? (
+              <input
+                type="text"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+                onBlur={handleNameSave}
+                onKeyPress={handleKeyPress}
+                style={{
+                  fontSize: 'var(--font-title1)',
+                  fontWeight: 'bold',
+                  border: '1px solid #ddd',
+                  padding: '5px 10px',
+                  borderRadius: '4px',
+                  width: '300px'
+                }}
+                autoFocus
+              />
+            ) : (
+              <>
+                <div style={{ fontSize: 'var(--font-title1)', fontWeight: 'bold' }}>
+                  {folderName}
+                </div>
+                <button
+                  onClick={handleNameEdit}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '5px',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  <FiEdit2 size={20} />
+                </button>
+              </>
+            )}
           </div>
           <div
             style={{

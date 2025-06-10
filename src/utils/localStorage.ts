@@ -155,4 +155,13 @@ export const addMoodboardToFolder = (folderId: string, moodboardId: string) => {
   saveMoodboards(updatedMoodboards);
   
   return { updatedFolders, updatedMoodboards };
+};
+
+export const updateFolder = (folderId: string, newName: string) => {
+  const folders = getFolders();
+  const updatedFolders = folders.map(folder => 
+    folder.id === folderId ? { ...folder, name: newName } : folder
+  );
+  saveFolders(updatedFolders);
+  return updatedFolders;
 }; 
