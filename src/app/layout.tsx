@@ -32,3 +32,12 @@ export default function RootLayout({
     </html>
   );
 }
+
+// middleware.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname === '/mypage/page') {
+    return NextResponse.redirect(new URL('/mypage/moodboard', request.url));
+  }
+}
