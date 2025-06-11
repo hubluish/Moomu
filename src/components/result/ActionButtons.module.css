@@ -1,0 +1,18 @@
+.container {
+    display: inline-flex;
+    align-items: center;
+    gap: 13px;
+    }
+
+    .button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: black;
+    transition: color 0.2s ease-in-out;
+    }
+
+    .button:hover {
+    color: gray;
+    }
