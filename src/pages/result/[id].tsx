@@ -48,7 +48,7 @@ export default function ResultPage() {
     <MoodboardTitle />
     <div className={styles.topWrapper}>
         <div className={styles.chips}>
-            <Chips tags={['Pastel', 'Minimal', 'handwritten', 'Dreamy']} />
+            <Chips tags={data.color_keyword || []} />
         </div>
         <div className={styles.actionsWrapper}>
             <div className={styles.actions}>
