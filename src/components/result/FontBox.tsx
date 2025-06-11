@@ -23,9 +23,15 @@ export default function FontBox({ fontKeyword }: FontBoxProps) {
         fetch('/data/noonnu_fonts.json')
         .then(res => res.json())
         .then(data => {
-            // fontKeyword가 "손글씨 바탕"이면 data["손글씨 바탕"] 배열을 꺼냄
             if (data && data[fontKeyword] && Array.isArray(data[fontKeyword])) {
                 setFonts(data[fontKeyword]);
+            } else if (data) {
+                // 모든 폰트 배열을 합쳐서 image_alt에 키워드가 포함된 것만 필터
+                const allFonts = Object.values(data).flat();
+                const filtered = allFonts.filter(
+                    (font: FontData) => font.image_alt && font.image_alt.includes(fontKeyword)
+                );
+                setFonts(filtered);
             } else {
                 setFonts([]);
             }
