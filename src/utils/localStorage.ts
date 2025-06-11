@@ -39,6 +39,12 @@ interface StoredFolderData {
 const MOODBOARDS_KEY = 'moodboards';
 const FOLDERS_KEY = 'folders';
 
+const dispatchLocalStorageChange = () => {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('localStorageChange'));
+  }
+};
+
 export const getMoodboards = (): MoodboardData[] => {
   if (typeof window === 'undefined') return [];
   
@@ -62,6 +68,7 @@ export const saveMoodboards = (moodboards: MoodboardData[]) => {
   
   try {
     localStorage.setItem(MOODBOARDS_KEY, JSON.stringify(moodboards));
+    dispatchLocalStorageChange();
   } catch (error) {
     console.error('Failed to save moodboards to localStorage:', error);
   }
@@ -108,6 +115,7 @@ export const saveFolders = (folders: FolderData[]) => {
   
   try {
     localStorage.setItem(FOLDERS_KEY, JSON.stringify(folders));
+    dispatchLocalStorageChange();
   } catch (error) {
     console.error('Failed to save folders to localStorage:', error);
   }
@@ -127,32 +135,96 @@ export const createFolder = (name: string): FolderData => {
   return newFolder;
 };
 
-export const addMoodboardToFolder = (folderId: string, moodboardId: string) => {
+export const addMoodboardToFolder = (newFolderId: string, moodboardId: string) => {
   const folders = getFolders();
   const moodboards = getMoodboards();
-  
+
+  let oldFolderId: string | undefined;
+
+  // Find the moodboard and its current folderId
+  const moodboardToMove = moodboards.find(mb => mb.id === moodboardId);
+  if (moodboardToMove) {
+    oldFolderId = moodboardToMove.folderId;
+  }
+
   const updatedFolders = folders.map(folder => {
-    if (folder.id === folderId) {
+    // Remove from old folder if applicable and not moving to the same folder
+    if (oldFolderId && folder.id === oldFolderId && oldFolderId !== newFolderId) {
       return {
         ...folder,
-        moodboardIds: [...folder.moodboardIds, moodboardId]
+        moodboardIds: folder.moodboardIds.filter(id => id !== moodboardId)
       };
+    }
+    // Add to new folder
+    if (folder.id === newFolderId) {
+      // Ensure no duplicates when adding to new folder
+      if (!folder.moodboardIds.includes(moodboardId)) {
+        return {
+          ...folder,
+          moodboardIds: [...folder.moodboardIds, moodboardId]
+        };
+      }
     }
     return folder;
   });
-  
+
   const updatedMoodboards = moodboards.map(moodboard => {
     if (moodboard.id === moodboardId) {
       return {
         ...moodboard,
-        folderId
+        folderId: newFolderId
       };
     }
     return moodboard;
   });
-  
+
   saveFolders(updatedFolders);
   saveMoodboards(updatedMoodboards);
-  
+
   return { updatedFolders, updatedMoodboards };
+};
+
+export const updateFolder = (folderId: string, newName: string) => {
+  const folders = getFolders();
+  const updatedFolders = folders.map(folder => 
+    folder.id === folderId ? { ...folder, name: newName } : folder
+  );
+  saveFolders(updatedFolders);
+  return updatedFolders;
+};
+
+export const removeMoodboardFromFolder = (folderId: string, moodboardId: string) => {
+  const folders = getFolders();
+  const updatedFolders = folders.map(folder => {
+    if (folder.id === folderId) {
+      return {
+        ...folder,
+        moodboardIds: folder.moodboardIds.filter(id => id !== moodboardId)
+      };
+    }
+    return folder;
+  });
+  saveFolders(updatedFolders);
+
+  // Optionally, if the moodboard is not in any other folder, you might want to set its folderId to undefined
+  const moodboards = getMoodboards();
+  const updatedMoodboards = moodboards.map(moodboard => {
+    if (moodboard.id === moodboardId && moodboard.folderId === folderId) {
+      return { ...moodboard, folderId: undefined };
+    }
+    return moodboard;
+  });
+  saveMoodboards(updatedMoodboards);
+
+  return updatedMoodboards;
+};
+
+export const removeMoodboardIdFromAllFolders = (moodboardId: string) => {
+  const folders = getFolders();
+  const updatedFolders = folders.map(folder => ({
+    ...folder,
+    moodboardIds: folder.moodboardIds.filter(id => id !== moodboardId)
+  }));
+  saveFolders(updatedFolders);
+  return updatedFolders;
 }; 

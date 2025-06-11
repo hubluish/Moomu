@@ -1,0 +1,223 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.imageWrap {
+  position: relative;
+  width: 1200px;
+  height: 550px;
+}
+
+.mainImage {
+  width: 1200px;
+  height: 550px;
+  object-fit: cover;
+  border-radius: 0;
+  display: block;
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1200px;
+  height: 550px;
+  background: rgba(0,0,0,0.20);
+  pointer-events: none;
+}
+
+.backIcon {
+  position: absolute;
+  left: 40px;
+  top: 55px;
+  width: 23px;
+  height: 39px;
+  aspect-ratio: 23/39;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.titleSection {
+  display: flex;
+  width: 1200px;
+  height: 215px;
+  padding: 30px 30px 0px 30px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  border-bottom: 1px solid var(--outline, #E6E8EC);
+}
+
+.titleInner {
+  display: flex;
+  width: 1147px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.titleText {
+  color: var(--color-text-main);
+  font-family: var(--font-family-base);
+  font-size: 40px;
+  font-weight: var(--font-weight-bold);
+  line-height: 48px;
+}
+
+.dateText {
+  color: var(--color-text-sub);
+  font-family: var(--font-family-base);
+  font-size: 16px;
+  font-weight: var(--font-weight-regular);
+}
+
+.categoryBox {
+  display: flex;
+  width: 110px;
+  padding: 8px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border-radius: 76px;
+  background: var(--button, rgba(61, 56, 245, 0.10));
+}
+
+.categoryText {
+  color: var(--color-text-main);
+  font-family: var(--font-family-base);
+  font-size: 16px;
+  font-weight: var(--font-weight-regular);
+}
+
+.contentSection {
+  display: flex;
+  width: 1200px;
+  padding: 80px 30px 30px 30px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.contentHtml {
+  width: 100%;
+  color: #000;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.keywordSection {
+  display: flex;
+  width: 1200px;
+  padding: 50px 0px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.keywordBox {
+  display: flex;
+  width: 846px;
+  height: 194px;
+  padding: 8px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 30px;
+  background: var(--button, rgba(61, 56, 245, 0.10));
+}
+
+.keywordTitle {
+  color: var(--color-text-main);
+  font-size: 24px;
+  font-weight: var(--font-weight-bold);
+}
+
+.keywordDesc {
+  font-size: 18px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-main);
+}
+
+.keywordList {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.keywordItem {
+  display: flex;
+  width: 110px;
+  padding: 8px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border-radius: 76px;
+  background: var(--color-main, #3D38F5);
+  cursor: pointer;
+  position: relative;
+}
+
+.keywordText {
+  color: #FFF;
+  font-size: 16px;
+  font-weight: var(--font-weight-regular);
+}
+
+.copiedMsg {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 14px;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.backSection {
+  display: flex;
+  padding: 30px 0px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+}
+
+.backBtn {
+  width: 240px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-point, rgba(123, 104, 238, 0.76));
+  background: #fff;
+  color: var(--color-point);
+  font-family: var(--font-family-base);
+  font-size: 18px;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.backBtn:hover {
+  background: #f5f5ff88;
+}

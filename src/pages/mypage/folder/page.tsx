@@ -11,9 +11,19 @@ export default function Mypage_Folder() {
   const [folders, setFolders] = useState<FolderData[]>([]);
   const [moodboards, setMoodboards] = useState<MoodboardData[]>([]);
 
-  useEffect(() => {
+  const fetchData = () => {
     setFolders(getFolders());
     setMoodboards(getMoodboards());
+  };
+
+  useEffect(() => {
+    fetchData(); // Initial data fetch
+
+    window.addEventListener('localStorageChange', fetchData);
+
+    return () => {
+      window.removeEventListener('localStorageChange', fetchData);
+    };
   }, []);
 
   return (
@@ -48,7 +58,7 @@ export default function Mypage_Folder() {
             {folders.map(folder => {
               // 폴더에 속한 무드보드 6개까지 썸네일 추출
               const thumbnails = folder.moodboardIds
-                .map(id => moodboards.find(mb => mb.id === id)?.image)
+                .map(id => moodboards.find(mb => mb.id === id && !mb.isDeleted)?.image)
                 .filter(Boolean)
                 .slice(0, 6) as string[];
               // 폴더 생성일(혹은 업데이트일) 포맷

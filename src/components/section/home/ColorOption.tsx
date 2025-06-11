@@ -1,4 +1,6 @@
 import styles from './ColorOption.module.css';
+import { on } from 'events';
+import styles from './ColorOption.module.css';
 
 type ColorOptionProps = {
     title: string;

@@ -1,0 +1,102 @@
+/* 카드 전체 컨테이너 */
+.card {
+  display: flex;
+  width: 280px;
+  height: 410px;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  transition:
+    border var(--anim-speed-fast) var(--anim-ease-default),
+    box-shadow var(--anim-speed-fast) var(--anim-ease-default),
+    transform var(--anim-speed-fast) var(--anim-ease-default);
+  border-radius: 9px;
+  border: 0.792px solid var(--color-outline);
+}
+
+.card:hover {
+  border: 0.792px solid var(--color-point);
+  box-shadow: 0 8px 24px 0 rgba(123, 104, 238, 0.12);
+  transform: scale(1.02);
+}
+
+/* 이미지 영역 컨테이너 */
+.imageContainer {
+  display: flex;
+  height: 300px;
+  align-items: flex-start;
+  flex-shrink: 0;
+  align-self: stretch;
+  position: relative;
+}
+
+/* 실제 이미지 스타일 */
+.image {
+  flex: 1 0 0;
+  align-self: stretch;
+  background-position: center;
+  background-size: cover;
+  background-color: var(--color-notice);
+  position: relative;
+  border-radius: 8px 8px 0 0;
+}
+
+/* 텍스트 영역 컨테이너 */
+.textContainer {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+
+/* 카테고리와 날짜 row */
+.row {
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+/* 카테고리 텍스트 */
+.category {
+  width: 100%;
+  flex-shrink: 0;
+  color: var(--color-point);
+  font-family: Pretendard;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* 날짜 텍스트 */
+.date {
+  width: 100%;
+  flex-shrink: 0;
+  color: var(--color-text-sub);
+  font-family: Pretendard;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 19.02px;
+  text-align: right;
+}
+
+/* 타이틀 텍스트 */
+.title {
+  align-self: stretch;
+  color: var(--color-text-main);
+  font-family: Pretendard;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 4px;
+}
+
+/* 설명 텍스트 */
+.description {
+  font-size: 13px;
+  color: var(--color-text-main);
+}
