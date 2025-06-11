@@ -150,4 +150,20 @@ export const DropdownButton = styled.button`
   &:hover {
     color: var(--color-point);
   }
+`;export const DropdownLinkButton = styled.button`
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  color: var(--color-text-sub);
+  text-decoration: none;
+  font: var(--text-body2);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-point);
+  }
 `;
+
