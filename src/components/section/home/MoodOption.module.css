@@ -1,0 +1,70 @@
+/* components/common/MoodOption.module.css */
+
+.container {
+    cursor: pointer;
+    display: flex;
+    padding: 16px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    flex: 1 0 0;
+    border-radius: 6px;
+    border: 2px solid rgba(0, 0, 0, 0.10);
+    box-sizing: border-box;
+    width: 530px;
+    height: 132px;
+    transition: border 0.2s ease;
+    transition: background-color 0.2s ease;
+}
+
+.container:not(.selected):hover {
+    border: 2px solid var(--point, rgba(123, 104, 238, 0.76));
+}
+
+.selected {
+    background: var(--point, rgba(123, 104, 238, 0.76));
+}
+
+.selectedText {
+    color: var(--point, #ffffff) !important;
+}
+
+.imageArea {
+    display: flex;
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.textArea {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1 0 0;
+    }
+
+.title {
+    color: #000;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
+}
+
+.subtitle {
+    color: #000;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}

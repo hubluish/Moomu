@@ -1,0 +1,91 @@
+.card {
+  display: flex;
+  width: 296px;
+  height: 104.667px;
+  padding: 11.737px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 11.737px;
+  border-radius: 4.401px;
+  border: 0.734px solid var(--color-outline);
+  background: var(--color-background);
+  transition:
+    border var(--anim-speed-fast) var(--anim-ease-default),
+    box-shadow var(--anim-speed-fast) var(--anim-ease-default),
+    transform var(--anim-speed-fast) var(--anim-ease-default);
+}
+
+.card:hover {
+  border: 0.734px solid var(--color-point);
+  box-shadow: 0 4px 12px 0 rgba(123, 104, 238, 0.10);
+  transform: scale(1.01);
+}
+
+.image {
+  flex: 1 0 0;
+  align-self: stretch;
+  border-radius: 3.5px;
+  background-position: center;
+  background-size: cover;
+  background-color: var(--color-notice);
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5.869px;
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category {
+  color: var(--color-point);
+  font-family: Pretendard;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.date {
+  color: var(--color-text-sub);
+  font-family: Pretendard;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19.02px;
+  text-align: right;
+}
+
+.title {
+  color: var(--color-text-main);
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 180px;
+}
+
+.description {
+  font-size: 13px;
+  color: var(--color-text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 180px;
+}

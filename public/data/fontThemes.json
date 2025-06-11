@@ -1,0 +1,63 @@
+[
+    {
+      "key": "cute",
+      "title": "귀여운",
+      "description": "사랑스럽고 발랄한 느낌을 주는 부드러운 글씨체예요."
+    },
+    {
+      "key": "classic",
+      "title": "고전적인",
+      "description": "전통과 격식이 느껴지는 단정한 스타일이에요."
+    },
+    {
+      "key": "handwriting",
+      "title": "손글씨",
+      "description": "직접 쓴 듯 자연스럽고 따뜻한 인상을 줘요."
+    },
+    {
+      "key": "modern",
+      "title": "세련된",
+      "description": "모던하고 감각적인 분위기를 표현하는 글꼴이에요."
+    },
+    {
+      "key": "retro",
+      "title": "레트로",
+      "description": "과거의 감성을 담은 복고풍 스타일이에요."
+    },
+    {
+      "key": "rounded",
+      "title": "동글동글한",
+      "description": "귀엽고 부드러운 인상을 주는 둥근 글씨체예요."
+    },
+    {
+      "key": "thin",
+      "title": "얇은",
+      "description": "섬세하고 깔끔한 인상을 주는 얇은 획의 글씨체예요."
+    },
+    {
+      "key": "bold",
+      "title": "두꺼운",
+      "description": "강조하고 싶은 문구에 잘 어울리는 묵직한 스타일이에요."
+    },
+    {
+      "key": "serif",
+      "title": "명조체",
+      "description": "전통적인 출판물에서 많이 쓰이는 정통 서체예요."
+    },
+    {
+      "key": "sans-serif",
+      "title": "고딕체",
+      "description": "깔끔하고 현대적인 인상을 주는 직선적 글꼴이에요."
+    },
+    {
+      "key": "clean",
+      "title": "깔끔한",
+      "description": "가독성이 뛰어나고 다양한 디자인에 잘 어울려요."
+    },
+    {
+
+      "key": "unique",
+      "title": "유니크한",
+      "description": "독특한 개성이 느껴지는 개별적인 스타일이에요."
+    }
+]

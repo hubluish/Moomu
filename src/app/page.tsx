@@ -1,6 +1,13 @@
 
-import ResultPage from '../pages/result/result';
+"use client";
+import Header from "@/components/common/header/header";
+import "@/app/globals.css";
 
-export default function Result() {
-  return <ResultPage />;
+export default function Home() {
+
+  return (
+    <>
+    <Header />
+    </>
+  );
 }

@@ -1,0 +1,50 @@
+    .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    }
+
+
+    .gridContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    margin: 45px auto;
+    gap: 40px;
+    position: relative;
+    }
+
+    .grid3columns {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3열 고정 */
+        gap: 40px;
+        width: 1118px;
+        justify-items: center;
+    }
+
+
+    .grid2x2{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:40px;
+    }
+
+    .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+
+    .seeMoreButton {
+        display: flex;
+    }
