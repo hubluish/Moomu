@@ -1,0 +1,115 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.titleRow {
+  display: flex;
+  padding: 60px 170px;
+  align-items: center;
+  gap: 60px;
+  align-self: stretch;
+  position: relative;
+}
+
+.titleCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  flex: 1 0 0;
+}
+
+.bigTitle {
+  width: 520px;
+  color: #000;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 48px; /* 120% */
+}
+
+.desc {
+  width: 520px;
+  color: #000;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+
+.line {
+  width: 1200px;
+  height: 0px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+  margin-top: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  align-self: stretch;
+  padding: 30px 0px 20px 0px;
+  width: 100%;
+  position: relative;
+}
+
+.cardRow {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  width: 100%;
+  margin-bottom: 24px;
+  gap: 19px; /* 카드 사이 간격 추가 */
+
+}
+
+.moreBtnWrap {
+  display: flex;
+  padding: 30px 0px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  width: 100%;
+}
+
+.moreBtn {
+  display: flex;
+  width: 240px;
+  padding: 12px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--main, #3D38F5);
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.moreBtn:hover {
+  background: #f5f5ff;
+}
+
+.moreBtnText {
+  color: #000;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+}

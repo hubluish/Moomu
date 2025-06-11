@@ -1,6 +1,12 @@
-'use client';
-import { redirect } from 'next/navigation';
+"use client";
+import Header from "@/components/common/header/header";
+import "@/app/globals.css";
 
 export default function Home() {
-  redirect('/mypage/moodboard/page');
+
+  return (
+    <>
+    <Header />
+    </>
+  );
 }

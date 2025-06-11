@@ -1,0 +1,201 @@
+.frame {
+  width: 1180px;
+  height: 540px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.imageFrame {
+  width: 1180px;
+  height: 540px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sliderTrack {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  transition: transform var(--anim-speed-fast) var(--anim-ease-default);
+  will-change: transform;
+}
+
+.slide {
+  width: 1180px;
+  height: 540px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.arrowLeft,
+.arrowRight {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  background: rgba(0,0,0,0.15);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+}
+.arrowLeft:hover,
+.arrowRight:hover {
+  background: rgba(0,0,0,0.35);
+  opacity: 1;
+}
+.arrowLeft {
+  left: 24px;
+}
+.arrowRight {
+  right: 24px;
+}
+
+.imageWrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image {
+  z-index: 0;
+  position: relative;
+  width: 1180px;
+  height: 540px;
+  object-fit: cover;
+  display: block;
+}
+
+.gradient1, .gradient2 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.gradient1 {
+  background: linear-gradient(180deg, rgba(0,0,0,0.00) 44.18%, #000 93.54%);
+}
+.gradient2 {
+  background: rgba(0,0,0,0.20);
+}
+
+.textFrame {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 1120px;
+  color: #fff;
+  margin: 0 40px 60px 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.text1 {
+  width: auto;
+  height: 111.271px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.text1_1 {
+  color: #FFF;
+  font-family: Inter;
+  font-size: 51.139px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: auto;
+  height: 50.251px;
+}
+.text1_2 {
+  color: #FFF;
+  font-family: Inter;
+  font-size: 51.139px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: 417.043px;
+  height: 50.251px;
+}
+
+.text2 {
+  width: auto;
+  height: 47.085px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.text2_1 {
+  width: auto;
+  height: 23.504px;
+  color: #F9F9F9;
+  font-family: Outfit;
+  font-size: 22.924px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.text2_2 {
+  width: auto;
+  height: 23.504px;
+  color: #F9F9F9;
+  font-family: Outfit;
+  font-size: 22.924px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.pagenationBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6.364px;
+  margin-top: 12px;
+}
+
+.dot {
+  width: 6.364px;
+  height: 6.364px;
+  border-radius: 159.091px;
+  background: #DEDEDE;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: width 0.2s, background 0.2s;
+}
+.dot.active {
+  width: 31.818px;
+  background: #FFF;
+}
+
+.pagenationOverlay {
+  position: absolute;
+  left: 50%;
+  bottom: 20px; /* 이미지 하단에서 24px 위 */
+  transform: translateX(-50%);
+  z-index: 10;
+  /* 필요하다면 width, pointer-events 등 추가 */
+}
