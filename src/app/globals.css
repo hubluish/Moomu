@@ -14,6 +14,9 @@
   --color-notice: #F1F3F5; /*비활성, 논모달, 안내*/
   --color-disable-button: #3D38F5; /*비활성 버튼*/
   --color-main-hover: #251fc1;
+  --color-disable-sub: #C7C7C7; /*비활성 서브*/
+  --color-disable-sub-button: #EBEBFF;
+  
 
   /* 🅰️ Font Family */
   --font-family-base: 'Pretendard', sans-serif;
