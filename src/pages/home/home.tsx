@@ -12,6 +12,7 @@ import ProgressBar from '../../components/section/home/ProgressBar';
 import MoodOption from '../../components/section/home/MoodOption';
 import TagGuideModal from '../../components/section/home/TagGuideModal';
 import SeeMoreButton from '../../components/section/home/SeeMoreButton';
+import {saveToSupabase} from '../../utils/saveToSupabase'
 
 import stepMeta from '../../../public/data/stepMeta.json';
 import colorThemes from '../../../public/data/colorThemes.json';
@@ -108,10 +109,11 @@ function Home() {
 
             const result = await response.json();
             console.log('%c🎨 Gemini 응답 결과:', 'color: green; font-weight: bold;', result);
-
-            localStorage.setItem('gemini_result', JSON.stringify(result));
             
-            router.push('/home/loading'); 
+            localStorage.setItem('gemini_result', JSON.stringify(result));
+
+            await saveToSupabase(result);
+            // router.push('/home/loading'); 
             } catch (error) {
             console.error('❌ Gemini 서버 호출 실패:', error);
             alert('Gemini API 요청에 실패했습니다.');

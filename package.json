@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.50.0",
     "fastapi": "^0.0.8",
     "geist": "^1.4.2",
     "next": "15.3.2",
