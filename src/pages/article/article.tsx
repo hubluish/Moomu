@@ -8,6 +8,7 @@ import ImageSlider from "@/components/section/article/pagenationCard/pagenationC
 import TabPage from "@/components/section/article/tabPage/tabPage";
 import ArticleCreate from "@/components/section/article/create/ArticleCreate";
 import styles from "./article.module.css";
+// @ts-ignore
 import confetti from "canvas-confetti";
 import { useSearchParams } from "next/navigation";
 
