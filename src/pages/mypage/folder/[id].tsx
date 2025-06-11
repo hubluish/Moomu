@@ -6,7 +6,7 @@ import Bottom from '@/components/common/bottom/bottom';
 import Header from '@/components/common/header/header';
 import Moodboard from '@/components/section/mypage/Moodboard';
 import { useState, useEffect } from 'react';
-import { MoodboardData, getMoodboards, updateMoodboard, getFolders, updateFolder } from '@/utils/localStorage';
+import { MoodboardData, getMoodboards, updateMoodboard, getFolders, updateFolder, removeMoodboardFromFolder } from '@/utils/localStorage';
 import { useRouter } from 'next/router';
 import { FiEdit2 } from 'react-icons/fi';
 
@@ -28,14 +28,37 @@ export default function FolderDetail() {
     if (currentFolder) {
       setFolderName(currentFolder.name);
       setEditedName(currentFolder.name);
-      const folderMoodboards = storedMoodboards.filter(mb => mb.folderId === folderId);
+      const folderMoodboards = storedMoodboards.filter(mb => !mb.isDeleted && mb.folderId === folderId);
       setMoodboards(folderMoodboards);
     }
   }, [folderId]);
 
   const handleMoodboardUpdate = (updatedMoodboard: MoodboardData) => {
     const updatedMoodboards = updateMoodboard(updatedMoodboard);
-    setMoodboards(updatedMoodboards.filter(mb => mb.folderId === folderId));
+    setMoodboards(updatedMoodboards.filter(mb => !mb.isDeleted && mb.folderId === folderId));
+  };
+
+  const handleRemoveFromFolder = (moodboardId: string) => {
+    if (typeof folderId !== 'string') return;
+    const updatedMoodboards = removeMoodboardFromFolder(folderId, moodboardId);
+    setMoodboards(updatedMoodboards.filter(mb => !mb.isDeleted && mb.folderId === folderId));
+  };
+
+  const handleMoveToTrash = (moodboardId: string) => {
+    const moodboardToMove = moodboards.find((mb: MoodboardData) => mb.id === moodboardId);
+    if (moodboardToMove) {
+      handleMoodboardUpdate({
+        ...moodboardToMove,
+        isDeleted: true,
+        deletedAt: new Date(),
+      });
+      // Remove from current folder's moodboardIds in localStorage as well
+      if (typeof folderId === 'string') {
+        removeMoodboardFromFolder(folderId, moodboardId);
+      }
+    }
+    // Remove from current folder view after moving to trash
+    setMoodboards(prevMoodboards => prevMoodboards.filter(mb => mb.id !== moodboardId));
   };
 
   const handleNameEdit = () => {
@@ -108,10 +131,11 @@ export default function FolderDetail() {
                     cursor: 'pointer',
                     padding: '5px',
                     display: 'flex',
-                    alignItems: 'center'
+                    height: '46px',
+                    alignItems: 'flex-end'
                   }}
                 >
-                  <FiEdit2 size={20} />
+                  <FiEdit2 size={25} />
                 </button>
               </>
             )}
@@ -132,6 +156,10 @@ export default function FolderDetail() {
                 image={item.image}
                 isFavorite={item.isFavorite}
                 onUpdate={handleMoodboardUpdate}
+                onRemoveFromFolder={handleRemoveFromFolder}
+                onMoveToTrash={handleMoveToTrash}
+                isFolder={true}
+                currentFolderId={folderId as string}
               />
             ))}
           </div>

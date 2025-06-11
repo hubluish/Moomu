@@ -5,8 +5,8 @@ import SideBar from '@/components/section/mypage/Sidebar';
 import Bottom from '@/components/common/bottom/bottom';
 import Header from '@/components/common/header/header';
 import Moodboard from '@/components/section/mypage/Moodboard';
-import { useState, useEffect } from 'react';
-import { MoodboardData, getMoodboards, updateMoodboard, saveMoodboards } from '@/utils/localStorage';
+import { useState, useEffect, useMemo } from 'react';
+import { MoodboardData, getMoodboards, updateMoodboard, saveMoodboards, removeMoodboardIdFromAllFolders } from '@/utils/localStorage';
 
 export default function Mypage_Trash() {
   const [moodboards, setMoodboards] = useState<MoodboardData[]>([]);
@@ -21,12 +21,24 @@ export default function Mypage_Trash() {
     setMoodboards(updatedMoodboards);
   };
 
+  const handlePermanentDelete = (moodboardId: string) => {
+    // Remove from all folders first
+    removeMoodboardIdFromAllFolders(moodboardId);
+    // Then remove from moodboards array
+    const updatedMoodboards = moodboards.filter(mb => mb.id !== moodboardId);
+    saveMoodboards(updatedMoodboards);
+    setMoodboards(updatedMoodboards);
+  };
+
   // 삭제된 무드보드만 표시
   const deletedMoodboards = moodboards.filter(mb => mb.isDeleted);
 
   // 30일이 지난 무드보드 자동 삭제
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  const thirtyDaysAgo = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() - 30);
+    return date;
+  }, []);
 
   useEffect(() => {
     const permanentDelete = () => {
@@ -79,6 +91,8 @@ export default function Mypage_Trash() {
                 date={item.date}
                 image={item.image}
                 onUpdate={handleMoodboardUpdate}
+                onPermanentDelete={handlePermanentDelete}
+                isTrash={true}
               />
             ))}
           </div>
