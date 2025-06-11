@@ -76,26 +76,49 @@ function Home() {
         return () => clearTimeout(timer); // step 바뀌면 타이머 초기화
     }, [step]);
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (!selections[step - 1]) {
-        setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 1000);
-        return;
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 1000);
+            return;
         }
 
         if (step < 4) {
             setStep(step + 1);
             setShowAllOptions(false);
         } else {
-        const jsonResult = {
-        색상: selections[0],
-        폰트: selections[2],
-        '이미지/감정': [selections[1], ...(selections[3]?.split(',') || [])].filter(Boolean),
+            const payload = {
+            color: selections[0],
+            font: selections[2],
+            image: [selections[1], ...(selections[3]?.split(',') || [])]
+                .filter(Boolean)
+                .join(', '),
+            };
+
+            console.log('%c✅ Gemini 요청 payload:', 'color: blue; font-weight: bold;', payload);
+
+            try {
+            const response = await fetch('http://localhost:8000/gemini', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const result = await response.json();
+            console.log('%c🎨 Gemini 응답 결과:', 'color: green; font-weight: bold;', result);
+
+            localStorage.setItem('gemini_result', JSON.stringify(result));
+            
+            router.push('/home/loading'); 
+            } catch (error) {
+            console.error('❌ Gemini 서버 호출 실패:', error);
+            alert('Gemini API 요청에 실패했습니다.');
+            }
+        }
         };
-        console.log('선택된 결과:', jsonResult);
-        router.push('/home/loading');
-    }
-    };
+
 
     const handleSelect = (option: string) => {
         setSelections(prev => {
