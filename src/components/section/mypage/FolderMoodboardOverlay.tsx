@@ -55,6 +55,7 @@ const OptionButton = styled.button`
   font-size: 14px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   width: 142px;
 
@@ -157,11 +158,9 @@ const FolderMoodboardOverlay: React.FC<FolderMoodboardOverlayProps> = ({
           {showDeleteOptions && (
             <OptionModal>
               <OptionButton onClick={handleRemoveFromFolder}>
-                <Image src="/assets/icons/folder-minus.svg" alt="remove from folder" width={20} height={20} />
                 폴더에서 삭제
               </OptionButton>
               <OptionButton onClick={handleMoveToTrash}>
-                <Image src="/assets/icons/fill-trash.svg" alt="move to trash" width={20} height={20} />
                 휴지통
               </OptionButton>
             </OptionModal>

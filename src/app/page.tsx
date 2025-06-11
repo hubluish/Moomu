@@ -1,13 +1,11 @@
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-"use client";
-import Header from "@/components/common/header/header";
-import "@/app/globals.css";
-
-export default function Home() {
-
-  return (
-    <>
-    <Header />
-    </>
-  );
+export default function HomeRedirect() {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace('/homeIntro');
+  }, []);
+  return null;
 }

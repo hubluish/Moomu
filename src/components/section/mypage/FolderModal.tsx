@@ -23,8 +23,8 @@ const ModalWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 369px;
-  height: 370px;
+  width: 400px;
+  height: 432px;
   padding: 45px 30px 30px 30px;
   background: white;
   border-radius: 10px;
@@ -71,7 +71,7 @@ const Text = styled.p`
 const FolderItem = styled.div`
   width: 100%;
   min-height: 46px;
-  padding: 6px 100px;
+  padding: 6px 80px;
   background-color: var(--color-disable-sub-button);
   border-radius: 6px;
   display: flex;
