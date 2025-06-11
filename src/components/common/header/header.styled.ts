@@ -22,16 +22,13 @@ export const LogoImg = styled.img`
   width: 40px;
   height: 40px;
   margin-right: 12px;
-
 `;
 
 export const LogoName = styled.span`
-  font-size: 25px;
-  font-weight: var(--font-weight-semibold);
+  font-size: 32px;
+  font-weight: bold;
   color: var(--color-text-main);
-  font-family: var(--font-family-logo);
-  letter-spacing: -0.1em;
-  height: 40px;
+  font-family: var(--font-family-logo), 'MuseoModerno', sans-serif;
 `;
 
 // 네비게이션 영역
@@ -168,4 +165,3 @@ export const DropdownLinkButton = styled.button`
     color: var(--color-point);
   }
 `;
-
