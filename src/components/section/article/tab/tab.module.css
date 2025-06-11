@@ -1,0 +1,36 @@
+.wrapper {
+  width: 100%;
+}
+
+.tabRow {
+  display: flex;
+  height: 49px;
+  align-items: center;
+  gap: 12px;
+  align-self: stretch;
+}
+
+.tabBtn {
+  display: flex;
+  width: 110px;
+  padding: 8px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border-radius: 76px;
+  background: var(--button, rgba(61, 56, 245, 0.10));
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-weight: normal;
+  transition: background 0.2s;
+}
+
+.tabBtn.active {
+  background: var(--color-main);
+  font-weight: bold;
+}
+
+.tabBtn:hover{
+  background: var(--color-main);
+}

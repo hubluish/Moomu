@@ -22,16 +22,13 @@ export const LogoImg = styled.img`
   width: 40px;
   height: 40px;
   margin-right: 12px;
-
 `;
 
 export const LogoName = styled.span`
-  font-size: 25px;
-  font-weight: var(--font-weight-semibold);
+  font-size: 32px;
+  font-weight: bold;
   color: var(--color-text-main);
-  font-family: var(--font-family-logo);
-  letter-spacing: -0.1em;
-  height: 40px;
+  font-family: var(--font-family-logo), 'MuseoModerno', sans-serif;
 `;
 
 // 네비게이션 영역
@@ -127,23 +124,6 @@ export const DropdownItem = styled(Link)`
   text-decoration: none;
   font: var(--text-body2);
   background: none;
-  text-align: left;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--color-point);
-  }
-`;
-
-export const DropdownButton = styled.button`
-  display: block;
-  width: 100%;
-  padding: 10px 20px;
-  color: var(--color-text-sub);
-  text-decoration: none;
-  font: var(--text-body2);
-  background: none;
-  border: none;
   text-align: left;
   cursor: pointer;
 
