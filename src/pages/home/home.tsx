@@ -3,6 +3,7 @@
 import React, {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './home.module.css';
+import Header from '@/components/common/header/header';
 import PopAlert from '../../components/section/home/PopAlert';
 import ColorOption from '../../components/section/home/ColorOption';
 import TitleBlock from '../../components/section/home/TitleBlock';
@@ -20,6 +21,13 @@ import fontThemes from '../../../public/data/fontThemes.json';
 import imageThemes from '../../../public/data/imageThemes.json';
 import imagePriority from '../../../public/data/imagePriority.json';    
 import fontPriority from '../../../public/data/fontPriority.json';
+
+interface Option {
+    title: string;
+    description: string;
+    colors?: string[];
+    key?: string;
+}
 
 function Home() {
     const [step, setStep] = useState(1);
@@ -112,8 +120,14 @@ function Home() {
             
             localStorage.setItem('gemini_result', JSON.stringify(result));
 
-            await saveToSupabase(result);
-            // router.push('/home/loading'); 
+            console.log('%c💾 Supabase 저장 시작:', 'color: blue; font-weight: bold;');
+            try {
+                await saveToSupabase(result);
+                console.log('%c✅ Supabase 저장 성공:', 'color: green; font-weight: bold;');
+            } catch (error) {
+                console.error('%c❌ Supabase 저장 실패:', 'color: red; font-weight: bold;', error);
+            }
+            router.push('/home/loading'); 
             } catch (error) {
             console.error('❌ Gemini 서버 호출 실패:', error);
             alert('Gemini API 요청에 실패했습니다.');
@@ -153,12 +167,9 @@ function Home() {
         });
     };
 
-    const goToFeed = () => {
-    router.push('/feed');
-    };
-
     return (
         <main>
+            <Header />
             <ProgressBar step={step}/>
             <PopAlert visible={showAlert} />
             <TitleBlock title={meta.title} subtitle= {meta.subtitle}/>
@@ -167,12 +178,12 @@ function Home() {
             <div className={styles.gridContainer}>
                 {step === 1 ? (
                     <div className={styles.grid3columns}>
-                        {visibleOptions.map((opt: any, index: number) => (
+                        {visibleOptions.map((opt: Option, index: number) => (
                             <ColorOption
                                 key={index}
                                 title={opt.title}
                                 description={opt.description}
-                                colors={opt.colors}
+                                colors={opt.colors || []}
                                 isSelected={selections[0] === opt.title}
                                 onClick={() => handleSelect(opt.title)}
                             />
@@ -180,7 +191,7 @@ function Home() {
                     </div>
                 ) : (
                     <div className={styles.grid2x2}>
-                        {visibleOptions.map((opt: any, index: number) => (
+                        {visibleOptions.map((opt: Option, index: number) => (
                             <MoodOption
                                 key={index}
                                 title={opt.title}
@@ -204,7 +215,6 @@ function Home() {
                 <div className={styles.modalOverlay}>
                     <TagGuideModal
                         onClose={() => setShowModal(false)}
-                        onConfirm={goToFeed}
                     />
                 </div>
             )}

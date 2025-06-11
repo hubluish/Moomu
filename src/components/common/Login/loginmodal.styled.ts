@@ -16,10 +16,10 @@ export const ModalOverlay = styled.div`
 
 export const ModalContent = styled.div`
   display: flex;
-  width: 431px;
+  width: 455px;
   padding: 42px 32px;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   border-radius: 15.72px;
   background: var(--color-background);
 `;
@@ -82,7 +82,7 @@ export const PasswordInputWrapper = styled.div`
 
 export const PasswordToggle = styled.span`
   position: absolute;
-  right: -20px;
+  right: 12px;
   top: 55%;
   transform: translateY(-50%);
   cursor: pointer;
@@ -147,6 +147,7 @@ export const SignUpButton = styled.button<{ $isFormValid: boolean }>`
   font-size: var(--font-body1);
   font-weight: var(--font-weight-bold);
   cursor: ${({ $isFormValid }) => ($isFormValid ? 'pointer' : 'not-allowed')};
+  transition: background-color 0.2s ease;
 
   &:hover {
     background: ${({ $isFormValid }) => ($isFormValid ? 'var(--color-main-hover)' : 'var(--color-disable-button)')};

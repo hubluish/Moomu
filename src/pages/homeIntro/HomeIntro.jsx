@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./HomeIntro.module.css";
+import Header from "@/components/common/header/header";
 
 const images = [
   "/assets/carousel/1.jpg",
@@ -94,177 +95,179 @@ const HomeIntro = () => {
 
   return (
     <div className={styles.container}>
-      {/* 1-1 내용 1 컨테이너 */}
-      <div className={styles.section1}>
-        <div className={styles.section1Title}>
-          <span className={styles.subText}>누구나 디자인을 쉽게</span>
+      <Header />
+      <div className={styles.contentWrapper}>
+        {/* 1-1 내용 1 컨테이너 */}
+        <div className={styles.section1}>
+          <div className={styles.section1Title}>
+            <span className={styles.subText}>누구나 디자인을 쉽게</span>
+          </div>
+          <div className={styles.logoText}>moomu</div>
+          <div className={styles.section1ButtonWrap}>
+            <button
+              className={styles.moodBtn}
+              onClick={() => router.push("/home/home")}
+            >
+              <span className={styles.moodBtnText}>무드보드 만들기</span>
+              <span className={styles.moodBtnIcon}>
+                <svg width="20" height="19" viewBox="0 0 20 19" fill="none">
+                  <path d="M5 9.5H15M15 9.5L11 5.5M15 9.5L11 13.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </span>
+            </button>
+          </div>
+          <hr className={styles.section1Line} />
         </div>
-        <div className={styles.logoText}>moomu</div>
-        <div className={styles.section1ButtonWrap}>
-          <button
-            className={styles.moodBtn}
-            onClick={() => router.push("/home")}
+
+        {/* 1-2 내용 2 컨테이너 : 사진 캐러셀 */}
+        <div className={styles.sliderContainer}>
+          <div className={styles.sliderTrack}>
+            {sliderImages.map((src, idx) => (
+              <div className={styles.slide} key={idx}>
+                <img src={src} alt={`slide-${idx}`} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 1-3 내용 3 컨테이너 */}
+        <div className={styles.section3}>
+          <div className={styles.section3Title}>
+            <span>moomu와 함께해야할이유</span>
+          </div>
+          <div className={styles.section3Content}>
+            {/* 여기에 이유 카드 등 추가 */}
+            <div className={styles.reasonWrap}>
+              {/* 이유 1 */}
+              <div className={styles.reason1}>
+                <div className={styles.reasonTitleBox}>
+                  <span className={styles.reasonTitle}>풍부한 자료</span>
+                </div>
+                <div className={styles.reasonImg1}>
+                  <img
+                    src="/pinterest.svg"
+                    alt="pinterest"
+                    width={260}
+                    height={115}
+                  />
+                </div>
+                <div className={styles.reasonText1}>
+                  무한한 핀터레스트 기반 이미지,
+                  <br />
+                  <span className={styles.strongText}>oo한 눈누</span> 기반 폰트,
+                  <br />
+                  수많은 컬러헌트 기반 색상…
+                </div>
+              </div>
+              {/* 이유 2 */}
+              <div className={styles.reason2}>
+                <div className={styles.reasonTitleBox}>
+                  <span className={styles.reasonTitle}>편리한/쉬운/유용한</span>
+                </div>
+                <div className={styles.reasonImg2}>
+                  <img src="/click.svg" alt="easy" width={83} height={83} />
+                </div>
+                <div className={styles.reasonText2}>
+                  모으고, 정리하고, 저장까지
+                  <br />
+                  클릭 몇 번이면 끝.
+                </div>
+              </div>
+              {/* 이유 3 */}
+              <div className={styles.reason3}>
+                <div className={styles.reasonTitleBox}>
+                  <span className={styles.reasonTitle}>디자인의 완성까지</span>
+                </div>
+                <div className={styles.reasonText3}>
+                  무드보드를 통해 제작한
+                  <br />
+                  카드뉴스, UI , 포스터, 아티클 팁까지!
+                  <br />
+                  예시들을 보며 넘치는 영감을 얻어보세요
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 1-4 내용 4 컨테이너 */}
+        <div className={styles.section4Wrapper}>
+          <div
+            className={styles.section4}
+            ref={section4Ref}
+            style={{ transform: `translate3d(${-scrollX}px, 0, 0)` }}
+            tabIndex={0}
+            onWheel={handleWheel}
           >
-            <span className={styles.moodBtnText}>무드보드 만들기</span>
-            <span className={styles.moodBtnIcon}>
-              {/* 예시 아이콘 */}
-              <svg width="20" height="19" viewBox="0 0 20 19" fill="none">
-                <path d="M5 9.5H15M15 9.5L11 5.5M15 9.5L11 13.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </span>
+            <div className={styles.section4Item1}>
+              <div className={styles.section4Item1Inner}>
+                <div className={styles.section4Item1Box1}></div>
+                <div className={styles.section4Item1Box2}>
+                  <span className={styles.section4Item1Title}>무드보드란?</span>
+                </div>
+              </div>
+              <div className={styles.section4Item1Desc}>
+                <span className={styles.section4Item1Point}>
+                  폰트, 컨셉, 이미지, 색상
+                </span>
+                등등
+                <br />
+                아이디어를 정리하고 보여주는 가장 쉬운 방법이에요.
+              </div>
+            </div>
+            <img
+              className={styles.section4Img2}
+              src="/home_1.svg"
+              alt="section4-2"
+            />
+            <div className={styles.section4Text3}>
+              이미 많은 디자이너들이
+              <br />
+              이 방법으로 작업을 시작해요!
+            </div>
+            <div className={styles.section4Item4}>
+              <div className={styles.section4Item4Text}>
+                디자인을 막 배우기 시작한 사람, 발표 자료를 준비하려는 학생,
+                디자인을 추가하고 싶은 개발자, 레퍼런스를 빠르게 정리하고 싶은
+                디자이너 .......
+              </div>
+            </div>
+            <div className={styles.section4Item5}>
+              <div className={styles.section4Item5Box1}>
+                <span className={styles.section4Item5Text1}>디자인 용어를 몰라요</span>
+              </div>
+              <div className={styles.section4Item5Box2}>
+                <span className={styles.section4Item5Text2}>디자인이 처음이에요</span>
+              </div>
+            </div>
+            <img
+              className={styles.section4Img6}
+              src="/home_2.svg"
+              alt="section4-6"
+            />
+            <div className={styles.section4Text7}>걱정마세요!</div>
+            <div className={styles.section4Text8}>
+              MOOMU가 가장 빠른 출발점이 되어줄게요
+            </div>
+            <img
+              className={styles.section4Img9}
+              src="/home_3.svg"
+              alt="section4-9"
+            />
+          </div>
+        </div>
+
+        {/* 1-5 내용 5 컨테이너 */}
+        <div className={styles.section5}>
+          <div className={styles.section5Logo}>
+            <span>moomu</span>
+          </div>
+          <button className={styles.startBtn} onClick={() => router.push("/home/home")}>
+            <div className={styles.startBtnInner}>
+              <span className={styles.startBtnText}>지금 바로 시작하기</span>
+            </div>
           </button>
         </div>
-        <hr className={styles.section1Line} />
-      </div>
-
-      {/* 1-2 내용 2 컨테이너 : 사진 캐러셀 */}
-      <div className={styles.sliderContainer}>
-        <div className={styles.sliderTrack}>
-          {sliderImages.map((src, idx) => (
-            <div className={styles.slide} key={idx}>
-              <img src={src} alt={`slide-${idx}`} />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 1-3 내용 3 컨테이너 */}
-      <div className={styles.section3}>
-        <div className={styles.section3Title}>
-          <span>moomu와 함께해야할이유</span>
-        </div>
-        <div className={styles.section3Content}>
-          {/* 여기에 이유 카드 등 추가 */}
-          <div className={styles.reasonWrap}>
-            {/* 이유 1 */}
-            <div className={styles.reason1}>
-              <div className={styles.reasonTitleBox}>
-                <span className={styles.reasonTitle}>풍부한 자료</span>
-              </div>
-              <div className={styles.reasonImg1}>
-                <img
-                  src="/pinterest.svg"
-                  alt="pinterest"
-                  width={260}
-                  height={115}
-                />
-              </div>
-              <div className={styles.reasonText1}>
-                무한한 핀터레스트 기반 이미지,
-                <br />
-                <span className={styles.strongText}>oo한 눈누</span> 기반 폰트,
-                <br />
-                수많은 컬러헌트 기반 색상…
-              </div>
-            </div>
-            {/* 이유 2 */}
-            <div className={styles.reason2}>
-              <div className={styles.reasonTitleBox}>
-                <span className={styles.reasonTitle}>편리한/쉬운/유용한</span>
-              </div>
-              <div className={styles.reasonImg2}>
-                <img src="/click.svg" alt="easy" width={83} height={83} />
-              </div>
-              <div className={styles.reasonText2}>
-                모으고, 정리하고, 저장까지
-                <br />
-                클릭 몇 번이면 끝.
-              </div>
-            </div>
-            {/* 이유 3 */}
-            <div className={styles.reason3}>
-              <div className={styles.reasonTitleBox}>
-                <span className={styles.reasonTitle}>디자인의 완성까지</span>
-              </div>
-              <div className={styles.reasonText3}>
-                무드보드를 통해 제작한
-                <br />
-                카드뉴스, UI , 포스터, 아티클 팁까지!
-                <br />
-                예시들을 보며 넘치는 영감을 얻어보세요
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 1-4 내용 4 컨테이너 */}
-      <div className={styles.section4Wrapper}>
-        <div
-          className={styles.section4}
-          ref={section4Ref}
-          style={{ transform: `translate3d(${-scrollX}px, 0, 0)` }}
-          tabIndex={0}
-          onWheel={handleWheel}
-        >
-          <div className={styles.section4Item1}>
-            <div className={styles.section4Item1Inner}>
-              <div className={styles.section4Item1Box1}></div>
-              <div className={styles.section4Item1Box2}>
-                <span className={styles.section4Item1Title}>무드보드란?</span>
-              </div>
-            </div>
-            <div className={styles.section4Item1Desc}>
-              <span className={styles.section4Item1Point}>
-                폰트, 컨셉, 이미지, 색상
-              </span>
-              등등
-              <br />
-              아이디어를 정리하고 보여주는 가장 쉬운 방법이에요.
-            </div>
-          </div>
-          <img
-            className={styles.section4Img2}
-            src="/home_1.svg"
-            alt="section4-2"
-          />
-          <div className={styles.section4Text3}>
-            이미 많은 디자이너들이
-            <br />
-            이 방법으로 작업을 시작해요!
-          </div>
-          <div className={styles.section4Item4}>
-            <div className={styles.section4Item4Text}>
-              디자인을 막 배우기 시작한 사람, 발표 자료를 준비하려는 학생,
-              디자인을 추가하고 싶은 개발자, 레퍼런스를 빠르게 정리하고 싶은
-              디자이너 .......
-            </div>
-          </div>
-          <div className={styles.section4Item5}>
-            <div className={styles.section4Item5Box1}>
-              <span className={styles.section4Item5Text1}>디자인 용어를 몰라요</span>
-            </div>
-            <div className={styles.section4Item5Box2}>
-              <span className={styles.section4Item5Text2}>디자인이 처음이에요</span>
-            </div>
-          </div>
-          <img
-            className={styles.section4Img6}
-            src="/home_2.svg"
-            alt="section4-6"
-          />
-          <div className={styles.section4Text7}>걱정마세요!</div>
-          <div className={styles.section4Text8}>
-            MOOMU가 가장 빠른 출발점이 되어줄게요
-          </div>
-          <img
-            className={styles.section4Img9}
-            src="/home_3.svg"
-            alt="section4-9"
-          />
-        </div>
-      </div>
-
-      {/* 1-5 내용 5 컨테이너 */}
-      <div className={styles.section5}>
-        <div className={styles.section5Logo}>
-          <span>moomu</span>
-        </div>
-        <button className={styles.startBtn} onClick={() => router.push("/home")}>
-          <div className={styles.startBtnInner}>
-            <span className={styles.startBtnText}>지금 바로 시작하기</span>
-          </div>
-        </button>
       </div>
     </div>
   );

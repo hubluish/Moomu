@@ -1,14 +1,21 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './TagGuideModal.module.css';
 
 interface TagGuideModalProps {
     onClose: () => void;
-    onConfirm: () => void;
 }
 
-export default function TagGuideModal({ onClose, onConfirm }: TagGuideModalProps) {
+export default function TagGuideModal({ onClose }: TagGuideModalProps) {
+    const router = useRouter();
+
+    const handleFeedClick = () => {
+        onClose();
+        router.push('/article');
+    };
+
     return (
         <div className={styles.wrapper}>
         <div className={styles.closeIconWrapper}>
@@ -36,7 +43,7 @@ export default function TagGuideModal({ onClose, onConfirm }: TagGuideModalProps
 
         <div className={styles.buttonRow}>
             <button className={styles.leftButton} onClick={onClose}>닫기</button>
-            <button className={styles.rightButton} onClick={onConfirm}>피드 구경하기</button>
+            <button className={styles.rightButton} onClick={handleFeedClick}>피드 구경하기</button>
         </div>
         </div>
     );

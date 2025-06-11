@@ -13,6 +13,7 @@
   --color-outline: #E6E8EC; /*모달, 네모 박스 등 (weight : 2)로 사용하세요*/
   --color-notice: #F1F3F5; /*비활성, 논모달, 안내*/
   --color-disable-button: #3D38F5; /*비활성 버튼*/
+  --color-main-hover: #251fc1;
 
   /* 🅰️ Font Family */
   --font-family-base: 'Pretendard', sans-serif;

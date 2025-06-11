@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '@/utils/supabase';
+import Image from 'next/image';
 import {
   ModalOverlay,
   ModalContent,
@@ -222,9 +223,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                 />
                 <PasswordToggle onClick={() => setShowPassword(prev => !prev)}>
                   {showPassword ? (
-                    <img src="/assets/icons/eye-open.svg" alt="Show password" />
+                    <Image src="/assets/icons/eye-open.svg" alt="Show password" width={24} height={24} />
                   ) : (
-                    <img src="/assets/icons/eye-closed.svg" alt="Hide password" />
+                    <Image src="/assets/icons/eye-closed.svg" alt="Hide password" width={24} height={24} />
                   )}
                 </PasswordToggle>
               </PasswordInputWrapper>
@@ -235,17 +236,17 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
             <SocialLoginButtons>
               <SocialButton onClick={handleGoogleLogin}>
-                <img src="/assets/icons/google.svg" alt="Google" />
+                <Image src="/assets/icons/google.svg" alt="Google" width={54} height={54} />
               </SocialButton>
               <SocialButton onClick={() => {
                 alert(isLoginMode 
                   ? '아직 기능 준비중입니다!\n이메일, 구글, 카카오 로그인을 이용해 주세요.'
                   : '아직 기능 준비중입니다!\n이메일, 구글, 카카오 회원가입을 이용해 주세요.');
               }}>
-                <img src="/assets/icons/naver.svg" alt="Naver" />
+                <Image src="/assets/icons/naver.svg" alt="Naver" width={54} height={54} />
               </SocialButton>
               <SocialButton onClick={handleKakaoLogin}>
-                <img src="/assets/icons/kakao.svg" alt="Kakao" />
+                <Image src="/assets/icons/kakao.svg" alt="Kakao" width={54} height={54} />
               </SocialButton>
             </SocialLoginButtons>
 
