@@ -2,8 +2,10 @@
 'use client';
 
 import MoodboardOverlay from './MoodboardOverlay';
+import TrashMoodboardOverlay from './TrashMoodboardOverlay';
+import FolderMoodboardOverlay from './FolderMoodboardOverlay';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   MoodboardCard,
   MoodboardSection,
@@ -29,16 +31,35 @@ type Props = {
   image: string;
   isFavorite?: boolean;
   onUpdate?: (updatedMoodboard: MoodboardData) => void;
+  onPermanentDelete?: (moodboardId: string) => void;
+  onRemoveFromFolder?: (moodboardId: string) => void;
+  onMoveToTrash?: (moodboardId: string) => void;
+  isTrash?: boolean;
+  isFolder?: boolean;
+  currentFolderId?: string;
 };
 
-const Moodboard = ({ id, title, date, image, isFavorite = false, onUpdate }: Props) => {
+const Moodboard = ({
+  id,
+  title,
+  date,
+  image,
+  isFavorite = false,
+  onUpdate,
+  onPermanentDelete,
+  onRemoveFromFolder,
+  onMoveToTrash,
+  isTrash = false,
+  isFolder = false,
+  currentFolderId,
+}: Props) => {
   const [moodboardData, setMoodboardData] = useState<MoodboardData>({
     id,
     title,
     date,
     image,
     isFavorite,
-    isDeleted: false
+    isDeleted: false,
   });
 
   const handleUpdate = (updatedMoodboard: MoodboardData) => {
@@ -48,14 +69,40 @@ const Moodboard = ({ id, title, date, image, isFavorite = false, onUpdate }: Pro
     }
   };
 
+  const renderOverlay = useCallback(() => {
+    if (isTrash) {
+      return (
+        <TrashMoodboardOverlay
+          moodboard={moodboardData}
+          onUpdate={handleUpdate}
+          onPermanentDelete={onPermanentDelete}
+        />
+      );
+    } else if (isFolder) {
+      return (
+        <FolderMoodboardOverlay
+          moodboard={moodboardData}
+          onRemoveFromFolder={onRemoveFromFolder}
+          onMoveToTrash={onMoveToTrash}
+          onUpdate={handleUpdate}
+          currentFolderId={currentFolderId}
+        />
+      );
+    } else {
+      return (
+        <MoodboardOverlay
+          moodboard={moodboardData}
+          onUpdate={handleUpdate}
+        />
+      );
+    }
+  }, [isTrash, isFolder, moodboardData, onPermanentDelete, onRemoveFromFolder, onMoveToTrash, onUpdate, currentFolderId]);
+
   return (
     <MoodboardCard>
       <MoodboardSection>
         <Image src={image} alt={title} width={332} height={181} />
-        <MoodboardOverlay 
-          moodboard={moodboardData}
-          onUpdate={handleUpdate}
-        />
+        {renderOverlay()}
       </MoodboardSection>
       <TitleSection>
         <Title>{title}</Title>

@@ -12,7 +12,7 @@ const isLoggedIn = true; // 로그인 상태를 나타내는 변수 (예시로 t
 const NAV_ITEMS = [
   { href: "/", label: "home" },
   { href: "/article", label: "article" },
-  { href: "/mymoodboard", label: "mymoodboard" },
+  { href: "/mypage/moodboard/page", label: "mymoodboard" },
 ];
 
 // 헤더 내용
@@ -29,7 +29,11 @@ export default function Header() {
 
       <Nav>
         {NAV_ITEMS.map(({ href, label }) => (
-          <NavLink href={href} key={href} $active={pathname === href}>
+          <NavLink 
+            href={href} 
+            key={href} 
+            $active={label === "mymoodboard" ? (pathname ?? "").startsWith("/mypage") : pathname === href}
+          >
             {label}
           </NavLink>
         ))}
