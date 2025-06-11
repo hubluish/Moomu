@@ -10,6 +10,7 @@ interface ColorPaletteBoxProps {
 
 export default function ColorPaletteBox({ colorKeywords }: ColorPaletteBoxProps) {
     const [hexCodes, setHexCodes] = useState<string[][]>([]);
+    const [page, setPage] = useState(0);
 
     useEffect(() => {
         async function fetchPalettes() {
@@ -24,23 +25,23 @@ export default function ColorPaletteBox({ colorKeywords }: ColorPaletteBoxProps)
                     if (!Array.isArray(palettes) || palettes.length === 0) continue;
 
                     // palettes는 id string 배열임
-                    const paletteId = palettes[0];
-                    const paletteData = getPaletteById(paletteId);
-                    if (!paletteData) continue;
-
-                    const codes = [];
-                    for (let i = 0; i < 24; i += 6) {
-                        const hex = paletteData.code.slice(i, i + 6);
-                        if (hex.length === 6) codes.push(`#${hex}`);
+                    for (const paletteId of palettes) {
+                        const paletteData = getPaletteById(paletteId);
+                        if (!paletteData) continue;
+                        const codes = [];
+                        for (let i = 0; i < 24; i += 6) {
+                            const hex = paletteData.code.slice(i, i + 6);
+                            if (hex.length === 6) codes.push(`#${hex}`);
+                        }
+                        allHexCodes.push(codes);
                     }
-                    allHexCodes.push(codes);
-                    break; // 첫 번째로 찾은 팔레트만 사용
                 } catch (e) {
                     console.error(`Error fetching palette for ${keyword}:`, e);
                     continue;
                 }
             }
             setHexCodes(allHexCodes);
+            setPage(0); // 키워드 바뀌면 첫 페이지로
         }
         fetchPalettes();
     }, [colorKeywords]);
@@ -50,16 +51,28 @@ export default function ColorPaletteBox({ colorKeywords }: ColorPaletteBoxProps)
         alert(`${hex}가 복사되었습니다!`);
     };
 
+    const hasPrev = page > 0;
+    const hasNext = page < hexCodes.length - 1;
+
     return (
         <div className={styles.container}>
             <div className={styles.title}>Color Palette</div>
-            <div className={styles.content}>
+            <div className={styles.content} style={{ position: 'relative' }}>
                 {hexCodes.length === 0 ? (
                     <div>팔레트가 없습니다.</div>
                 ) : (
-                    hexCodes.map((palette, idx) => (
-                        <div key={idx} style={{ display: 'flex', marginBottom: 8 }}>
-                            {palette.map((hex, i) => (
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {hasPrev && (
+                            <button
+                                style={{ marginRight: 12, background: 'none', border: 'none', cursor: 'pointer', fontSize: 24 }}
+                                onClick={() => setPage(page - 1)}
+                                aria-label="이전 팔레트"
+                            >
+                                &lt;
+                            </button>
+                        )}
+                        <div style={{ display: 'flex', marginBottom: 8 }}>
+                            {hexCodes[page].map((hex, i) => (
                                 <div
                                     key={hex}
                                     className={styles.colorBlock}
@@ -70,7 +83,16 @@ export default function ColorPaletteBox({ colorKeywords }: ColorPaletteBoxProps)
                                 </div>
                             ))}
                         </div>
-                    ))
+                        {hasNext && (
+                            <button
+                                style={{ marginLeft: 12, background: 'none', border: 'none', cursor: 'pointer', fontSize: 24 }}
+                                onClick={() => setPage(page + 1)}
+                                aria-label="다음 팔레트"
+                            >
+                                &gt;
+                            </button>
+                        )}
+                    </div>
                 )}
             </div>
         </div>
