@@ -8,9 +8,9 @@ import json
 import os
 
 # 설정
-USERNAME = 'developer5ssu@gmail.com'  # 본인 Pinterest 이메일
-PASSWORD = '1408013618'           # 본인 Pinterest 비밀번호
-SEARCH_KEYWORD = 'pastel dreamy minimal handwritten'         # 검색 키워드
+USERNAME = 'james2048@naver.com'  # 본인 Pinterest 이메일
+PASSWORD = 'aa4519ss'           # 본인 Pinterest 비밀번호
+SEARCH_KEYWORD = 'emotional'         # 검색 키워드
 
 # 브라우저 열기
 options = webdriver.ChromeOptions()
