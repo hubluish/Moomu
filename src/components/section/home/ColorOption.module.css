@@ -34,11 +34,6 @@ background: var(--point, rgba(123, 104, 238, 0.76));
     overflow: hidden;
     }
 
-    border-radius: 4px;
-    width: 100px;
-    height: 100px;
-    overflow: hidden;
-    }
 
 .image {
     width: 100%;
