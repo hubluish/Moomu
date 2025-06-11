@@ -4,8 +4,10 @@ import styles from './MoodOption.module.css';
 type MoodOptionProps = {
     title: string;
     subtitle: string;
+    keyName?: string;
     isSelected?: boolean;
     onClick?: () => void;
+    step?: number;
 };
 
 export default function MoodOption({ title, subtitle, keyName,isSelected, onClick, step }: MoodOptionProps) {

@@ -148,6 +148,7 @@ interface FolderModalProps {
 }
 
 export default function FolderModal({ onClose, onAddClick, moodboardId, currentFolderId }: FolderModalProps) {
+
   const [folders, setFolders] = useState<Array<{ id: string; name: string }>>([]);
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
 

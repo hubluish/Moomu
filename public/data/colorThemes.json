@@ -5,8 +5,7 @@
         "colors": ["#F4A7B9", "#FFD1A9", "#FFF5A5", "#BCEBCB", "#A5D8FF", "#B5C7ED", "#D8B4E2"]
     },
     {
-        "title": "Toned Down",
-
+        "title": "Toned-Down",
         "description": "Muted and calm colors for subtle tones.",
         "colors": ["#A65A5A", "#C78B60", "#C9B458", "#688D6B", "#5F7E9C", "#4A5C7A", "#82688E"]
     },

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styles from './ColorOption.module.css';
 import { on } from 'events';
 import styles from './ColorOption.module.css';
@@ -10,6 +9,7 @@ type ColorOptionProps = {
     isSelected?: boolean;
     onClick?: () => void;
 };
+
 
 export default function ColorOption({ title, description, colors, isSelected, onClick }: ColorOptionProps) {
     
