@@ -14,6 +14,8 @@ import { useSearchParams } from "next/navigation";
 
 interface Article {
   _id: string;
+  id: string;
+  slug: string;
   title: string;
   content: string;
   category: string;
@@ -53,10 +55,24 @@ export default function Article() {
 
   // 게시글 목록 불러오기
   useEffect(() => {
-    fetch("/api/articles")
-      .then(res => res.json())
-      .then(data => setArticles(data));
-  }, []);
+  fetch("/api/articles")
+    .then(res => res.json())
+    .then(data => {
+      const mapped = data.map((item: any): Article => ({
+        _id: item._id,
+        title: item.title,
+        content: item.content,
+        category: item.category,
+        date: item.date,
+        imageUrl: item.imageUrl ?? "",
+        description: item.description ?? "",
+        // 추가 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+        id: item._id,            // 또는 다른 고유값으로 대체 가능
+        slug: item.slug ?? "",   // 백엔드에서 slug가 없으면 빈 문자열 처리
+      }));
+      setArticles(mapped);
+    });
+}, []);
 
   // URL 파라미터(category)로 탭 자동 선택
   useEffect(() => {
@@ -139,14 +155,19 @@ export default function Article() {
           </>
         ) : (
           <TabPage
-            tabIdx={activeTab}
-            articles={articles.map(article => ({
-              ...article,
-              imageUrl: article.imageUrl ?? "",
-              description: article.description ?? "",
-            }))}
-            search={search}
-          />
+          tabIdx={activeTab}
+          articles={articles.map(article => ({
+            id: article._id,                       // ✅ _id → id
+            slug: "",                              // ✅ 없으면 기본값. 필요시 toSlug(article.title)
+            title: article.title,
+            content: article.content,
+            category: article.category,
+            date: article.date,
+            imageUrl: article.imageUrl ?? "",
+            description: article.description ?? "",
+          }))}
+          search={search}
+        />
         )}
         {/* 게시글 없을 때 메시지 */}
         {activeTab !== 0 && filteredArticles.length === 0 ? (
