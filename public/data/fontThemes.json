@@ -35,26 +35,31 @@
       "description": "섬세하고 깔끔한 인상을 주는 얇은 획의 글씨체예요."
     },
     {
+
       "key": "bold",
       "title": "두꺼운",
       "description": "강조하고 싶은 문구에 잘 어울리는 묵직한 스타일이에요."
     },
     {
+
       "key": "serif",
       "title": "명조체",
       "description": "전통적인 출판물에서 많이 쓰이는 정통 서체예요."
     },
     {
+
       "key": "sans-serif",
       "title": "고딕체",
       "description": "깔끔하고 현대적인 인상을 주는 직선적 글꼴이에요."
     },
     {
+
       "key": "clean",
       "title": "깔끔한",
       "description": "가독성이 뛰어나고 다양한 디자인에 잘 어울려요."
     },
     {
+
       "key": "unique",
       "title": "유니크한",
       "description": "독특한 개성이 느껴지는 개별적인 스타일이에요."

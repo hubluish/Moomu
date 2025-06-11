@@ -28,6 +28,12 @@ background: var(--point, rgba(123, 104, 238, 0.76));
 .imageArea {
     flex: 1 0 0;
     align-self: stretch;
+    background-color: #a4a4a4; /* 임시 검정 배경 */
+    border-radius: 4px;
+    width: 100px;
+    height: 100px;
+    }
+
     border-radius: 4px;
     width: 100px;
     height: 100px;

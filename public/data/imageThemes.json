@@ -30,6 +30,7 @@
         "description": "사람의 표정, 포즈, 감정을 표현한 이미지예요."
     },
     {
+
         "key": "emotional",
         "title": "감성",
         "description": "분위기 있고 감정이 묻어나는 따뜻한 이미지예요."
@@ -50,6 +51,7 @@
         "description": "야경, 별빛, 조명 등이 어우러진 어두운 이미지예요."
     },
     {
+
         "key": "morning",
         "title": "아침",
         "description": "햇살, 커피, 일상의 시작을 느낄 수 있는 이미지예요."
