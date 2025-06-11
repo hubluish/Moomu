@@ -150,7 +150,9 @@ export const DropdownButton = styled.button`
   &:hover {
     color: var(--color-point);
   }
-`;export const DropdownLinkButton = styled.button`
+`;
+
+export const DropdownLinkButton = styled.button`
   display: block;
   width: 100%;
   padding: 10px 20px;
