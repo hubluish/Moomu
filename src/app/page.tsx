@@ -1,6 +1,6 @@
 "use client";
 import Header from "@/components/common/header/header";
-import "@/styles/variable.css";
+import "@/app/globals.css";
 
 export default function Home() {
 

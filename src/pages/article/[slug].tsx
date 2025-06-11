@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "./ArticleDetail.module.css";
 
 interface Article {
-  _id: string;
+  id: string | number;
   title: string;
   content: string;
   category: string;
@@ -12,27 +12,27 @@ interface Article {
   imageUrl?: string;
   description?: string;
   keywords?: string[];
+  slug: string;
 }
 
 export default function ArticleDetail() {
   const router = useRouter();
-  const { id } = router.query;
+  const { slug } = router.query;
   const [article, setArticle] = useState<Article | null>(null);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
 
+  const safeSlug = Array.isArray(slug) ? slug[0] : slug;
+
   useEffect(() => {
-    if (!id) return;
-    fetch(`/api/articles/${id}`)
+    if (!safeSlug) return;
+    fetch(`/api/articles?slug=${safeSlug}`)
       .then(res => {
-        if (!res.ok) throw new Error("API 응답 오류");
+        if (!res.ok) throw new Error("게시글을 불러오지 못했습니다.");
         return res.json();
       })
       .then(data => setArticle(data))
-      .catch(err => {
-        alert("게시글을 불러오지 못했습니다.");
-        console.error(err);
-      });
-  }, [id]);
+      .catch(() => setArticle(null));
+  }, [safeSlug]);
 
   const handleCopyKeyword = (kw: string, idx: number) => {
     navigator.clipboard.writeText(kw);
@@ -40,7 +40,7 @@ export default function ArticleDetail() {
     setTimeout(() => setCopiedIdx(null), 1200);
   };
 
-  if (!article) return <div>로딩중...</div>;
+  if (!article || !article.date) return <div>로딩중...</div>;
 
   const formattedDate = article.date.replace(/-/g, ".");
 

@@ -13,7 +13,7 @@ const TAB_INFO = [
 ];
 
 interface Article {
-  _id: string;
+  id: string | number;
   title: string;
   content: string;
   category: string;
@@ -22,6 +22,7 @@ interface Article {
   description?: string;
   views?: number;         // 인기순용
   isRecommended?: boolean; // 추천순용
+  slug: string;
 }
 
 interface TabPageProps {
@@ -35,8 +36,8 @@ export default function TabPage({ tabIdx, articles, search = "" }: TabPageProps)
   const [sort, setSort] = useState("추천순");
   const [articleList, setArticleList] = useState(articles);
 
-  const handleDelete = (_id: string) => {
-    setArticleList(prev => prev.filter(a => a._id !== _id));
+  const handleDelete = (id: string | number) => {
+    setArticleList(prev => prev.filter(a => a.id !== id));
   };
 
   // 1. 탭 필터
@@ -96,8 +97,9 @@ export default function TabPage({ tabIdx, articles, search = "" }: TabPageProps)
           <div className={styles.cardRow} key={idx}>
             {chunk.map((article: Article) => (
               <ArticleCard
-                key={article._id}
+                key={article.slug}
                 {...article}
+                slug={article.slug}
                 onDelete={handleDelete}
                 imageUrl={article.imageUrl ?? ""}
                 description={article.description ?? ""}

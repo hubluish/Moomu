@@ -1,6 +1,3 @@
-@import '../../../../styles/variable.css' ;
-
-
 .allConatiner{
   display: flex;
   flex-direction: column;

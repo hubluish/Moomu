@@ -2,7 +2,8 @@ import React, { useState, FormEvent, ChangeEvent, KeyboardEvent, useRef } from "
 import styles from "./ArticleList.module.css";
 import "@/styles/variable.css";
 import Image from "next/image";
-import crypto from "crypto";
+import { toSlug } from '@/utils/slug';
+import { supabase } from '@/utils/supabase';
 
 const CATEGORY_OPTIONS = ["UI", "카드뉴스", "포스터", "용어사전", "트렌드"];
 
@@ -115,11 +116,6 @@ export default function ArticleCreate({ onCreated }: ArticleCreateProps) {
     if (!el) return;
     setContent(el.innerText);
   };
-
-  // 제목을 해시로 변환(slug)
-  function toSlug(text: string) {
-    return crypto.createHash("sha256").update(text).digest("hex");
-  }
 
   // 폼 제출 및 게시글 등록
   const handleSubmit = async (e: FormEvent) => {

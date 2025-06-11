@@ -6,21 +6,29 @@ import styles from "./pagenation.module.css";
 import Image from "next/image";
 
 // 여기에 사용할 ObjectId들을 배열로 입력하세요!
-const OBJECT_IDS = [
-  "6844010f4f25673b0fe2858d ",
-  "684400134f25673b0fe2858c",
-  "6843f5fa4f25673b0fe2857c",
-  "6844018b4f25673b0fe2858e",
+const ids = [
+  1,
+  2,
+  3,
+  4,
+];
+
+const SLUGS = [
+  "652b6248eee1811bd0e7bf6ee800408240d2213b5d62de0b94b4a7477ab004c8",
+  "8daaff9697228fc9e6c4ff683fa4e3eb5974dfaa5a02b7cc6027dcd7429c8113",
+  "5e1a72be79857fa3054f030526a6f4b7e709fbf39bbeaf47a600461d5fa72892",
+  "2f8df547dedc0280ebb020bcaf9a47b3bd9051b62f033cc97c0960438bb77e3e"
 ];
 
 interface SlideData {
-  _id: string;
+  id: string | number;
   imageUrl?: string;
   title1: string;
   title2: string;
   desc1: string;
   desc2: string;
   category: string;
+  slug: string;
 }
 
 export default function ImageSlider() {
@@ -33,10 +41,11 @@ export default function ImageSlider() {
   // 여러 ObjectId로 DB에서 데이터 받아오기
   useEffect(() => {
     Promise.all(
-      OBJECT_IDS.map((id) =>
-        fetch(`/api/articles/${id}`)
+      SLUGS.map((slug) =>
+        fetch(`/api/articles?slug=${slug}`)
           .then((res) => res.json())
           .then((data) => {
+            if (!data) return null;
             // title, description 2개로 쪼개기
             const titleArr = data.title ? data.title.split(" ") : [""];
             const titleMid = Math.ceil(titleArr.length / 2);
@@ -49,13 +58,14 @@ export default function ImageSlider() {
             const desc2 = descArr.slice(descMid).join(" ");
 
             return {
-              _id: data._id,
+              id: data.id,
               imageUrl: data.imageUrl,
               title1,
               title2,
               desc1,
               desc2,
               category: data.category,
+              slug: data.slug,
             } as SlideData;
           })
           .catch(() => null)
@@ -93,7 +103,7 @@ export default function ImageSlider() {
 
   // 카드 클릭 시 이동
   const handleCardClick = () => {
-    if (slide?._id) router.push(`/article/${slide._id}`);
+    if (slide?.slug) router.push(`/article/${slide.slug}`);
   };
 
   if (!slide) return null;

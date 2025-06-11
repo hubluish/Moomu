@@ -1,5 +1,3 @@
-@import '../../../../styles/variable.css';
-
 /* 카드 전체 컨테이너 */
 .card {
   display: flex;

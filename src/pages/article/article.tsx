@@ -12,7 +12,7 @@ import confetti from "canvas-confetti";
 import { useSearchParams } from "next/navigation";
 
 interface Article {
-  _id: string;
+  id: string | number;
   title: string;
   content: string;
   category: string;

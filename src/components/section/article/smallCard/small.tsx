@@ -2,6 +2,8 @@
 import React from "react";
 import styles from "./small.module.css";
 import { useRouter } from "next/navigation";
+import { toSlug } from '@/utils/slug';
+
 
 interface ArticleCardProps {
   imageUrl: string;
@@ -9,6 +11,7 @@ interface ArticleCardProps {
   description: string;
   category: string;
   date: string;
+  slug: string;
 }
 
 export default function SmallArticleCard({
@@ -17,11 +20,12 @@ export default function SmallArticleCard({
   description,
   category,
   date,
+  slug,
 }: ArticleCardProps) {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/article/${encodeURIComponent(title)}`);
+    router.push(`/article/${slug}`);
   };
 
   return (

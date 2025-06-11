@@ -3,25 +3,29 @@ import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./big.module.css";
 import { useRouter } from "next/navigation";
+import { supabase } from '@/utils/supabase';
+import { toSlug } from '@/utils/slug';
 
 interface ArticleCardProps {
-  _id: string; // MongoDB의 ObjectId는 string으로 처리
-  imageUrl: string;
+  id: string | number;
   title: string;
   description: string;
   category: string;
   date: string;
-  onDelete: (_id: string) => void;
+  imageUrl: string;
+  onDelete: (id: string | number) => void;
+  slug: string;
 }
 
 export default function ArticleCard({
-  _id,
+  id,
   imageUrl,
   title,
   description,
   category,
   date,
   onDelete,
+  slug,
 }: ArticleCardProps) {
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
@@ -30,9 +34,9 @@ export default function ArticleCard({
   // 카드 클릭 시 조회수 증가 후 상세 페이지로 이동
   const handleClick = async () => {
     // 조회수 증가 요청
-    await fetch(`/api/articles/${_id}`, { method: "POST" });
+    await fetch(`/api/articles/${id}`, { method: "POST" });
     // 상세 페이지로 이동
-    router.push(`/article/${_id}`);
+    router.push(`/article/${slug}`);
   };
 
   // 카드 hover 상태에서 Q를 3번 누르면 게시글 삭제
@@ -43,9 +47,9 @@ export default function ArticleCard({
         qCount.current += 1;
         if (qCount.current === 3) {
           // 1. DB에서 삭제
-          await axios.delete(`/api/articles/${_id}`);
+          await axios.delete(`/api/articles/${id}`);
           // 2. UI에서 제거
-          onDelete(_id);
+          onDelete(id);
           qCount.current = 0;
         }
       } else {
@@ -57,7 +61,7 @@ export default function ArticleCard({
       window.removeEventListener("keydown", onKeyDown);
       qCount.current = 0;
     };
-  }, [hovered, _id, onDelete]);
+  }, [hovered, id, onDelete]);
 
   return (
     // 카드 전체 컨테이너 (hover, click 이벤트)

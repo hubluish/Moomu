@@ -1,9 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { MongoClient } from "mongodb";
-import crypto from "crypto";
-
-const uri = "mongodb+srv://gaeunpop:1111@cluster0.uqxyg33.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const dbName = "article";
+import { supabase } from "@/utils/supabase";
+import { toSlug } from '@/utils/slug'
 
 export const config = {
   api: {
@@ -13,37 +10,38 @@ export const config = {
   },
 };
 
-function toSlug(text: string) {
-  return crypto.createHash("sha256").update(text).digest("hex");
-}
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const client = new MongoClient(uri);
-  try {
-    await client.connect();
-    const db = client.db(dbName);
+  // 슬러그로 단일 조회
+  if (req.method === "GET" && req.query.slug) {
+    const { data, error } = await supabase
+      .from("article")
+      .select("*")
+      .eq("slug", req.query.slug)
+      .single();
+    if (error || !data) return res.status(404).json({ error: "Not found" });
+    return res.status(200).json(data);
+  }
 
-    // 상세(slug) 조회
-    if (req.method === "GET" && req.query.slug) {
-      const slug = req.query.slug as string;
-      const article = await db.collection("article").findOne({ slug });
-      if (!article) return res.status(404).json({ error: "Not found" });
-      return res.status(200).json(article);
+  // 목록 조회
+  if (req.method === "GET") {
+    const { category, limit } = req.query;
+    let query = supabase.from("article").select("*").order("date", { ascending: false });
+    if (category) query = query.eq("category", category);
+    if (limit) query = query.limit(Number(limit));
+    const { data, error } = await query;
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(200).json(data);
+  }
+
+  // 생성
+  if (req.method === "POST") {
+    const { title, content, category, date, imageUrl, description, keywords } = req.body;
+    if (!title || typeof title !== "string") {
+      return res.status(400).json({ error: "title이 비어있거나 잘못된 값입니다." });
     }
-
-    // 기존 목록 조회
-    if (req.method === "GET") {
-      const { category, limit } = req.query;
-      const query: Record<string, unknown> = {};
-      if (category) query.category = category;
-      let cursor = db.collection("article").find(query).sort({ date: -1 });
-      if (limit) cursor = cursor.limit(Number(limit));
-      const articles = await cursor.toArray();
-      return res.status(200).json(articles);
-    } else if (req.method === "POST") {
-      const { title, content, category, date, imageUrl, description, keywords } = req.body;
-      const slug = toSlug(title); 
-      const result = await db.collection("article").insertOne({
+    const slug = toSlug(title);
+    const { data, error } = await supabase.from("article").insert([
+      {
         title,
         slug,
         content,
@@ -52,15 +50,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         imageUrl,
         description,
         keywords,
-        views: 0, // 조회수 기본값
-        isRecommended: false, // 추천글 여부 기본값
-      });
-      res.status(201).json({ insertedId: result.insertedId });
-    } else {
-      res.status(405).json({ error: "Method Not Allowed" });
-    }
-  } finally {
-    await client.close();
+        views: 0,
+        isRecommended: false,
+      },
+    ]).select();
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(201).json({ insertedId: (data as any)?.[0]?.id });
   }
+
+  res.status(405).json({ error: "Method Not Allowed" });
 }
 

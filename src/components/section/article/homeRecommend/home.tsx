@@ -12,7 +12,7 @@ interface CardData {
   description: string;
   category: string;
   date: string;
-  _id?: string;
+  id: string | number;
 }
 
 interface SectionProps {
@@ -71,10 +71,10 @@ function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }: SectionP
           }}
         />
         <div className={styles.row}>
-          <ArticleTab {...{ ...bigCard, _id: bigCard._id ?? "" }} />
+          <ArticleTab {...bigCard} onDelete={() => {}} />
           <div className={styles.col}>
             {smallCards.map((card: CardData, idx: number) => (
-              <ArticleTabs key={idx} {...{ ...card, _id: card._id ?? "" }} />
+              <ArticleTabs key={idx} {...card} />
             ))}
           </div>
         </div>
