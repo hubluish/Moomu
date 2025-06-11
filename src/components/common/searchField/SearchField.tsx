@@ -36,7 +36,7 @@ export default function SearchField({
         <span className={styles.placeholder}>{placeholder}</span>
         {/* 검색 아이콘 클릭 시 검색 실행 */}
         <span className={styles.icon} onClick={onSearch}>
-          <Image src="/search.svg" alt="검색" width={20} height={20} />
+          <Image src="/assets/icons/search.svg" alt="검색" width={20} height={20} />
         </span>
       </div>
     </div>
