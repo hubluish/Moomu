@@ -1,9 +1,19 @@
 // utils/saveToSupabase.ts
-import { request } from 'axios';
 import { supabase } from './supabaseClient';
 import { v4 as uuidv4 } from 'uuid';
 
-export async function saveToSupabase(results: any[]) {
+interface GeminiResponse {
+    colors?: string;
+    color_keywords?: string;
+    color?: string;
+    font?: string;
+    image?: string;
+    sentences?: string;
+    mood_sentence?: string;
+    mood?: string;
+}
+
+export async function saveToSupabase(results: GeminiResponse | GeminiResponse[]) {
     const array = Array.isArray(results) ? results : [results];
     const requestId = uuidv4();
 
@@ -16,24 +26,23 @@ export async function saveToSupabase(results: any[]) {
         const mood_sentence = data.sentences ?? data.mood_sentence ?? data.mood;
 
         try {
-    console.log('📦 insert payload:', {
-        request_id: requestId,
-        color_keyword,
-        font_keyword,
-        image_keyword,
-        mood_sentence,
-    });
+            console.log('📦 insert payload:', {
+                request_id: requestId,
+                color_keyword,
+                font_keyword,
+                image_keyword,
+                mood_sentence,
+            });
 
-    await supabase.from('moodboard_results').insert({
-        request_id: requestId,
-        color_keyword,
-        font_keyword,
-        image_keyword,
-        mood_sentence,
-    });
-    
-    } catch (err) {
-        console.error(`❌ 저장 실패 (index: ${i}):`, err);
-    }
+            await supabase.from('moodboard_results').insert({
+                request_id: requestId,
+                color_keyword,
+                font_keyword,
+                image_keyword,
+                mood_sentence,
+            });
+        } catch (err) {
+            console.error(`❌ 저장 실패 (index: ${i}):`, err);
+        }
     }
 }
