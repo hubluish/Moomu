@@ -17,6 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Moomu",
   description: "Moomu",
+  icons: {
+    icon: [
+      { url: 'data:,' }
+    ]
+  }
 };
 
 export default function RootLayout({
@@ -32,4 +37,3 @@ export default function RootLayout({
     </html>
   );
 }
-

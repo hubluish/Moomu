@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './MoodOption.module.css';
 
 type MoodOptionProps = {

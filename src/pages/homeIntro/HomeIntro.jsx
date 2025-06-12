@@ -5,16 +5,16 @@ import styles from "./HomeIntro.module.css";
 import Header from "@/components/common/header/header";
 
 const images = [
-  "/assets/carousel/1.jpg",
-  "/assets/carousel/2.jpg",
-  "/assets/carousel/3.jpg",
-  "/assets/carousel/4.jpg",
-  "/assets/carousel/5.jpg",
-  "/assets/carousel/6.jpg",
-  "/assets/carousel/7.jpg",
-  "/assets/carousel/8.jpg",
-  "/assets/carousel/9.jpg",
-  "/assets/carousel/10.jpg",
+  "/assets/images/carousel/1.jpg",
+  "/assets/images/carousel/2.jpg",
+  "/assets/images/carousel/3.jpg",
+  "/assets/images/carousel/4.jpg",
+  "/assets/images/carousel/5.jpg",
+  "/assets/images/carousel/6.jpg",
+  "/assets/images/carousel/7.jpg",
+  "/assets/images/carousel/8.jpg",
+  "/assets/images/carousel/9.jpg",
+  "/assets/images/carousel/10.jpg",
 ];
 
 const VISIBLE_COUNT = 3;

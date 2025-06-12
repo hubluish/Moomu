@@ -1,11 +1,8 @@
-'use client';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+"use client";
 
-export default function HomeRedirect() {
-  const router = useRouter();
-  useEffect(() => {
-    router.replace('/homeIntro');
-  }, []);
-  return null;
+import "@/app/globals.css";
+import HomeIntro from "@/pages/homeIntro/HomeIntro"
+
+export default function Home() {
+  return <HomeIntro />;
 }

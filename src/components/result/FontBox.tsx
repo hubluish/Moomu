@@ -9,12 +9,7 @@ interface FontData {
     image_alt: string;
 }
 
-// fontKeyword props 추가 (string 또는 string[])
-interface FontBoxProps {
-    fontKeyword: string; // "손글씨 바탕" 등
-}
-
-export default function FontBox({ fontKeyword }: FontBoxProps) {
+export default function FontBox() {
     const [fonts, setFonts] = useState<FontData[]>([]);
     const [page, setPage] = useState(0);
     const fontsPerPage = 3;
@@ -22,36 +17,14 @@ export default function FontBox({ fontKeyword }: FontBoxProps) {
     useEffect(() => {
         fetch('/data/noonnu_fonts.json')
         .then(res => res.json())
-        .then(data => {
-            if (data && data[fontKeyword] && Array.isArray(data[fontKeyword])) {
-                setFonts(data[fontKeyword]);
-            } else if (data) {
-                // 모든 폰트 배열을 합쳐서 image_alt에 키워드가 포함된 것만 필터
-                const allFonts = Object.values(data).flat();
-                const filtered = allFonts.filter(
-                    (font: FontData) => font.image_alt && font.image_alt.includes(fontKeyword)
-                );
-                setFonts(filtered);
-            } else {
-                setFonts([]);
-            }
-        })
-        .catch(err => {
-            console.error('폰트 데이터 로드 실패:', err);
-            setFonts([]);
-        });
-    }, [fontKeyword]);
+        .then(data => setFonts(data))
+        .catch(err => console.error('폰트 데이터 로드 실패:', err));
+    }, []);
 
-    // 3개씩 묶어서 보여주기
     const startIdx = page * fontsPerPage;
     const currentFonts = fonts.slice(startIdx, startIdx + fontsPerPage);
     const hasPrev = page > 0;
     const hasNext = startIdx + fontsPerPage < fonts.length;
-
-    const handleCopy = (link: string) => {
-        navigator.clipboard.writeText(link);
-        alert('폰트 링크가 복사되었습니다!');
-    };
 
     return (
         <div style={styles.container}>
@@ -73,19 +46,11 @@ export default function FontBox({ fontKeyword }: FontBoxProps) {
         )}
 
         <div style={styles.content}>
-            {currentFonts.length === 0 ? (
-                <div>해당 키워드의 폰트가 없습니다.</div>
-            ) : (
-                currentFonts.map((font, idx) => (
-                    <img
-                        key={idx}
-                        src={font.image_link}
-                        alt={font.image_alt}
-                        style={styles.image}
-                        onClick={() => handleCopy(font.font_link)}
-                    />
-                ))
-            )}
+            {currentFonts.map((font, idx) => (
+            <a key={idx} href={font.font_link} target="_blank" rel="noopener noreferrer">
+                <img src={font.image_link} alt={font.image_alt} style={styles.image} />
+            </a>
+            ))}
         </div>
         </div>
     );
