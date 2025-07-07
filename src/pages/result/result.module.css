@@ -1,0 +1,57 @@
+.topWrapper {
+    position: relative;
+    width: 100%;
+    margin-top: 24px;
+    }
+
+    .chips {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1; /* 버튼 위로 올라가게 */
+    }
+
+    .actionsWrapper {
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    height: 40px; /* chips와 같은 높이 */
+    }
+
+    .actions {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    }
+
+.gridContainer {
+    display: grid;
+    
+    grid-template-rows: auto auto;
+    gap: 24px;
+    margin: 40px ;
+    align-items: center;
+    grid-template-columns: 1fr 1.3fr 0.7fr 1.3fr 1fr; /* 5열: 좌우 여백 + 3 콘텐츠 열 */
+    grid-template-areas:
+    '. concept font image .'
+    '. palette palette image .';
+
+    justify-items: center;
+}
+
+.conceptBox {
+    grid-area: concept;
+    }
+
+    .fontBox {
+    grid-area: font;
+    }
+
+    .imageBox {
+    grid-area: image;
+    }
+
+    .paletteBox {
+    grid-area: palette;
+}

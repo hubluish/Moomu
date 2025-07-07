@@ -1,0 +1,62 @@
+[
+    {
+        "title": "Pastel",
+        "description": "Soft and sweet, like a spring day.",
+        "colors": ["#F4A7B9", "#FFD1A9", "#FFF5A5", "#BCEBCB", "#A5D8FF", "#B5C7ED", "#D8B4E2"]
+    },
+    {
+        "title": "Toned-Down",
+        "description": "Muted and calm colors for subtle tones.",
+        "colors": ["#A65A5A", "#C78B60", "#C9B458", "#688D6B", "#5F7E9C", "#4A5C7A", "#82688E"]
+    },
+    {
+        "title": "Neon",
+        "description": "Bold and bright colors that pop.",
+        "colors": ["#FF4D6D", "#FFAA33", "#FFFF33", "#39FF14", "#00FFFF", "#1F51FF", "#D400FF"]
+    },
+    {
+        "title": "Vintage",
+        "description": "Retro tones with a nostalgic feel.",
+        "colors": ["#B76E79", "#D89C7E", "#E1D198", "#8CA58C", "#7FA1B2", "#627D98", "#9C84A1"]
+    },
+    {
+        "title": "Natural",
+        "description": "Earthy and organic hues from nature.",
+        "colors": ["#C0604D", "#DA9B5B", "#E6D37E", "#6D8B74", "#4F6D7A", "#405C7C", "#826A90"]
+    },
+    {
+        "title": "Monotone",
+        "description": "Neutral tones that keep it simple and clean.",
+        "colors": ["#AAAAAA", "#BBBBBB", "#CCCCCC", "#DDDDDD", "#EEEEEE", "#999999", "#888888"]
+    },
+    {
+        "title": "Warm",
+        "description": "Cozy and inviting, with soft earthy tones.",
+        "colors": ["#D45A5A", "#E17A4D", "#E8C064", "#C4B57C", "#A68B6B", "#8E5E6A", "#A16D8A"]
+    },
+    {
+        "title": "Dark",
+        "description": "Deep, moody tones with strong presence.",
+        "colors": ["#4B2C2C", "#5A3D2B", "#5A552F", "#2F4F4F", "#2C3E50", "#1C2A40", "#3D2A4F"]
+    },
+    {
+        "title": "Light",
+        "description": "Bright, airy tones full of freshness.",
+        "colors": ["#FFD5D5", "#FFE5CC", "#FFFCCB", "#D9F2D9", "#D6ECFF", "#E0E6F8", "#F3E5F5"]
+    },
+    {
+        "title": "Cool",
+        "description": "Refreshing blues for a calming mood.",
+        "colors": ["#B45575", "#7B9B9B", "#A2C4C9", "#70A37F", "#3E91CC", "#4267AC", "#7159B2"]
+    },
+    {
+        "title": "Emotional",
+        "description": "Sentimental and soft, like a memory.",
+        "colors": ["#D980A3", "#E1A16F", "#F0E29C", "#AECBBE", "#A3C3E8", "#A8A9D1", "#D7B7E3"]
+    },
+    {
+        "title": "Chic",
+        "description": "Sleek, trendy, and sophisticated.",
+        "colors": ["#8B4C4C", "#A3673D", "#A89C4F", "#4F6F5D", "#3F5A78", "#3A405A", "#5E4B7E"]
+    }
+]

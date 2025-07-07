@@ -1,0 +1,77 @@
+[
+    {
+        "key": "nature",
+        "title": "자연",
+        "description": "숲, 들판, 나무 등 자연의 풍경이 담긴 이미지예요."
+    },
+    {
+        "key": "city",
+        "title": "도시",
+        "description": "건물, 거리, 네온사인 등 도시의 분위기를 담아요."
+    },
+    {
+        "key": "sky",
+        "title": "하늘",
+        "description": "맑은 하늘부터 노을, 밤하늘까지 다양한 하늘 이미지예요."
+    },
+    {
+        "key": "ocean",
+        "title": "바다",
+        "description": "파도, 해변, 푸른 바다의 시원한 느낌을 담았어요."
+    },
+    {
+        "key": "travel",
+        "title": "여행",
+        "description": "여행 중 만나는 다양한 장면들을 표현해요."
+    },
+    {
+        "key": "people",
+        "title": "인물",
+        "description": "사람의 표정, 포즈, 감정을 표현한 이미지예요."
+    },
+    {
+        "key": "emotional",
+        "title": "감성",
+        "description": "분위기 있고 감정이 묻어나는 따뜻한 이미지예요."
+    },
+    {
+        "key": "minimal",
+        "title": "미니멀",
+        "description": "단순하고 깔끔한 구성을 중심으로 한 이미지예요."
+    },
+    {
+        "key": "vintage",
+        "title": "빈티지",
+        "description": "옛날 감성을 불러일으키는 복고풍 이미지예요."
+    },
+    {
+        "key": "night",
+        "title": "밤",
+        "description": "야경, 별빛, 조명 등이 어우러진 어두운 이미지예요."
+    },
+    {
+        "key": "morning",
+        "title": "아침",
+        "description": "햇살, 커피, 일상의 시작을 느낄 수 있는 이미지예요."
+    },
+    {
+        "key": "food",
+        "title": "음식",
+        "description": "맛있는 요리와 식탁의 풍경을 담은 이미지예요."
+    },
+    {
+        "key": "landscape",
+        "title": "풍경",
+        "description": "자연이나 도시의 넓은 전경이 담긴 이미지예요."
+    },
+    {
+        "key": "aesthetic",
+        "title": "감각적인",
+        "description": "세련되고 트렌디한 느낌의 예술적 이미지예요."
+    },
+    {
+        "key": "emotion",
+        "title": "감정",
+        "description": "기쁨, 슬픔, 외로움 등 다양한 감정을 표현한 이미지예요."
+    }
+]

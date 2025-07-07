@@ -1,0 +1,71 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px;
+  align-self: stretch;
+}
+
+.textField {
+  display: flex;
+  height: 48px;
+  padding: 8px 12px;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  background: #FFF;
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  flex: 1 0 0;
+  height: 20px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #222;
+  z-index: 2;
+}
+
+.input:focus + .placeholder,
+.input:not(:placeholder-shown) + .placeholder {
+  display: none;
+}
+
+.placeholder {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  color: var(--button, rgba(61, 56, 245, 0.10));
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 8px;
+  z-index: 3;
+}
