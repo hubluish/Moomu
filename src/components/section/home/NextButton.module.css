@@ -1,0 +1,38 @@
+.button {
+    display: flex;
+    width: 240px;
+    padding: 12px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin: 24px auto 0 auto;
+    }
+
+    .text {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #fff;
+
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    }
+
+    .black {
+    background: #000;
+    }
+
+    .gradient {
+    background: linear-gradient(90deg, #3d38f5 0%, #8438f5 100%);
+    }
+
+    .icon {
+    width: 24px;
+    height: 24px;
+}

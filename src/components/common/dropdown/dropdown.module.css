@@ -1,0 +1,61 @@
+.dropdown {
+  display: flex;
+  width: 110px;
+  padding: 8px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border-radius: 76px;
+  background: rgba(217, 217, 217, 0.50);
+  position: relative;
+}
+
+.selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.icon {
+  width: 14px;
+  height: 17px;
+}
+
+.open {
+  transform: rotate(180deg);
+}
+
+
+.text {
+  color: #000;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  z-index: 10;
+}
+
+.option {
+  padding: 8px 0;
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.option:hover {
+  background: #f0f0f0;
+}

@@ -1,0 +1,157 @@
+.container {
+    width: 384px;
+    height: 650px;
+    flex-shrink: 0;
+    border-radius: 30px;
+    border: 2px solid var(--outline, #E6E8EC);
+    background: #FFF;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+    position: relative;
+    }
+
+    .label {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 15px; /* 46.875% */
+    margin-bottom: 20px;
+    }
+
+    .gridWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin: 0 -10px;
+    }
+
+    .navButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 13px;
+    height: 26px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0;
+    z-index: 1;
+}
+
+.left {
+    left: 0;
+    }
+
+    .right {
+    right: 0;
+}
+
+    .grid {
+    display: grid;
+    width: 357px;
+    height: 542px;
+    row-gap: 18px;
+    column-gap: 21px;
+    flex-shrink: 0;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .image {
+    width: 168px;
+    height: 168px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .imageWrapper {
+    width: 168px;
+    height: 168px;
+    display: block;
+    }
+
+    .placeholder {
+    width: 168px;
+    height: 168px;
+    background-color: #a4a4a4;
+    border-radius: 10px;
+}
+
+.imageBox {
+    width: 400px;
+    height: 650px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 10px 0px
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.imageGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: 100%;
+}
+
+.imageWrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* 정사각형 비율 유지 */
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.imageWrapper:hover {
+    transform: scale(1.02);
+}
+
+.image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: #666;
+}
+
+.noImages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: #666;
+}

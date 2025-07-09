@@ -1,0 +1,97 @@
+.container {
+    cursor: pointer;
+    display: flex;
+    width: 343px;
+    padding: 16px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    border-radius: 6px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    transition: border 0.2s ease;
+    transition: background-color 0.2s ease;
+}
+
+.container:not(.selected):hover {
+    border: 2px solid var(--point, rgba(123, 104, 238, 0.76));
+}
+
+.selected {
+    background: var(--point, rgba(123, 104, 238, 0.76));
+}
+
+.selectedText {
+    color: var(--point, #ffffff) !important;
+}
+
+.imageArea {
+    flex: 1 0 0;
+    align-self: stretch;
+    border-radius: 4px;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.infoArea {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1 0 0;
+}
+
+.title {
+    color: #000;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px; /* 140% */
+    align-self: stretch;
+}
+
+.colorPreviewWrapper {
+    width: 192px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+    -ms-overflow-style: auto;
+}
+
+.colorPreviewWrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.colorPreviewWrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.colorPreview {
+    display: flex;
+    gap: 8px;
+    width: max-content;
+}
+
+.colorCircle {
+    flex: 0 0 auto;
+}
+
+.description {
+    align-self: stretch;
+    color: #000;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+}

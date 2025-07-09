@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@700&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* @font-face {
+  font-family: 'Pretendard';
+  src: url('../../public/assets/fonts/PretendardVariable.ttf') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+} */
+
+.global-root {
+  /* 🎨 Color System */
+  --color-main: #3D38F5; /*타이틀 텍스트, 기본 버튼, 헤더*/
+  --color-point: #7B68EE; /*호버, 포인트 텍스트*/
+  --color-background: #FEFEFF;
+  --color-text-main: #1C1C1E;
+  --color-text-sub: #6B7280;
+  --color-outline: #E6E8EC; /*모달, 네모 박스 등 (weight : 2)로 사용하세요*/
+  --color-notice: #F1F3F5; /*비활성, 논모달, 안내*/
+  --color-disable-button: #3D38F5; /*비활성 버튼*/
+  --color-main-hover: #251fc1;
+
+  /* 🅰️ Font Family */
+  --font-family-base: 'Pretendard', sans-serif;
+  --font-family-logo: 'MuseoModerno', sans-serif;
+
+  /* 🔤 Font Sizes */
+  --font-title1: 32px;
+  --font-title2: 24px;
+  --font-body1: 18px;
+  --font-body2: 16px;
+  --font-notice: 16px;
+
+  /* 🏋️ Font Weights */
+  --font-weight-extrabold: 800;
+  --font-weight-bold: 700;
+  --font-weight-medium: 500;
+  --font-weight-regular: 400;
+
+  /* 🧩 Text Style Shorthands */
+  --text-title1: var(--font-weight-extrabold) var(--font-title1)/1.2 var(--font-family-base);
+  --text-title2: var(--font-weight-bold) var(--font-title2)/1.2 var(--font-family-base);
+  --text-body1: var(--font-weight-medium) var(--font-body1)/1.4 var(--font-family-base);
+  --text-body2: var(--font-weight-medium) var(--font-body2)/1.4 var(--font-family-base);
+  --text-notice: var(--font-weight-bold) var(--font-notice)/1.4 var(--font-family-base);
+
+  /* 🕓 Animation Duration */
+  --anim-speed-immediate: 0s;
+  --anim-speed-fast: 0.2s;
+  --anim-speed-medium: 0.4s;
+  --anim-speed-slow: 0.6s;
+  --anim-speed-long: 0.8s;
+
+  /* 🌀 Easing */
+  --anim-ease-default: ease-in-out;
+  --anim-ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --anim-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.markdown-title1 {
+  font: var(--text-title1);
+  margin: 24px 0 12px 0;
+}
+.markdown-title2 {
+  font: var(--text-title2);
+  margin: 20px 0 10px 0;
+}
+.markdown-body1 {
+  font: var(--text-body1);
+  margin: 16px 0 8px 0;
+}
+.markdown-body2 {
+  font: var(--text-body2);
+  margin: 12px 0 6px 0;
+}
+
