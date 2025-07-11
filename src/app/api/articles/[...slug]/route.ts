@@ -11,8 +11,8 @@ async function connectToDatabase() {
   return client;
 }
 
-export async function GET(request: NextRequest, { params }: { params: { slug: string[] } }) {
-  const slug = params.slug;
+export async function GET(request: NextRequest, context: { params: { slug: string[] } }) {
+  const slug = context.params.slug;
   let client: MongoClient | null = null;
 
   try {
