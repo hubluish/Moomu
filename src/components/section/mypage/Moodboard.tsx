@@ -96,7 +96,7 @@ const Moodboard = ({
         />
       );
     }
-  }, [isTrash, isFolder, moodboardData, onPermanentDelete, onRemoveFromFolder, onMoveToTrash, onUpdate, currentFolderId, handleUpdate]);
+  }, [isTrash, isFolder, moodboardData, onPermanentDelete, onRemoveFromFolder, onMoveToTrash, currentFolderId, handleUpdate]);
 
   return (
     <MoodboardCard>
