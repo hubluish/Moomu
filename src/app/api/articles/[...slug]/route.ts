@@ -1,5 +1,5 @@
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { MongoClient, ObjectId } from 'mongodb';
 
 const url = process.env.MONGODB_URI || 'mongodb+srv://gaeunpop:1111@cluster0.uqxyg33.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
@@ -12,7 +12,7 @@ async function connectToDatabase() {
 }
 
 export async function GET({ params }: { params: { slug: string[] } }) {
-  const slug = context.params.slug;
+  const slug = params.slug;
   let client: MongoClient | null = null;
 
   try {
