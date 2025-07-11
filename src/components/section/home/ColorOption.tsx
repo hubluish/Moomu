@@ -1,4 +1,5 @@
 import styles from './ColorOption.module.css';
+import Image from 'next/image';
 
 type ColorOptionProps = {
     title: string;
@@ -16,7 +17,7 @@ export default function ColorOption({ title, description, colors, isSelected, on
     return (
         <div className={`${styles.container} ${isSelected ? styles.selected : ''}`} onClick={onClick}>
         <div className={styles.imageArea}>
-            <img src={imageUrl} alt={title} className={styles.image} />
+            <Image src={imageUrl} alt={title} className={styles.image} width={200} height={200} />
         </div>
 
         <div className={styles.infoArea}>

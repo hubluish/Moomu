@@ -2,6 +2,7 @@
 'use client';
 
 import React, {useEffect, useState} from 'react';
+import Image from 'next/image';
 
 interface FontData {
     font_link: string;
@@ -48,7 +49,7 @@ export default function FontBox() {
         <div style={styles.content}>
             {currentFonts.map((font, idx) => (
             <a key={idx} href={font.font_link} target="_blank" rel="noopener noreferrer">
-                <img src={font.image_link} alt={font.image_alt} style={styles.image} />
+                <Image src={font.image_link} alt={font.image_alt} width={150} height={50} style={styles.image} />
             </a>
             ))}
         </div>

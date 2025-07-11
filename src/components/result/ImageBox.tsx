@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import styles from './ImageBox.module.css';
 
 interface PinterestImage {
@@ -70,10 +71,12 @@ const ImageBox: React.FC = () => {
                         className={styles.imageWrapper}
                     >
                         {image.thumbnail_url?.trim() ? (
-                            <img 
+                            <Image 
                                 src={image.thumbnail_url} 
                                 alt="pinterest thumbnail" 
                                 className={styles.image}
+                                width={200}
+                                height={200}
                                 loading="lazy"
                             />
                         ) : (
