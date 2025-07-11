@@ -62,12 +62,12 @@ const Moodboard = ({
     isDeleted: false,
   });
 
-  const handleUpdate = (updatedMoodboard: MoodboardData) => {
+  const handleUpdate = useCallback((updatedMoodboard: MoodboardData) => {
     setMoodboardData(updatedMoodboard);
     if (onUpdate) {
       onUpdate(updatedMoodboard);
     }
-  };
+  }, [onUpdate]);
 
   const renderOverlay = useCallback(() => {
     if (isTrash) {
