@@ -2,13 +2,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './loading.module.css';
 
-interface GeminiSet {
-    color_keywords: string[];
-    image: string;
-    font_keyword: string;
-    sentences: string[];
-}
-
 export default function LoadingPage() {
     const message = '무무가 좋은 무드보드를 위해 고민하고 있어요.';
     const [displayedText, setDisplayedText] = useState('');
