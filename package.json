@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/genai": "^1.4.0",
+    "@google/generative-ai": "^0.24.1",
     "@supabase/supabase-js": "^2.50.0",
     "axios": "^1.9.0",
     "canvas-confetti": "^1.9.3",
@@ -23,7 +24,8 @@
     "requests": "^0.3.0",
     "styled-components": "^6.1.18",
     "uuid": "^11.1.0",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "uvicorn": "^0.0.1-security"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
