@@ -57,7 +57,7 @@ export default function ResultPage() {
       </div>
       <div className={styles.gridContainer}>
         <div className={styles.conceptBox}>
-          <ConceptBox />
+          <ConceptBox geminiResult={geminiResult} />
         </div>
         <div className={styles.fontBox}>
           <FontBox />
