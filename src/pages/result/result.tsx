@@ -36,9 +36,11 @@ export default function ResultPage() {
   }
 
   const firstSet = geminiResult[0];
+  const secondSet = geminiResult[1];
   const tags = [
     firstSet.colors?.[0],
     firstSet.image,
+    secondSet.image,
     firstSet.font,
   ].filter(Boolean);
 
