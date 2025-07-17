@@ -55,7 +55,7 @@ Pastel, Vintage, Retro, Neon, Gold, Light, Dark, Warm, Cold, Summer, Fall, Winte
 
 각 항목의 제목은 다음으로 설정:
 - colors: 색상 키워드
-- image: 이미지 키워드
+- image: 이미지 키워드(이미지 키워드는 모두 반드시 다를 것)
 - font: 폰트 키워드
 - sentences: 무드 문장
 `;
