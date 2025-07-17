@@ -10,7 +10,11 @@ interface FontData {
     image_alt: string;
 }
 
-export default function FontBox() {
+interface FontBoxProps {
+    fontKeyword: string;
+}
+
+export default function FontBox({ fontKeyword }: FontBoxProps) {
     const [fonts, setFonts] = useState<FontData[]>([]);
     const [page, setPage] = useState(0);
     const fontsPerPage = 3;
@@ -18,9 +22,12 @@ export default function FontBox() {
     useEffect(() => {
         fetch('/data/noonnu_fonts.json')
         .then(res => res.json())
-        .then(data => setFonts(data))
+        .then(data => {
+        const matched = data[fontKeyword] || [];
+        setFonts(matched);
+        })
         .catch(err => console.error('폰트 데이터 로드 실패:', err));
-    }, []);
+  }, [fontKeyword]);
 
     const startIdx = page * fontsPerPage;
     const currentFonts = fonts.slice(startIdx, startIdx + fontsPerPage);
@@ -49,7 +56,7 @@ export default function FontBox() {
         <div style={styles.content}>
             {currentFonts.map((font, idx) => (
             <a key={idx} href={font.font_link} target="_blank" rel="noopener noreferrer">
-                <Image src={font.image_link} alt={font.image_alt} width={150} height={50} style={styles.image} />
+                <img src={font.image_link} alt={font.image_alt} width={150} height={50} style={styles.image} />
             </a>
             ))}
         </div>

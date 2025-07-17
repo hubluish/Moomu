@@ -11,9 +11,9 @@ import Header from "@/components/common/header/header";
 import React, { useEffect, useState } from "react";
 
 interface GeminiSet {
-  color_keywords: string[];
-  image_keyword: string;
-  font_keyword: string;
+  colors: string[];
+  image: string;
+  font: string;
   sentences: string[];
 }
 
@@ -21,22 +21,27 @@ export default function ResultPage() {
   const [geminiResult, setGeminiResult] = useState<GeminiSet[] | null>(null);
 
   useEffect(() => {
-    const result = localStorage.getItem("gemini_result");
-    if (result) {
-      setGeminiResult(JSON.parse(result));
-    }
-  }, []);
+  const result = localStorage.getItem("gemini_result");
+  if (result) {
+    const parsed = JSON.parse(result);
+    setGeminiResult(parsed);
+  }
+}, []);
+
+
+
 
   if (!geminiResult) {
     return <div>로딩 중...</div>;
   }
 
-  // 첫 번째 세트의 데이터 사용
   const firstSet = geminiResult[0];
+  const secondSet = geminiResult[1];
   const tags = [
-    firstSet.color_keywords?.[0],
-    firstSet.image_keyword,
-    firstSet.font_keyword,
+    firstSet.colors?.[0],
+    firstSet.image,
+    secondSet.image,
+    firstSet.font,
   ].filter(Boolean);
 
   return (
@@ -60,10 +65,10 @@ export default function ResultPage() {
           <ConceptBox geminiResult={geminiResult} />
         </div>
         <div className={styles.fontBox}>
-          <FontBox />
+          <FontBox fontKeyword={firstSet.font} />
         </div>
         <div className={styles.imageBox}>
-          <ImageBox imageKeyword={firstSet.image_keyword} />
+          <ImageBox imageKeyword={firstSet.image} />
         </div>
         <div className={styles.paletteBox}>
           <ColorPaletteBox />
