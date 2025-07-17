@@ -4,9 +4,9 @@
 import React, { useState } from 'react';
 
 interface GeminiSet {
-  color_keywords: string[];
-  image_keyword: string;
-  font_keyword: string;
+  colors: string[];
+  image: string;
+  font: string;
   sentences: string[];
 }
 

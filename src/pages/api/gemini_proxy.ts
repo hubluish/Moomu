@@ -52,6 +52,12 @@ Pastel, Vintage, Retro, Neon, Gold, Light, Dark, Warm, Cold, Summer, Fall, Winte
 
 기존 프롬프트 구조(3세트, JSON 파일로 출력) 반드시 유지  
 결과 외 다른 말 절대 출력 금지
+
+각 항목의 제목은 다음으로 설정:
+- colors: 색상 키워드
+- image: 이미지 키워드
+- font: 폰트 키워드
+- sentences: 무드 문장
 `;
 
   try {
@@ -59,8 +65,6 @@ Pastel, Vintage, Retro, Neon, Gold, Light, Dark, Warm, Cold, Summer, Fall, Winte
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = await response.text();
-
-    console.log("Gemini 응답 성공", text);
 
     // Extract JSON from the response
     const match = text.match(/```json\s*([\s\S]+?)\s*```/);
