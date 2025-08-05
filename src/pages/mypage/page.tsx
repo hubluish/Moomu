@@ -1,6 +1,11 @@
 'use client';
+import { useEffect } from 'react';
 import { redirect } from 'next/navigation';
 
 export default function Mypage() {
-  redirect('/mypage/moodboard');
+  useEffect(() => {
+    redirect('/mypage/moodboard');
+  }, []);
+
+  return null;
 } 

@@ -8,11 +8,7 @@ interface PinterestImage {
     thumbnail_url: string;
     pin_url: string;
 }
-interface ImageBoxProps {
-  imageKeyword: string;
-}
-
-const ImageBox: React.FC<ImageBoxProps> = ({ imageKeyword }) => {
+const ImageBox: React.FC = () => {
     const [images, setImages] = useState<PinterestImage[]>([]);
     const [loading, setLoading] = useState(true);
 

@@ -68,7 +68,7 @@ export default function ResultPage() {
           <FontBox fontKeyword={firstSet.font} />
         </div>
         <div className={styles.imageBox}>
-          <ImageBox imageKeyword={firstSet.image} />
+          <ImageBox />
         </div>
         <div className={styles.paletteBox}>
           <ColorPaletteBox />
