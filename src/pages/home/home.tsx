@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './home.module.css';
 import Header from '@/components/common/header/header';
@@ -14,6 +14,7 @@ import MoodOption from '../../components/section/home/MoodOption';
 import TagGuideModal from '../../components/section/home/TagGuideModal';
 import SeeMoreButton from '../../components/section/home/SeeMoreButton';
 import {saveToSupabase} from '../../utils/saveToSupabase'
+import PopCheer from '../../components/section/home/PopCheer';
 
 import stepMeta from '../../../public/data/stepMeta.json';
 import colorThemes from '../../../public/data/colorThemes.json';
@@ -21,6 +22,7 @@ import fontThemes from '../../../public/data/fontThemes.json';
 import imageThemes from '../../../public/data/imageThemes.json';
 import imagePriority from '../../../public/data/imagePriority.json';    
 import fontPriority from '../../../public/data/fontPriority.json';
+import toastMessages from '../../../public/data/toastMessages.json';
 
 interface Option {
     title: string;
@@ -36,6 +38,13 @@ function Home() {
     const [showAlert, setShowAlert] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showAllOptions, setShowAllOptions] = useState(false);
+    const [cheerVisible, setCheerVisible] = useState(false);
+    const [cheerMsg, setCheerMsg] = useState<React.ReactNode>('');
+    const cheerTimerRef = useRef<number | null>(null);
+    const alertTimerRef = useRef<number | null>(null);
+    const [cheerTick, setCheerTick] = useState(0);
+    const [alertTick, setAlertTick] = useState(0);
+
 
     const meta = stepMeta[step - 1];
 
@@ -82,96 +91,159 @@ function Home() {
         setShowModal(true);
         }, 10000);
 
-        return () => clearTimeout(timer); // step 바뀌면 타이머 초기화
+        return () => clearTimeout(timer); 
     }, [step]);
 
-    const handleNext = async () => {
-        if (!selections[step - 1]) {
-            setShowAlert(true);
-            setTimeout(() => setShowAlert(false), 1000);
-            return;
+    useEffect(() => {
+        return () => {
+        if (cheerTimerRef.current) {
+            window.clearTimeout(cheerTimerRef.current);
+            cheerTimerRef.current = null;
         }
-
-        if (step < 4) {
-            setStep(step + 1);
-            setShowAllOptions(false);
-        } else {
-            const payload = {
-            color: selections[0],
-            font: selections[2],
-            image: [selections[1], ...(selections[3]?.split(',') || [])]
-                .filter(Boolean)
-                .join(', '),
-            };
-
-            console.log('%c✅ Gemini 요청 payload:', 'color: blue; font-weight: bold;', payload);
-
-            try {
-            const response = await fetch('/api/gemini_proxy', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
-
-            const result = await response.json();
-            console.log('%c🎨 Gemini 응답 결과:', 'color: green; font-weight: bold;', result);
-            
-            localStorage.setItem('gemini_result', JSON.stringify(result));
-
-            console.log('%c💾 Supabase 저장 시작:', 'color: blue; font-weight: bold;');
-            try {
-                await saveToSupabase(result);
-                console.log('%c✅ Supabase 저장 성공:', 'color: green; font-weight: bold;');
-            } catch (error) {
-                console.error('%c❌ Supabase 저장 실패:', 'color: red; font-weight: bold;', error);
-            }
-            router.push('/home/loading'); 
-            } catch (error) {
-            console.error('❌ Gemini 서버 호출 실패:', error);
-            alert('Gemini API 요청에 실패했습니다.');
-            }
+        if (alertTimerRef.current) {
+            window.clearTimeout(alertTimerRef.current);
+            alertTimerRef.current = null;
         }
         };
+    }, []);
+
+    const handleNext = async () => {
+    if (!selections[step - 1]) {
+        showAlertOnce(1500);
+        return;
+    }
+
+    if (step >= 1 && step <= 3) {
+    const selectedTitle = selections[step - 1] as string;
+    const category = step === 1 ? 'color' : step === 2 ? 'image' : 'text' as
+        'color' | 'image' | 'text';
+    const moodText =
+        (toastMessages as any)[category]?.[selectedTitle] as string | undefined;
+    const thingLabel = category === 'color'
+        ? '컬러'
+        : category === 'image'
+        ? '이미지 태그'
+        : '텍스트';
+    const msg = moodText
+        ? (
+            <>
+            좋은 선택이에요! 이 <strong>{thingLabel}</strong>는{' '}
+            <strong>{moodText}</strong> 느낌을 잘 담아줘요.
+            </>
+        )
+        : (
+            <>
+            좋은 선택이에요! <strong>{selectedTitle}</strong> {thingLabel}
+            를 선택했어요.
+            </>
+        );
+
+    showCheer(msg, 1200);
+    }
+
+
+    if (step < 4) {
+        setStep(step + 1);
+        setShowAllOptions(false);
+        return;
+    }
+
+    const payload = {
+        color: selections[0],
+        font: selections[2],
+        image: [selections[1], ...(selections[3]?.split(',') || [])]
+        .filter(Boolean)
+        .join(', '),
+    };
+
+    console.log('%c✅ Gemini 요청 payload:', 'color: blue; font-weight: bold;', payload);
+
+    try {
+        const response = await fetch('/api/gemini_proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+        console.log('%c🎨 Gemini 응답 결과:', 'color: green; font-weight: bold;', result);
+
+        localStorage.setItem('gemini_result', JSON.stringify(result));
+
+        console.log('%c💾 Supabase 저장 시작:', 'color: blue; font-weight: bold;');
+        try {
+        await saveToSupabase(result);
+        console.log('%c✅ Supabase 저장 성공:', 'color: green; font-weight: bold;');
+        } catch (error) {
+        console.error('%c❌ Supabase 저장 실패:', 'color: red; font-weight: bold;', error);
+        }
+        router.push('/home/loading');
+    } catch (error) {
+        console.error('❌ Gemini 서버 호출 실패:', error);
+        alert('Gemini API 요청에 실패했습니다.');
+    }
+    };
+
+    const showCheer = (message: React.ReactNode, duration = 1200) => {
+        if (cheerTimerRef.current) {
+            window.clearTimeout(cheerTimerRef.current);
+            cheerTimerRef.current = null;
+        }
+        setCheerMsg(message);
+        setCheerVisible(true);
+        setCheerTick(t => t + 1);              
+
+        cheerTimerRef.current = window.setTimeout(() => {
+            setCheerVisible(false);
+            cheerTimerRef.current = null;
+        }, duration);
+    };
+
+    const showAlertOnce = (duration = 1000) => {
+        if (alertTimerRef.current) {
+            window.clearTimeout(alertTimerRef.current);
+            alertTimerRef.current = null;
+        }
+        setShowAlert(true);
+        setAlertTick(t => t + 1);              
+
+        alertTimerRef.current = window.setTimeout(() => {
+            setShowAlert(false);
+            alertTimerRef.current = null;
+        }, duration);
+    };
+
 
 
     const handleSelect = (option: string) => {
         setSelections(prev => {
-        const updated = [...prev];
+            const updated = [...prev];
 
-        if (step === 4) {
-            const current = updated[3]; // step 4의 인덱스는 3
+            if (step === 4) {
+            const current = updated[3];
             const selected = current ? current.split(',') : [];
-
             if (selected.includes(option)) {
-                
                 const filtered = selected.filter(item => item !== option);
                 updated[3] = filtered.join(',') || null;
             } else {
-                if (selected.length < 2) {
-                    updated[3] = [...selected, option].join(',');
-                } else {
-                    return prev;
-                }
+                if (selected.length < 2) updated[3] = [...selected, option].join(',');
+                else return prev;
             }
-
-        } else {
+            } else {
             updated[step - 1] = prev[step - 1] === option ? null : option;
-            for (let i = step; i < updated.length; i++) {
-                updated[i] = null;
+            for (let i = step; i < updated.length; i++) updated[i] = null;
             }
-        }
-        
-        return updated;
+            return updated;
         });
+
     };
 
     return (
         <main>
             <Header />
             <ProgressBar step={step}/>
-            <PopAlert visible={showAlert} />
+            <PopAlert visible={showAlert} top={70} zIndex={1002} />
+            <PopCheer visible={cheerVisible} message={cheerMsg} top={70} zIndex={1001} />
             <TitleBlock title={meta.title} subtitle= {meta.subtitle}/>
             <NextButton onClick={handleNext} variant={step < 4 ? 'black' : 'gradient'} />
             <PreviousButton onClick={() => setStep(step > 1 ? step - 1 : step)} />
