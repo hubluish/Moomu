@@ -1,0 +1,161 @@
+/* feed.module.css */
+
+.feedContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-top: 150px;
+}
+
+.feedGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 120px 20px;
+    width: 100%;
+    /* 3개의 아이템이 들어갈 수 있는 최대 너비 설정 */
+    max-width: 1180px; 
+}
+
+
+.feedItem {
+    width: 380px; /* 요청하신 고정 너비 */
+    height: 480px; /* 요청하신 고정 높이 */
+    flex-shrink: 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 0px;
+    overflow: hidden;
+    position: relative;
+    background-color: #f0f0f0;
+}
+
+/* === 👇 변경된 부분 START === */
+
+.itemImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 컨테이너를 꽉 채우도록 설정 */
+    z-index: 1; /* 콘텐츠보다 아래에 있도록 설정 */
+}
+
+.itemOverlay {
+    position: relative;
+    z-index: 2; /* 이미지보다 위에 있도록 설정 */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 헤더는 위로, 푸터는 아래로 */
+    color: white; /* 기본 텍스트 색상을 흰색으로 변경 */
+}
+
+.itemHeader {
+    display: flex;
+    /* 카테고리 태그를 왼쪽 상단에 배치 */
+    justify-content: flex-start; 
+    padding: 16px;
+    /* 배경 제거, 기존 스타일 단순화 */
+    background: none;
+    color: white;
+}
+
+.categoryTag {
+    display: inline-flex;
+    padding: 6px 12px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    border: 1px solid #fff; /* 흰색 테두리로 변경 */
+    background: rgba(0, 0, 0, 0.3); /* 반투명 검정 배경 */
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: bold;
+    width: fit-content;
+}
+
+.itemContent {
+    padding: 20px;
+    /* 텍스트가 잘 보이도록 그림자 효과 추가 */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    /* 푸터와의 간격을 위해 flex-grow 제거 */
+}
+
+.itemFooter {
+    height: 59px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px; /* 좌우 패딩 조정 */
+    background: rgba(255, 255, 255, 0.70);
+    color: #000; /* 글자색을 어둡게 변경 */
+}
+
+.footerCreator {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.footerActions {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 버튼 사이 간격 */
+}
+
+.footerActions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.footerActions span {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.actions button:hover {
+    transform: scale(1.1);
+}
+
+.likeButton.liked {
+    color: #ff4757;
+}
+
+.feedHeader {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.feedTitle {
+    font-family: 'Roboto-Bold', Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 48px;
+    margin-bottom: 9px;
+}
+
+.feedSubtitle {
+    font-family: 'Roboto-Regular', Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.searchContainer {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    margin-bottom: 116px;
+}
