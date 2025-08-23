@@ -14,18 +14,18 @@ interface FeedItem {
   title: string;
   likes: number;
   liked: boolean;
-  category: string;
+  categories: string[];
 }
 const mockFeedItems: FeedItem[] = [
-    { id: "1", creator: "Moomu", imageUrl: "/assets/carousel/1.jpg", title: "첫 번째 피드", likes: 10, liked: false, category: "인테리어" },
-    { id: "2", creator: "Gemini", imageUrl: "/assets/carousel/2.jpg", title: "두 번째 피드", likes: 25, liked: true, category: "패션" },
-    { id: "3", creator: "Google", imageUrl: "/assets/carousel/3.jpg", title: "세 번째 피드", likes: 5, liked: false, category: "디자인" },
-    { id: "4", creator: "Moomu", imageUrl: "/assets/carousel/4.jpg", title: "네 번째 피드", likes: 12, liked: false, category: "인테리어" },
-    { id: "5", creator: "Gemini", imageUrl: "/assets/carousel/5.jpg", title: "다섯 번째 피드", likes: 30, liked: true, category: "패션" },
-    { id: "6", creator: "Google", imageUrl: "/assets/carousel/6.jpg", title: "여섯 번째 피드", likes: 8, liked: false, category: "디자인" },
-    { id: "7", creator: "Moomu", imageUrl: "/assets/carousel/7.jpg", title: "일곱 번째 피드", likes: 15, liked: false, category: "여행" },
-    { id: "8", creator: "Gemini", imageUrl: "/assets/carousel/8.jpg", title: "여덟 번째 피드", likes: 28, liked: true, category: "음식" },
-    { id: "9", creator: "Google", imageUrl: "/assets/carousel/1.jpg", title: "아홉 번째 피드", likes: 3, liked: false, category: "인테리어" },
+    { id: "1", creator: "Moomu", imageUrl: "/assets/carousel/1.jpg", title: "첫 번째 피드", likes: 10, liked: false, categories: ["인테리어", "디자인", "소품"] },
+    { id: "2", creator: "Gemini", imageUrl: "/assets/carousel/2.jpg", title: "두 번째 피드", likes: 25, liked: true, categories: ["패션", "의류"] },
+    { id: "3", creator: "Google", imageUrl: "/assets/carousel/3.jpg", title: "세 번째 피드", likes: 5, liked: false, categories: ["디자인", "UI/UX"] },
+    { id: "4", creator: "Moomu", imageUrl: "/assets/carousel/4.jpg", title: "네 번째 피드", likes: 12, liked: false, categories: ["인테리어", "가구"] },
+    { id: "5", creator: "Gemini", imageUrl: "/assets/carousel/5.jpg", title: "다섯 번째 피드", likes: 30, liked: true, categories: ["패션", "신발"] },
+    { id: "6", creator: "Google", imageUrl: "/assets/carousel/6.jpg", title: "여섯 번째 피드", likes: 8, liked: false, categories: ["디자인", "그래픽"] },
+    { id: "7", creator: "Moomu", imageUrl: "/assets/carousel/7.jpg", title: "일곱 번째 피드", likes: 15, liked: false, categories: ["여행", "풍경"] },
+    { id: "8", creator: "Gemini", imageUrl: "/assets/carousel/8.jpg", title: "여덟 번째 피드", likes: 28, liked: true, categories: ["음식", "레시피"] },
+    { id: "9", creator: "Google", imageUrl: "/assets/carousel/1.jpg", title: "아홉 번째 피드", likes: 3, liked: false, categories: ["인테리어", "소품"] },
 ];
 
 
@@ -75,35 +75,26 @@ export default function FeedClient() {
               <Image
                 src={item.imageUrl}
                 alt={item.title}
-                fill
-                style={{ objectFit: 'cover' }}
+                width={500}
+                height={300}
                 className={styles.itemImage}
               />
-              <div className={styles.itemOverlay}>
-                {/* === ▼ 헤더 구조 변경 ▼ === */}
-                <div className={styles.itemHeader}>
-                  <span className={styles.categoryTag}>{item.category}</span>
-                </div>
-                {/* === ▲ 헤더 구조 변경 ▲ === */}
-
-                <div className={styles.itemContent}>
-                  <p>{item.title}</p>
-                </div>
-                
-                {/* === ▼ 푸터 구조 변경 ▼ === */}
-                <div className={styles.itemFooter}>
-                  <span className={styles.footerCreator}>by {item.creator}</span>
-                  <div className={styles.footerActions}>
-                    <button onClick={() => handleSave(item.id)}>
-                      <Image src="/assets/icons/add-folder.svg" alt="저장" width={24} height={24} />
-                    </button>
+              <div className={styles.categoryContainer}>
+                {item.categories.map((category, index) => (
+                  <div key={index} className={styles.categoryBar}>
+                    {category}
+                  </div>
+                ))}
+              </div>
+              <div className={styles.hoverOverlay}>
+                <div className={styles.overlayFooter}>
+                  <span className={styles.overlayUsername}>by {item.creator}</span>
+                  <div className={styles.overlayLikeButton}>
                     <button onClick={() => handleLike(item.id)} className={`${styles.likeButton} ${item.liked ? styles.liked : ''}`}>
-                      <Image src={item.liked ? "/assets/icons/fill-star-active.svg" : "/assets/icons/star.svg"} alt="좋아요" width={28} height={28} />
+                      <Image src={item.liked ? "/assets/icons/fill-star-active.svg" : "/assets/icons/star.svg"} alt="좋아요" width={40} height={40} />
                     </button>
-                    <span>{item.likes}</span>
                   </div>
                 </div>
-                {/* === ▲ 푸터 구조 변경 ▲ === */}
               </div>
             </div>
           ))}
