@@ -1,12 +1,13 @@
 // FeedClient.tsx
 
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import SearchBar from "@/components/common/searchBar/SearchBar";
 import styles from "./feed.module.css";
+import { supabase } from "@/utils/supabaseClient"; // Supabase 클라이언트 import
 
-// --- 인터페이스와 목업 데이터 (변경 없음) ---
+// --- 인터페이스 (userId 추가) ---
 interface FeedItem {
   id: string;
   creator: string;
@@ -15,35 +16,65 @@ interface FeedItem {
   likes: number;
   liked: boolean;
   categories: string[];
+  userId: string; 
 }
-const mockFeedItems: FeedItem[] = [
-    { id: "1", creator: "Moomu", imageUrl: "/assets/carousel/1.jpg", title: "첫 번째 피드", likes: 10, liked: false, categories: ["인테리어", "디자인", "소품"] },
-    { id: "2", creator: "Gemini", imageUrl: "/assets/carousel/2.jpg", title: "두 번째 피드", likes: 25, liked: true, categories: ["패션", "의류"] },
-    { id: "3", creator: "Google", imageUrl: "/assets/carousel/3.jpg", title: "세 번째 피드", likes: 5, liked: false, categories: ["디자인", "UI/UX"] },
-    { id: "4", creator: "Moomu", imageUrl: "/assets/carousel/4.jpg", title: "네 번째 피드", likes: 12, liked: false, categories: ["인테리어", "가구"] },
-    { id: "5", creator: "Gemini", imageUrl: "/assets/carousel/5.jpg", title: "다섯 번째 피드", likes: 30, liked: true, categories: ["패션", "신발"] },
-    { id: "6", creator: "Google", imageUrl: "/assets/carousel/6.jpg", title: "여섯 번째 피드", likes: 8, liked: false, categories: ["디자인", "그래픽"] },
-    { id: "7", creator: "Moomu", imageUrl: "/assets/carousel/7.jpg", title: "일곱 번째 피드", likes: 15, liked: false, categories: ["여행", "풍경"] },
-    { id: "8", creator: "Gemini", imageUrl: "/assets/carousel/8.jpg", title: "여덟 번째 피드", likes: 28, liked: true, categories: ["음식", "레시피"] },
-    { id: "9", creator: "Google", imageUrl: "/assets/carousel/1.jpg", title: "아홉 번째 피드", likes: 3, liked: false, categories: ["인테리어", "소품"] },
-];
-
 
 export default function FeedClient() {
   const [search, setSearch] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const [feedItems, setFeedItems] = useState<FeedItem[]>(mockFeedItems);
+  const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null); // 현재 사용자 ID 상태
 
-  // --- 핸들러 함수들 (변경 없음) ---
+  // --- 데이터 로딩 및 사용자 정보 확인 useEffect ---
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // 1. 현재 사용자 정보 가져오기
+        const { data: { user } } = await supabase.auth.getUser();
+        setCurrentUserId(user?.id || null);
+
+        // 2. 피드 아이템 가져오기
+        const response = await fetch('/api/articles');
+        if (!response.ok) {
+          throw new Error('Failed to fetch feed items');
+        }
+        const items = await response.json();
+        
+        const itemsWithLikeState = items.map((item: any) => ({
+          ...item,
+          liked: false, 
+        }));
+        setFeedItems(itemsWithLikeState);
+
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // --- 핸들러 함수들 ---
   const handleSearch = () => setSearch(inputValue);
+
   const handleLike = (id: string) => {
     setFeedItems(prevItems =>
       prevItems.map(item =>
         item.id === id ? { ...item, liked: !item.liked, likes: item.liked ? item.likes - 1 : item.likes + 1 } : item
       )
     );
+    // TODO: 여기에 실제 '좋아요' API 호출 로직 추가
   };
-  const handleSave = (id: string) => console.log(`Saved item ${id}`);
+
+  const handleLock = (id: string) => {
+    console.log(`Lock button clicked for item ${id}. Implement lock logic here.`);
+    // TODO: 여기에 실제 '잠금' API 호출 및 상태 업데이트 로직 추가
+  };
 
   const filteredItems = feedItems.filter(item =>
     item.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -69,36 +100,52 @@ export default function FeedClient() {
             />
         </div>
         
-        <div className={styles.feedGrid}>
-          {filteredItems.map(item => (
-            <div key={item.id} className={styles.feedItem}>
-              <Image
-                src={item.imageUrl}
-                alt={item.title}
-                width={500}
-                height={300}
-                className={styles.itemImage}
-              />
-              <div className={styles.categoryContainer}>
-                {item.categories.map((category, index) => (
-                  <div key={index} className={styles.categoryBar}>
-                    {category}
+        {loading ? (
+          <div className={styles.loading}>Loading...</div>
+        ) : (
+          <div className={styles.feedGrid}>
+            {filteredItems.map(item => {
+              const isOwner = item.userId === currentUserId;
+              return (
+                <div key={item.id} className={styles.feedItem}>
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.title}
+                    width={500}
+                    height={300}
+                    className={styles.itemImage}
+                  />
+                  <div className={styles.categoryContainer}>
+                    {/* item.categories가 배열인 경우에만 map 함수를 실행하도록 수정 */}
+                    {Array.isArray(item.categories) && item.categories.map((category, index) => (
+                      <div key={index} className={styles.categoryBar}>
+                        {category}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <div className={styles.hoverOverlay}>
-                <div className={styles.overlayFooter}>
-                  <span className={styles.overlayUsername}>by {item.creator}</span>
-                  <div className={styles.overlayLikeButton}>
-                    <button onClick={() => handleLike(item.id)} className={`${styles.likeButton} ${item.liked ? styles.liked : ''}`}>
-                      <Image src={item.liked ? "/assets/icons/fill-star-active.svg" : "/assets/icons/star.svg"} alt="좋아요" width={40} height={40} />
-                    </button>
+                  <div className={styles.hoverOverlay}>
+                    <div className={styles.overlayFooter}>
+                      <span className={styles.overlayUsername}>by {item.creator}</span>
+                      <div className={styles.overlayLikeButton}>
+                        {isOwner ? (
+                          // 내가 작성한 피드일 경우: 자물쇠 아이콘
+                          <button onClick={() => handleLock(item.id)} className={styles.likeButton}>
+                            <Image src="/assets/icons/lock.svg" alt="내 게시물" width={40} height={40} />
+                          </button>
+                        ) : (
+                          // 다른 사람 피드일 경우: 하트 아이콘
+                          <button onClick={() => handleLike(item.id)} className={`${styles.likeButton} ${item.liked ? styles.liked : ''}`}>
+                            <Image src={item.liked ? "/assets/icons/fill-heart.svg" : "/assets/icons/heart.svg"} alt="좋아요" width={40} height={40} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
