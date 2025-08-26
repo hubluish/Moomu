@@ -2,12 +2,17 @@ import styles from './PopAlert.module.css';
 
 interface PopAlertProps {
     visible: boolean;
+    top?: number;
+    zIndex?: number;
 }
 
-export default function PopAlert({ visible }: PopAlertProps) {
+export default function PopAlert({ visible, top=70, zIndex=1002 }: PopAlertProps) {
     return (
         <div
         className={`${styles.alertContainer} ${visible ? styles.alertVisible : styles.alertHidden}`}
+        style={{ top, zIndex }}
+        role="status"
+        aria-live="polite"
         >
         <div className={styles.wrapper}>
             <div className={styles.icon}>

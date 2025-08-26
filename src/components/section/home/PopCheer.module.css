@@ -1,6 +1,6 @@
 .wrapper {
-    display: flex;
-    width: 514px;
+    display: inline-flex;
+    width: max-content;
     height: 53px;
     padding: 15.288px 20.385px;
     flex-direction: row;
@@ -9,7 +9,7 @@
     flex-shrink: 0;
 
     border-radius: 40.769px;
-    background: #E9E9E9;
+    background: #EBEBFF;
     box-shadow: 0px 0.51px 22.423px 0px rgba(0, 0, 0, 0.05);
 }
 
@@ -30,6 +30,7 @@
     font-weight: 400;
     line-height: normal;
     margin: 0;
+    white-space: nowrap;
 }
 
 .text strong {
