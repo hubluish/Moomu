@@ -6,6 +6,7 @@ import Image from "next/image";
 import SearchBar from "@/components/common/searchBar/SearchBar";
 import styles from "./feed.module.css";
 import { supabase } from "@/utils/supabaseClient"; // Supabase 클라이언트 import
+import Toast from "@/components/common/toast/Toast";
 
 // --- 인터페이스 (userId 추가) ---
 interface FeedItem {
@@ -25,6 +26,8 @@ export default function FeedClient() {
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null); // 현재 사용자 ID 상태
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
   // --- 데이터 로딩 및 사용자 정보 확인 useEffect ---
   useEffect(() => {
@@ -63,11 +66,26 @@ export default function FeedClient() {
   const handleSearch = () => setSearch(inputValue);
 
   const handleLike = (id: string) => {
+    const itemToLike = feedItems.find(item => item.id === id);
+    if (!itemToLike) return;
+
+    const isNowLiked = !itemToLike.liked;
+
     setFeedItems(prevItems =>
       prevItems.map(item =>
-        item.id === id ? { ...item, liked: !item.liked, likes: item.liked ? item.likes - 1 : item.likes + 1 } : item
+        item.id === id
+          ? { ...item, liked: isNowLiked, likes: isNowLiked ? item.likes + 1 : item.likes - 1 }
+          : item
       )
     );
+
+    if (isNowLiked) {
+      setToastMessage("찜한 피드에 저장되었어요!");
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+      }, 3000); // 3초 후에 토스트 숨기기
+    }
     // TODO: 여기에 실제 '좋아요' API 호출 로직 추가
   };
 
@@ -83,6 +101,7 @@ export default function FeedClient() {
 
   return (
     <div className={styles.feedContainer}>
+      <Toast message={toastMessage} show={showToast} />
       <div className={styles.container}>
         {/* --- 페이지 헤더, 검색창 (변경 없음) --- */}
         <header className={styles.feedHeader}>
@@ -96,7 +115,7 @@ export default function FeedClient() {
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
               onSearch={handleSearch}
-              placeholder="관심있는 콘텐츠를 검색해보세요!"
+              placeholder="Search moods or categories (e.g. vintage, dreamy, cute...)"
             />
         </div>
         
@@ -125,7 +144,7 @@ export default function FeedClient() {
                   </div>
                   <div className={styles.hoverOverlay}>
                     <div className={styles.overlayFooter}>
-                      <span className={styles.overlayUsername}>by {item.creator}</span>
+                      <span className={styles.overlayUsername}>{item.creator}</span>
                       <div className={styles.overlayLikeButton}>
                         {isOwner ? (
                           // 내가 작성한 피드일 경우: 자물쇠 아이콘
@@ -135,7 +154,7 @@ export default function FeedClient() {
                         ) : (
                           // 다른 사람 피드일 경우: 하트 아이콘
                           <button onClick={() => handleLike(item.id)} className={`${styles.likeButton} ${item.liked ? styles.liked : ''}`}>
-                            <Image src={item.liked ? "/assets/icons/fill-heart.svg" : "/assets/icons/heart.svg"} alt="좋아요" width={40} height={40} />
+                            <Image src={item.liked ? "/assets/icons/full_heart.svg" : "/assets/icons/empty_heart.svg"} alt="좋아요" width={45} height={41} />
                           </button>
                         )}
                       </div>
