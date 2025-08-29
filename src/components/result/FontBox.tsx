@@ -4,6 +4,7 @@
 import React, {useEffect, useState} from 'react';
 import Image from 'next/image';
 import styles from './FontBox.module.css';
+import TopRightArrows from '@/components/common/TopRightArrows';
 
 interface FontData {
     font_link: string;
@@ -38,21 +39,12 @@ export default function FontBox({ fontKeyword }: FontBoxProps) {
     return (
         <div className={styles.container}>
             <div className={styles.title}>FONT</div>
-            {hasPrev && (
-                <button className={`${styles.arrow} ${styles.left}`} onClick={() => setPage(page - 1)}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="40" viewBox="0 0 20 40" fill="none">
-                        <path opacity="0.25" d="M0 20L17.3077 40L20 36.6667L5.76923 20L20 3.33333L17.3077 0L0 20Z" fill="black" />
-            </svg>
-            </button>
-        )}
-
-        {hasNext && (
-            <button className={`${styles.arrow} ${styles.right}`} onClick={() => setPage(page + 1)}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="40" viewBox="0 0 20 40" fill="none">
-                    <path opacity="0.25" d="M2.69231 0L0 3.33333L14.2308 20L0 36.6667L2.69231 40L20 20L2.69231 0Z" fill="black" />
-                </svg>
-            </button>
-        )}
+            <TopRightArrows
+                onPrev={() => setPage(Math.max(0, page - 1))}
+                onNext={() => setPage(hasNext ? page + 1 : page)}
+                disablePrev={!hasPrev}
+                disableNext={!hasNext}
+            />
 
         <div className={styles.content}>
             {currentFonts.map((font, idx) => (

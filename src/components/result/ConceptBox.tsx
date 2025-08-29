@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './ConceptBox.module.css';
+import TopRightArrows from '@/components/common/TopRightArrows';
 
 interface GeminiSet {
   colors: string[];
@@ -41,20 +42,12 @@ export default function ConceptBox({ geminiResult }: ConceptBoxProps) {
   return (
     <div className={styles.container}>
       <div className={styles.title}>CONCEPT</div>
-      {currentIndex > 0 && (
-        <button className={`${styles.arrow} ${styles.left}`} onClick={handlePrev} aria-label="previous concept">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="40" viewBox="0 0 20 40" fill="none">
-            <path opacity="0.25" d="M0 20L17.3077 40L20 36.6667L5.76923 20L20 3.33333L17.3077 0L0 20Z" fill="black" />
-          </svg>
-        </button>
-      )}
-      {currentIndex < geminiResult.length - 1 && (
-        <button className={`${styles.arrow} ${styles.right}`} onClick={handleNext} aria-label="next concept">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="40" viewBox="0 0 20 40" fill="none">
-            <path opacity="0.25" d="M2.69231 0L0 3.33333L14.2308 20L0 36.6667L2.69231 40L20 20L2.69231 0Z" fill="black" />
-          </svg>
-        </button>
-      )}
+      <TopRightArrows
+        onPrev={handlePrev}
+        onNext={handleNext}
+        disablePrev={currentIndex <= 0}
+        disableNext={currentIndex >= geminiResult.length - 1}
+      />
       <div className={styles.content}>
         {currentSentences.map((sentence, index) => (
           <p key={index} className={styles.text}>- {sentence}</p>

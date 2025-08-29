@@ -54,22 +54,4 @@
     text-overflow: ellipsis;
 }
 
-.arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    line-height: 0;
-}
-
-.left { left: 10px; }
-.right { right: 10px; }
-
-.arrow:focus-visible {
-    outline: 2px solid rgba(197, 194, 255, 0.8);
-    outline-offset: 2px;
-}
-.arrow:hover path { opacity: 0.4; }
+/* replaced per-component arrows with TopRightArrows */

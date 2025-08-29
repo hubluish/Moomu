@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from './ImageBox.module.css';
+import TopRightArrows from '@/components/common/TopRightArrows';
 
 interface PinterestImage {
     thumbnail_url: string;
@@ -60,6 +61,7 @@ const ImageBox: React.FC = () => {
     return (
         <div className={styles.container}>
             <h2 className={styles.title}>IMAGES</h2>
+            <TopRightArrows disablePrev disableNext />
             <div className={styles.imageGrid}>
                 {images.map((image, index) => (
                     <a 
