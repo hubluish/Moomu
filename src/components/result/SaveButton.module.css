@@ -1,0 +1,39 @@
+.button {
+    display: flex;
+    width: 139px;
+    height: 39px;
+    padding: 5px 14px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 28.889px;
+    border: 0.1px solid var(--glass, #fff);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1) inset;
+
+    cursor: pointer;
+
+    background: var(--glass_backFill, rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:hover {
+    box-shadow: 0 0 0 2px rgba(197, 194, 255, 0.25);
+}
+
+.button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(125, 120, 255, 0.35);
+}
+
+.text{
+    color: #FFF;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}

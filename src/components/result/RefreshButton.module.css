@@ -1,0 +1,29 @@
+.button {
+    position: relative;
+    width: 39px;
+    height: 39px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden; /* clip blur to circle */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.button svg:first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.icon {
+    width: 21px;
+    height: 21px;
+    aspect-ratio: 1/1;
+    z-index: 1;
+}

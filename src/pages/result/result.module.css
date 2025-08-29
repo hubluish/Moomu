@@ -1,16 +1,30 @@
 .topWrapper {
+    display: flex;
+    justify-content: space-between;
     position: relative;
     width: 100%;
     margin-top: 24px;
-    }
+    margin: 25px 50px;
+    width: 1338px;
+}
+
+.topRightWrapper {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
 
 .pageBg{
-    min-height: 100%;
+    /* Ensure background covers full viewport and avoids bottom margin collapse */
+    min-height: 100vh;
+    padding-bottom: 40px; /* prevents white gap from last child's margin */
     background: url('/data/images/background/light.png') no-repeat fixed center/cover;
 }
 
 @media (prefers-color-scheme: dark) {
     .pageBg {
+        min-height: 100vh;
+        padding-bottom: 40px;
         background: url('/data/images/background/dark.png') no-repeat center/cover;
     }
 }

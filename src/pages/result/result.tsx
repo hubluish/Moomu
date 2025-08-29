@@ -7,6 +7,9 @@ import TitleBox from "../../components/result/TitleBox";
 import ExampleBox from "../../components/result/ExampleBox";
 import styles from "./result.module.css";
 import Header from "@/components/common/header/header";
+import BackButton from "../../components/result/BackButton";
+import RefreshButton from "../../components/result/RefreshButton";
+import SaveButton from "../../components/result/SaveButton";
 
 import React, { useEffect, useState } from "react";
 interface GeminiSet {
@@ -49,7 +52,11 @@ export default function ResultPage() {
         <Header />
       </div>
       <div className={styles.topWrapper}>
-
+        <BackButton  />
+        <div className={styles.topRightWrapper}>
+          <SaveButton  />
+          <RefreshButton  />
+        </div>
       </div>
       <div className={styles.gridContainer}>
         <div className={styles.titleBox}>
@@ -61,14 +68,14 @@ export default function ResultPage() {
         <div className={styles.conceptBox}>
           <ConceptBox geminiResult={geminiResult} />
         </div>
-        <div className={styles.keywordBox}>
-          <KeywordBox tags={tags} />
-        </div>
         <div className={styles.fontBox}>
           <FontBox fontKeyword={firstSet.font} />
         </div>
         <div className={styles.paletteBox}>
           <ColorPaletteBox />
+        </div>
+        <div className={styles.keywordBox}>
+          <KeywordBox tags={tags} />
         </div>
         <div className={styles.exampleBox}>
           <ExampleBox />
