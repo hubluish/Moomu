@@ -58,8 +58,8 @@ const ImageBox: React.FC = () => {
     }
 
     return (
-        <div className={styles.imageBox}>
-            <h2 className={styles.title}>Pinterest 이미지</h2>
+        <div className={styles.container}>
+            <h2 className={styles.title}>IMAGES</h2>
             <div className={styles.imageGrid}>
                 {images.map((image, index) => (
                     <a 

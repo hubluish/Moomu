@@ -1,0 +1,54 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-sizing: border-box;
+    width: 519px;
+    height: 163px;
+    padding: 20px;
+    gap: 16px;
+    flex: 1 0 0;
+
+    border-radius: 11.95px;
+    border: 0.5px solid var(--glass, #C5C2FF);
+    background: var(--glass_backFill, rgba(255, 255, 255, 0.02));
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25) inset;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+}
+
+.title {
+    color: #FFF;
+    font-family: Pretendard, system-ui, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.chipContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.chip {
+    border-radius: 50px;
+    background: #3D38F5;
+    height: 32px;
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #FFF;
+    text-align: center;
+    font-family: Pretendard, system-ui, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    white-space: nowrap;
+}
