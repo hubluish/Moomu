@@ -101,14 +101,18 @@
 
 .imageGrid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 130px);
+    grid-auto-rows: 130px;
     gap: 16px;
     width: 100%;
+    justify-content: center;
 }
 
 .imageWrapper {
     position: relative;
     overflow: hidden;
+    width: 130px;
+    height: 130px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;

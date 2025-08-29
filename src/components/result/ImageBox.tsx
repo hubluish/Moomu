@@ -74,8 +74,8 @@ const ImageBox: React.FC = () => {
                                 src={image.thumbnail_url} 
                                 alt="pinterest thumbnail" 
                                 className={styles.image}
-                                width={200}
-                                height={200}
+                                width={130}
+                                height={130}
                                 loading="lazy"
                             />
                         ) : (

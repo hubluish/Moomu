@@ -34,21 +34,30 @@
 }
 
 .chip {
-    border-radius: 50px;
-    background: #3D38F5;
-    height: 32px;
-    padding: 0 16px;
-
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    height: 40px;
+    padding: 0 14px;          
+    border-radius: 20px;
+    border: 0.25px solid var(--glass, #C5C2FF);
+    background: rgba(255, 255, 255, 0.30);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 
-    color: #FFF;
-    text-align: center;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25) inset;
+}
+
+.chipText {
     font-family: Pretendard, system-ui, sans-serif;
-    font-size: 14px;
-    font-style: normal;
+    font-size: 22px;
     font-weight: 500;
-    line-height: normal;
+    line-height: 1;
     white-space: nowrap;
+
+    background: var(--result-title, linear-gradient(96deg, #DFCDFF 2.91%, #FFF 102.69%));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
 }

@@ -14,7 +14,7 @@ const KeywordBox: React.FC<KeywordBoxProps> = ({ tags }) => {
         <div className={styles.chipContainer}>
             {tags.map((tag, index) => (
             <div key={index} className={styles.chip}>
-                {tag}
+                <span className={styles.chipText}>{tag}</span>
             </div>
             ))}
         </div>
