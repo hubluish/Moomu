@@ -13,7 +13,7 @@ interface GeminiResponse {
     mood?: string;
 }
 
-export async function saveToSupabase(results: GeminiResponse | GeminiResponse[]) {
+export async function saveToSupabase(results: GeminiResponse | GeminiResponse[]): Promise<string> {
     const array = Array.isArray(results) ? results : [results];
     const requestId = uuidv4();
 
@@ -45,4 +45,15 @@ export async function saveToSupabase(results: GeminiResponse | GeminiResponse[])
             console.error(`❌ 저장 실패 (index: ${i}):`, err);
         }
     }
+
+    // 요청 식별자를 호출자에게 반환하고, 클라이언트라면 임시로 저장합니다.
+    if (typeof window !== 'undefined') {
+        try {
+            window.localStorage.setItem('last_request_id', requestId);
+        } catch (e) {
+            console.warn('last_request_id 저장 실패', e);
+        }
+    }
+
+    return requestId;
 }

@@ -24,6 +24,19 @@ export default function LoadingPage() {
 
         // 3초 후에 결과 페이지로 이동
         const timer = setTimeout(() => {
+            // 현재 URL에서 rid(query param)를 읽어옵니다.
+            let rid: string | null = null;
+            if (typeof window !== 'undefined') {
+                const sp = new URLSearchParams(window.location.search);
+                rid = sp.get('rid');
+                // 쿼리에 없으면 localStorage의 last_request_id를 시도합니다.
+                if (!rid) {
+                    try {
+                        rid = localStorage.getItem('last_request_id');
+                    } catch {}
+                }
+            }
+
             const geminiResult = localStorage.getItem('gemini_result');
             if (geminiResult) {
                 try {
@@ -49,7 +62,9 @@ export default function LoadingPage() {
 
                     if (imageKeywords.length > 0) {
                         localStorage.setItem('image_keywords', JSON.stringify(imageKeywords));
-                        router.push('/result/result');
+                        // 결과 페이지로 이동할 때 rid가 있으면 함께 전달
+                        const next = rid ? `/result/result?rid=${encodeURIComponent(rid)}` : '/result/result';
+                        router.push(next);
                     } else {
                         console.error('이미지 키워드를 찾을 수 없습니다.');
                         // 디버깅을 위해 전체 데이터 구조 출력

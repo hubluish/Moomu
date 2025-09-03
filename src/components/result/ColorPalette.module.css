@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.colorItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.colorBlock {
+  width: 119px;
+  height: 172px;
+  border-radius: 0;
+}
+
+.colorCode {
+  margin-top: 20px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+}

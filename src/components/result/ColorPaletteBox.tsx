@@ -13,11 +13,11 @@ export default function ColorPaletteBox() {
             <TopRightArrows disablePrev disableNext />
             <div className={styles.content}>
                 {dummyColors.map((color) => (
-                    <div
-                        key={color}
-                        className={styles.colorBlock}
-                        style={{ backgroundColor: color }}
-                    >
+                    <div key={color} className={styles.colorItem}>
+                        <div
+                            className={styles.colorBlock}
+                            style={{ backgroundColor: color }}
+                        />
                         <span className={styles.colorCode}>{color}</span>
                     </div>
                 ))}
