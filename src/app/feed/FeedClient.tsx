@@ -45,12 +45,56 @@ export default function FeedClient() {
           throw new Error('Failed to fetch feed items');
         }
         const items = await response.json();
-        
-        const itemsWithLikeState = items.map((item: any) => ({
-          ...item,
-          liked: false, 
-        }));
-        setFeedItems(itemsWithLikeState);
+
+        // Normalize API items so feed can render even if DB lacks fields
+        const itemsWithLikeState: FeedItem[] = items.map((item: any) => {
+          const categories = Array.isArray(item?.categories)
+            ? (item.categories as string[])
+            : item?.category
+              ? [String(item.category)]
+              : [];
+
+          const likes = typeof item?.likes === 'number' ? item.likes : 0;
+
+          return {
+            id: String(item?.id ?? item?._id ?? item?.slug ?? Math.random().toString(36).slice(2)),
+            creator: String(item?.creator ?? (item?.userId ? `user_${String(item.userId).slice(0, 6)}` : 'Unknown')),
+            imageUrl: String(item?.imageUrl ?? ''),
+            title: String(item?.title ?? ''),
+            likes,
+            liked: false,
+            categories,
+            userId: String(item?.userId ?? ''),
+          };
+        });
+        if (itemsWithLikeState.length === 0) {
+          // Dev fallback: provide a couple of mock posts so UI can be tested
+          const mock: FeedItem[] = [
+            {
+              id: 'mock-1',
+              creator: '테스트유저',
+              imageUrl: '/assets/carousel/1.jpg',
+              title: '샘플 무드 1',
+              likes: 3,
+              liked: false,
+              categories: ['카드뉴스', '빈티지'],
+              userId: 'user_mock_1',
+            },
+            {
+              id: 'mock-2',
+              creator: '게스트',
+              imageUrl: '/assets/carousel/2.jpg',
+              title: '샘플 무드 2',
+              likes: 0,
+              liked: false,
+              categories: ['UI'],
+              userId: 'user_mock_2',
+            },
+          ];
+          setFeedItems(mock);
+        } else {
+          setFeedItems(itemsWithLikeState);
+        }
 
       } catch (error) {
         console.error(error);
