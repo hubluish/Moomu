@@ -11,6 +11,7 @@ import LoginModal from "../Login/LoginModal";
 const NAV_ITEMS = [
   { href: "/", label: "home" },
   { href: "/article", label: "article" },
+  { href: "/feed", label: "feed" },
   { href: "/mypage/moodboard/page", label: "mymoodboard" },
 ];
 // 헤더 내용
