@@ -6,8 +6,6 @@ import FontBox from "../../components/result/FontBox";
 import ImageBox from "../../components/result/ImageBox";
 import ColorPaletteBox from "../../components/result/ColorPaletteBox";
 import styles from "./result.module.css";
-import Header from "@/components/common/header/header";
-
 import React, { useEffect, useState } from "react";
 
 interface GeminiSet {
@@ -21,15 +19,12 @@ export default function ResultPage() {
   const [geminiResult, setGeminiResult] = useState<GeminiSet[] | null>(null);
 
   useEffect(() => {
-  const result = localStorage.getItem("gemini_result");
-  if (result) {
-    const parsed = JSON.parse(result);
-    setGeminiResult(parsed);
-  }
-}, []);
-
-
-
+    const result = localStorage.getItem("gemini_result");
+    if (result) {
+      const parsed = JSON.parse(result);
+      setGeminiResult(parsed);
+    }
+  }, []);
 
   if (!geminiResult) {
     return <div>로딩 중...</div>;
@@ -46,9 +41,6 @@ export default function ResultPage() {
 
   return (
     <main>
-      <div style={{ zIndex: 30 }}>
-        <Header />
-      </div>
       <MoodboardTitle />
       <div className={styles.topWrapper}>
         <div className={styles.chips}>
