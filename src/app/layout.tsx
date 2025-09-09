@@ -31,7 +31,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Header />
+        <div style={{ position: "relative", zIndex: 30 }}>
+          <Header />
+        </div>
+
         {children}
       </body>
     </html>
