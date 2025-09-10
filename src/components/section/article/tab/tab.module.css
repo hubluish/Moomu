@@ -13,12 +13,14 @@
 .tabBtn {
   display: flex;
   width: 110px;
+  height: 35px;
   padding: 8px;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   border-radius: 76px;
-  background: var(--button, rgba(61, 56, 245, 0.10));
+  background: var(--button, rgba(61, 56, 245, 0.1));
   border: none;
   cursor: pointer;
   color: #fff;
@@ -31,6 +33,6 @@
   font-weight: bold;
 }
 
-.tabBtn:hover{
+.tabBtn:hover {
   background: var(--color-main);
 }
