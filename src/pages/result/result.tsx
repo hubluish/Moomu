@@ -1,15 +1,15 @@
-import KeywordBox from "../../components/result/KeywordBox";
-import ConceptBox from "../../components/result/ConceptBox";
-import FontBox from "../../components/result/FontBox";
-import ImageBox from "../../components/result/ImageBox";
-import ColorPaletteBox from "../../components/result/ColorPaletteBox";
-import TitleBox from "../../components/result/TitleBox";
-import ExampleBox from "../../components/result/ExampleBox";
+import KeywordBox from "../../components/section/result/KeywordBox";
+import ConceptBox from "../../components/section/result/ConceptBox";
+import FontBox from "../../components/section/result/FontBox";
+import ImageBox from "../../components/section/result/ImageBox";
+import ColorPaletteBox from "../../components/section/result/ColorPaletteBox";
+import TitleBox from "../../components/section/result/TitleBox";
+import ExampleBox from "../../components/section/result/ExampleBox";
 import styles from "./result.module.css";
 import Header from "@/components/common/header/header";
-import BackButton from "../../components/result/BackButton";
-import RefreshButton from "../../components/result/RefreshButton";
-import SaveButton from "../../components/result/SaveButton";
+import BackButton from "../../components/section/result/BackButton";
+import RefreshButton from "../../components/section/result/RefreshButton";
+import SaveButton from "../../components/section/result/SaveButton";
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";

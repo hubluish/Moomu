@@ -2,16 +2,21 @@ import React from 'react';
 import Header from '@/components/common/header/header';
 import BackButton from '../../components/section/result/BackButton';
 import ActionButtons from '@/components/section/result/ActionButtons';
+import ShareButton from '@/components/section/result/ShareButtons';
+import { useRouter } from "next/router";
 
 import MoodboardPreview from '@/components/section/result/MoodboardPreview';
 import styles from './save.module.css';
 
 export default function SavePage() {
+
+    const router = useRouter();
+
     return (
         <main className={styles.pageBg}>
             <Header />
             <div className={styles.topWrapper}>
-                <BackButton />
+                <BackButton onClick={() => router.push('/result/result')} />
             </div>
             <div className={styles.mainContainer}>
                 <div className={styles.content}>

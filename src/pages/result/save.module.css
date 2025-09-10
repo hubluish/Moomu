@@ -21,6 +21,11 @@
     gap:10px;
 }
 
+.topWrapper{
+    width: 1338px;
+    margin: 30px auto 0 auto;
+}
+
 .p{
     color: #FFF;
     text-align: center;
