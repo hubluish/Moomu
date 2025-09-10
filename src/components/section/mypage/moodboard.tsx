@@ -31,10 +31,11 @@ const Moodboard = ({ imageUrl, keywords }: MoodboardProps) => {
         <Image
           src={displayImage}
           alt="무드보드 썸네일"
-          width={293}
+          width={311}
           height={138}
           style={{
             objectFit: "cover",
+            borderRadius: "8px",
           }}
         />
       </ImageWrapper>
