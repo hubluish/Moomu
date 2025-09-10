@@ -1,0 +1,54 @@
+.pageBg {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: url('/data/images/background/light.png') center/cover no-repeat fixed;
+    color: #FFF;
+}
+
+@media (prefers-color-scheme: dark) {
+    .pageBg {
+        background-image: url('/data/images/background/dark.png');
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:10px;
+}
+
+.p{
+    color: #FFF;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.h1{
+    color: #FFF;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.mainContainer{
+    margin: auto;
+    height: 479px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.actionButtons{
+    margin: auto;
+}

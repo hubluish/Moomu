@@ -12,6 +12,7 @@ import RefreshButton from "../../components/result/RefreshButton";
 import SaveButton from "../../components/result/SaveButton";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { supabase } from "@/utils/supabaseClient";
 interface GeminiSet {
   colors: string[];
@@ -21,6 +22,7 @@ interface GeminiSet {
 }
 
 export default function ResultPage() {
+  const router = useRouter();
   const [geminiResult, setGeminiResult] = useState<GeminiSet[] | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [fetchedTags, setFetchedTags] = useState<string[] | null>(null);
@@ -112,7 +114,7 @@ export default function ResultPage() {
       <div className={styles.topWrapper}>
         <BackButton  />
         <div className={styles.topRightWrapper}>
-          <SaveButton  />
+          <SaveButton onClick={() => router.push('/result/save')} />
           <RefreshButton  />
         </div>
       </div>
