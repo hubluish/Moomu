@@ -1,5 +1,5 @@
 "use client";
-import Moodboard from "@/components/section/mypage/Moodboard";
+import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import { supabase } from "@/utils/supabase";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import React, { useState, useEffect } from "react"; // 👇 useState, useEffect 추가
@@ -10,6 +10,7 @@ interface MoodboardResult {
   color_keyword: string;
   font_keyword: string;
   image_keyword: string;
+  created_at: string;
 }
 
 const MoodboardPage = () => {
@@ -19,17 +20,10 @@ const MoodboardPage = () => {
     const fetchMoodboards = async () => {
       const { data, error } = await supabase
         .from("moodboard_results")
-        .select(
-          "id, thumbnail_url, color_keyword, font_keyword, image_keyword"
-        );
-
-      if (error) {
-        console.error("Error fetching moodboards:", error);
-      } else if (data) {
-        setMoodboards(data);
-      }
+        .select("*");
+      if (error) console.error("Error fetching moodboards:", error);
+      else if (data) setMoodboards(data);
     };
-
     fetchMoodboards();
   }, []);
 
@@ -58,8 +52,11 @@ const MoodboardPage = () => {
               return (
                 <Moodboard
                   key={board.id}
+                  id={board.id}
                   imageUrl={board.thumbnail_url}
                   keywords={allKeywords}
+                  date={board.created_at}
+                  type="mymoodboard" // 이 페이지는 '내 무드보드' 타입
                 />
               );
             })}

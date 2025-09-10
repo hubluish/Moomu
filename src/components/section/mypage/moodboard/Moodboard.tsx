@@ -8,13 +8,17 @@ import {
   CategoryChip,
   ImageWrapper,
 } from "./moodboard.styled";
+import MoodboardOverlay from "./MoodboardOverlay";
 
 type MoodboardProps = {
+  id: string;
   imageUrl: string | null;
   keywords: string[];
+  date: string;
+  type: "mymoodboard" | "folder" | "favorite" | "trash";
 };
 
-const Moodboard = ({ imageUrl, keywords }: MoodboardProps) => {
+const Moodboard = ({ id, imageUrl, keywords, date, type }: MoodboardProps) => {
   const displayImage = imageUrl || "/assets/images/sky.png";
 
   return (
@@ -39,6 +43,8 @@ const Moodboard = ({ imageUrl, keywords }: MoodboardProps) => {
           }}
         />
       </ImageWrapper>
+
+      <MoodboardOverlay type={type} moodboardId={id} date={date} />
     </MoodboardWrapper>
   );
 };
