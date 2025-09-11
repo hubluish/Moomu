@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { getAllFolders, addMoodboardToFolder } from "@/utils/folders";
+import { getFolders, addMoodboardToFolder } from "@/utils/folders";
 import { CreateFolderModal } from "./CreateFolderModal";
 import Image from "next/image"; // 폴더 아이콘용
 import {
@@ -13,7 +13,7 @@ import {
   AddToFolderButton,
 } from "./FolderModal.styled";
 import IconButton from "../common/IconButton";
-// import { supabase } from "@/utils/supabase";
+import { supabase } from "@/utils/supabase";
 
 interface Folder {
   id: string;
@@ -36,8 +36,19 @@ const FolderListModal = ({ moodboardId, onClose }: FolderListModalProps) => {
   const fetchFolders = async () => {
     setIsLoading(true);
     try {
-      const allUserFolders = await getAllFolders();
-      setFolders(allUserFolders);
+      // 👇 1. 현재 로그인한 사용자 세션을 가져옵니다.
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        // 로그인하지 않은 경우 폴더 목록을 비웁니다.
+        setFolders([]);
+        return;
+      }
+
+      // 👇 2. getFolders 함수에 사용자 ID를 전달합니다.
+      const userFolders = await getFolders(session.user.id);
+      setFolders(userFolders);
     } catch (error) {
       console.error("폴더를 불러오는 중 오류 발생:", error);
       alert("폴더를 불러오는데 실패했습니다.");
