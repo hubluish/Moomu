@@ -57,3 +57,18 @@
 .actionButtons{
     margin: auto;
 }
+
+.shareOverlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 40;
+}
+
+.shareContainer{
+    position: relative;
+    z-index: 41;
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+}
