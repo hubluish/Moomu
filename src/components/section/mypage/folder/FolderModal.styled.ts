@@ -68,6 +68,7 @@ export const CreateModalTitle = styled.h2`
   font-weight: bold;
   color: #333;
   margin-bottom: 24px;
+  width: 300px;
 `;
 
 export const FolderNameInput = styled.input`
@@ -121,9 +122,13 @@ export const FolderItem = styled.li`
   gap: 12px;
   padding: 12px 16px;
   margin-bottom: 15px;
+
   border-radius: 8px;
+  box-sizing: border-box;
   background-color: #ebebff;
   cursor: pointer;
+  border: 1px solid transparent;
+
   transition: background-color 0.2s;
 
   &.active {

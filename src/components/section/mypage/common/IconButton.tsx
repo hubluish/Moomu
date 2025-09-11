@@ -17,7 +17,7 @@ const IconButton = ({
 }: IconButtonProps) => {
   return (
     <StyledButton onClick={onClick} variant={variant}>
-      <Image src={src} alt={alt} width={24} height={24} />
+      <Image src={src} alt={alt} width={30} height={30} />
     </StyledButton>
   );
 };

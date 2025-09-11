@@ -43,17 +43,17 @@ const MoodboardOverlay = ({
           <>
             <IconButton
               onClick={onAddToFolder} // 이제 오류 없이 정상적으로 사용 가능
-              src="/assets/icons/folder.svg"
+              src="/assets/icons/folder-icon.svg"
               alt="폴더에 추가"
             />
             <IconButton
               onClick={handleTogglePublic}
-              src="/assets/icons/lock.svg"
+              src="/assets/icons/lock-icon.svg"
               alt="공개/비공개"
             />
             <IconButton
               onClick={handleMoveToTrash}
-              src="/assets/icons/trash.svg"
+              src="/assets/icons/trash-icon.svg"
               alt="휴지통으로"
             />
             <DateText>{new Date(date).toLocaleDateString()}</DateText>
@@ -70,7 +70,7 @@ const MoodboardOverlay = ({
               <span style={{ color: "#ccc" }}>|</span>
               <DeleteOptionButton onClick={handleMoveToTrash}>
                 <Image
-                  src="/assets/icons/trash.svg"
+                  src="/assets/icons/trash-icon.svg"
                   alt="휴지통"
                   width={16}
                   height={16}
@@ -84,12 +84,12 @@ const MoodboardOverlay = ({
           <>
             <IconButton
               onClick={handleMoveToFolder}
-              src="/assets/icons/folder.svg"
+              src="/assets/icons/folder-icon.svg"
               alt="폴더 이동"
             />
             <IconButton
               onClick={() => setShowDeleteOptions(true)}
-              src="/assets/icons/trash.svg"
+              src="/assets/icons/trash-icon.svg"
               alt="삭제 옵션"
             />
           </>

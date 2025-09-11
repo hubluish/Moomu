@@ -3,9 +3,9 @@ import styled from "styled-components";
 // 무드보드 전체를 감싸는 컨테이너
 export const MoodboardWrapper = styled.div`
   width: 332px;
-  height: 200px;
+  height: 204px;
   padding: 10px;
-  gap: 10px;
+  gap: 5px;
   border-radius: 20px;
   border: 0.5px solid #c5c2ff;
   overflow: hidden;
@@ -20,8 +20,22 @@ export const MoodboardWrapper = styled.div`
 // 카테고리 칩들을 담는 컨테이너
 export const CategoryContainer = styled.div`
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 12px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 4px;
+
+  /* 👇 스크롤바 스타일링 (선택 사항) */
+  &::-webkit-scrollbar {
+    height: 4px; /* 스크롤바 높이 */
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #ccc; /* 스크롤바 색상 */
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent; /* 스크롤바 트랙 색상 */
+  }
 `;
 
 // 개별 카테고리 칩
@@ -30,7 +44,9 @@ export const CategoryChip = styled.span`
   color: var(--color-point);
   border: 0.5px solid var(--color-point);
   padding: 6px;
-  border-radius: 16px;
+  border-radius: 12px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   font-size: 14px;
   font-family: var(--font-family-base);
   font-weight: var(--font-weight-medium);
@@ -44,16 +60,16 @@ export const ImageWrapper = styled.div`
 
 export const OverlayWrapper = styled.div`
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 155px;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 25px;
-  border-radius: 20px;
+  border-radius: 0 0 20px;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
 
@@ -64,7 +80,7 @@ export const OverlayWrapper = styled.div`
 
 export const DateText = styled.span`
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   color: white;

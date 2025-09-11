@@ -56,7 +56,7 @@ export const StyledButton = styled.button<ButtonProps>`
   }
 
   img {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
   }
 `;
