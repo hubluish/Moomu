@@ -6,7 +6,7 @@ type IconButtonProps = {
   onClick: () => void;
   src: string;
   alt: string;
-  variant?: "default" | "danger";
+  variant?: "default" | "danger" | "folder";
 };
 
 const IconButton = ({

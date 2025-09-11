@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 // 모달 바깥 어두운 배경
 export const ModalBackdrop = styled.div`
@@ -40,17 +40,24 @@ export const ModalCreateContainer = styled.div`
   justify-content: center;
 `;
 
-export const ModalContent = styled.div`
+export const ModalContent = styled.div<{ $isCentered?: boolean }>`
   flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  overflow-y: auto; /* 목록이 길어질 경우 스크롤 */
+
+  ${({ $isCentered }) =>
+    $isCentered &&
+    css`
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    `}
 `;
 
 export const ModalFooter = styled.footer`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   gap: 8px;
   border-radius: 10px;
@@ -97,5 +104,51 @@ export const AddFolderButton = styled.button`
   }
   &:hover:not(:disabled) {
     background-color: #7a3ee0; /* 활성화 상태 호버 시 배경색 */
+  }
+`;
+
+export const FolderList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 300px;
+  overflow-y: auto; /* 폴더가 많아지면 스크롤 */
+`;
+
+export const FolderItem = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  background-color: #ebebff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &.active {
+    background-color: #c5c2ff; /* 선택됐을 때 배경색 */
+  }
+
+  &:hover {
+    border: 1px solid #8a4ffe;
+  }
+`;
+
+export const AddToFolderButton = styled.button`
+  padding: 12px;
+  text-align: center;
+  background-color: #8a4ffe; /* 활성화 색상 */
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+
+  &:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
   }
 `;

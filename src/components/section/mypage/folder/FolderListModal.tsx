@@ -2,12 +2,17 @@
 import React, { useState, useEffect } from "react";
 import { getAllFolders, addMoodboardToFolder } from "@/utils/folders";
 import { CreateFolderModal } from "./CreateFolderModal";
+import Image from "next/image"; // 폴더 아이콘용
 import {
   ModalBackdrop,
   ModalContainer,
   ModalContent,
   ModalFooter,
+  FolderList,
+  FolderItem,
+  AddToFolderButton,
 } from "./FolderModal.styled";
+import IconButton from "../common/IconButton";
 // import { supabase } from "@/utils/supabase";
 
 interface Folder {
@@ -55,8 +60,15 @@ const FolderListModal = ({ moodboardId, onClose }: FolderListModalProps) => {
       alert("폴더에 무드보드가 추가되었습니다.");
       onClose(); // 성공 시 모달 닫기
     } catch (error) {
-      console.error("폴더에 추가하는 중 오류 발생:", error);
-      alert("무드보드를 폴더에 추가하는데 실패했습니다.");
+      if (
+        error instanceof Error &&
+        error.message.includes("duplicate key value")
+      ) {
+        alert("이미 해당 폴더에 추가된 무드보드입니다.");
+      } else {
+        console.error("폴더에 추가하는 중 오류 발생:", error);
+        alert("무드보드를 폴더에 추가하는데 실패했습니다.");
+      }
     }
   };
 
@@ -75,54 +87,66 @@ const FolderListModal = ({ moodboardId, onClose }: FolderListModalProps) => {
   return (
     <ModalBackdrop onClick={onClose}>
       <ModalContainer onClick={(e: React.MouseEvent) => e.stopPropagation()}>
-        {isLoading ? (
-          <ModalContent>
+        <ModalContent $isCentered={folders.length === 0 && !isLoading}>
+          {isLoading ? (
             <p>폴더 목록을 불러오는 중...</p>
-          </ModalContent>
-        ) : folders.length === 0 ? (
-          <>
-            <ModalContent>
-              <p>현재 생성된 폴더가 없습니다.</p>
-            </ModalContent>
-            <ModalFooter>
-              <button
-                onClick={() => setCreateModalOpen(true)}
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  fontSize: "16px",
-                  background: "#8865F3",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "10px",
-                }}
-              >
-                새로운 폴더 만들기
-              </button>
-            </ModalFooter>
-          </>
+          ) : folders.length === 0 ? (
+            <p>현재 생성된 폴더가 없습니다.</p>
+          ) : (
+            <FolderList>
+              {folders.map((folder) => (
+                <FolderItem
+                  key={folder.id}
+                  onClick={() => setSelectedFolderId(folder.id)}
+                  className={selectedFolderId === folder.id ? "active" : ""}
+                >
+                  <Image
+                    src="/assets/icons/folder.svg"
+                    alt="폴더"
+                    width={24}
+                    height={24}
+                  />
+                  {folder.name}
+                </FolderItem>
+              ))}
+            </FolderList>
+          )}
+        </ModalContent>
+        {!isLoading && folders.length === 0 ? (
+          <ModalFooter>
+            <button
+              onClick={() => setCreateModalOpen(true)}
+              style={{
+                width: "100%",
+                padding: "12px",
+                fontSize: "16px",
+                backgroundColor: "#8865F3",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+            >
+              새로운 폴더 만들기
+            </button>
+          </ModalFooter>
         ) : (
-          <>
-            <ModalContent>
-              <ul>
-                {folders.map((folder) => (
-                  <li
-                    key={folder.id}
-                    onClick={() => setSelectedFolderId(folder.id)}
-                    className={selectedFolderId === folder.id ? "active" : ""}
-                  >
-                    {folder.name}
-                  </li>
-                ))}
-              </ul>
-            </ModalContent>
+          !isLoading && (
             <ModalFooter>
-              <button onClick={() => setCreateModalOpen(true)}>+</button>
-              <button onClick={handleAddClick} disabled={!selectedFolderId}>
+              <IconButton
+                onClick={() => setCreateModalOpen(true)}
+                src="/assets/icons/add-folder.svg"
+                alt="새 폴더 추가"
+                variant="folder"
+              />
+              <AddToFolderButton
+                onClick={handleAddClick}
+                disabled={!selectedFolderId}
+              >
                 이 폴더에 추가하기
-              </button>
+              </AddToFolderButton>
             </ModalFooter>
-          </>
+          )
         )}
       </ModalContainer>
     </ModalBackdrop>
