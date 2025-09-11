@@ -39,8 +39,7 @@ export default function SavePage() {
         return () => document.removeEventListener('mousedown', onClick);
     }, [showShare]);
 
-    const handleOpenShare = () => setShowShare(true);
-    const handleCloseShare = () => setShowShare(false);
+    const handleToggleShare = () => setShowShare(prev => !prev);
 
     const handleCopyLink = async () => {
         try {
@@ -71,14 +70,10 @@ export default function SavePage() {
                         <ActionButtons
                             onSaveImage={() => { alert('이미지 저장 기능은 곧 제공될 예정입니다.'); }}
                             onPostFeed={() => { alert('피드 게시 기능은 곧 제공될 예정입니다.'); }}
-                            onShare={handleOpenShare}
+                            onShare={handleToggleShare}
                         />
                         {showShare && (
-                            <div
-                                className={styles.shareContainer}
-                                style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '60px', zIndex: 100 }}
-                                onClick={e => e.stopPropagation()}
-                            >
+                            <div className={styles.shareContainer} onClick={e => e.stopPropagation()}>
                                 <ShareButton onClickLink={handleCopyLink} onClickKakao={handleShareKakao} />
                             </div>
                         )}

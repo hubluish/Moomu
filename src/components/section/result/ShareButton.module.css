@@ -55,3 +55,8 @@
     line-height: normal;
     align-self: stretch;
 }
+
+/* Ensure share buttons show clickable cursor */
+.iconButton {
+    cursor: pointer;
+}

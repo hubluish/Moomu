@@ -66,9 +66,9 @@
 }
 
 .shareContainer{
-    position: relative;
-    z-index: 41;
-    margin-top: 12px;
-    display: flex;
-    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 70px;
+    z-index: 100;
 }
