@@ -2,8 +2,8 @@
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import { supabase } from "@/utils/supabase";
 import Sidebar from "@/components/section/mypage/Sidebar";
-import React, { useState, useEffect } from "react"; // 👇 useState, useEffect 추가
-
+import FolderListModal from "@/components/section/mypage/folder/FolderListModal";
+import React, { useState, useEffect } from "react";
 interface MoodboardResult {
   id: string;
   thumbnail_url: string | null;
@@ -15,6 +15,10 @@ interface MoodboardResult {
 
 const MoodboardPage = () => {
   const [moodboards, setMoodboards] = useState<MoodboardResult[]>([]);
+  const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
+  const [selectedMoodboardId, setSelectedMoodboardId] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchMoodboards = async () => {
@@ -26,6 +30,16 @@ const MoodboardPage = () => {
     };
     fetchMoodboards();
   }, []);
+
+  const handleOpenFolderModal = (moodboardId: string) => {
+    setSelectedMoodboardId(moodboardId);
+    setIsFolderModalOpen(true);
+  };
+
+  const handleCloseFolderModal = () => {
+    setIsFolderModalOpen(false);
+    setSelectedMoodboardId(null);
+  };
 
   return (
     <div>
@@ -56,12 +70,20 @@ const MoodboardPage = () => {
                   imageUrl={board.thumbnail_url}
                   keywords={allKeywords}
                   date={board.created_at}
-                  type="mymoodboard" // 이 페이지는 '내 무드보드' 타입
+                  type="mymoodboard"
+                  onAddToFolder={() => handleOpenFolderModal(board.id)}
                 />
               );
             })}
           </div>
         </main>
+
+        {isFolderModalOpen && selectedMoodboardId && (
+          <FolderListModal
+            moodboardId={selectedMoodboardId}
+            onClose={handleCloseFolderModal}
+          />
+        )}
       </div>
     </div>
   );

@@ -28,7 +28,7 @@ export const StyledButton = styled.button<ButtonProps>`
       : css`
           background-color: #ebebff;
           &:hover {
-            background-color: #c7c7fe;
+            background-color: #c5c2ff;
           }
         `}
 

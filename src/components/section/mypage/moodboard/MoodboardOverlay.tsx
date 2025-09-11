@@ -14,19 +14,20 @@ type MoodboardOverlayProps = {
   type: "mymoodboard" | "folder" | "favorite" | "trash";
   moodboardId: string;
   date: string;
-  AuthorName?: string;
+  authorName?: string;
+  onAddToFolder: () => void;
 };
 
 const MoodboardOverlay = ({
   type,
   moodboardId,
   date,
+  authorName,
+  onAddToFolder,
 }: MoodboardOverlayProps) => {
-  // 각 아이콘 클릭 시 실행될 함수 (지금은 비워둠)
   const [showDeleteOptions, setShowDeleteOptions] = useState(false);
 
   // 각 아이콘 클릭 시 실행될 함수
-  const handleAddToFolder = () => alert(`${moodboardId}를 폴더에 추가`);
   const handleMoveToFolder = () => alert(`${moodboardId}를 다른 폴더로 이동`);
   const handleTogglePublic = () => alert(`${moodboardId} 공개 상태 변경`);
   const handleMoveToTrash = () => alert(`${moodboardId}를 휴지통으로`);
@@ -41,7 +42,7 @@ const MoodboardOverlay = ({
         return (
           <>
             <IconButton
-              onClick={handleAddToFolder}
+              onClick={onAddToFolder} // 이제 오류 없이 정상적으로 사용 가능
               src="/assets/icons/folder.svg"
               alt="폴더에 추가"
             />
@@ -87,7 +88,7 @@ const MoodboardOverlay = ({
               alt="폴더 이동"
             />
             <IconButton
-              onClick={() => setShowDeleteOptions(true)} // 클릭 시 삭제 옵션 표시
+              onClick={() => setShowDeleteOptions(true)}
               src="/assets/icons/trash.svg"
               alt="삭제 옵션"
             />
@@ -97,7 +98,7 @@ const MoodboardOverlay = ({
       case "favorite":
         return (
           <>
-            <AuthorName>{AuthorName || "작성자"}</AuthorName>
+            <AuthorName>{authorName || "작성자"}</AuthorName>
             <HeartIcon src="/assets/icons/heart-filled.svg" alt="찜하기" />
           </>
         );

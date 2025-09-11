@@ -16,9 +16,17 @@ type MoodboardProps = {
   keywords: string[];
   date: string;
   type: "mymoodboard" | "folder" | "favorite" | "trash";
+  onAddToFolder: () => void;
 };
 
-const Moodboard = ({ id, imageUrl, keywords, date, type }: MoodboardProps) => {
+const Moodboard = ({
+  id,
+  imageUrl,
+  keywords,
+  date,
+  type,
+  onAddToFolder,
+}: MoodboardProps) => {
   const displayImage = imageUrl || "/assets/images/sky.png";
 
   return (
@@ -44,7 +52,12 @@ const Moodboard = ({ id, imageUrl, keywords, date, type }: MoodboardProps) => {
         />
       </ImageWrapper>
 
-      <MoodboardOverlay type={type} moodboardId={id} date={date} />
+      <MoodboardOverlay
+        type={type}
+        moodboardId={id}
+        date={date}
+        onAddToFolder={onAddToFolder}
+      />
     </MoodboardWrapper>
   );
 };
