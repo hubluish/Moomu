@@ -9,6 +9,7 @@ interface RefreshButtonProps {
 
 const RefreshButton: React.FC<RefreshButtonProps> = ({ onClick }) => {
     return (
+        <div className={styles.wrap}>
         <button className={styles.button} onClick={onClick}>
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -81,6 +82,8 @@ const RefreshButton: React.FC<RefreshButtonProps> = ({ onClick }) => {
             </defs>
         </svg>
         </button>
+        <div className={styles.tooltip}>전체 새로고침</div>
+        </div>
     );
 };
 
