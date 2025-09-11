@@ -1,13 +1,17 @@
 .container {
-    width: 384px;
-    height: 650px;
+    border-radius: 11.95px;
+    border: 0.5px solid var(--glass, #C5C2FF);
+    background: var(--glass_backFill, rgba(255, 255, 255, 0.02));
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25) inset;
+    width: 453px;
+    backdrop-filter: blur(6px);
+    height: 504px;
     flex-shrink: 0;
-    border-radius: 30px;
-    border: 2px solid var(--outline, #E6E8EC);
-    background: #FFF;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-    padding: 20px;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
     }
 
     .label {
@@ -61,54 +65,54 @@
     }
 
     .image {
-    width: 168px;
-    height: 168px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     border-radius: 10px;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
     }
 
     .imageWrapper {
-    width: 168px;
-    height: 168px;
+    width: 50px;
+    height: 50px;
     display: block;
     }
 
     .placeholder {
-    width: 168px;
-    height: 168px;
+    width: 50px;
+    height: 50px;
     background-color: #a4a4a4;
     border-radius: 10px;
 }
 
-.imageBox {
-    width: 400px;
-    height: 650px;
-    padding: 20px;
-    background: #fff;
-    border-radius: 30px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 10px 0px
-}
+
 
 .title {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #333;
-}
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #fff;
+    font-family: 'Pretendard';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 15px;
+    }
 
 .imageGrid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 130px);
+    grid-auto-rows: 130px;
     gap: 16px;
     width: 100%;
+    justify-content: center;
 }
 
 .imageWrapper {
     position: relative;
-    width: 100%;
-    padding-bottom: 100%; /* 정사각형 비율 유지 */
     overflow: hidden;
+    width: 130px;
+    height: 130px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;

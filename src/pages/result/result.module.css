@@ -1,8 +1,33 @@
 .topWrapper {
+    display: flex;
+    justify-content: space-between;
     position: relative;
     width: 100%;
     margin-top: 24px;
+    margin: 25px auto;
+    width: 1338px;
+}
+
+.topRightWrapper {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.pageBg{
+    /* Ensure background covers full viewport and avoids bottom margin collapse */
+    min-height: 100vh;
+    padding-bottom: 40px; /* prevents white gap from last child's margin */
+    background: url('/data/images/background/light.png') no-repeat fixed center/cover;
+}
+
+@media (prefers-color-scheme: dark) {
+    .pageBg {
+        min-height: 100vh;
+        padding-bottom: 40px;
+        background: url('/data/images/background/dark.png') no-repeat center/cover;
     }
+}
 
     .chips {
     position: absolute;
@@ -29,14 +54,18 @@
     display: grid;
     
     grid-template-rows: auto auto;
-    gap: 24px;
+    gap: 25px;
     margin: 40px ;
     align-items: center;
-    grid-template-columns: 1fr 1.3fr 0.7fr 1.3fr 1fr; /* 5열: 좌우 여백 + 3 콘텐츠 열 */
+    grid-template-columns: 3.8fr 2.4fr 1.4fr 2.5fr;
+    grid-template-rows: repeat(4,auto);
     grid-template-areas:
-    '. concept font image .'
-    '. palette palette image .';
+    ' title concept font examples '
+    ' images concept font examples '
+    ' images palette palette examples '
+    ' images keyword keyword examples ';
 
+    align-items: start;
     justify-items: center;
 }
 
@@ -49,9 +78,25 @@
     }
 
     .imageBox {
-    grid-area: image;
+    grid-area: images;
     }
 
     .paletteBox {
     grid-area: palette;
-}
+    }
+
+    .titleBox {
+    grid-area: title;
+    }
+
+    .keywordBox {
+    grid-area: keyword;
+    }
+
+    .exampleBox {
+    grid-area: examples;
+    }
+
+    .titleBox, .imageBox, .conceptBox, .exampleBox, .keywordBox,.paletteBox, .fontBox{
+        width: 100%;
+    }

@@ -1,0 +1,62 @@
+.container {
+    display: flex;
+    width: 160px;
+    height: 88px;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    border-radius: 28px;
+    border: 0.2px solid var(--glass, #C5C2FF);
+    background: rgba(254, 254, 255, 0.30);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    position: absolute;
+}
+
+.item {
+    display: flex;
+    width: 58px;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.iconButton {
+    width: 44px;         /* Kakao 44.138 → 이미지 기준 44로 통일 */
+    height: 44px;
+    flex-shrink: 0;
+    border: none;
+    padding: 0;
+    background: transparent;
+    cursor: default;     /* 기능 연결 전엔 기본 커서 */
+}
+
+.iconButton:focus-visible {
+    outline: 2px solid rgba(61, 56, 245, 0.35);
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
+.iconImg {
+    display: block;
+    width: 44px;
+    height: 44px;
+  object-fit: contain;   /* 아이콘 여백/비율 보호 */
+}
+
+.label {
+    color: var(--background, #FEFEFF);
+    text-align: center;
+    font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    align-self: stretch;
+}
+
+/* Ensure share buttons show clickable cursor */
+.iconButton {
+    cursor: pointer;
+}

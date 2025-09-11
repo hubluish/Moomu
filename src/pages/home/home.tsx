@@ -168,7 +168,24 @@ function Home() {
         const result = await response.json();
         console.log('%c🎨 Gemini 응답 결과:', 'color: green; font-weight: bold;', result);
 
-        localStorage.setItem('gemini_result', JSON.stringify(result));
+        try {
+                const selectedColor = selections[0] ?? undefined;
+                const selectedFont = selections[2] ?? undefined;
+                const selectedImages = [
+                    selections[1],
+                    ...(selections[3]?.split(',') || []),
+                ].filter(Boolean) as string[];
+
+                const selectedKeywords = [
+                    ...(selectedColor ? [selectedColor] : []),
+                    ...selectedImages,
+                    ...(selectedFont ? [selectedFont] : []),
+                ];
+
+                localStorage.setItem('selected_keywords', JSON.stringify(selectedKeywords));
+            } catch (e) {
+                console.warn('선택 키워드 저장 실패:', e);
+            }
 
         console.log('%c💾 Supabase 저장 시작:', 'color: blue; font-weight: bold;');
         try {
@@ -188,6 +205,7 @@ function Home() {
         if (cheerTimerRef.current) {
             window.clearTimeout(cheerTimerRef.current);
             cheerTimerRef.current = null;
+          
         }
         setCheerMsg(message);
         setCheerVisible(true);
