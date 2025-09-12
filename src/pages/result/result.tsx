@@ -129,7 +129,7 @@ export default function ResultPage() {
           <FontBox fontKeyword={firstSet.font} />
         </div>
         <div className={styles.paletteBox}>
-          <ColorPaletteBox />
+          <ColorPaletteBox geminiResult={geminiResult} />
         </div>
         <div className={styles.keywordBox}>
           <KeywordBox tags={tags} />

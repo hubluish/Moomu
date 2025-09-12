@@ -4,9 +4,11 @@ import React, { useCallback, useRef, useState } from 'react';
 import styles from './ColorPalette.module.css';
 import { createPortal } from 'react-dom';
 
-const dummyColors = ['#333333', '#555555', '#777777', '#999999'];
+interface ColorPaletteProps {
+  colors: string[];
+}
 
-export default function ColorPalette() {
+export default function ColorPalette({ colors }: ColorPaletteProps) {
   const [isToastVisible, setToastVisible] = useState(false);
   const hideTimer = useRef<number | null>(null);
 
@@ -50,7 +52,7 @@ export default function ColorPalette() {
 
   return (
     <div className={styles.container}>
-      {dummyColors.map((color) => (
+      {(colors || []).map((color) => (
         <div
           key={color}
           className={styles.colorItem}
@@ -73,7 +75,7 @@ export default function ColorPalette() {
             role="status"
             aria-live="polite"
           >
-            복사됨
+            복사되었습니다
           </div>,
           document.body
         )}
