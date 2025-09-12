@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Header from '@/components/common/header/header';
 import BackButton from '../../components/section/result/BackButton';
 import ActionButtons from '@/components/section/result/ActionButtons';
@@ -14,7 +14,7 @@ export default function SavePage() {
     const [showShare, setShowShare] = useState(false);
     const shareBtnRef = useRef<HTMLDivElement>(null);
 
-    // ESC로 닫기
+    // ESC로 공유 패널 닫기
     useEffect(() => {
         if (!showShare) return;
         const onKeyDown = (e: KeyboardEvent) => {
@@ -24,10 +24,10 @@ export default function SavePage() {
         return () => window.removeEventListener('keydown', onKeyDown);
     }, [showShare]);
 
-    // 공유 버튼 외부 클릭 시 닫기 (오버레이 없이)
+    // 바깥 클릭(터치/펜 포함) 시 닫기
     useEffect(() => {
         if (!showShare) return;
-        const onClick = (e: MouseEvent) => {
+        const onPointer = (e: Event) => {
             if (
                 shareBtnRef.current &&
                 !shareBtnRef.current.contains(e.target as Node)
@@ -35,30 +35,48 @@ export default function SavePage() {
                 setShowShare(false);
             }
         };
-        document.addEventListener('mousedown', onClick);
-        return () => document.removeEventListener('mousedown', onClick);
+        document.addEventListener('pointerdown', onPointer as EventListener);
+        return () => document.removeEventListener('pointerdown', onPointer as EventListener);
     }, [showShare]);
 
-    const handleToggleShare = () => setShowShare(prev => !prev);
+    const handleToggleShare = useCallback(() => setShowShare(prev => !prev), []);
 
-    const handleCopyLink = async () => {
+    // Clipboard API 실패 시 textarea fallback 제공
+    const handleCopyLink = useCallback(async () => {
+        const url = window.location.href;
         try {
-            await navigator.clipboard.writeText(window.location.href);
-            alert('링크를 클립보드에 복사했어요.');
+            if (navigator?.clipboard?.writeText) {
+                await navigator.clipboard.writeText(url);
+                alert('링크가 클립보드에 복사되었습니다.');
+                return;
+            }
+        } catch {}
+        try {
+            const textarea = document.createElement('textarea');
+            textarea.value = url;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('링크가 클립보드에 복사되었습니다.');
         } catch (e) {
             alert('링크 복사에 실패했어요.');
         }
-    };
+    }, []);
 
-    const handleShareKakao = () => {
+    const handleShareKakao = useCallback(() => {
         alert('카카오톡 공유는 준비 중이에요.');
-    };
+    }, []);
 
     return (
         <main className={styles.pageBg}>
             <Header />
             <div className={styles.topWrapper}>
-                <BackButton onClick={() => router.push('/result/result')} />
+                {/* 이전 페이지로 돌아가기. 특정 경로로 이동하려면 push 유지 */}
+                <BackButton onClick={() => router.back()} />
             </div>
             <div className={styles.mainContainer}>
                 <div className={styles.content}>
@@ -68,12 +86,17 @@ export default function SavePage() {
                 <div className={styles.actionButtons}>
                     <div style={{ display: 'inline-block', position: 'relative' }} ref={shareBtnRef}>
                         <ActionButtons
-                            onSaveImage={() => { alert('이미지 저장 기능은 곧 제공될 예정입니다.'); }}
-                            onPostFeed={() => { alert('피드 게시 기능은 곧 제공될 예정입니다.'); }}
+                            // TODO: 이미지 저장/피드 게시 기능 구현 필요
+                            onSaveImage={() => { alert('이미지 저장 기능은 준비 중이에요.'); }}
+                            onPostFeed={() => { alert('피드 게시 기능은 준비 중이에요.'); }}
                             onShare={handleToggleShare}
                         />
                         {showShare && (
-                            <div className={styles.shareContainer} onClick={e => e.stopPropagation()}>
+                            <div
+                                className={styles.shareContainer}
+                                onClick={e => e.stopPropagation()}
+                                role="dialog" aria-modal="true" aria-label="공유 옵션"
+                            >
                                 <ShareButton onClickLink={handleCopyLink} onClickKakao={handleShareKakao} />
                             </div>
                         )}

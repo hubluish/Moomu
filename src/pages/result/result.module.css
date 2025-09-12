@@ -1,6 +1,7 @@
 .topWrapper {
     display: flex;
     justify-content: space-between;
+    flex-direction: row-reverse;
     position: relative;
     width: 100%;
     margin-top: 24px;

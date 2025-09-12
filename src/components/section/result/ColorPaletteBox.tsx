@@ -4,13 +4,7 @@ import React, { useMemo, useState } from 'react';
 import styles from './ColorPaletteBox.module.css';
 import TopRightArrows from '@/components/common/TopRightArrows';
 import ColorPalette from './ColorPalette';
-
-interface GeminiSet {
-  colors: string[];
-  image: string;
-  font: string;
-  sentences: string[];
-}
+import type { GeminiSet } from '@/types/result';
 
 interface ColorPaletteBoxProps {
   geminiResult?: GeminiSet[] | null;

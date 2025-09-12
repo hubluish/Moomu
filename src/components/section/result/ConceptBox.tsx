@@ -3,13 +3,7 @@
 import React, { useState } from 'react';
 import styles from './ConceptBox.module.css';
 import TopRightArrows from '@/components/common/TopRightArrows';
-
-interface GeminiSet {
-  colors: string[];
-  image: string;
-  font: string;
-  sentences: string[];
-}
+import type { GeminiSet } from '@/types/result';
 
 interface ConceptBoxProps {
   geminiResult: GeminiSet[] | null;

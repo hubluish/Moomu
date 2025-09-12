@@ -9,24 +9,29 @@ import TitleBox from "../../components/section/result/TitleBox";
 import ExampleBox from "../../components/section/result/ExampleBox";
 import styles from "./result.module.css";
 import Header from "@/components/common/header/header";
-import BackButton from "../../components/section/result/BackButton";
 import RefreshButton from "../../components/section/result/RefreshButton";
 import SaveButton from "../../components/section/result/SaveButton";
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "@/utils/supabaseClient";
-interface GeminiSet {
-  colors: string[];
-  image: string;
-  font: string;
-  sentences: string[];
+import type { GeminiSet } from "@/types/result";
+
+// Supabase 응답 스키마 타입 정의
+interface ResultRow {
+  id: string;
+  color_keyword: string | string[] | null;
+  image_keyword: string | null;
+  font_keyword: string | null;
+  mood_sentence: string | string[] | null;
 }
 
 export default function ResultPage() {
   const router = useRouter();
   const [geminiResult, setGeminiResult] = useState<GeminiSet[] | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -35,30 +40,35 @@ export default function ResultPage() {
       // URL에서 request_id 추출
       const sp = new URLSearchParams(window.location.search);
       const rid = sp.get("rid");
-      if (!rid) {
-        console.warn("❌ request_id가 없습니다.");
+
+      // 간단 검증: 영숫자/하이픈/언더스코어만 허용
+      const RID_SAFE = /^[A-Za-z0-9_-]{1,128}$/;
+      if (!rid || !RID_SAFE.test(rid)) {
+        setErrorMsg("유효하지 않은 요청 ID 입니다.");
+        setLoading(false);
         return;
       }
 
-      // ✅ Supabase에서 최신 데이터 조회
+      // Supabase에서 결과 조회
       const { data, error } = await supabase
         .from("moodboard_results")
         .select("id, color_keyword, font_keyword, image_keyword, mood_sentence")
         .eq("request_id", rid);
 
       if (error) {
-        console.error("❌ Supabase fetch error:", error);
+        console.error("Supabase fetch error:", error);
+        setErrorMsg("결과를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
+        setLoading(false);
         return;
       }
       if (!data || data.length === 0) {
-        console.warn("⚠️ Supabase에서 해당 request_id 결과를 찾을 수 없습니다.");
+        setErrorMsg("결과가 없습니다. 올바른 링크인지 확인해주세요.");
+        setLoading(false);
         return;
       }
 
-      console.log("🎯 Supabase에서 불러온 결과:", data);
-
-      // DB 데이터 → GeminiSet[]으로 정규화
-      const normalized: GeminiSet[] = (data as any[]).map((row) => ({
+      // DB 데이터를 GeminiSet[]로 정규화
+      const normalized: GeminiSet[] = (data as ResultRow[]).map((row) => ({
         colors: Array.isArray(row.color_keyword)
           ? row.color_keyword
           : String(row.color_keyword ?? "")
@@ -76,32 +86,30 @@ export default function ResultPage() {
       }));
 
       setGeminiResult(normalized);
+      setLoading(false);
 
-    // 사용자가 직접 선택한 키워드 로드 (있으면 우선 표시)
-    const selected = localStorage.getItem("selected_keywords");
-    if (selected) {
+      // 사용자 직접 선택 키워드 로드(결과 페이지 태그 표시용)
       try {
-        const parsedSelected = JSON.parse(selected);
-        if (Array.isArray(parsedSelected)) {
-          setSelectedTags(parsedSelected.filter(Boolean));
+        const selected = localStorage.getItem("selected_keywords");
+        if (selected) {
+          const parsedSelected = JSON.parse(selected);
+          if (Array.isArray(parsedSelected)) {
+            setSelectedTags(parsedSelected.filter(Boolean));
+          }
         }
       } catch (e) {
-        console.warn("선택 키워드 파싱 실패", e);
+        console.warn("선택 키워드 로드 실패", e);
       }
-    }
-  })();
+    })();
   }, []);
 
-
-
-
-  if (!geminiResult) {
-    return <div>로딩 중...</div>;
-  }
+  // 로딩/에러 상태 처리
+  if (loading) return <div>로딩 중…</div>;
+  if (errorMsg) return <div>{errorMsg}</div>;
+  if (!geminiResult || geminiResult.length === 0) return <div>표시할 결과가 없습니다.</div>;
 
   const firstSet = geminiResult[0];
-
-  const tags = selectedTags
+  const tags = selectedTags;
 
   return (
     <main className={styles.pageBg}>
@@ -109,10 +117,10 @@ export default function ResultPage() {
         <Header />
       </div>
       <div className={styles.topWrapper}>
-        <BackButton  />
         <div className={styles.topRightWrapper}>
+          <></>
           <SaveButton onClick={() => router.push('/result/save')} />
-          <RefreshButton  />
+          <RefreshButton />
         </div>
       </div>
       <div className={styles.gridContainer}>
@@ -141,3 +149,4 @@ export default function ResultPage() {
     </main>
   );
 }
+
