@@ -128,7 +128,7 @@ export default function ResultPage() {
           <TitleBox />
         </div>
         <div className={styles.imageBox}>
-          <ImageBox />
+          <ImageBox geminiSet={firstSet} perPage={9} orientation="landscape" useColorFilter />
         </div>
         <div className={styles.conceptBox}>
           <ConceptBox geminiResult={geminiResult} />

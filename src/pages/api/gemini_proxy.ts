@@ -33,9 +33,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 각 세트는 아래 항목 포함 (순서: 색상 → 이미지 → 폰트 → 문장)
 
-colors: 분위기에 어울리는 헥사 코드 4개
+colors: You are a professional color palette designer. Based on the following description, create a color palette with 4 HEX codes.
 
-image: 선택된 무드에 맞는 2~3 단어로 된 실제 검색 가능한 이미지 키워드 1개
+image: 선택된 무드에 맞는 한 단어로 된 실제 검색 가능한 이미지 키워드 1개
 
 font: 폰트 키워드 (제공 리스트 중 입력 키워드와 유사한 단어 1개 선택)
 
