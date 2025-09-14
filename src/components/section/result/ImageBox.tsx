@@ -15,6 +15,12 @@ interface PinterestImage {
     photographer_url?: string;
 }
 
+interface ImageItem {
+    url: string;
+    thumb?: string;
+    source?: string;
+}
+
 type Props = {
     geminiSet: GeminiSet;     // { colors, image, font, sentences }
     perPage?: number;         // 기본 9
@@ -24,6 +30,7 @@ type Props = {
     onNext?: () => void;
     disablePrev?: boolean;
     disableNext?: boolean;
+    onImagesChange?: (images: { url: string; thumb?: string; source?: string }[]) => void; // ✅ 추가
 };
 
 const ImageBox: React.FC<Props> = ({
@@ -35,6 +42,7 @@ const ImageBox: React.FC<Props> = ({
     onNext,
     disablePrev,
     disableNext,
+    onImagesChange,
     }) => {
     const [images, setImages] = useState<PinterestImage[]>([]);
     const [loading, setLoading] = useState(true);
@@ -49,7 +57,20 @@ const ImageBox: React.FC<Props> = ({
     useEffect(() => {
         setPage(1);
         setImages([]);
-    }, [query, colorHex, orientation, perPage]);
+    }, [query, colorHex, orientation, perPage, onImagesChange]);
+
+    useEffect(() => {
+    if (!images || images.length === 0) return;
+    const mapped = images.map((img) => ({
+        url: img.pin_url,
+        thumb: img.thumbnail_url,
+        source: 'pexels',
+    }));
+    onImagesChange?.(mapped);
+    const start = (page - 1) * perPage;
+    const end = start + perPage;
+    onImagesChange?.(mapped.slice(start, end));
+    }, [images, onImagesChange, page, perPage]);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -98,22 +119,22 @@ const ImageBox: React.FC<Props> = ({
 
             // window cache: avoid refetch when revisiting same query
             const key = [
-              query,
-              colorHex || '',
-              orientation || '',
-              String(perPage),
-              String(page),
+                query,
+                colorHex || '',
+                orientation || '',
+                String(perPage),
+                String(page),
             ].join('|');
             const w: any = typeof window !== 'undefined' ? window : undefined;
             if (w) {
-              w.__imageCache = w.__imageCache || new Map();
-              const cached = w.__imageCache.get(key);
-              if (cached) {
+                w.__imageCache = w.__imageCache || new Map();
+                const cached = w.__imageCache.get(key);
+                if (cached) {
                 setImages((prev: any) => (page === 1 ? cached.photos : [...prev, ...cached.photos]));
                 setHasNext(!!cached.hasNext);
                 setLoading(false);
                 return;
-              }
+                }
             }
 
             const params = new URLSearchParams({

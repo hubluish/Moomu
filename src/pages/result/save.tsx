@@ -6,6 +6,7 @@ import ShareButton from '@/components/section/result/ShareButton';
 import { useRouter } from "next/router";
 
 import MoodboardPreview from '@/components/section/result/MoodboardPreview';
+import { supabase } from '@/utils/supabaseClient';
 import styles from './save.module.css';
 
 export default function SavePage() {
@@ -40,6 +41,51 @@ export default function SavePage() {
     }, [showShare]);
 
     const handleToggleShare = useCallback(() => setShowShare(prev => !prev), []);
+
+    const handleBack = useCallback(async () => {
+        // 1) Try to delete the just-created moodboard by mid
+        try {
+            let mid: string | null = null;
+            if (typeof window !== 'undefined') {
+                const sp = new URLSearchParams(window.location.search);
+                mid = sp.get('mid');
+            }
+            if (mid) {
+                const { error } = await supabase.from('moodboard').delete().eq('id', mid);
+                if (error) {
+                    console.error('Failed to delete moodboard:', error);
+                }
+            }
+        } catch (e) {
+            console.error('Error deleting moodboard:', e);
+        }
+
+        // 2) Navigate back to result with a safe rid
+        try {
+            const ref = typeof document !== 'undefined' ? document.referrer : '';
+            let rid: string | null = null;
+            if (ref) {
+                try {
+                    const url = new URL(ref);
+                    rid = url.searchParams.get('rid');
+                } catch {}
+            }
+            if (!rid && typeof window !== 'undefined') {
+                try {
+                    rid = window.localStorage.getItem('last_request_id');
+                } catch {}
+            }
+            if (rid) {
+                router.push(`/result/result?rid=${encodeURIComponent(rid)}`);
+                return;
+            }
+        } catch {}
+        if (typeof window !== 'undefined' && window.history.length > 1) {
+            router.back();
+        } else {
+            router.push('/result/result');
+        }
+    }, [router]);
 
     // Clipboard API 실패 시 textarea fallback 제공
     const handleCopyLink = useCallback(async () => {
@@ -76,7 +122,7 @@ export default function SavePage() {
             <Header />
             <div className={styles.topWrapper}>
                 {/* 이전 페이지로 돌아가기. 특정 경로로 이동하려면 push 유지 */}
-                <BackButton onClick={() => router.back()} />
+                <BackButton onClick={handleBack} />
             </div>
             <div className={styles.mainContainer}>
                 <div className={styles.content}>
