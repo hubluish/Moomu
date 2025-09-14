@@ -5,6 +5,7 @@ import Image from 'next/image';
 import styles from './ImageBox.module.css';
 import TopRightArrows from '@/components/common/TopRightArrows';
 import type { GeminiSet } from '@/types/result';
+import { fetchWithCache } from './imageCache';
 
 interface PinterestImage {
     thumbnail_url: string;
@@ -19,6 +20,10 @@ type Props = {
     perPage?: number;         // 기본 9
     orientation?: 'landscape' | 'portrait' | 'square';
     useColorFilter?: boolean; // true면 colors[0]을 color 필터로 사용
+    onPrev?: () => void;
+    onNext?: () => void;
+    disablePrev?: boolean;
+    disableNext?: boolean;
 };
 
 const ImageBox: React.FC<Props> = ({
@@ -26,6 +31,10 @@ const ImageBox: React.FC<Props> = ({
     perPage = 9,
     orientation = 'landscape',
     useColorFilter = false,
+    onPrev,
+    onNext,
+    disablePrev,
+    disableNext,
     }) => {
     const [images, setImages] = useState<PinterestImage[]>([]);
     const [loading, setLoading] = useState(true);
@@ -45,11 +54,67 @@ const ImageBox: React.FC<Props> = ({
     useEffect(() => {
         const controller = new AbortController();
         const fetchPage = async () => {
+        // cache-first path using shared in-memory cache
+        try {
+            setLoading(true);
+            setErr(null);
+            console.info('[ImageBox] fetch', { query, colorHex, perPage, page, orientation });
+
+            if (!query) throw new Error('이미지 키워드가 비어 있습니다.');
+
+            let entry = await fetchWithCache({
+            q: query,
+            per_page: perPage,
+            page,
+            orientation,
+            color: colorHex || undefined,
+            }, controller.signal);
+            // fallback: if color filter yields no results on first page, retry without color
+            if (page === 1 && (entry.photos?.length ?? 0) === 0 && colorHex) {
+            console.info('[ImageBox] fallback without color');
+            entry = await fetchWithCache({
+                q: query,
+                per_page: perPage,
+                page,
+                orientation,
+            }, controller.signal);
+            }
+
+            setImages(prev => (page === 1 ? entry.photos : [...prev, ...entry.photos]));
+            setHasNext(entry.hasNext);
+            return;
+        } catch (e: any) {
+            if (e.name !== 'AbortError') setErr(e.message ?? '이미지 로딩 실패');
+            else return;
+        } finally {
+            setLoading(false);
+        }
+
         try {
             setLoading(true);
             setErr(null);
 
             if (!query) throw new Error('이미지 키워드가 비어 있습니다.');
+
+            // window cache: avoid refetch when revisiting same query
+            const key = [
+              query,
+              colorHex || '',
+              orientation || '',
+              String(perPage),
+              String(page),
+            ].join('|');
+            const w: any = typeof window !== 'undefined' ? window : undefined;
+            if (w) {
+              w.__imageCache = w.__imageCache || new Map();
+              const cached = w.__imageCache.get(key);
+              if (cached) {
+                setImages((prev: any) => (page === 1 ? cached.photos : [...prev, ...cached.photos]));
+                setHasNext(!!cached.hasNext);
+                setLoading(false);
+                return;
+              }
+            }
 
             const params = new URLSearchParams({
             q: query,
@@ -61,13 +126,26 @@ const ImageBox: React.FC<Props> = ({
 
             const res = await fetch(`/api/pexels?${params.toString()}`, {
             signal: controller.signal,
-            cache: 'no-store',
             });
             if (!res.ok) throw new Error(`이미지 로딩 실패(${res.status})`);
 
             const json = await res.json();
             setImages(prev => [...prev, ...(json.photos ?? [])]);
             setHasNext(Boolean(json.next_page));
+            if (typeof window !== 'undefined') {
+            const w: any = window;
+            const entry = { photos: (json.photos ?? []), hasNext: Boolean(json.next_page) };
+            // reuse same key computed above
+            const key = [
+                query,
+                colorHex || '',
+                orientation || '',
+                String(perPage),
+                String(page),
+            ].join('|');
+            w.__imageCache = w.__imageCache || new Map();
+            w.__imageCache.set(key, entry);
+            }
         } catch (e: any) {
             if (e.name !== 'AbortError') setErr(e.message ?? '이미지 로딩 실패');
         } finally {
@@ -86,7 +164,7 @@ const ImageBox: React.FC<Props> = ({
     return (
         <div className={styles.container}>
         <h2 className={styles.title}>IMAGES</h2>
-        <TopRightArrows disablePrev disableNext />
+        <TopRightArrows onPrev={onPrev} onNext={onNext} disablePrev={disablePrev} disableNext={disableNext} />
 
         <div className={styles.imageGrid}>
             {images.map((image, idx) => (

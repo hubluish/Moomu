@@ -23,12 +23,17 @@ export default function FontBox({ fontKeyword }: FontBoxProps) {
 
     useEffect(() => {
         fetch('/data/noonnu_fonts.json')
-        .then(res => res.json())
-        .then(data => {
-        const matched = data[fontKeyword] || [];
-        setFonts(matched);
-        })
-        .catch(err => console.error('폰트 데이터 로드 실패:', err));
+            .then(res => res.json())
+            .then(data => {
+                const matched: FontData[] = data[fontKeyword] || [];
+                if (matched.length > 0) {
+                    const picked = matched[Math.floor(Math.random() * matched.length)];
+                    setFonts([picked]);
+                } else {
+                    setFonts([]);
+                }
+            })
+            .catch(err => console.error('폰트 데이터 로드 실패:', err));
     }, [fontKeyword]);
 
     const startIdx = page * fontsPerPage;

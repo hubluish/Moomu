@@ -32,6 +32,7 @@ export default function ResultPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -103,13 +104,16 @@ export default function ResultPage() {
     })();
   }, []);
 
+  // Prefetch disabled per request: load next only on refresh
+
   // 로딩/에러 상태 처리
   if (loading) return <div>로딩 중…</div>;
   if (errorMsg) return <div>{errorMsg}</div>;
   if (!geminiResult || geminiResult.length === 0) return <div>표시할 결과가 없습니다.</div>;
 
-  const firstSet = geminiResult[0];
+  const currentSet = geminiResult[currentIndex] ?? geminiResult[0];
   const tags = selectedTags;
+
 
   return (
     <main className={styles.pageBg}>
@@ -120,7 +124,15 @@ export default function ResultPage() {
         <div className={styles.topRightWrapper}>
           <></>
           <SaveButton onClick={() => router.push('/result/save')} />
-          <RefreshButton />
+          <RefreshButton
+            onClick={() => {
+              const next = Math.min(geminiResult.length - 1, currentIndex + 1);
+              if (next !== currentIndex) {
+                console.info('[Result] Refresh -> index', next, 'keyword:', geminiResult[next].image);
+                setCurrentIndex(next);
+              }
+            }}
+          />
         </div>
       </div>
       <div className={styles.gridContainer}>
@@ -128,13 +140,22 @@ export default function ResultPage() {
           <TitleBox />
         </div>
         <div className={styles.imageBox}>
-          <ImageBox geminiSet={firstSet} perPage={9} orientation="landscape" useColorFilter />
+          <ImageBox
+            geminiSet={currentSet}
+            perPage={9}
+            orientation="landscape"
+            useColorFilter
+            onPrev={() => setCurrentIndex((idx) => Math.max(0, idx - 1))}
+            onNext={() => setCurrentIndex((idx) => Math.min(geminiResult.length - 1, idx + 1))}
+            disablePrev={currentIndex <= 0}
+            disableNext={currentIndex >= geminiResult.length - 1}
+          />
         </div>
         <div className={styles.conceptBox}>
           <ConceptBox geminiResult={geminiResult} />
         </div>
         <div className={styles.fontBox}>
-          <FontBox fontKeyword={firstSet.font} />
+          <FontBox fontKeyword={currentSet.font} />
         </div>
         <div className={styles.paletteBox}>
           <ColorPaletteBox geminiResult={geminiResult} />
