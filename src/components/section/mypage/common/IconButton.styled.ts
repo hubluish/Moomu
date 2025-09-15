@@ -24,7 +24,7 @@ export const StyledButton = styled.button<ButtonProps>`
         background-color: #fee2e2;
         border-radius: 50%;
         &:hover {
-          background-color: #fecaca;
+          background-color: #ff6062;
         }
       `;
     }
@@ -32,10 +32,7 @@ export const StyledButton = styled.button<ButtonProps>`
     if (variant === "folder") {
       return css`
         background-color: #ebebff;
-        border-radius: 8px;
-        border: 1px solid #e9ecef; /* 얇은 테두리 */
-        width: 55px;
-        height: 47px;
+        border-radius: 50%;
         &:hover {
           background-color: #e9ecef;
         }
@@ -43,10 +40,10 @@ export const StyledButton = styled.button<ButtonProps>`
     }
 
     return css`
-      background-color: rgba(233, 231, 253, 0.9);
+      background-color: #ebebff;
       border-radius: 50%;
       &:hover {
-        background-color: rgba(220, 218, 250, 0.95);
+        background-color: #c5c2ff;
       }
     `;
   }}

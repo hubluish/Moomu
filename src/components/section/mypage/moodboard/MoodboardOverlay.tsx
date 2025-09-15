@@ -31,10 +31,8 @@ const MoodboardOverlay = ({
 }: MoodboardOverlayProps) => {
   const [showDeleteOptions, setShowDeleteOptions] = useState(false);
 
-  // 각 아이콘 클릭 시 실행될 함수
   const handleMoveToFolder = () => alert(`${moodboardId}를 다른 폴더로 이동`);
   const handleTogglePublic = () => alert(`${moodboardId} 공개 상태 변경`);
-  // const handleMoveToTrash = () => alert(`${moodboardId}를 휴지통으로`);
   const handleRestore = () => alert(`${moodboardId} 복구`);
   const handlePermanentDelete = () => alert(`${moodboardId} 영구 삭제`);
   const handleRemoveFromFolder = () =>
