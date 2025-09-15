@@ -87,6 +87,71 @@ export default function SavePage() {
         }
     }, [router]);
 
+    const handlePostFeed = useCallback(async () => {
+  // 로그인 확인
+    const { data: { user }, error: uerr } = await supabase.auth.getUser();
+    if (uerr || !user) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    // mid 가져오기 (방금 만든 moodboard id)
+    const sp = new URLSearchParams(window.location.search);
+    const mid = sp.get("mid");
+    if (!mid) {
+        alert("잘못된 접근입니다. (mid 없음)");
+        return;
+    }
+
+    // moodboard 불러오기
+    const { data: mb, error: mberr } = await supabase
+        .from("moodboard")
+        .select("id, request_id, owner_id, title, cover_image_url, tags")
+        .eq("id", mid)
+        .single();
+
+    if (mberr || !mb) {
+        console.error("moodboard 로드 실패:", mberr);
+        alert("무드보드 정보를 불러오지 못했습니다.");
+        return;
+    }
+
+    if (mb.owner_id !== user.id) {
+        alert("본인 무드보드만 게시할 수 있습니다.");
+        return;
+    }
+
+    // feed_posts payload 만들기
+    const payload = {
+        moodboard_id: mb.id,
+        request_id: mb.request_id,
+        user_id: user.id,
+        title: mb.title || "무드보드",
+        image_url: mb.cover_image_url,
+        categories: mb.tags ?? [], // feed_posts.categories가 text[]라면 그대로 저장
+        likes: 0,
+        is_public: true,
+    };
+
+    // upsert: moodboard_id 중복이면 덮어씀
+    const { data: post, error: perr } = await supabase
+        .from("feed_posts")
+        .upsert(payload, { onConflict: "moodboard_id" })
+        .select("id")
+        .single();
+
+    if (perr) {
+        console.error("feed_posts 저장 실패:", perr);
+        alert("피드 게시에 실패했습니다.");
+        return;
+    }
+
+    alert("피드에 게시했어요!");
+    // 예: 피드 상세 페이지로 이동
+    router.push(`/feed`);
+    }, [router]);
+
+
     // Clipboard API 실패 시 textarea fallback 제공
     const handleCopyLink = useCallback(async () => {
         const url = window.location.href;
@@ -134,7 +199,7 @@ export default function SavePage() {
                         <ActionButtons
                             // TODO: 이미지 저장/피드 게시 기능 구현 필요
                             onSaveImage={() => { alert('이미지 저장 기능은 준비 중이에요.'); }}
-                            onPostFeed={() => { alert('피드 게시 기능은 준비 중이에요.'); }}
+                            onPostFeed={handlePostFeed}
                             onShare={handleToggleShare}
                         />
                         {showShare && (
