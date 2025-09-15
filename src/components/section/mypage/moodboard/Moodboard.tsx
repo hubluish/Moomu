@@ -44,7 +44,7 @@ const Moodboard = ({
           src={displayImage}
           alt="무드보드 썸네일"
           width={311}
-          height={138}
+          height={140}
           style={{
             objectFit: "cover",
             borderRadius: "8px",

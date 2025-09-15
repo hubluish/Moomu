@@ -2,7 +2,6 @@ import { supabase } from "@/utils/supabase";
 
 // 현재 유저의 모든 폴더 가져오기
 export const getFolders = async (userId: string) => {
-  // 👇 1. userId를 인자로 받도록 수정
   const { data, error } = await supabase
     .from("folders")
     .select("*")
@@ -55,7 +54,7 @@ export const getMoodboardsByFolder = async (folderId: string) => {
       moodboard_results (
         id,
         created_at,
-        thumbnail_url,
+        cover_image_url,
         color_keyword,
         font_keyword,
         image_keyword

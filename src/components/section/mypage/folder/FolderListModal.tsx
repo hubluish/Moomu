@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { getFolders, addMoodboardToFolder } from "@/utils/folders";
 import { CreateFolderModal } from "./CreateFolderModal";
-import Image from "next/image"; // 폴더 아이콘용
+import Image from "next/image";
 import {
   ModalBackdrop,
   ModalContainer,
@@ -36,17 +36,14 @@ const FolderListModal = ({ moodboardId, onClose }: FolderListModalProps) => {
   const fetchFolders = async () => {
     setIsLoading(true);
     try {
-      // 👇 1. 현재 로그인한 사용자 세션을 가져옵니다.
       const {
         data: { session },
       } = await supabase.auth.getSession();
       if (!session) {
-        // 로그인하지 않은 경우 폴더 목록을 비웁니다.
         setFolders([]);
         return;
       }
 
-      // 👇 2. getFolders 함수에 사용자 ID를 전달합니다.
       const userFolders = await getFolders(session.user.id);
       setFolders(userFolders);
     } catch (error) {

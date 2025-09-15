@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     domains: [
       "i.pinimg.com",
       "noonnucc-production.sfo2.cdn.digitaloceanspaces.com",
-      // 필요하다면 다른 외부 이미지 도메인도 추가
+      "images.pexels.com",
     ],
   },
   compiler: {
@@ -13,6 +13,5 @@ const nextConfig: NextConfig = {
   },
 };
 module.exports = nextConfig;
-
 
 export default nextConfig;

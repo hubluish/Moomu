@@ -6,10 +6,8 @@ import FolderListModal from "@/components/section/mypage/folder/FolderListModal"
 import React, { useState, useEffect } from "react";
 interface MoodboardResult {
   id: string;
-  thumbnail_url: string | null;
-  color_keyword: string;
-  font_keyword: string;
-  image_keyword: string;
+  cover_image_url: string | null;
+  tags: string[];
   created_at: string;
 }
 
@@ -22,9 +20,7 @@ const MoodboardPage = () => {
 
   useEffect(() => {
     const fetchMoodboards = async () => {
-      const { data, error } = await supabase
-        .from("moodboard_results")
-        .select("*");
+      const { data, error } = await supabase.from("moodboard").select("*");
       if (error) console.error("Error fetching moodboards:", error);
       else if (data) setMoodboards(data);
     };
@@ -57,17 +53,13 @@ const MoodboardPage = () => {
             }}
           >
             {moodboards.map((board) => {
-              const allKeywords = [
-                board.color_keyword,
-                board.font_keyword,
-                board.image_keyword,
-              ].flat();
+              const allKeywords = (board.tags || []).slice(0, 4);
 
               return (
                 <Moodboard
                   key={board.id}
                   id={board.id}
-                  imageUrl={board.thumbnail_url}
+                  imageUrl={board.cover_image_url}
                   keywords={allKeywords}
                   date={board.created_at}
                   type="mymoodboard"

@@ -21,7 +21,7 @@ export const ModalContainer = styled.div`
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   width: 350px;
-  height: 400px;
+  height: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,6 +43,21 @@ export const ModalCreateContainer = styled.div`
 export const ModalContent = styled.div<{ $isCentered?: boolean }>`
   flex-grow: 1;
   overflow-y: auto; /* 목록이 길어질 경우 스크롤 */
+  padding-right: 8px; /* 스크롤바와 내용이 겹치지 않도록 여백 추가 */
+  box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    width: 6px; /* 1. 스크롤바의 너비 */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #c5c2ff; /* 2. 스크롤바 막대의 색상 */
+    border-radius: 6px; /* 3. 스크롤바 막대의 모서리 둥글게 */
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f0eaff; /* 4. 스크롤바 배경의 색상 */
+  }
 
   ${({ $isCentered }) =>
     $isCentered &&
@@ -61,6 +76,7 @@ export const ModalFooter = styled.footer`
   width: 100%;
   gap: 8px;
   border-radius: 10px;
+  margin-top: 15px;
 `;
 
 export const CreateModalTitle = styled.h2`
