@@ -39,17 +39,20 @@ const FolderListModal = ({ moodboardId, onClose }: FolderListModalProps) => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (!session) {
-        setFolders([]);
-        return;
-      }
 
-      const userFolders = await getFolders(session.user.id);
-      setFolders(userFolders);
+      // session이 있을 때만 폴더를 가져옵니다.
+      if (session) {
+        const userFolders = await getFolders(session.user.id);
+        setFolders(userFolders);
+      } else {
+        // session이 없으면 빈 배열로 설정합니다.
+        setFolders([]);
+      }
     } catch (error) {
       console.error("폴더를 불러오는 중 오류 발생:", error);
-      alert("폴더를 불러오는데 실패했습니다.");
+      setFolders([]); // 에러 발생 시에도 빈 배열로 초기화
     } finally {
+      // try 또는 catch 블록이 끝난 후 항상 실행됩니다.
       setIsLoading(false);
     }
   };
@@ -69,8 +72,10 @@ const FolderListModal = ({ moodboardId, onClose }: FolderListModalProps) => {
       onClose(); // 성공 시 모달 닫기
     } catch (error) {
       if (
-        error instanceof Error &&
-        error.message.includes("duplicate key value")
+        error &&
+        typeof error === "object" &&
+        "code" in error &&
+        error.code === "23505"
       ) {
         alert("이미 해당 폴더에 추가된 무드보드입니다.");
       } else {
