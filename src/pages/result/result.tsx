@@ -46,7 +46,7 @@ export default function ResultPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [visibleImages, setVisibleImages] = useState<ImageItem[]>([]);
-  const [resolvedFont, setResolvedFont] = useState<{ name: string; link: string; image_link?: string } | null>(null);
+  const [resolvedFont, setResolvedFont] = useState<ResolvedFont | null>(null);
   const [title, setTitle] = useState<string>("");
 
   useEffect(() => {
@@ -146,8 +146,8 @@ export default function ResultPage() {
     // moodboard 행 구성
     const palette_json = (currentSet.colors || []).map((hex) => ({ hex, name: "" }));
     const fonts_json = resolvedFont
-      ? [{ name: resolvedFont.name || currentSet.font || "", link: resolvedFont.link || "" }]
-      : [{ name: currentSet.font || "", link: "" }];
+      ? [{ name: resolvedFont.name || currentSet.font || "", link: resolvedFont.link || "", image_link: resolvedFont.image_link || "" }]
+      : [{ name: currentSet.font || "", link: "", image_link: "" }];
 
     const images_json = (visibleImages || []).map((img) => ({
       url: img.url,
@@ -156,7 +156,7 @@ export default function ResultPage() {
     }));
 
     const cover_image_url = images_json[0]?.thumb || images_json[0]?.url || null;
-    const concept_text = (currentSet.sentences || []).join("\n");
+    const concept_text = (currentSet.sentences || []) as string[];
 
     try {
       const { data, error } = await supabase
