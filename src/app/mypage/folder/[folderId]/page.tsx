@@ -11,9 +11,7 @@ import Image from "next/image";
 interface MoodboardResult {
   id: string;
   cover_image_url: string | null;
-  color_keyword: string[];
-  font_keyword: string;
-  image_keyword: string;
+  tags: string[];
   created_at: string;
 }
 
@@ -31,9 +29,9 @@ const FolderDetailPage = () => {
   );
 
   useEffect(() => {
-    // folderId가 유효할 때만 데이터를 불러오도록 조건을 추가합니다.
     if (folderId) {
       const fetchData = async () => {
+        setIsLoading(true);
         try {
           const folderData = await getFolderById(folderId);
           setFolderName(folderData.name);
@@ -42,13 +40,14 @@ const FolderDetailPage = () => {
           setMoodboards(moodboardData);
         } catch (error) {
           console.error("데이터 로딩 실패:", error);
+        } finally {
+          setIsLoading(false);
         }
       };
       fetchData();
     }
   }, [folderId]);
 
-  // 👇 2. 모달 핸들러 함수 추가
   const handleOpenFolderModal = (moodboardId: string) => {
     setSelectedMoodboardId(moodboardId);
     setIsFolderModalOpen(true);
@@ -62,6 +61,7 @@ const FolderDetailPage = () => {
   return (
     <div style={{ display: "flex" }}>
       <Sidebar />
+
       <main style={{ flex: 1, padding: "50px 70px" }}>
         <h1
           style={{
@@ -82,32 +82,26 @@ const FolderDetailPage = () => {
           {folderName}
         </h1>
         <div
-          style={
-            {
-              /* ... grid styles ... */
-            }
-          }
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
+            gap: "45px 28px",
+          }}
         >
-          {/* 👇 1. 로딩 중일 때 표시할 UI 추가 */}
           {isLoading ? (
             <p>무드보드를 불러오는 중입니다...</p>
           ) : (
             moodboards.map((board) => {
-              const allKeywords = [
-                board.color_keyword,
-                board.font_keyword,
-                board.image_keyword,
-              ].flat();
+              const allKeywords = (board.tags || []).slice(0, 4);
 
               return (
                 <Moodboard
                   key={board.id}
                   id={board.id}
-                  imageUrl={board.cover_image_url}
+                  imageUrl={board.cover_image_url} // cover_image_url 사용
                   keywords={allKeywords}
                   date={board.created_at}
                   type="folder"
-                  // 👇 2. onAddToFolder에 핸들러 함수 연결
                   onAddToFolder={() => handleOpenFolderModal(board.id)}
                 />
               );
@@ -116,7 +110,6 @@ const FolderDetailPage = () => {
         </div>
       </main>
 
-      {/* 👇 2. 모달 렌더링 로직 추가 */}
       {isFolderModalOpen && selectedMoodboardId && (
         <FolderListModal
           moodboardId={selectedMoodboardId}

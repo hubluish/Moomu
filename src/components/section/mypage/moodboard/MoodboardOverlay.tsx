@@ -16,6 +16,9 @@ type MoodboardOverlayProps = {
   date: string;
   authorName?: string;
   onAddToFolder: () => void;
+  onMoveToTrash: (moodboardId: string) => void;
+  onRestore?: (moodboardId: string) => void;
+  onPermanentDelete?: (moodboardId: string) => void;
 };
 
 const MoodboardOverlay = ({
@@ -24,13 +27,14 @@ const MoodboardOverlay = ({
   date,
   authorName,
   onAddToFolder,
+  onMoveToTrash,
 }: MoodboardOverlayProps) => {
   const [showDeleteOptions, setShowDeleteOptions] = useState(false);
 
   // 각 아이콘 클릭 시 실행될 함수
   const handleMoveToFolder = () => alert(`${moodboardId}를 다른 폴더로 이동`);
   const handleTogglePublic = () => alert(`${moodboardId} 공개 상태 변경`);
-  const handleMoveToTrash = () => alert(`${moodboardId}를 휴지통으로`);
+  // const handleMoveToTrash = () => alert(`${moodboardId}를 휴지통으로`);
   const handleRestore = () => alert(`${moodboardId} 복구`);
   const handlePermanentDelete = () => alert(`${moodboardId} 영구 삭제`);
   const handleRemoveFromFolder = () =>
@@ -42,7 +46,7 @@ const MoodboardOverlay = ({
         return (
           <>
             <IconButton
-              onClick={onAddToFolder} // 이제 오류 없이 정상적으로 사용 가능
+              onClick={onAddToFolder}
               src="/assets/icons/folder-icon.svg"
               alt="폴더에 추가"
             />
@@ -52,7 +56,7 @@ const MoodboardOverlay = ({
               alt="공개/비공개"
             />
             <IconButton
-              onClick={handleMoveToTrash}
+              onClick={() => onMoveToTrash(moodboardId)}
               src="/assets/icons/trash-icon.svg"
               alt="휴지통으로"
             />
@@ -68,7 +72,7 @@ const MoodboardOverlay = ({
                 폴더에서 삭제
               </DeleteOptionButton>
               <span style={{ color: "#ccc" }}>|</span>
-              <DeleteOptionButton onClick={handleMoveToTrash}>
+              <DeleteOptionButton onClick={() => onMoveToTrash(moodboardId)}>
                 <Image
                   src="/assets/icons/trash-icon.svg"
                   alt="휴지통"

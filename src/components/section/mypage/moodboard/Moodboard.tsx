@@ -17,6 +17,9 @@ type MoodboardProps = {
   date: string;
   type: "mymoodboard" | "folder" | "favorite" | "trash";
   onAddToFolder: () => void;
+  onMoveToTrash: (moodboardId: string) => void;
+  onRestore?: (moodboardId: string) => void;
+  onPermanentDelete?: (moodboardId: string) => void;
 };
 
 const Moodboard = ({
@@ -26,6 +29,7 @@ const Moodboard = ({
   date,
   type,
   onAddToFolder,
+  onMoveToTrash,
 }: MoodboardProps) => {
   const displayImage = imageUrl || "/assets/images/sky.png";
 
@@ -57,6 +61,7 @@ const Moodboard = ({
         moodboardId={id}
         date={date}
         onAddToFolder={onAddToFolder}
+        onMoveToTrash={onMoveToTrash}
       />
     </MoodboardWrapper>
   );

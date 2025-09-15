@@ -49,19 +49,9 @@ export const getFolderById = async (folderId: string) => {
 export const getMoodboardsByFolder = async (folderId: string) => {
   const { data, error } = await supabase
     .from("moodboard_folders")
-    .select(
-      `
-      moodboard_results (
-        id,
-        created_at,
-        cover_image_url,
-        color_keyword,
-        font_keyword,
-        image_keyword
-      )
-    `
-    )
-    .eq("folder_id", folderId);
+    .select("moodboard!inner(*)")
+    .eq("folder_id", folderId)
+    .is("moodboard.deleted_at", null);
 
   if (error) {
     console.error("Error fetching moodboards by folder:", error);
@@ -72,5 +62,5 @@ export const getMoodboardsByFolder = async (folderId: string) => {
     return [];
   }
 
-  return data.map((item) => item.moodboard_results).filter(Boolean);
+  return data.map((item) => item.moodboard).filter(Boolean);
 };

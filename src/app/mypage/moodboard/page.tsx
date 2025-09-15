@@ -3,6 +3,7 @@ import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import { supabase } from "@/utils/supabase";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import FolderListModal from "@/components/section/mypage/folder/FolderListModal";
+import { moveMoodboardToTrash } from "@/utils/moodboard";
 import React, { useState, useEffect } from "react";
 interface MoodboardResult {
   id: string;
@@ -20,7 +21,11 @@ const MoodboardPage = () => {
 
   useEffect(() => {
     const fetchMoodboards = async () => {
-      const { data, error } = await supabase.from("moodboard").select("*");
+      const { data, error } = await supabase
+        .from("moodboard")
+        .select("*")
+        .is("deleted_at", null);
+
       if (error) console.error("Error fetching moodboards:", error);
       else if (data) setMoodboards(data);
     };
@@ -35,6 +40,21 @@ const MoodboardPage = () => {
   const handleCloseFolderModal = () => {
     setIsFolderModalOpen(false);
     setSelectedMoodboardId(null);
+  };
+
+  const handleMoveToTrash = async (moodboardId: string) => {
+    if (window.confirm("이 무드보드를 휴지통으로 이동하시겠습니까?")) {
+      try {
+        await moveMoodboardToTrash(moodboardId);
+        // 화면에서도 바로 제거하여 사용자 경험을 개선
+        setMoodboards((prevMoodboards) =>
+          prevMoodboards.filter((board) => board.id !== moodboardId)
+        );
+        alert("무드보드를 휴지통으로 이동했습니다.");
+      } catch (error) {
+        alert("작업에 실패했습니다.");
+      }
+    }
   };
 
   return (
@@ -64,6 +84,7 @@ const MoodboardPage = () => {
                   date={board.created_at}
                   type="mymoodboard"
                   onAddToFolder={() => handleOpenFolderModal(board.id)}
+                  onMoveToTrash={() => handleMoveToTrash(board.id)}
                 />
               );
             })}
