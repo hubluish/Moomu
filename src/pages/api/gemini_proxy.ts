@@ -33,31 +33,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 각 세트는 아래 항목 포함 (순서: 색상 → 이미지 → 폰트 → 문장)
 
-색상 관련  
-- 색상 키워드 (입력과 유사한 3개 선택)  
-Pastel, Vintage, Retro, Neon, Gold, Light, Dark, Warm, Cold, Summer, Fall, Winter, Spring, Happy, Nature, Earth, Night, Space, Rainbow, Gradient, Sunset, Sky, Sea, Kids, Skin, Food, Cream, Coffee, Wedding, Christmas, Halloween, Blue, Teal, Mint, Green, Sage, Yellow, Beige, Brown, Orange, Peach, Red, Maroon, Pink, Purple, Navy, Black, Grey, White
+colors: You are a professional color palette designer. Based on the following description, create a color palette with 4 HEX codes.
 
-이미지 관련  
-- 이미지 키워드 (반드시 아래 리스트 중 하나만 선택)
-    감각적인, 감성, 감정, 도시, 미니멀, 밤, 빈티지, 아침, 여행, 음식, 인물, 자연, 풍경, 하늘
+image: 선택된 무드에 맞는 한 단어로 된 실제 검색 가능한 이미지 키워드 1개
 
-폰트 관련  
-- 폰트 키워드 (제공 리스트 중 입력 키워드와 유사한 단어 1개 선택)
+font: 폰트 키워드 (제공 리스트 중 입력 키워드와 유사한 단어 1개 선택)
 
 선택 가능한 폰트 키워드 리스트:  
 붓글씨, 캘리그라피, 삐뚤빼뚤, 어른 손글씨, 손글씨 바탕, 각진 손글씨, 둥근 손글씨, 장식 손글씨, 감성적인, 크레파스, 장식체, 아이 손글씨, 색연필, 필기체, 마카, 네모 폰트, 캐릭터, 별모양, 구름, 복실복실, 분필
 
-무드 문장  
-- 각 세트당 3개, 15자 이내 구체적이고 직관적인 제목 가능 문장
+sentences: 입력된 키워드들의 분위기와 감정을 반영하여, 감성적이고 시적인 짧은 문장 3개를 만들 것.  
+- 각 문장은 15자 이내, 문장 내 쉼표 절대 포함하지 말 것
+- 시 구절처럼 따뜻하고 직관적으로 표현할 것  
+- 은유적이면서도 이해하기 쉬운 표현  
+- 키워드의 감성을 직접적으로 드러내되, 너무 설명적이지 않고 감각적으로 쓸 것  
 
 기존 프롬프트 구조(3세트, JSON 파일로 출력) 반드시 유지  
 결과 외 다른 말 절대 출력 금지
 
 각 항목의 제목은 다음으로 설정:
-- colors: 색상 키워드
-- image: 이미지 키워드(이미지 키워드는 모두 반드시 다를 것)
-- font: 폰트 키워드
-- sentences: 무드 문장
+colors, image, font, sentences
+
+모든 세트는 겹치지 않도록 구성(폰트 제외), colors와 sentences는 배열로 구성할 것
 `;
 
   try {

@@ -1,87 +1,52 @@
 'use client';
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './ColorPaletteBox.module.css';
 import TopRightArrows from '@/components/common/TopRightArrows';
-import { createPortal } from 'react-dom';
+import ColorPalette from './ColorPalette';
+import type { GeminiSet } from '@/types/result';
 
-const dummyColors = ['#333333', '#555555', '#777777', '#999999'];
+interface ColorPaletteBoxProps {
+  geminiResult?: GeminiSet[] | null;
+  title?: string;
+}
 
-export default function ColorPaletteBox() {
-  const [isToastVisible, setToastVisible] = useState(false);
-  const hideTimer = useRef<number | null>(null);
+export default function ColorPaletteBox({ geminiResult, title = 'COLOR' }: ColorPaletteBoxProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const showToast = () => {
-    setToastVisible(true);
-    if (hideTimer.current) window.clearTimeout(hideTimer.current);
-    hideTimer.current = window.setTimeout(() => setToastVisible(false), 1200);
+  const colors = useMemo(() => {
+    if (geminiResult && geminiResult.length > 0) {
+      const idx = Math.min(Math.max(0, currentIndex), geminiResult.length - 1);
+      return geminiResult[idx]?.colors ?? [];
+    }
+    // fallback
+    return ['#333333', '#555555', '#777777', '#999999'];
+  }, [geminiResult, currentIndex]);
+
+  const hasMultipleSets = (geminiResult?.length ?? 0) > 1;
+
+  const handlePrev = () => {
+    if (!geminiResult) return;
+    setCurrentIndex((prev) => Math.max(0, prev - 1));
   };
 
-  const copyToClipboard = useCallback(async (text: string) => {
-    let ok = false;
-    try {
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text);
-        ok = true;
-      }
-    } catch {}
-    if (!ok) {
-      try {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.focus();
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        ok = true;
-      } catch {}
-    }
-    if (ok) showToast();
-  }, []);
-
-  const onKeyCopy = (e: React.KeyboardEvent<HTMLDivElement>, hex: string) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      copyToClipboard(hex);
-    }
+  const handleNext = () => {
+    if (!geminiResult) return;
+    setCurrentIndex((prev) => Math.min((geminiResult?.length ?? 1) - 1, prev + 1));
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>COLOR</div>
-      <TopRightArrows disablePrev disableNext />
+      <div className={styles.title}>{title}</div>
+      <TopRightArrows
+        onPrev={hasMultipleSets ? handlePrev : undefined}
+        onNext={hasMultipleSets ? handleNext : undefined}
+        disablePrev={!hasMultipleSets || currentIndex <= 0}
+        disableNext={!hasMultipleSets || currentIndex >= (geminiResult?.length ?? 1) - 1}
+      />
       <div className={styles.content}>
-        {dummyColors.map((color) => (
-          <div
-            key={color}
-            className={styles.colorItem}
-            role="button"
-            tabIndex={0}
-            aria-label={`${color} 복사`}
-            title="클릭하여 복사"
-            onClick={() => copyToClipboard(color)}
-            onKeyDown={(e) => onKeyCopy(e, color)}
-          >
-            <div className={styles.colorBlock} style={{ backgroundColor: color }} />
-            <span className={styles.colorCode}>{color}</span>
-          </div>
-        ))}
+        <ColorPalette colors={colors} />
       </div>
-
-      {typeof window !== 'undefined' &&
-        createPortal(
-          <div
-            className={`${styles.toast} ${isToastVisible ? styles.show : ''}`}
-            role="status"
-            aria-live="polite"
-          >
-            복사됨
-          </div>,
-          document.body
-        )}
     </div>
   );
 }
