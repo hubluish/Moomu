@@ -17,11 +17,11 @@ export const ModalBackdrop = styled.div`
 // 모달 본문 컨테이너
 export const ModalContainer = styled.div`
   background-color: white;
-  padding: 24px;
+  padding: 35px;
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 350px;
-  height: 420px;
+  width: 386px;
+  height: 440px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -137,7 +137,7 @@ export const FolderItem = styled.li`
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 
   border-radius: 8px;
   box-sizing: border-box;
