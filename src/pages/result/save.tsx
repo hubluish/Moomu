@@ -15,6 +15,79 @@ export default function SavePage() {
     const [showShare, setShowShare] = useState(false);
     const shareBtnRef = useRef<HTMLDivElement>(null);
 
+    const [coverUrl, setCoverUrl] = useState<string | null>(null);
+    const [loadingCover, setLoadingCover] = useState<boolean>(true);
+    const coverRequestedRef = useRef<boolean>(false);
+
+    useEffect(() => {
+        const run = async () => {
+        try {
+            if (typeof window === 'undefined') return;
+            const sp = new URLSearchParams(window.location.search);
+            const mid = sp.get('mid');
+            if (!mid) {
+            setLoadingCover(false);
+            return;
+            }
+            const { data, error } = await supabase
+              .from('moodboard')
+              .select('cover_image_url, images_json, palette_json, tags')
+              .eq('id', mid)
+              .single();
+
+            if (error) {
+              console.error('moodboard 불러오기 실패:', error);
+            } else {
+              const curUrl = data?.cover_image_url ?? null;
+              setCoverUrl(curUrl);
+
+              // 우리 스토리지에 생성된 커버가 아니면 생성 요청
+              const supaBase = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/?$/, '');
+              const shouldGenerate = !curUrl
+                || !/\/storage\/v1\/object\/public\/moodboard\//.test(String(curUrl))
+                || !String(curUrl).toLowerCase().endsWith('.webp');
+
+              if (!coverRequestedRef.current && shouldGenerate) {
+                coverRequestedRef.current = true;
+                try {
+                  const thumbs = Array.isArray(data?.images_json)
+                    ? data.images_json.map((img: any) => img?.thumb || img?.url).filter(Boolean).slice(0, 9)
+                    : [];
+                  const palette = Array.isArray(data?.palette_json)
+                    ? data.palette_json.map((p: any) => p?.hex).filter(Boolean).slice(0, 4)
+                    : [];
+                  const categories = Array.isArray(data?.tags) ? data.tags.slice(0, 6) : [];
+
+                  const res = await fetch('/api/generate-cover', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      boardId: mid,
+                      categories,
+                      thumbs,
+                      palette,
+                    }),
+                  });
+                  if (res.ok) {
+                    const j = await res.json();
+                    if (j?.cover_image_url) setCoverUrl(j.cover_image_url);
+                  } else {
+                    console.warn('generate-cover failed with status', res.status);
+                  }
+                } catch (e) {
+                  console.warn('generate-cover error:', e);
+                }
+              }
+            }
+        } catch (e) {
+            console.error('moodboard 조회 에러:', e);
+        } finally {
+            setLoadingCover(false);
+        }
+        };
+        run();
+    }, []);
+    
     // ESC로 공유 패널 닫기
     useEffect(() => {
         if (!showShare) return;
@@ -213,7 +286,7 @@ export default function SavePage() {
                         )}
                     </div>
                 </div>
-                <MoodboardPreview />
+                <MoodboardPreview coverUrl={coverUrl} loading={loadingCover} />
             </div>
         </main>
     );

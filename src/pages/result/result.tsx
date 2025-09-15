@@ -155,7 +155,8 @@ export default function ResultPage() {
       source: img.source || "pinterest",
     }));
 
-    const cover_image_url = images_json[0]?.thumb || images_json[0]?.url || null;
+    // 커버는 서버에서 생성(webp)하여 갱신하므로 초기값은 null로 둔다
+    const cover_image_url = null as string | null;
     const concept_text = (currentSet.sentences || []) as string[];
 
     try {
