@@ -32,7 +32,9 @@ export const StyledButton = styled.button<ButtonProps>`
     if (variant === "folder") {
       return css`
         background-color: #ebebff;
-        border-radius: 50%;
+        border-radius: 8px;
+        width: 58px;
+        height: 46px;
         &:hover {
           background-color: #e9ecef;
         }

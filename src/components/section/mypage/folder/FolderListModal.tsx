@@ -1,6 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { getFolders, addMoodboardToFolder } from "@/utils/folders";
+import {
+  getFolders,
+  addMoodboardToFolder,
+  moveMoodboardToAnotherFolder,
+} from "@/utils/folders";
 import { CreateFolderModal } from "./CreateFolderModal";
 import Image from "next/image";
 import {
@@ -25,9 +29,16 @@ interface Folder {
 type FolderListModalProps = {
   moodboardId: string;
   onClose: () => void;
+  currentFolderId?: string;
+  onSuccess?: () => void;
 };
 
-const FolderListModal = ({ moodboardId, onClose }: FolderListModalProps) => {
+const FolderListModal = ({
+  moodboardId,
+  onClose,
+  currentFolderId,
+  onSuccess,
+}: FolderListModalProps) => {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
@@ -67,9 +78,26 @@ const FolderListModal = ({ moodboardId, onClose }: FolderListModalProps) => {
       return;
     }
     try {
-      await addMoodboardToFolder(moodboardId, selectedFolderId);
-      alert("폴더에 무드보드가 추가되었습니다.");
-      onClose(); // 성공 시 모달 닫기
+      if (currentFolderId) {
+        // "이동" 로직: currentFolderId가 있으면 move 함수 호출
+        await moveMoodboardToAnotherFolder(
+          moodboardId,
+          currentFolderId,
+          selectedFolderId
+        );
+        alert("무드보드를 다른 폴더로 이동했습니다.");
+      } else {
+        // "추가" 로직: currentFolderId가 없으면 기존 add 함수 호출
+        await addMoodboardToFolder(moodboardId, selectedFolderId);
+        alert("폴더에 무드보드가 추가되었습니다.");
+      }
+
+      // 성공 시 onSuccess 콜백이 있으면 실행, 없으면 onClose 실행
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        onClose();
+      }
     } catch (error) {
       if (
         error &&
@@ -79,8 +107,8 @@ const FolderListModal = ({ moodboardId, onClose }: FolderListModalProps) => {
       ) {
         alert("이미 해당 폴더에 추가된 무드보드입니다.");
       } else {
-        console.error("폴더에 추가하는 중 오류 발생:", error);
-        alert("무드보드를 폴더에 추가하는데 실패했습니다.");
+        console.error("폴더 작업 중 오류 발생:", error);
+        alert("작업에 실패했습니다.");
       }
     }
   };

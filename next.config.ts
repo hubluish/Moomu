@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
       "i.pinimg.com",
       "noonnucc-production.sfo2.cdn.digitaloceanspaces.com",
       "images.pexels.com",
+      "jqbxkbcwlxhzdhximrsb.supabase.co",
     ],
   },
   compiler: {

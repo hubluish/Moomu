@@ -1,7 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { getFolderById, getMoodboardsByFolder } from "@/utils/folders";
+import { removeMoodboardFromFolder } from "@/utils/folders";
+import { moveMoodboardToTrash } from "@/utils/moodboard";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import FolderListModal from "@/components/section/mypage/folder/FolderListModal";
@@ -28,25 +30,26 @@ const FolderDetailPage = () => {
     null
   );
 
-  useEffect(() => {
-    if (folderId) {
-      const fetchData = async () => {
-        setIsLoading(true);
-        try {
-          const folderData = await getFolderById(folderId);
-          setFolderName(folderData.name);
+  const fetchData = useCallback(async () => {
+    if (!folderId) return; // folderId가 없을 경우 실행 방지
 
-          const moodboardData = await getMoodboardsByFolder(folderId);
-          setMoodboards(moodboardData);
-        } catch (error) {
-          console.error("데이터 로딩 실패:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      fetchData();
+    setIsLoading(true);
+    try {
+      const folderData = await getFolderById(folderId);
+      setFolderName(folderData.name);
+      const moodboardData = await getMoodboardsByFolder(folderId);
+      // 👇 2. API 반환 값의 타입을 명확히 지정해줍니다.
+      setMoodboards(moodboardData as MoodboardResult[]);
+    } catch (error) {
+      console.error("데이터 로딩 실패:", error);
+    } finally {
+      setIsLoading(false);
     }
   }, [folderId]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleOpenFolderModal = (moodboardId: string) => {
     setSelectedMoodboardId(moodboardId);
@@ -56,6 +59,32 @@ const FolderDetailPage = () => {
   const handleCloseFolderModal = () => {
     setIsFolderModalOpen(false);
     setSelectedMoodboardId(null);
+  };
+
+  const handleRemoveFromCurrentFolder = async (moodboardId: string) => {
+    if (window.confirm("이 폴더에서 무드보드를 삭제하시겠습니까?")) {
+      try {
+        await removeMoodboardFromFolder(moodboardId, folderId);
+        setMoodboards((prev) => prev.filter((m) => m.id !== moodboardId));
+        alert("폴더에서 삭제되었습니다.");
+      } catch (error) {
+        console.error("삭제 실패:", error);
+        alert("삭제에 실패했습니다.");
+      }
+    }
+  };
+
+  const handleMoveToTrash = async (moodboardId: string) => {
+    if (window.confirm("무드보드를 휴지통으로 이동하시겠습니까?")) {
+      try {
+        await moveMoodboardToTrash(moodboardId);
+        setMoodboards((prev) => prev.filter((m) => m.id !== moodboardId));
+        alert("휴지통으로 이동했습니다.");
+      } catch (error) {
+        console.error("이동 실패:", error);
+        alert("이동에 실패했습니다.");
+      }
+    }
   };
 
   return (
@@ -98,10 +127,14 @@ const FolderDetailPage = () => {
                 <Moodboard
                   key={board.id}
                   id={board.id}
-                  imageUrl={board.cover_image_url} // cover_image_url 사용
+                  imageUrl={board.cover_image_url}
                   keywords={allKeywords}
                   date={board.created_at}
                   type="folder"
+                  onRemoveFromFolder={() =>
+                    handleRemoveFromCurrentFolder(board.id)
+                  }
+                  onMoveToTrash={() => handleMoveToTrash(board.id)}
                   onAddToFolder={() => handleOpenFolderModal(board.id)}
                 />
               );
@@ -114,6 +147,11 @@ const FolderDetailPage = () => {
         <FolderListModal
           moodboardId={selectedMoodboardId}
           onClose={handleCloseFolderModal}
+          currentFolderId={folderId}
+          onSuccess={() => {
+            fetchData();
+            handleCloseFolderModal();
+          }}
         />
       )}
     </div>

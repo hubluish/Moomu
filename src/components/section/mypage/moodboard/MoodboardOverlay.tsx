@@ -17,6 +17,7 @@ type MoodboardOverlayProps = {
   authorName?: string;
   onAddToFolder: () => void;
   onMoveToTrash: (moodboardId: string) => void;
+  onRemoveFromFolder: (moodboardId: string) => void;
   onRestore?: (moodboardId: string) => void;
   onPermanentDelete?: (moodboardId: string) => void;
 };
@@ -28,15 +29,13 @@ const MoodboardOverlay = ({
   authorName,
   onAddToFolder,
   onMoveToTrash,
+  onRemoveFromFolder,
 }: MoodboardOverlayProps) => {
   const [showDeleteOptions, setShowDeleteOptions] = useState(false);
 
-  const handleMoveToFolder = () => alert(`${moodboardId}를 다른 폴더로 이동`);
   const handleTogglePublic = () => alert(`${moodboardId} 공개 상태 변경`);
   const handleRestore = () => alert(`${moodboardId} 복구`);
   const handlePermanentDelete = () => alert(`${moodboardId} 영구 삭제`);
-  const handleRemoveFromFolder = () =>
-    alert(`${moodboardId}를 현재 폴더에서만 삭제`);
 
   const renderOverlayContent = () => {
     switch (type) {
@@ -66,7 +65,9 @@ const MoodboardOverlay = ({
         if (showDeleteOptions) {
           return (
             <DeleteOptionsWrapper>
-              <DeleteOptionButton onClick={handleRemoveFromFolder}>
+              <DeleteOptionButton
+                onClick={() => onRemoveFromFolder(moodboardId)}
+              >
                 폴더에서 삭제
               </DeleteOptionButton>
               <span style={{ color: "#ccc" }}>|</span>
@@ -85,7 +86,7 @@ const MoodboardOverlay = ({
         return (
           <>
             <IconButton
-              onClick={handleMoveToFolder}
+              onClick={onAddToFolder}
               src="/assets/icons/folder-icon.svg"
               alt="폴더 이동"
             />
