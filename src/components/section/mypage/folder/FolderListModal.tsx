@@ -30,7 +30,8 @@ type FolderListModalProps = {
   moodboardId: string;
   onClose: () => void;
   currentFolderId?: string;
-  onSuccess?: () => void;
+  onSuccess?: (folderName: string) => void;
+  displayToast: (message: string) => void;
 };
 
 const FolderListModal = ({
@@ -38,11 +39,12 @@ const FolderListModal = ({
   onClose,
   currentFolderId,
   onSuccess,
+  displayToast,
 }: FolderListModalProps) => {
   const [folders, setFolders] = useState<Folder[]>([]);
-  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
+  const [selectedFolder, setSelectedFolder] = useState<Folder | null>(null);
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchFolders = async () => {
     setIsLoading(true);
@@ -51,19 +53,16 @@ const FolderListModal = ({
         data: { session },
       } = await supabase.auth.getSession();
 
-      // session이 있을 때만 폴더를 가져옵니다.
       if (session) {
         const userFolders = await getFolders(session.user.id);
         setFolders(userFolders);
       } else {
-        // session이 없으면 빈 배열로 설정합니다.
         setFolders([]);
       }
     } catch (error) {
       console.error("폴더를 불러오는 중 오류 발생:", error);
-      setFolders([]); // 에러 발생 시에도 빈 배열로 초기화
+      setFolders([]);
     } finally {
-      // try 또는 catch 블록이 끝난 후 항상 실행됩니다.
       setIsLoading(false);
     }
   };
@@ -73,42 +72,28 @@ const FolderListModal = ({
   }, []);
 
   const handleAddClick = async () => {
-    if (!selectedFolderId) {
-      alert("폴더를 선택해주세요.");
+    if (!selectedFolder) {
+      displayToast("폴더를 선택해주세요.");
       return;
     }
     try {
       if (currentFolderId) {
-        // "이동" 로직: currentFolderId가 있으면 move 함수 호출
         await moveMoodboardToAnotherFolder(
           moodboardId,
           currentFolderId,
-          selectedFolderId
+          selectedFolder.id
         );
-        alert("무드보드를 다른 폴더로 이동했습니다.");
+        if (onSuccess) onSuccess(selectedFolder.name);
       } else {
-        // "추가" 로직: currentFolderId가 없으면 기존 add 함수 호출
-        await addMoodboardToFolder(moodboardId, selectedFolderId);
-        alert("폴더에 무드보드가 추가되었습니다.");
-      }
-
-      // 성공 시 onSuccess 콜백이 있으면 실행, 없으면 onClose 실행
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        onClose();
+        await addMoodboardToFolder(moodboardId, selectedFolder.id);
+        if (onSuccess) onSuccess(selectedFolder.name);
       }
     } catch (error) {
-      if (
-        error &&
-        typeof error === "object" &&
-        "code" in error &&
-        error.code === "23505"
-      ) {
-        alert("이미 해당 폴더에 추가된 무드보드입니다.");
+      if (error?.code === "23505") {
+        displayToast("이미 해당 폴더에 추가된 무드보드입니다.");
       } else {
         console.error("폴더 작업 중 오류 발생:", error);
-        alert("작업에 실패했습니다.");
+        displayToast("작업에 실패했습니다.");
       }
     }
   };
@@ -118,7 +103,7 @@ const FolderListModal = ({
       <CreateFolderModal
         onClose={() => setCreateModalOpen(false)}
         onFolderCreated={() => {
-          fetchFolders(); // 새 폴더 생성 후 목록 새로고침
+          fetchFolders();
           setCreateModalOpen(false);
         }}
       />
@@ -138,8 +123,8 @@ const FolderListModal = ({
               {folders.map((folder) => (
                 <FolderItem
                   key={folder.id}
-                  onClick={() => setSelectedFolderId(folder.id)}
-                  className={selectedFolderId === folder.id ? "active" : ""}
+                  onClick={() => setSelectedFolder(folder)}
+                  className={selectedFolder?.id === folder.id ? "active" : ""}
                 >
                   <Image
                     src="/assets/icons/folder.svg"
@@ -182,7 +167,7 @@ const FolderListModal = ({
               />
               <AddToFolderButton
                 onClick={handleAddClick}
-                disabled={!selectedFolderId}
+                disabled={!selectedFolder}
               >
                 이 폴더에 추가하기
               </AddToFolderButton>

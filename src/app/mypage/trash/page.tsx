@@ -1,9 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/utils/supabase";
 import { restoreMoodboard, permanentDeleteMoodboard } from "@/utils/moodboard";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
+import Toast from "@/components/common/toast/Toast";
+import ConfirmModal from "@/components/common/ConfirmModal/ConfirmModal";
 
 interface MoodboardResult {
   id: string;
@@ -17,6 +19,23 @@ const TrashPage = ({}) => {
     []
   );
   const [isLoading, setIsLoading] = useState(true);
+
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<() => void>(() => {});
+  const [modalTitle, setModalTitle] = useState<ReactNode>("");
+  const [modalVariant, setModalVariant] = useState<"default" | "danger">(
+    "default"
+  );
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+
+  const displayToast = (message: string) => {
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+  };
 
   const fetchTrashedMoodboards = async () => {
     setIsLoading(true);
@@ -41,40 +60,45 @@ const TrashPage = ({}) => {
   }, []);
 
   const handleRestore = async (moodboardId: string) => {
-    if (window.confirm("이 무드보드를 복구하시겠습니까?")) {
-      try {
-        await restoreMoodboard(moodboardId);
-        // 화면에서 즉시 제거
-        setTrashedMoodboards((prev) =>
-          prev.filter((m) => m.id !== moodboardId)
-        );
-        alert("무드보드가 복구되었습니다.");
-      } catch (error) {
-        console.error("복구 실패:", error);
-        alert("복구에 실패했습니다.");
-      }
+    try {
+      await restoreMoodboard(moodboardId);
+      setTrashedMoodboards((prev) => prev.filter((m) => m.id !== moodboardId));
+      displayToast("무드보드가 복구 되었어요");
+    } catch (error) {
+      console.error("복구 실패:", error);
+      displayToast("복구에 실패했습니다.");
     }
   };
 
-  // 영구 삭제 핸들러
+  const openRestoreConfirmModal = (moodboardId: string) => {
+    setModalTitle("이 무드보드를 복구하시겠습니까?");
+    setConfirmAction(() => () => handleRestore(moodboardId));
+    setModalVariant("default");
+    setIsConfirmOpen(true);
+  };
+
   const handlePermanentDelete = async (moodboardId: string) => {
-    if (
-      window.confirm(
-        "정말로 영구 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
-      )
-    ) {
-      try {
-        await permanentDeleteMoodboard(moodboardId);
-        // 화면에서 즉시 제거
-        setTrashedMoodboards((prev) =>
-          prev.filter((m) => m.id !== moodboardId)
-        );
-        alert("무드보드가 영구적으로 삭제되었습니다.");
-      } catch (error) {
-        console.error("삭제 실패:", error);
-        alert("삭제에 실패했습니다.");
-      }
+    try {
+      await permanentDeleteMoodboard(moodboardId);
+      setTrashedMoodboards((prev) => prev.filter((m) => m.id !== moodboardId));
+      displayToast("피드가 영구삭제 되었어요");
+    } catch (error) {
+      console.error("삭제 실패:", error);
+      displayToast("삭제에 실패했습니다.");
     }
+  };
+
+  const openDeleteConfirmModal = (moodboardId: string) => {
+    setModalTitle(
+      <>
+        정말로 영구 삭제하시겠습니까?
+        <br />
+        되돌릴 수 없습니다.
+      </>
+    );
+    setConfirmAction(() => () => handlePermanentDelete(moodboardId));
+    setModalVariant("danger");
+    setIsConfirmOpen(true);
   };
 
   return (
@@ -107,14 +131,27 @@ const TrashPage = ({}) => {
                   onAddToFolder={() => {}}
                   onMoveToTrash={() => {}}
                   onRemoveFromFolder={() => {}}
-                  onRestore={() => handleRestore(board.id)}
-                  onPermanentDelete={() => handlePermanentDelete(board.id)}
+                  onRestore={() => openRestoreConfirmModal(board.id)}
+                  onPermanentDelete={() => openDeleteConfirmModal(board.id)}
                 />
               );
             })
           )}
         </div>
       </main>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={() => {
+          confirmAction();
+          setIsConfirmOpen(false);
+        }}
+        title={modalTitle}
+        confirmText={modalVariant === "danger" ? "영구 삭제" : "복구"}
+        variant={modalVariant}
+      />
+      <Toast message={toastMessage} show={showToast} />
     </div>
   );
 };
