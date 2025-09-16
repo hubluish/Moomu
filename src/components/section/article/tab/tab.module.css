@@ -23,7 +23,7 @@
   background: var(--button, rgba(61, 56, 245, 0.1));
   border: none;
   cursor: pointer;
-  color: #fff;
+  color: var(--color-text-main);
   font-weight: normal;
   transition: background 0.2s;
 }
@@ -31,6 +31,7 @@
 .tabBtn.active {
   background: var(--color-main);
   font-weight: bold;
+  color: var(--color-background);
 }
 
 .tabBtn:hover {
