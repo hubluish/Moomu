@@ -18,7 +18,7 @@ type MoodboardProps = {
   type: "mymoodboard" | "folder" | "favorite" | "trash";
   onAddToFolder: () => void;
   onMoveToTrash: (moodboardId: string) => void;
-  onRemoveFromFolder: (moodboardId: string) => void;
+  onRemoveFromFolder?: (moodboardId: string) => void;
   onRestore?: (moodboardId: string) => void;
   onPermanentDelete?: (moodboardId: string) => void;
 };

@@ -46,7 +46,7 @@ export const getFolderById = async (folderId: string) => {
 export const getMoodboardsByFolder = async (folderId: string) => {
   const { data, error } = await supabase
     .from("moodboard_folders")
-    .select("moodboard!inner(*)")
+    .select("moodboard(*)")
     .eq("folder_id", folderId)
     .is("moodboard.deleted_at", null);
 

@@ -51,14 +51,13 @@ const FolderDetailPage = () => {
   };
 
   const fetchData = useCallback(async () => {
-    if (!folderId) return; // folderId가 없을 경우 실행 방지
+    if (!folderId) return;
 
     setIsLoading(true);
     try {
       const folderData = await getFolderById(folderId);
       setFolderName(folderData.name);
       const moodboardData = await getMoodboardsByFolder(folderId);
-      // 👇 2. API 반환 값의 타입을 명확히 지정해줍니다.
       setMoodboards(moodboardData as MoodboardResult[]);
     } catch (error) {
       console.error("데이터 로딩 실패:", error);

@@ -17,7 +17,7 @@ type MoodboardOverlayProps = {
   authorName?: string;
   onAddToFolder: () => void;
   onMoveToTrash: (moodboardId: string) => void;
-  onRemoveFromFolder: (moodboardId: string) => void;
+  onRemoveFromFolder?: (moodboardId: string) => void;
   onRestore?: (moodboardId: string) => void;
   onPermanentDelete?: (moodboardId: string) => void;
 };
@@ -66,7 +66,7 @@ const MoodboardOverlay = ({
           return (
             <DeleteOptionsWrapper>
               <DeleteOptionButton
-                onClick={() => onRemoveFromFolder(moodboardId)}
+                onClick={() => onRemoveFromFolder?.(moodboardId)}
               >
                 폴더에서 삭제
               </DeleteOptionButton>
