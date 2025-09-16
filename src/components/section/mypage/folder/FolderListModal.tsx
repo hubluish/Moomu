@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import {
   getFolders,
   addMoodboardToFolder,
@@ -26,12 +26,25 @@ interface Folder {
   created_at: string;
 }
 
+const ErrorIcon = () => (
+  <Image
+    src="/assets/icons/error-cross.svg"
+    alt="실패"
+    width={25}
+    height={25}
+  />
+);
+
+const FolderIcon = () => (
+  <Image src="/assets/icons/folder.svg" alt="폴더" width={25} height={25} />
+);
+
 type FolderListModalProps = {
   moodboardId: string;
   onClose: () => void;
   currentFolderId?: string;
   onSuccess?: (folderName: string) => void;
-  displayToast: (message: string) => void;
+  displayToast: (message: string, icon?: ReactNode) => void;
 };
 
 const FolderListModal = ({
@@ -73,7 +86,7 @@ const FolderListModal = ({
 
   const handleAddClick = async () => {
     if (!selectedFolder) {
-      displayToast("폴더를 선택해주세요.");
+      displayToast("폴더를 선택해주세요.", <ErrorIcon />);
       return;
     }
     try {
@@ -95,10 +108,10 @@ const FolderListModal = ({
         "code" in error &&
         error.code === "23505"
       ) {
-        displayToast("이미 해당 폴더에 추가된 무드보드입니다.");
+        displayToast("이미 해당 폴더에 추가된 무드보드입니다.", <FolderIcon />);
       } else {
         console.error("폴더 작업 중 오류 발생:", error);
-        displayToast("작업에 실패했습니다.");
+        displayToast("작업에 실패했습니다.", <ErrorIcon />);
       }
     }
   };

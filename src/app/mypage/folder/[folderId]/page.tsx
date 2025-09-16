@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, ReactNode } from "react";
 import { useParams } from "next/navigation";
 import { getFolderById, getMoodboardsByFolder } from "@/utils/folders";
 import { removeMoodboardFromFolder } from "@/utils/folders";
@@ -18,6 +18,23 @@ interface MoodboardResult {
   tags: string[];
   created_at: string;
 }
+
+const TrashIcon = () => (
+  <Image src="/assets/icons/trash.svg" alt="휴지통" width={25} height={25} />
+);
+
+const ErrorIcon = () => (
+  <Image
+    src="/assets/icons/error-cross.svg"
+    alt="실패"
+    width={25}
+    height={25}
+  />
+);
+
+const FolderIcon = () => (
+  <Image src="/assets/icons/folder.svg" alt="폴더" width={25} height={25} />
+);
 
 const FolderDetailPage = () => {
   const params = useParams();
@@ -39,14 +56,20 @@ const FolderDetailPage = () => {
     "default"
   );
 
-  const [toastMessage, setToastMessage] = useState("");
-  const [showToast, setShowToast] = useState(false);
+  const [toastInfo, setToastInfo] = useState<{
+    message: string;
+    show: boolean;
+    icon?: ReactNode;
+  }>({
+    message: "",
+    show: false,
+    icon: undefined,
+  });
 
-  const displayToast = (message: string) => {
-    setToastMessage(message);
-    setShowToast(true);
+  const displayToast = (message: string, icon?: ReactNode) => {
+    setToastInfo({ message, show: true, icon });
     setTimeout(() => {
-      setShowToast(false);
+      setToastInfo({ message: "", show: false, icon: undefined });
     }, 3000);
   };
 
@@ -84,10 +107,10 @@ const FolderDetailPage = () => {
     try {
       await removeMoodboardFromFolder(moodboardId, folderId);
       setMoodboards((prev) => prev.filter((m) => m.id !== moodboardId));
-      displayToast("폴더에서 삭제되었어요");
+      displayToast("폴더에서 삭제되었어요", <FolderIcon />);
     } catch (error) {
       console.error("삭제 실패:", error);
-      displayToast("삭제에 실패했습니다.");
+      displayToast("삭제에 실패했습니다.", <ErrorIcon />);
     }
   };
 
@@ -102,10 +125,10 @@ const FolderDetailPage = () => {
     try {
       await moveMoodboardToTrash(moodboardId);
       setMoodboards((prev) => prev.filter((m) => m.id !== moodboardId));
-      displayToast("휴지통으로 이동했어요");
+      displayToast("휴지통으로 이동했어요", <TrashIcon />);
     } catch (error) {
       console.error("이동 실패:", error);
-      displayToast("이동에 실패했습니다.");
+      displayToast("이동에 실패했습니다.", <ErrorIcon />);
     }
   };
 
@@ -176,7 +199,10 @@ const FolderDetailPage = () => {
           onClose={handleCloseFolderModal}
           currentFolderId={folderId}
           onSuccess={(movedFolderName) => {
-            displayToast(`'${movedFolderName}' 폴더로 이동했어요`);
+            displayToast(
+              `'${movedFolderName}' 폴더로 이동했어요`,
+              <FolderIcon />
+            );
             fetchData();
             handleCloseFolderModal();
           }}
@@ -196,7 +222,11 @@ const FolderDetailPage = () => {
         variant={modalVariant}
       />
 
-      <Toast message={toastMessage} show={showToast} />
+      <Toast
+        message={toastInfo.message}
+        show={toastInfo.show}
+        icon={toastInfo.icon}
+      />
     </div>
   );
 };

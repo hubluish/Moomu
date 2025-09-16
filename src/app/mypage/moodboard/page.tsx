@@ -1,10 +1,11 @@
 "use client";
+import Image from "next/image";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import { supabase } from "@/utils/supabase";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import FolderListModal from "@/components/section/mypage/folder/FolderListModal";
 import { moveMoodboardToTrash } from "@/utils/moodboard";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import Toast from "@/components/common/toast/Toast";
 import ConfirmModal from "@/components/common/ConfirmModal/ConfirmModal";
 interface MoodboardResult {
@@ -13,6 +14,23 @@ interface MoodboardResult {
   tags: string[];
   created_at: string;
 }
+
+const TrashIcon = () => (
+  <Image src="/assets/icons/trash.svg" alt="휴지통" width={25} height={25} />
+);
+
+const ErrorIcon = () => (
+  <Image
+    src="/assets/icons/error-cross.svg"
+    alt="실패"
+    width={25}
+    height={25}
+  />
+);
+
+const FolderIcon = () => (
+  <Image src="/assets/icons/folder.svg" alt="폴더" width={25} height={25} />
+);
 
 const MoodboardPage = () => {
   const [moodboards, setMoodboards] = useState<MoodboardResult[]>([]);
@@ -25,8 +43,15 @@ const MoodboardPage = () => {
   const [confirmAction, setConfirmAction] = useState<() => void>(() => {});
   const [modalTitle, setModalTitle] = useState("");
 
-  const [toastMessage, setToastMessage] = useState("");
-  const [showToast, setShowToast] = useState(false);
+  const [toastInfo, setToastInfo] = useState<{
+    message: string;
+    show: boolean;
+    icon?: ReactNode;
+  }>({
+    message: "",
+    show: false,
+    icon: undefined,
+  });
 
   useEffect(() => {
     const fetchMoodboards = async () => {
@@ -41,21 +66,20 @@ const MoodboardPage = () => {
     fetchMoodboards();
   }, []);
 
-  const displayToast = (message: string) => {
-    setToastMessage(message);
-    setShowToast(true);
+  const displayToast = (message: string, icon?: ReactNode) => {
+    setToastInfo({ message, show: true, icon });
     setTimeout(() => {
-      setShowToast(false);
-    }, 3000); // 3초 후 사라짐
+      setToastInfo({ message: "", show: false, icon: undefined });
+    }, 3000);
   };
 
   const handleMoveToTrash = async (moodboardId: string) => {
     try {
       await moveMoodboardToTrash(moodboardId);
       setMoodboards((prev) => prev.filter((board) => board.id !== moodboardId));
-      displayToast("휴지통으로 이동했어요");
+      displayToast("휴지통으로 이동했어요", <TrashIcon />);
     } catch {
-      displayToast("작업에 실패했습니다.");
+      displayToast("작업에 실패했습니다.", <ErrorIcon />);
     }
   };
 
@@ -76,7 +100,7 @@ const MoodboardPage = () => {
   };
 
   const handleAddToFolderSuccess = (folderName: string) => {
-    displayToast(`'${folderName}' 폴더에 추가했어요`);
+    displayToast(`'${folderName}' 폴더에 추가했어요`, <FolderIcon />);
     handleCloseFolderModal();
   };
 
@@ -135,7 +159,11 @@ const MoodboardPage = () => {
         confirmText="이동"
       />
 
-      <Toast message={toastMessage} show={showToast} />
+      <Toast
+        message={toastInfo.message}
+        show={toastInfo.show}
+        icon={toastInfo.icon}
+      />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React, { useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/utils/supabase";
 import { restoreMoodboard, permanentDeleteMoodboard } from "@/utils/moodboard";
@@ -14,6 +15,28 @@ interface MoodboardResult {
   created_at: string;
 }
 
+const RestoreIcon = () => (
+  <Image src="/assets/icons/restore.svg" alt="복구" width={25} height={25} />
+);
+
+const DeleteForeverIcon = () => (
+  <Image
+    src="/assets/icons/delete-forever.svg"
+    alt="영구삭제"
+    width={25}
+    height={25}
+  />
+);
+
+const ErrorIcon = () => (
+  <Image
+    src="/assets/icons/error-cross.svg"
+    alt="실패"
+    width={25}
+    height={25}
+  />
+);
+
 const TrashPage = ({}) => {
   const [trashedMoodboards, setTrashedMoodboards] = useState<MoodboardResult[]>(
     []
@@ -26,14 +49,21 @@ const TrashPage = ({}) => {
   const [modalVariant, setModalVariant] = useState<"default" | "danger">(
     "default"
   );
-  const [toastMessage, setToastMessage] = useState("");
-  const [showToast, setShowToast] = useState(false);
 
-  const displayToast = (message: string) => {
-    setToastMessage(message);
-    setShowToast(true);
+  const [toastInfo, setToastInfo] = useState<{
+    message: string;
+    show: boolean;
+    icon?: ReactNode;
+  }>({
+    message: "",
+    show: false,
+    icon: undefined,
+  });
+
+  const displayToast = (message: string, icon?: ReactNode) => {
+    setToastInfo({ message, show: true, icon });
     setTimeout(() => {
-      setShowToast(false);
+      setToastInfo({ message: "", show: false, icon: undefined });
     }, 3000);
   };
 
@@ -63,10 +93,9 @@ const TrashPage = ({}) => {
     try {
       await restoreMoodboard(moodboardId);
       setTrashedMoodboards((prev) => prev.filter((m) => m.id !== moodboardId));
-      displayToast("무드보드가 복구 되었어요");
-    } catch (error) {
-      console.error("복구 실패:", error);
-      displayToast("복구에 실패했습니다.");
+      displayToast("무드보드가 복구 되었어요", <RestoreIcon />);
+    } catch {
+      displayToast("복구에 실패했습니다.", <ErrorIcon />);
     }
   };
 
@@ -81,10 +110,9 @@ const TrashPage = ({}) => {
     try {
       await permanentDeleteMoodboard(moodboardId);
       setTrashedMoodboards((prev) => prev.filter((m) => m.id !== moodboardId));
-      displayToast("피드가 영구삭제 되었어요");
-    } catch (error) {
-      console.error("삭제 실패:", error);
-      displayToast("삭제에 실패했습니다.");
+      displayToast("피드가 영구삭제 되었어요", <DeleteForeverIcon />);
+    } catch {
+      displayToast("삭제에 실패했습니다.", <ErrorIcon />);
     }
   };
 
@@ -151,7 +179,11 @@ const TrashPage = ({}) => {
         confirmText={modalVariant === "danger" ? "영구 삭제" : "복구"}
         variant={modalVariant}
       />
-      <Toast message={toastMessage} show={showToast} />
+      <Toast
+        message={toastInfo.message}
+        show={toastInfo.show}
+        icon={toastInfo.icon}
+      />
     </div>
   );
 };

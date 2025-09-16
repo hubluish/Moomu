@@ -1,9 +1,6 @@
 import { supabase } from "@/utils/supabase";
 
-/**
- * 무드보드를 휴지통으로 보냅니다 (soft delete).
- * @param moodboardId 휴지통으로 보낼 무드보드의 ID
- */
+// 무드보드를 휴지통으로 보냅니다 (soft delete).
 export const moveMoodboardToTrash = async (moodboardId: string) => {
   const { error } = await supabase
     .from("moodboard")
@@ -16,10 +13,7 @@ export const moveMoodboardToTrash = async (moodboardId: string) => {
   }
 };
 
-/**
- * 휴지통의 무드보드를 복구합니다. (deleted_at을 null로 설정)
- * @param moodboardId 복구할 무드보드의 ID
- */
+// 휴지통의 무드보드를 복구합니다. (deleted_at을 null로 설정)
 export const restoreMoodboard = async (moodboardId: string) => {
   const { error } = await supabase
     .from("moodboard")
@@ -32,10 +26,7 @@ export const restoreMoodboard = async (moodboardId: string) => {
   }
 };
 
-/**
- * 무드보드를 데이터베이스에서 영구적으로 삭제합니다.
- * @param moodboardId 삭제할 무드보드의 ID
- */
+// 무드보드를 데이터베이스에서 영구적으로 삭제합니다.
 export const permanentDeleteMoodboard = async (moodboardId: string) => {
   const { error } = await supabase
     .from("moodboard")

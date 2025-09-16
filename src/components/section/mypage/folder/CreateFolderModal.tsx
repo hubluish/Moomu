@@ -40,7 +40,6 @@ export const CreateFolderModal = ({
       }
       await createFolder(session.user.id, folderName.trim());
 
-      alert("새로운 폴더가 생성되었습니다.");
       onFolderCreated();
       onClose();
     } catch (error) {
