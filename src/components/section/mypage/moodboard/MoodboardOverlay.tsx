@@ -30,12 +30,12 @@ const MoodboardOverlay = ({
   onAddToFolder,
   onMoveToTrash,
   onRemoveFromFolder,
+  onRestore,
+  onPermanentDelete,
 }: MoodboardOverlayProps) => {
   const [showDeleteOptions, setShowDeleteOptions] = useState(false);
 
   const handleTogglePublic = () => alert(`${moodboardId} 공개 상태 변경`);
-  const handleRestore = () => alert(`${moodboardId} 복구`);
-  const handlePermanentDelete = () => alert(`${moodboardId} 영구 삭제`);
 
   const renderOverlayContent = () => {
     switch (type) {
@@ -110,12 +110,12 @@ const MoodboardOverlay = ({
         return (
           <>
             <IconButton
-              onClick={handleRestore}
+              onClick={() => onRestore?.(moodboardId)}
               src="/assets/icons/restore.svg"
               alt="복구"
             />
             <IconButton
-              onClick={handlePermanentDelete}
+              onClick={() => onPermanentDelete?.(moodboardId)}
               src="/assets/icons/delete-forever.svg"
               alt="영구 삭제"
               variant="danger"

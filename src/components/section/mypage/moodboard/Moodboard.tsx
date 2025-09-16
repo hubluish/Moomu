@@ -32,6 +32,8 @@ const Moodboard = ({
   onAddToFolder,
   onMoveToTrash,
   onRemoveFromFolder,
+  onRestore,
+  onPermanentDelete,
 }: MoodboardProps) => {
   const displayImage = imageUrl || "/assets/images/sky.png";
 
@@ -65,6 +67,8 @@ const Moodboard = ({
         onAddToFolder={onAddToFolder}
         onMoveToTrash={onMoveToTrash}
         onRemoveFromFolder={onRemoveFromFolder}
+        onRestore={onRestore}
+        onPermanentDelete={onPermanentDelete}
       />
     </MoodboardWrapper>
   );

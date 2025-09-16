@@ -24,8 +24,8 @@ const TrashPage = ({}) => {
       const { data, error } = await supabase
         .from("moodboard")
         .select("*")
-        .not("deleted_at", "is", null) // deleted_at이 null이 아닌 것만 조회
-        .order("deleted_at", { ascending: false }); // 최근에 삭제된 순으로 정렬
+        .not("deleted_at", "is", null)
+        .order("deleted_at", { ascending: false });
 
       if (error) throw error;
       setTrashedMoodboards(data || []);
@@ -40,7 +40,6 @@ const TrashPage = ({}) => {
     fetchTrashedMoodboards();
   }, []);
 
-  // 복구 핸들러
   const handleRestore = async (moodboardId: string) => {
     if (window.confirm("이 무드보드를 복구하시겠습니까?")) {
       try {
@@ -51,6 +50,7 @@ const TrashPage = ({}) => {
         );
         alert("무드보드가 복구되었습니다.");
       } catch (error) {
+        console.error("복구 실패:", error);
         alert("복구에 실패했습니다.");
       }
     }
@@ -71,6 +71,7 @@ const TrashPage = ({}) => {
         );
         alert("무드보드가 영구적으로 삭제되었습니다.");
       } catch (error) {
+        console.error("삭제 실패:", error);
         alert("삭제에 실패했습니다.");
       }
     }
@@ -103,7 +104,9 @@ const TrashPage = ({}) => {
                   keywords={allKeywords}
                   date={board.created_at}
                   type="trash"
-                  onAddToFolder={() => {}} // 휴지통에서는 폴더 기능 불필요
+                  onAddToFolder={() => {}}
+                  onMoveToTrash={() => {}}
+                  onRemoveFromFolder={() => {}}
                   onRestore={() => handleRestore(board.id)}
                   onPermanentDelete={() => handlePermanentDelete(board.id)}
                 />
