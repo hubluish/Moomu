@@ -89,7 +89,12 @@ const FolderListModal = ({
         if (onSuccess) onSuccess(selectedFolder.name);
       }
     } catch (error) {
-      if (error?.code === "23505") {
+      if (
+        error &&
+        typeof error === "object" &&
+        "code" in error &&
+        error.code === "23505"
+      ) {
         displayToast("이미 해당 폴더에 추가된 무드보드입니다.");
       } else {
         console.error("폴더 작업 중 오류 발생:", error);

@@ -17,10 +17,7 @@ export const createFolder = async (userId: string, folderName: string) => {
     .from("folders")
     .insert({ user_id: userId, name: folderName });
 
-  if (error) {
-    console.error("Supabase insert error:", error);
-    throw error;
-  }
+  if (error) throw error;
 };
 
 // 무드보드를 폴더에 추가하기
@@ -53,10 +50,7 @@ export const getMoodboardsByFolder = async (folderId: string) => {
     .eq("folder_id", folderId)
     .is("moodboard.deleted_at", null);
 
-  if (error) {
-    console.error("Error fetching moodboards by folder:", error);
-    throw error;
-  }
+  if (error) throw error;
 
   if (!data) {
     return [];
@@ -65,11 +59,7 @@ export const getMoodboardsByFolder = async (folderId: string) => {
   return data.map((item) => item.moodboard).filter(Boolean);
 };
 
-/**
- * 특정 폴더에서 특정 무드보드와의 연결을 제거합니다.
- * @param moodboardId 제거할 무드보드 ID
- * @param folderId 무드보드가 속한 현재 폴더 ID
- */
+// 특정 폴더에서 특정 무드보드와의 연결을 제거합니다.
 export const removeMoodboardFromFolder = async (
   moodboardId: string,
   folderId: string
@@ -83,12 +73,7 @@ export const removeMoodboardFromFolder = async (
   if (error) throw error;
 };
 
-/**
- * 무드보드를 한 폴더에서 다른 폴더로 이동합니다.
- * @param moodboardId 이동할 무드보드 ID
- * @param currentFolderId 현재 폴더 ID
- * @param newFolderId 새로 이동할 폴더 ID
- */
+// 무드보드를 한 폴더에서 다른 폴더로 이동합니다.
 export const moveMoodboardToAnotherFolder = async (
   moodboardId: string,
   currentFolderId: string,
@@ -96,12 +81,9 @@ export const moveMoodboardToAnotherFolder = async (
 ) => {
   const { error } = await supabase
     .from("moodboard_folders")
-    .update({ folder_id: newFolderId }) // folder_id를 새 ID로 수정
+    .update({ folder_id: newFolderId })
     .eq("moodboard_id", moodboardId)
-    .eq("folder_id", currentFolderId); // 현재 폴더에 있는 것을 찾아서
+    .eq("folder_id", currentFolderId);
 
-  if (error) {
-    console.error("Error moving moodboard:", error);
-    throw error;
-  }
+  if (error) throw error;
 };
