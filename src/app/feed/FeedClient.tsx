@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import SearchBar from "@/components/common/searchBar/SearchBar";
 import styles from "./feed.module.css";
-import { supabase } from "@/utils/supabaseClient"; // Supabase 클라이언트 import
+import { supabase } from "@/utils/supabase";
 import Toast from "@/components/common/toast/Toast";
 
 // --- 인터페이스 (userId 추가) ---

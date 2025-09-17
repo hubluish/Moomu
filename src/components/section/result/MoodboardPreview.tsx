@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import styles from './MoodboardPreview.module.css';
-import { supabase } from '@/utils/supabaseClient';
+import { supabase } from '@/utils/supabase';
 
 type Props = {
     coverUrl?: string | null;

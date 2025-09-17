@@ -14,7 +14,7 @@ import SaveButton from "../../components/section/result/SaveButton";
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
-import { supabase } from "@/utils/supabaseClient";
+import { supabase } from "@/utils/supabase";
 import type { GeminiSet } from "@/types/result";
 
 // Supabase 응답 스키마 타입 정의
