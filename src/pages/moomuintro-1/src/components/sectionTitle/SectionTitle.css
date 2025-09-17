@@ -1,0 +1,48 @@
+/* Section Title Component Styles */
+.section-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 50px;
+  width: 100%;
+
+}
+
+/* 1-2-2-1. section - category container */
+.category {
+  display: flex;
+  padding: 11.818px 23.636px;
+  justify-content: center;
+  align-items: center;
+  gap: 11.143px;
+  border-radius: 35.455px;
+  border-top: 1.182px solid var(--glass, #C5C2FF);
+  border-bottom: 1.182px solid var(--glass, #C5C2FF);
+}
+
+/* 1-2-2-1-1-1. category content */
+.category-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 11.818px;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+
+/* 1-2-2-1-1-1-1. category text */
+.category-text {
+  color: var(--background, #FEFEFF);
+  font-family: Pretendard;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+/* CSS Variables for consistency */
+:root {
+  --glass: #C5C2FF;
+  --background: #FEFEFF;
+}

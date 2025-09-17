@@ -1,0 +1,23 @@
+/* App.css */
+.app {
+  width: 1440px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #2F0B5B 0%, #000 12.02%, #000 65.87%, #1F1D69 100%);
+}
+
+.app-content {
+  display: flex;
+  width: 1440px;
+  padding: 170px 120px 50px 120px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 51px;
+}
