@@ -1,0 +1,114 @@
+/* MoodboardModal.module.css */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 990px;
+  height: 717px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.closeBtn {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.content {
+  padding: 12px 16px 20px;
+  overflow: auto;
+  height: 100%;
+}
+
+.meta {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 999px;
+  background: #f5f5ff;
+  color: #6b5bff;
+  border: 1px solid #e5e5ff;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Grid layout similar to result page */
+.gridContainer {
+  display: grid;
+  grid-template-columns: 3.8fr 2.4fr 1.4fr 2.5fr;
+  grid-template-rows: repeat(4, auto);
+  grid-template-areas:
+    ' title concept font . '
+    ' images concept font . '
+    ' images palette palette . '
+    ' images keyword keyword . ';
+  gap: 16px;
+  height: 100%;
+}
+
+.titleBox { grid-area: title; }
+.imageBox { grid-area: images; width: 100%; }
+.conceptBox { grid-area: concept; }
+.fontBox { grid-area: font; }
+.paletteBox { grid-area: palette; }
+.keywordBox { grid-area: keyword; }
+
+.section {
+  width: 100%;
+}
+
+/* Image grid */
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.imageItem {
+  width: 100%;
+  aspect-ratio: 1.2 / 1; /* approximate landscape */
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f2f2f2;
+}
+
+.imageItem img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.boxTitle { font-weight: 700; margin-bottom: 8px; }

@@ -7,6 +7,7 @@ import Toast from "@/components/common/toast/Toast";
 import styles from "./feed.module.css";
 import { supabase } from "@/utils/supabaseClient";
 import Pagenation from "@/components/common/pagenation";
+import MoodboardModal from "./MoodboardModal";
 
 interface FeedItem {
   id: string;
@@ -32,6 +33,8 @@ export default function FeedClient() {
   const [page, setPage] = useState(0);
   const pageSize = 10;
   const [totalCount, setTotalCount] = useState<number>(0);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedMoodboardId, setSelectedMoodboardId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,6 +111,17 @@ export default function FeedClient() {
   }, [page]);
 
   const handleSearch = () => setSearch(inputValue);
+
+  const handleOpenModal = (moodboardId?: string, fallbackId?: string) => {
+    const idToUse = moodboardId || fallbackId || null;
+    setSelectedMoodboardId(idToUse);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedMoodboardId(null);
+  };
 
   // 좋아요 클릭 처리: liked_feeds(user_id, post_id) 기록 후 UI 토글
   const handleLikeClick = async (id: string) => {
@@ -221,7 +235,18 @@ export default function FeedClient() {
             {filteredItems.map((item) => {
               const isOwner = item.userId === currentUserId;
               return (
-                <div key={item.id} className={styles.feedItem}>
+                <div
+                  key={item.id}
+                  className={styles.feedItem}
+                  onClick={() => handleOpenModal(item.moodboardId, item.id)}
+                  role="button"
+                  aria-label="무드보드 미리보기 열기"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') handleOpenModal(item.moodboardId, item.id);
+                  }}
+                  style={{ cursor: item.moodboardId ? 'pointer' : 'default' }}
+                >
                   <div className={styles.imageWrap}>
                     <Image
                       src={item.imageUrl}
@@ -247,7 +272,7 @@ export default function FeedClient() {
                       <span className={styles.overlayUsername}>{item.creator}</span>
                       <div className={styles.overlayLikeButton}>
                         <button
-                          onClick={() => handleLikeClick(item.id)}
+                          onClick={(e) => { e.stopPropagation(); handleLikeClick(item.id); }}
                           className={`${styles.likeButton} ${
                             item.liked ? styles.liked : ""
                           }`}
@@ -271,6 +296,11 @@ export default function FeedClient() {
             })}
           </div>
         )}
+        <MoodboardModal
+          open={openModal}
+          moodboardId={selectedMoodboardId}
+          onClose={handleCloseModal}
+        />
         {showPager && (
           <div style={{ marginTop: 32, display: "flex", gap: 16, alignItems: "center", justifyContent: "center" }}>
             <button
