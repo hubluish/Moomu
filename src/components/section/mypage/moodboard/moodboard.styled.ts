@@ -63,7 +63,7 @@ export const OverlayWrapper = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 155px;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
