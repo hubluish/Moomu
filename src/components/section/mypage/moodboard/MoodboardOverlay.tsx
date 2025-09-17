@@ -22,6 +22,7 @@ type MoodboardOverlayProps = {
   onPermanentDelete?: (moodboardId: string) => void;
   isPublic: boolean;
   onTogglePublic: (moodboardId: string) => void;
+  onUnlike?: () => void;
 };
 
 const MoodboardOverlay = ({
@@ -36,6 +37,7 @@ const MoodboardOverlay = ({
   onPermanentDelete,
   isPublic,
   onTogglePublic,
+  onUnlike,
 }: MoodboardOverlayProps) => {
   const [showDeleteOptions, setShowDeleteOptions] = useState(false);
 
@@ -108,7 +110,11 @@ const MoodboardOverlay = ({
         return (
           <>
             <AuthorName>{authorName || "작성자"}</AuthorName>
-            <HeartIcon src="/assets/icons/heart-filled.svg" alt="찜하기" />
+            <HeartIcon
+              src="/assets/icons/heart-filled.svg"
+              alt="찜 취소"
+              onClick={onUnlike}
+            />
           </>
         );
 

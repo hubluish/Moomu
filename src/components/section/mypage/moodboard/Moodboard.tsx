@@ -24,6 +24,7 @@ type MoodboardProps = {
   authorName?: string;
   isPublic: boolean;
   onTogglePublic: (moodboardId: string) => void;
+  onUnlike?: (postId: string) => void;
 };
 
 const Moodboard = ({
@@ -40,6 +41,7 @@ const Moodboard = ({
   authorName,
   isPublic,
   onTogglePublic,
+  onUnlike,
 }: MoodboardProps) => {
   const displayImage = imageUrl || "/assets/images/sky.png";
 
@@ -78,6 +80,7 @@ const Moodboard = ({
         onRemoveFromFolder={onRemoveFromFolder}
         onRestore={onRestore}
         onPermanentDelete={onPermanentDelete}
+        onUnlike={() => onUnlike?.(id)}
       />
     </MoodboardWrapper>
   );

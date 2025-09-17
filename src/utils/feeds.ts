@@ -15,3 +15,17 @@ export const getLikedFeeds = async (userId: string) => {
 
   return data.map((item) => item.feed_posts).filter(Boolean);
 };
+
+// 특정 사용자가 '찜'한 피드를 취소합니다.
+export const unlikeFeed = async (userId: string, postId: string) => {
+  const { error } = await supabase
+    .from("liked_feeds")
+    .delete()
+    .eq("user_id", userId)
+    .eq("post_id", postId);
+
+  if (error) {
+    console.error("Error unliking feed:", error);
+    throw error;
+  }
+};

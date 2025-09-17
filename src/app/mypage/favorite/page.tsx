@@ -1,10 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/utils/supabase";
-import { getLikedFeeds } from "@/utils/feeds";
+import { getLikedFeeds, unlikeFeed } from "@/utils/feeds";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
+import Toast from "@/components/common/toast/Toast";
 import { MoodboardGridSkeleton } from "@/components/section/mypage/moodboard/MoodboardSkeleton";
+import Image from "next/image";
 
 interface FeedPost {
   id: string;
@@ -13,9 +15,40 @@ interface FeedPost {
   created_at: string;
 }
 
+const TrashIcon = () => (
+  <Image src="/assets/icons/trash.svg" alt="휴지통" width={25} height={25} />
+);
+
+const ErrorIcon = () => (
+  <Image
+    src="/assets/icons/error-cross.svg"
+    alt="실패"
+    width={25}
+    height={25}
+  />
+);
+
 const FavoritePage = ({}) => {
   const [likedFeeds, setLikedFeeds] = useState<FeedPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [toastInfo, setToastInfo] = useState<{
+    message: string;
+    show: boolean;
+    icon?: ReactNode;
+  }>({
+    message: "",
+    show: false,
+    icon: undefined,
+  });
+
+  const displayToast = (message: string, icon?: ReactNode) => {
+    setToastInfo({ message, show: true, icon });
+
+    setTimeout(() => {
+      setToastInfo((prev) => ({ ...prev, show: false }));
+    }, 3000);
+  };
 
   useEffect(() => {
     const fetchLikedFeeds = async () => {
@@ -36,6 +69,24 @@ const FavoritePage = ({}) => {
     };
     fetchLikedFeeds();
   }, []);
+
+  const handleUnlikeFeed = async (postId: string) => {
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        displayToast("로그인이 필요합니다.", <ErrorIcon />);
+        return;
+      }
+
+      await unlikeFeed(session.user.id, postId);
+      setLikedFeeds((prev) => prev.filter((feed) => feed.id !== postId));
+      displayToast("찜한 피드에서 삭제했어요", <TrashIcon />);
+    } catch {
+      displayToast("삭제에 실패했습니다.", <ErrorIcon />);
+    }
+  };
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
@@ -87,12 +138,19 @@ const FavoritePage = ({}) => {
                   onAddToFolder={() => {}}
                   onMoveToTrash={() => {}}
                   onRemoveFromFolder={() => {}}
+                  onUnlike={() => handleUnlikeFeed(feed.id)}
                 />
               ))}
             </div>
           )}
         </div>
       </main>
+
+      <Toast
+        message={toastInfo.message}
+        show={toastInfo.show}
+        icon={toastInfo.icon}
+      />
     </div>
   );
 };
