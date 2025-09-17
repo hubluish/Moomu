@@ -6,6 +6,7 @@ import SearchBar from "@/components/common/searchBar/SearchBar";
 import Toast from "@/components/common/toast/Toast";
 import styles from "./feed.module.css";
 import { supabase } from "@/utils/supabaseClient";
+import Pagenation from "@/components/common/pagenation";
 
 interface FeedItem {
   id: string;
@@ -27,6 +28,9 @@ export default function FeedClient() {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [page, setPage] = useState(0);
+  const pageSize = 10;
+  const [totalCount, setTotalCount] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,13 +42,17 @@ export default function FeedClient() {
         } = await supabase.auth.getUser();
         setCurrentUserId(user?.id || null);
 
-        const { data, error } = await supabase
+        const from = page * pageSize;
+        const to = from + pageSize - 1;
+
+        const { data, count, error } = await supabase
           .from("feed_posts")
           .select(
-            "id, user_id, title, image_url, categories, likes, is_public, created_at"
+            "id, user_id, title, image_url, categories, likes, is_public, created_at",
+            { count: "exact" }
           )
           .order("created_at", { ascending: false })
-          .limit(60);
+          .range(from, to);
 
         if (error) throw error;
 
@@ -68,6 +76,7 @@ export default function FeedClient() {
         });
 
         setFeedItems(mapped);
+        setTotalCount(typeof count === "number" ? count : mapped.length);
       } catch (e) {
         console.error("[Feed] failed to load posts:", e);
       } finally {
@@ -76,7 +85,7 @@ export default function FeedClient() {
     };
 
     fetchData();
-  }, []);
+  }, [page]);
 
   const handleSearch = () => setSearch(inputValue);
 
@@ -114,6 +123,18 @@ export default function FeedClient() {
         item.creator.toLowerCase().includes(q)
     );
   }, [feedItems, search]);
+
+  const totalPages = useMemo(() => {
+    if (typeof totalCount === "number" && totalCount > 0) {
+      return Math.max(1, Math.ceil(totalCount / pageSize));
+    }
+    // Fallback: if count is unavailable, infer minimally from current page
+    return page + (feedItems.length === pageSize ? 2 : 1);
+  }, [totalCount, page, feedItems.length]);
+
+  const showPager = useMemo(() => {
+    return totalCount > pageSize || page > 0 || feedItems.length === pageSize;
+  }, [totalCount, page, feedItems.length]);
 
   return (
     <div className={styles.feedContainer}>
@@ -192,8 +213,48 @@ export default function FeedClient() {
             })}
           </div>
         )}
+        {showPager && (
+          <div style={{ marginTop: 32, display: "flex", gap: 16, alignItems: "center", justifyContent: "center" }}>
+            <button
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              disabled={page === 0}
+              style={{
+                padding: "8px 12px",
+                borderRadius: 8,
+                border: "1px solid #ddd",
+                background: page === 0 ? "#f5f5f5" : "white",
+                color: page === 0 ? "#aaa" : "#333",
+                cursor: page === 0 ? "not-allowed" : "pointer",
+              }}
+              aria-label="이전 페이지"
+            >
+              이전
+            </button>
+
+            <Pagenation
+              pageCount={totalPages}
+              current={page}
+              onChange={(idx) => setPage(idx)}
+            />
+
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+              disabled={page >= totalPages - 1 || (typeof totalCount !== 'number' && feedItems.length < pageSize)}
+              style={{
+                padding: "8px 12px",
+                borderRadius: 8,
+                border: "1px solid #ddd",
+                background: page >= totalPages - 1 ? "#f5f5f5" : "white",
+                color: page >= totalPages - 1 ? "#aaa" : "#333",
+                cursor: page >= totalPages - 1 ? "not-allowed" : "pointer",
+              }}
+              aria-label="다음 페이지"
+            >
+              다음
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
