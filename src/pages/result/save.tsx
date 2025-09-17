@@ -220,6 +220,7 @@ export default function SavePage() {
     }
 
     alert("피드에 게시했어요!");
+    sessionStorage.removeItem('resultPageState');
     // 예: 피드 상세 페이지로 이동
     router.push(`/feed`);
     }, [router]);
