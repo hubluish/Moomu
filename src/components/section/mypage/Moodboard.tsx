@@ -62,12 +62,12 @@ const Moodboard = ({
     isDeleted: false,
   });
 
-  const handleUpdate = useCallback((updatedMoodboard: MoodboardData) => {
+  const handleUpdate = (updatedMoodboard: MoodboardData) => {
     setMoodboardData(updatedMoodboard);
     if (onUpdate) {
       onUpdate(updatedMoodboard);
     }
-  }, [onUpdate]);
+  };
 
   const renderOverlay = useCallback(() => {
     if (isTrash) {
@@ -96,7 +96,7 @@ const Moodboard = ({
         />
       );
     }
-  }, [isTrash, isFolder, moodboardData, onPermanentDelete, onRemoveFromFolder, onMoveToTrash, currentFolderId, handleUpdate]);
+  }, [isTrash, isFolder, moodboardData, onPermanentDelete, onRemoveFromFolder, onMoveToTrash, onUpdate, currentFolderId]);
 
   return (
     <MoodboardCard>

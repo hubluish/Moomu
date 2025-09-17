@@ -13,7 +13,6 @@ interface CardData {
   category: string;
   date: string;
   id: string | number;
-  slug: string;
 }
 
 interface SectionProps {
@@ -114,8 +113,6 @@ export default function Articlehome({ setActiveTab }: ArticlehomeProps) {
           description: "",
           category: "",
           date: "",
-          id: "",
-          slug: "",
         }}
         smallCards={dictArticles.slice(1, 4)}
         onMoreClick={() => setActiveTab(4)}
@@ -130,8 +127,6 @@ export default function Articlehome({ setActiveTab }: ArticlehomeProps) {
           description: "",
           category: "",
           date: "",
-          id: "",
-          slug: "",
         }}
         smallCards={trendArticles.slice(1, 4)}
         onMoreClick={() => setActiveTab(5)}

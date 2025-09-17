@@ -1,6 +1,5 @@
-'use client';
-import { Suspense } from 'react';
-import ArticleClient from "./ArticleClient";
+"use client";
+import Article from "@/pages/article/article";
 import Header from "@/components/common/header/header";
 import "@/styles/variable.css";
 
@@ -8,9 +7,7 @@ export default function ArticlePage() {
   return (
     <>
       <Header />
-      <Suspense fallback={<div>로딩 중...</div>}>
-        <ArticleClient />
-      </Suspense>
+      <Article />
     </>
   );
 }

@@ -107,7 +107,7 @@ function Home() {
             console.log('%c✅ Gemini 요청 payload:', 'color: blue; font-weight: bold;', payload);
 
             try {
-            const response = await fetch('/api/gemini_proxy', {
+            const response = await fetch('http://localhost:8000/gemini', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',

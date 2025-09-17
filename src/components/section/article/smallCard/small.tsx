@@ -2,6 +2,7 @@
 import React from "react";
 import styles from "./small.module.css";
 import { useRouter } from "next/navigation";
+import { toSlug } from '@/utils/slug';
 
 
 interface ArticleCardProps {
