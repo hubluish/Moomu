@@ -16,6 +16,11 @@ export const StyledButton = styled.button<ButtonProps>`
   justify-content: center;
   align-items: center;
 
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
+
   transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
 
   ${({ variant }) => {

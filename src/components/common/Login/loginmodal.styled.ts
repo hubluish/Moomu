@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -25,7 +25,7 @@ export const ModalContent = styled.div`
 `;
 
 export const Title = styled.h2`
-  background-image: linear-gradient(90deg, #3D38F5 50%, #FC45FF 95.49%);
+  background-image: linear-gradient(90deg, #3d38f5 50%, #fc45ff 95.49%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: var(--font-title2);
@@ -33,6 +33,11 @@ export const Title = styled.h2`
   margin-bottom: 30px;
   text-align: center;
   width: 100%;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 `;
 
 export const InputGroup = styled.div`
@@ -49,7 +54,7 @@ export const Label = styled.label`
 `;
 
 export const ErrorMessage = styled.p`
-  color: #FF6062;
+  color: #ff6062;
   font-size: 13px;
   margin-top: 5px;
   margin-bottom: 0px;
@@ -58,7 +63,7 @@ export const ErrorMessage = styled.p`
 export const Input = styled.input<{ $hasError?: boolean }>`
   width: 100%;
   padding: 15px;
-  border: 1px solid ${({ $hasError }) => ($hasError ? '#FF6062' : '#ddd')};
+  border: 1px solid ${({ $hasError }) => ($hasError ? "#FF6062" : "#ddd")};
   border-radius: 8px;
   font-size: 1rem;
   background-color: #f7f7f7;
@@ -67,7 +72,8 @@ export const Input = styled.input<{ $hasError?: boolean }>`
 
   &:focus {
     outline: none;
-    border: 1px solid ${({ $hasError }) => ($hasError ? '#FF6062' : 'var(--color-main)')};
+    border: 1px solid
+      ${({ $hasError }) => ($hasError ? "#FF6062" : "var(--color-main)")};
   }
 
   &::placeholder {
@@ -98,7 +104,7 @@ export const Separator = styled.div`
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     flex: 1;
     border-bottom: 1px solid #eee;
   }
@@ -140,17 +146,19 @@ export const SocialButton = styled.button`
 export const SignUpButton = styled.button<{ $isFormValid: boolean }>`
   width: 100%;
   padding: 1rem;
-  background: ${({ $isFormValid }) => ($isFormValid ? 'var(--color-main)' : 'var(--color-disable-button)')};
+  background: ${({ $isFormValid }) =>
+    $isFormValid ? "var(--color-main)" : "var(--color-disable-button)"};
   color: white;
   border: none;
   border-radius: 10px;
   font-size: var(--font-body1);
   font-weight: var(--font-weight-bold);
-  cursor: ${({ $isFormValid }) => ($isFormValid ? 'pointer' : 'not-allowed')};
+  cursor: ${({ $isFormValid }) => ($isFormValid ? "pointer" : "not-allowed")};
   transition: background-color 0.2s ease;
 
   &:hover {
-    background: ${({ $isFormValid }) => ($isFormValid ? 'var(--color-main-hover)' : 'var(--color-disable-button)')};
+    background: ${({ $isFormValid }) =>
+      $isFormValid ? "var(--color-main-hover)" : "var(--color-disable-button)"};
   }
 `;
 
@@ -161,7 +169,7 @@ export const LoginLinkWrapper = styled.div`
   font-size: var(--font-small);
 
   a {
-    color: #6C24F0;
+    color: #6c24f0;
     text-decoration: none;
     font-weight: 600;
 

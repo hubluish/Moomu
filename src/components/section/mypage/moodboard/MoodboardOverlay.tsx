@@ -85,6 +85,7 @@ const MoodboardOverlay = ({
                   alt="휴지통"
                   width={16}
                   height={16}
+                  draggable="false"
                 />
                 휴지통
               </DeleteOptionButton>

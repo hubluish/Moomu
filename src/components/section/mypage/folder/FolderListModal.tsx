@@ -17,6 +17,7 @@ import {
   AddToFolderButton,
 } from "./FolderModal.styled";
 import IconButton from "../common/IconButton";
+import { SkeletonItem } from "./FolderSkeleton.styled";
 import { supabase } from "@/utils/supabase";
 
 interface Folder {
@@ -32,11 +33,18 @@ const ErrorIcon = () => (
     alt="실패"
     width={25}
     height={25}
+    draggable="false"
   />
 );
 
 const FolderIcon = () => (
-  <Image src="/assets/icons/folder.svg" alt="폴더" width={25} height={25} />
+  <Image
+    src="/assets/icons/folder.svg"
+    alt="폴더"
+    width={25}
+    height={25}
+    draggable="false"
+  />
 );
 
 type FolderListModalProps = {
@@ -133,7 +141,11 @@ const FolderListModal = ({
       <ModalContainer onClick={(e: React.MouseEvent) => e.stopPropagation()}>
         <ModalContent $isCentered={folders.length === 0 && !isLoading}>
           {isLoading ? (
-            <p>폴더 목록을 불러오는 중...</p>
+            <div>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <SkeletonItem key={index} />
+              ))}
+            </div>
           ) : folders.length === 0 ? (
             <p>현재 생성된 폴더가 없습니다.</p>
           ) : (
@@ -149,6 +161,7 @@ const FolderListModal = ({
                     alt="폴더"
                     width={24}
                     height={24}
+                    draggable="false"
                   />
                   {folder.name}
                 </FolderItem>

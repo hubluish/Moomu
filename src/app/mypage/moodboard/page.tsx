@@ -21,7 +21,13 @@ interface MoodboardResult {
 }
 
 const TrashIcon = () => (
-  <Image src="/assets/icons/trash.svg" alt="휴지통" width={25} height={25} />
+  <Image
+    src="/assets/icons/trash.svg"
+    alt="휴지통"
+    width={25}
+    height={25}
+    draggable="false"
+  />
 );
 
 const ErrorIcon = () => (
@@ -30,19 +36,38 @@ const ErrorIcon = () => (
     alt="실패"
     width={25}
     height={25}
+    draggable="false"
   />
 );
 
 const FolderIcon = () => (
-  <Image src="/assets/icons/folder.svg" alt="폴더" width={25} height={25} />
+  <Image
+    src="/assets/icons/folder.svg"
+    alt="폴더"
+    width={25}
+    height={25}
+    draggable="false"
+  />
 );
 
 const OpenIcon = () => (
-  <Image src="/assets/icons/open-icon.svg" alt="열기" width={25} height={25} />
+  <Image
+    src="/assets/icons/open-icon.svg"
+    alt="열기"
+    width={25}
+    height={25}
+    draggable="false"
+  />
 );
 
 const LockIcon = () => (
-  <Image src="/assets/icons/lock-icon.svg" alt="잠금" width={25} height={25} />
+  <Image
+    src="/assets/icons/lock-icon.svg"
+    alt="잠금"
+    width={25}
+    height={25}
+    draggable="false"
+  />
 );
 
 const MoodboardPage = () => {
@@ -148,7 +173,9 @@ const MoodboardPage = () => {
         <Sidebar />
 
         <main style={{ flex: 1, padding: "50px 70px" }}>
-          <h1 style={{ marginBottom: "30px" }}>내 무드보드</h1>
+          <h1 style={{ marginBottom: "30px", userSelect: "none" }}>
+            내 무드보드
+          </h1>
           <div>
             {isLoading ? (
               <MoodboardGridSkeleton count={6} />

@@ -7,6 +7,11 @@ export const SidebarWrapper = styled.nav`
   padding: 50px 0;
   min-height: 100vh;
   border-right: 1px solid #eee;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 `;
 
 export const MenuList = styled.div`

@@ -143,13 +143,12 @@ const TrashPage = ({}) => {
           overflowY: "auto",
         }}
       >
-        <h1 style={{ marginBottom: "30px" }}>휴지통</h1>
+        <h1 style={{ marginBottom: "30px", userSelect: "none" }}>휴지통</h1>
 
         <div style={{ flex: 1, display: "grid" }}>
           {isLoading ? (
             <MoodboardGridSkeleton count={6} />
           ) : trashedMoodboards.length === 0 ? (
-            // 👇 3. 휴지통이 비었을 때 메시지를 중앙에 배치합니다.
             <div
               style={{
                 display: "flex",

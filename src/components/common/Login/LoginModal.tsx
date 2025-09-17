@@ -257,6 +257,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                       alt="Show password"
                       width={24}
                       height={24}
+                      draggable="false"
                     />
                   ) : (
                     <Image
@@ -264,6 +265,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                       alt="Hide password"
                       width={24}
                       height={24}
+                      draggable="false"
                     />
                   )}
                 </PasswordToggle>

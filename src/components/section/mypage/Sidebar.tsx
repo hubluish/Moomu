@@ -1,4 +1,3 @@
-// components/Sidebar.tsx
 "use client";
 
 import React from "react";
@@ -36,7 +35,6 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
-  // 👇 3. useRouter를 사용해 현재 경로를 가져옵니다.
   const pathname = usePathname();
 
   return (
@@ -49,7 +47,7 @@ const Sidebar = () => {
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <MenuItem $active={pathname === item.path}>
-              <Icon src={item.icon} alt={item.label} />
+              <Icon src={item.icon} alt={item.label} draggable="false" />
               <Label>{item.label}</Label>
             </MenuItem>
           </Link>

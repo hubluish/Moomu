@@ -32,7 +32,7 @@ const SkeletonBase = styled.div`
 // 폴더 아이콘 스켈레톤
 export const SkeletonIcon = styled(SkeletonBase)`
   width: 180px;
-  height: 140px;
+  height: 180px;
   border-radius: 12px;
 `;
 
@@ -41,4 +41,12 @@ export const SkeletonText = styled(SkeletonBase)`
   width: 120px;
   height: 20px;
   border-radius: 4px;
+`;
+
+export const SkeletonItem = styled.div`
+  width: 100%;
+  height: 50px; /* FolderItem의 padding과 유사한 높이 */
+  margin-bottom: 15px;
+  border-radius: 8px;
+  background-color: #f0f0f0; /* 기본 배경색 */
 `;

@@ -20,6 +20,11 @@ export const ModalContainer = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   width: 380px;
   text-align: center;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 `;
 
 export const ModalTitle = styled.h2`

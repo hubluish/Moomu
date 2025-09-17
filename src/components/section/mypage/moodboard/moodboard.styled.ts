@@ -14,6 +14,11 @@ export const MoodboardWrapper = styled.div`
   box-sizing: border-box;
   background: rgba(0, 0, 0, 0);
   position: relative;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 `;
 
 // 카테고리 칩들을 담는 컨테이너

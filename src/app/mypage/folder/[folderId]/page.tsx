@@ -22,7 +22,13 @@ interface MoodboardResult {
 }
 
 const TrashIcon = () => (
-  <Image src="/assets/icons/trash.svg" alt="휴지통" width={25} height={25} />
+  <Image
+    src="/assets/icons/trash.svg"
+    alt="휴지통"
+    width={25}
+    height={25}
+    draggable="false"
+  />
 );
 
 const ErrorIcon = () => (
@@ -31,11 +37,18 @@ const ErrorIcon = () => (
     alt="실패"
     width={25}
     height={25}
+    draggable="false"
   />
 );
 
 const FolderIcon = () => (
-  <Image src="/assets/icons/folder.svg" alt="폴더" width={25} height={25} />
+  <Image
+    src="/assets/icons/folder.svg"
+    alt="폴더"
+    width={25}
+    height={25}
+    draggable="false"
+  />
 );
 
 const FolderDetailPage = () => {
@@ -161,6 +174,7 @@ const FolderDetailPage = () => {
             display: "flex",
             alignItems: "center",
             gap: "20px",
+            userSelect: "none",
           }}
         >
           <Link href="/mypage/folder">
@@ -169,6 +183,7 @@ const FolderDetailPage = () => {
               alt="뒤로가기"
               width={24}
               height={24}
+              draggable="false"
             />
           </Link>
           {isLoading ? "..." : folderName}

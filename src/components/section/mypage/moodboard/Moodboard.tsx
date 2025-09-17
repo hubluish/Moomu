@@ -65,6 +65,7 @@ const Moodboard = ({
             objectFit: "cover",
             borderRadius: "8px",
           }}
+          draggable="false"
         />
       </ImageWrapper>
 

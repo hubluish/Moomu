@@ -26,6 +26,11 @@ export const ModalContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 `;
 
 export const ModalCreateContainer = styled.div`
@@ -38,6 +43,11 @@ export const ModalCreateContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 `;
 
 export const ModalContent = styled.div<{ $isCentered?: boolean }>`
@@ -45,6 +55,11 @@ export const ModalContent = styled.div<{ $isCentered?: boolean }>`
   overflow-y: auto; /* 목록이 길어질 경우 스크롤 */
   padding-right: 8px; /* 스크롤바와 내용이 겹치지 않도록 여백 추가 */
   box-sizing: border-box;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 
   &::-webkit-scrollbar {
     width: 6px; /* 1. 스크롤바의 너비 */

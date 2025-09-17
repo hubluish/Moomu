@@ -16,7 +16,13 @@ interface FeedPost {
 }
 
 const TrashIcon = () => (
-  <Image src="/assets/icons/trash.svg" alt="휴지통" width={25} height={25} />
+  <Image
+    src="/assets/icons/trash.svg"
+    alt="휴지통"
+    width={25}
+    height={25}
+    draggable="false"
+  />
 );
 
 const ErrorIcon = () => (
@@ -25,6 +31,7 @@ const ErrorIcon = () => (
     alt="실패"
     width={25}
     height={25}
+    draggable="false"
   />
 );
 
@@ -100,7 +107,7 @@ const FavoritePage = ({}) => {
           overflowY: "auto",
         }}
       >
-        <h1 style={{ marginBottom: "30px" }}>찜한 피드</h1>
+        <h1 style={{ marginBottom: "30px", userSelect: "none" }}>찜한 피드</h1>
 
         <div style={{ flex: 1, display: "grid" }}>
           {isLoading ? (
