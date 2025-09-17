@@ -44,10 +44,12 @@ export default function ResultPage() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [fontIndex, setFontIndex] = useState(0);
 
   const [visibleImages, setVisibleImages] = useState<ImageItem[]>([]);
   const [resolvedFont, setResolvedFont] = useState<ResolvedFont | null>(null);
-  const [title, setTitle] = useState<string>("");
+  // Default title shows two lines: "New" and "Moodboard"
+  const [title, setTitle] = useState<string>("New\nMoodboard");
 
   useEffect(() => {
     (async () => {
@@ -197,6 +199,7 @@ export default function ResultPage() {
   if (!geminiResult || geminiResult.length === 0) return <div>표시할 결과가 없습니다.</div>;
 
   const currentSet = geminiResult[currentIndex] ?? geminiResult[0];
+  const currentFontSet = geminiResult[fontIndex] ?? geminiResult[0];
   const tags = selectedTags;
 
 
@@ -215,6 +218,7 @@ export default function ResultPage() {
               if (next !== currentIndex) {
                 console.info('[Result] Refresh -> index', next, 'keyword:', geminiResult[next].image);
                 setCurrentIndex(next);
+                setFontIndex(next);
               }
             }}
           />
@@ -241,7 +245,14 @@ export default function ResultPage() {
           <ConceptBox geminiResult={geminiResult} />
         </div>
         <div className={styles.fontBox}>
-          <FontBox fontKeyword={currentSet.font} onResolved={setResolvedFont} />
+          <FontBox
+            geminiSet={currentFontSet}
+            onResolved={setResolvedFont}
+            onPrev={() => setFontIndex((idx) => Math.max(0, idx - 1))}
+            onNext={() => setFontIndex((idx) => Math.min(geminiResult.length - 1, idx + 1))}
+            disablePrev={fontIndex <= 0}
+            disableNext={fontIndex >= geminiResult.length - 1}
+          />
         </div>
         <div className={styles.paletteBox}>
           <ColorPaletteBox geminiResult={geminiResult} />

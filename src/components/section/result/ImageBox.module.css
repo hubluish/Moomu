@@ -150,6 +150,7 @@
     align-items: center;
     min-height: 200px;
     color: #666;
+    grid-column: 1 / -1;
 }
 
 .noImages {
@@ -158,6 +159,7 @@
     align-items: center;
     min-height: 200px;
     color: #666;
+    grid-column: 1 / -1;
 }
 
 .loadMore{

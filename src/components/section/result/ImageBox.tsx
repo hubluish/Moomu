@@ -178,48 +178,52 @@ const ImageBox: React.FC<Props> = ({
         return () => controller.abort();
     }, [query, colorHex, orientation, perPage, page]);
 
-    if (loading && images.length === 0) return <div className={styles.loading}>이미지 로딩 중...</div>;
-    if (err && images.length === 0) return <div className={styles.noImages}>{err}</div>;
-    if (images.length === 0) return <div className={styles.noImages}>이미지를 찾을 수 없습니다.</div>;
-
     return (
         <div className={styles.container}>
-        <h2 className={styles.title}>IMAGES</h2>
-        <TopRightArrows onPrev={onPrev} onNext={onNext} disablePrev={disablePrev} disableNext={disableNext} />
+            <h2 className={styles.title}>IMAGES</h2>
+            <TopRightArrows onPrev={onPrev} onNext={onNext} disablePrev={disablePrev} disableNext={disableNext} />
 
-        <div className={styles.imageGrid}>
-            {images.map((image, idx) => (
-            <a
-                key={`${image.pin_url}-${idx}`}
-                href={image.pin_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.imageWrapper}
-                title={image.alt || query}
-            >
-                <Image
-                src={image.thumbnail_url}
-                alt={image.alt || query}
-                className={styles.image}
-                width={130}
-                height={130}
-                loading="lazy"
-                />
-            </a>
-            ))}
-        </div>
+            <div className={styles.imageGrid}>
+                {loading && images.length === 0 ? (
+                    <div className={styles.loading}>이미지 로딩 중...</div>
+                ) : err && images.length === 0 ? (
+                    <div className={styles.noImages}>{err}</div>
+                ) : images.length === 0 ? (
+                    <div className={styles.noImages}>이미지를 찾을 수 없습니다.</div>
+                ) : (
+                    images.map((image, idx) => (
+                        <a
+                            key={`${image.pin_url}-${idx}`}
+                            href={image.pin_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.imageWrapper}
+                            title={image.alt || query}
+                        >
+                            <Image
+                                src={image.thumbnail_url}
+                                alt={image.alt || query}
+                                className={styles.image}
+                                width={130}
+                                height={130}
+                                loading="lazy"
+                            />
+                        </a>
+                    ))
+                )}
+            </div>
 
-        {hasNext && (
-            <button className={styles.loadMore} onClick={() => setPage(p => p + 1)}>
-            더 보기
-            </button>
-        )}
+            {hasNext && (
+                <button className={styles.loadMore} onClick={() => setPage(p => p + 1)}>
+                    더 보기
+                </button>
+            )}
 
-        <div className={styles.credit}>
-            <a href="https://www.pexels.com" target="_blank" rel="noreferrer">
-            Photos provided by Pexels
-            </a>
-        </div>
+            <div className={styles.credit}>
+                <a href="https://www.pexels.com" target="_blank" rel="noreferrer">
+                    Photos provided by Pexels
+                </a>
+            </div>
         </div>
     );
 };
