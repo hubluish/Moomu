@@ -10,6 +10,7 @@ import Pagenation from "@/components/common/pagenation";
 
 interface FeedItem {
   id: string;
+  moodboardId?: string;
   creator: string;
   imageUrl: string;
   title: string;
@@ -48,7 +49,7 @@ export default function FeedClient() {
         const { data, count, error } = await supabase
           .from("feed_posts")
           .select(
-            "id, user_id, title, image_url, categories, likes, is_public, created_at",
+            "id, moodboard_id, user_id, title, image_url, categories, likes, is_public, created_at",
             { count: "exact" }
           )
           .order("created_at", { ascending: false })
@@ -56,12 +57,13 @@ export default function FeedClient() {
 
         if (error) throw error;
 
-        const mapped: FeedItem[] = (data ?? []).map((row: any) => {
+        let mapped: FeedItem[] = (data ?? []).map((row: any) => {
           const userId = row?.user_id ? String(row.user_id) : "";
           const creator = userId ? `user_${userId.slice(0, 6)}` : "Unknown";
 
           return {
             id: String(row.id),
+            moodboardId: row?.moodboard_id ? String(row.moodboard_id) : undefined,
             creator,
             imageUrl: String(row?.image_url ?? ""),
             title: String(row?.title ?? ""),
@@ -74,6 +76,24 @@ export default function FeedClient() {
             isPublic: Boolean(row?.is_public),
           };
         });
+
+        // 현재 사용자 좋아요 상태 반영 (liked_feeds.user_id + post_id)
+        if (user?.id && mapped.length > 0) {
+          const postIds = mapped.map(m => m.moodboardId).filter(Boolean) as string[];
+          if (postIds.length > 0) {
+            try {
+              const { data: likedRows } = await supabase
+                .from('liked_feeds')
+                .select('post_id')
+                .eq('user_id', user.id)
+                .in('post_id', postIds);
+              if (Array.isArray(likedRows)) {
+                const likedSet = new Set(likedRows.map((r: any) => String(r.post_id)));
+                mapped = mapped.map(m => ({ ...m, liked: m.moodboardId ? likedSet.has(m.moodboardId) : false }));
+              }
+            } catch {}
+          }
+        }
 
         setFeedItems(mapped);
         setTotalCount(typeof count === "number" ? count : mapped.length);
@@ -89,6 +109,44 @@ export default function FeedClient() {
 
   const handleSearch = () => setSearch(inputValue);
 
+  // 좋아요 클릭 처리: liked_feeds(user_id, post_id) 기록 후 UI 토글
+  const handleLikeClick = async (id: string) => {
+    const target = feedItems.find((i) => i.id === id);
+    if (!target) return;
+    if (!currentUserId) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+    if (!target.moodboardId) {
+      console.warn('[Feed] moodboardId missing for item', id);
+      return;
+    }
+    const willLike = !target.liked;
+    try {
+      if (willLike) {
+        // 중복 좋아요 시에도 에러 없이 유지하도록 upsert 사용
+        const { error } = await supabase
+          .from('liked_feeds')
+          .upsert(
+            { user_id: currentUserId, post_id: target.moodboardId },
+            { onConflict: 'user_id,post_id', ignoreDuplicates: true }
+          );
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from('liked_feeds')
+          .delete()
+          .eq('user_id', currentUserId)
+          .eq('post_id', target.moodboardId);
+        if (error) throw error;
+      }
+      await handleLike(id);
+    } catch (e) {
+      console.error('[Feed] like click failed:', e);
+      alert('좋아요 처리에 실패했습니다.');
+    }
+  };
+
   const handleLike = (id: string) => {
     const itemToLike = feedItems.find((item) => item.id === id);
     if (!itemToLike) return;
@@ -101,7 +159,7 @@ export default function FeedClient() {
           ? {
               ...item,
               liked: isNowLiked,
-              likes: isNowLiked ? item.likes + 1 : item.likes - 1,
+              likes: isNowLiked ? item.likes + 1 : Math.max(0, item.likes - 1),
             }
           : item
       )
@@ -189,7 +247,7 @@ export default function FeedClient() {
                       <span className={styles.overlayUsername}>{item.creator}</span>
                       <div className={styles.overlayLikeButton}>
                         <button
-                          onClick={() => handleLike(item.id)}
+                          onClick={() => handleLikeClick(item.id)}
                           className={`${styles.likeButton} ${
                             item.liked ? styles.liked : ""
                           }`}
