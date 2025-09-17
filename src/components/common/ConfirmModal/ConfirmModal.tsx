@@ -12,6 +12,7 @@ type ConfirmModalProps = {
   onClose: () => void;
   onConfirm: () => void;
   title: ReactNode;
+  hideCancel?: boolean;
   confirmText?: string;
   cancelText?: string;
   variant?: "default" | "danger";
@@ -22,6 +23,7 @@ const ConfirmModal = ({
   onClose,
   onConfirm,
   title,
+  hideCancel = false,
   confirmText = "확인",
   cancelText = "취소",
   variant = "default",
@@ -33,7 +35,9 @@ const ConfirmModal = ({
       <ModalContainer onClick={(e: React.MouseEvent) => e.stopPropagation()}>
         <ModalTitle>{title}</ModalTitle>
         <ButtonWrapper>
-          <ModalButton onClick={onClose}>{cancelText}</ModalButton>
+          {!hideCancel && (
+            <ModalButton onClick={onClose}>{cancelText}</ModalButton>
+          )}
           <ModalButton onClick={onConfirm} variant={variant}>
             {confirmText}
           </ModalButton>
