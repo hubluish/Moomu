@@ -27,11 +27,23 @@
     overflow: hidden;
 }
 
-.itemImage {
+.imageWrap {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    display: flex;
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
     border-radius: 30px;
+    overflow: hidden; /* 넘치는 부분 위아래 크롭 */
+}
+
+.itemImage {
+    width: 100%;
+    height: auto; /* 가로 기준 맞추고 세로 자동 */
+    display: block;
+    border-radius: 30px;
+    transform: translateY(19px) scale(1.06); /* 살짝 확대하고 위에서 19px 아래로 */
+    transform-origin: center;
 }
 
 .categoryContainer {
