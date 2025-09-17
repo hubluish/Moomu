@@ -45,6 +45,9 @@ export default function ResultPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fontIndex, setFontIndex] = useState(0);
+  const [revealedCount, setRevealedCount] = useState(1);
+  const [conceptIndex, setConceptIndex] = useState(0);
+  const [colorIndex, setColorIndex] = useState(0);
 
   const [visibleImages, setVisibleImages] = useState<ImageItem[]>([]);
   const [resolvedFont, setResolvedFont] = useState<ResolvedFont | null>(null);
@@ -200,6 +203,8 @@ export default function ResultPage() {
 
   const currentSet = geminiResult[currentIndex] ?? geminiResult[0];
   const currentFontSet = geminiResult[fontIndex] ?? geminiResult[0];
+  const currentConceptSet = geminiResult[conceptIndex] ?? geminiResult[0];
+  const currentColorSet = geminiResult[colorIndex] ?? geminiResult[0];
   const tags = selectedTags;
 
 
@@ -214,13 +219,16 @@ export default function ResultPage() {
           <SaveButton onClick={handleSave} />
           <RefreshButton
             onClick={() => {
-              const next = Math.min(geminiResult.length - 1, currentIndex + 1);
-              if (next !== currentIndex) {
-                console.info('[Result] Refresh -> index', next, 'keyword:', geminiResult[next].image);
-                setCurrentIndex(next);
-                setFontIndex(next);
+              if (revealedCount < geminiResult.length) {
+                const nextRevealed = revealedCount + 1;
+                setRevealedCount(nextRevealed);
+                setCurrentIndex(nextRevealed - 1);
+                setFontIndex(nextRevealed - 1);
+                setConceptIndex(nextRevealed - 1);
+                setColorIndex(nextRevealed - 1);
               }
             }}
+            disabled={revealedCount >= geminiResult.length}
           />
         </div>
       </div>
@@ -235,27 +243,39 @@ export default function ResultPage() {
             orientation="landscape"
             useColorFilter
             onPrev={() => setCurrentIndex((idx) => Math.max(0, idx - 1))}
-            onNext={() => setCurrentIndex((idx) => Math.min(geminiResult.length - 1, idx + 1))}
+            onNext={() => setCurrentIndex((idx) => Math.min(revealedCount - 1, idx + 1))}
             disablePrev={currentIndex <= 0}
-            disableNext={currentIndex >= geminiResult.length - 1}
+            disableNext={currentIndex >= revealedCount - 1}
             onImagesChange={setVisibleImages}
           />
         </div>
         <div className={styles.conceptBox}>
-          <ConceptBox geminiResult={geminiResult} />
+          <ConceptBox
+            geminiSet={currentConceptSet}
+            onPrev={() => setConceptIndex((idx) => Math.max(0, idx - 1))}
+            onNext={() => setConceptIndex((idx) => Math.min(revealedCount - 1, idx + 1))}
+            disablePrev={conceptIndex <= 0}
+            disableNext={conceptIndex >= revealedCount - 1}
+          />
         </div>
         <div className={styles.fontBox}>
           <FontBox
             geminiSet={currentFontSet}
             onResolved={setResolvedFont}
             onPrev={() => setFontIndex((idx) => Math.max(0, idx - 1))}
-            onNext={() => setFontIndex((idx) => Math.min(geminiResult.length - 1, idx + 1))}
+            onNext={() => setFontIndex((idx) => Math.min(revealedCount - 1, idx + 1))}
             disablePrev={fontIndex <= 0}
-            disableNext={fontIndex >= geminiResult.length - 1}
+            disableNext={fontIndex >= revealedCount - 1}
           />
         </div>
         <div className={styles.paletteBox}>
-          <ColorPaletteBox geminiResult={geminiResult} />
+          <ColorPaletteBox
+            geminiSet={currentColorSet}
+            onPrev={() => setColorIndex((idx) => Math.max(0, idx - 1))}
+            onNext={() => setColorIndex((idx) => Math.min(revealedCount - 1, idx + 1))}
+            disablePrev={colorIndex <= 0}
+            disableNext={colorIndex >= revealedCount - 1}
+          />
         </div>
         <div className={styles.keywordBox}>
           <KeywordBox tags={tags} />

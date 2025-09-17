@@ -7,42 +7,31 @@ import ColorPalette from './ColorPalette';
 import type { GeminiSet } from '@/types/result';
 
 interface ColorPaletteBoxProps {
-  geminiResult?: GeminiSet[] | null;
+  geminiSet?: GeminiSet | null;
   title?: string;
+  onPrev?: () => void;
+  onNext?: () => void;
+  disablePrev?: boolean;
+  disableNext?: boolean;
 }
 
-export default function ColorPaletteBox({ geminiResult, title = 'COLOR' }: ColorPaletteBoxProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
+export default function ColorPaletteBox({ geminiSet, title = 'COLOR', onPrev, onNext, disablePrev, disableNext }: ColorPaletteBoxProps) {
   const colors = useMemo(() => {
-    if (geminiResult && geminiResult.length > 0) {
-      const idx = Math.min(Math.max(0, currentIndex), geminiResult.length - 1);
-      return geminiResult[idx]?.colors ?? [];
+    if (geminiSet) {
+      return geminiSet?.colors ?? [];
     }
     // fallback
     return ['#333333', '#555555', '#777777', '#999999'];
-  }, [geminiResult, currentIndex]);
-
-  const hasMultipleSets = (geminiResult?.length ?? 0) > 1;
-
-  const handlePrev = () => {
-    if (!geminiResult) return;
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
-  };
-
-  const handleNext = () => {
-    if (!geminiResult) return;
-    setCurrentIndex((prev) => Math.min((geminiResult?.length ?? 1) - 1, prev + 1));
-  };
+  }, [geminiSet]);
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>{title}</div>
       <TopRightArrows
-        onPrev={hasMultipleSets ? handlePrev : undefined}
-        onNext={hasMultipleSets ? handleNext : undefined}
-        disablePrev={!hasMultipleSets || currentIndex <= 0}
-        disableNext={!hasMultipleSets || currentIndex >= (geminiResult?.length ?? 1) - 1}
+        onPrev={onPrev}
+        onNext={onNext}
+        disablePrev={disablePrev}
+        disableNext={disableNext}
       />
       <div className={styles.content}>
         <ColorPalette colors={colors} />

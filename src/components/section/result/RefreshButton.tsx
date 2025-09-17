@@ -5,12 +5,13 @@ import styles from './RefreshButton.module.css';
 
 interface RefreshButtonProps {
     onClick?: () => void;
+    disabled?: boolean;
 }
 
-const RefreshButton: React.FC<RefreshButtonProps> = ({ onClick }) => {
+const RefreshButton: React.FC<RefreshButtonProps> = ({ onClick, disabled }) => {
     return (
         <div className={styles.wrap}>
-        <button className={styles.button} onClick={onClick}>
+        <button className={styles.button} onClick={onClick} disabled={disabled}>
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="39"
