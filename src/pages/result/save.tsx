@@ -196,6 +196,7 @@ export default function SavePage() {
 
     // feed_posts payload 만들기
     const payload = {
+        id: mb.id,
         moodboard_id: mb.id,
         request_id: mb.request_id,
         user_id: user.id,
