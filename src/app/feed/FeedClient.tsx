@@ -33,13 +33,11 @@ export default function FeedClient() {
       try {
         setLoading(true);
 
-        // 1) 현재 로그인 유저 확인 (RLS 고려)
         const {
           data: { user },
         } = await supabase.auth.getUser();
         setCurrentUserId(user?.id || null);
 
-        // 2) feed_posts 조회 (최신순, 최대 60개)
         const { data, error } = await supabase
           .from("feed_posts")
           .select(
@@ -60,7 +58,7 @@ export default function FeedClient() {
             imageUrl: String(row?.image_url ?? ""),
             title: String(row?.title ?? ""),
             likes: typeof row?.likes === "number" ? row.likes : 0,
-            liked: false, // 별도 likes 테이블 연동 시 사용자별 반영 가능
+            liked: false,
             categories: Array.isArray(row?.categories)
               ? (row.categories as string[])
               : [],
@@ -105,45 +103,7 @@ export default function FeedClient() {
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
     }
-    // TODO: 좋아요 테이블/로직 연동 시 서버 업데이트 추가
-  };
-
-  const handleTogglePublic = async (id: string) => {
-    const target = feedItems.find((i) => i.id === id);
-    if (!target) return;
-    if (target.userId !== currentUserId) return; // owner only
-
-    const nextPublic = !target.isPublic;
-    // 낙관적 업데이트
-    setFeedItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, isPublic: nextPublic } : i))
-    );
-
-    try {
-      const { error } = await supabase
-        .from("feed_posts")
-        .update({ is_public: nextPublic })
-        .eq("id", id);
-      if (error) {
-        // 롤백
-        setFeedItems((prev) =>
-          prev.map((i) => (i.id === id ? { ...i, isPublic: !nextPublic } : i))
-        );
-        setToastMessage("공개 설정 변경에 실패했어요.");
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
-        console.error(error);
-      } else {
-        setToastMessage(nextPublic ? "공개로 전환되었습니다." : "비공개로 전환되었습니다.");
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 1500);
-      }
-    } catch (e) {
-      setFeedItems((prev) =>
-        prev.map((i) => (i.id === id ? { ...i, isPublic: !nextPublic } : i))
-      );
-      console.error(e);
-    }
+    // TODO: 좋아요 저장 로직 연동 (feed_likes 등)
   };
 
   const filteredItems = useMemo(() => {
@@ -207,41 +167,23 @@ export default function FeedClient() {
                     <div className={styles.overlayFooter}>
                       <span className={styles.overlayUsername}>{item.creator}</span>
                       <div className={styles.overlayLikeButton}>
-                        {isOwner ? (
-                          <button
-                            onClick={() => handleTogglePublic(item.id)}
-                            className={styles.likeButton}
-                          >
-                            <Image
-                              src={
-                                item.isPublic
-                                  ? "/assets/icons/eye-open.svg"
-                                  : "/assets/icons/eye-closed.svg"
-                              }
-                              alt={item.isPublic ? "공개" : "비공개"}
-                              width={40}
-                              height={40}
-                            />
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleLike(item.id)}
-                            className={`${styles.likeButton} ${
-                              item.liked ? styles.liked : ""
-                            }`}
-                          >
-                            <Image
-                              src={
-                                item.liked
-                                  ? "/assets/icons/full_heart.svg"
-                                  : "/assets/icons/empty_heart.svg"
-                              }
-                              alt="Like"
-                              width={45}
-                              height={41}
-                            />
-                          </button>
-                        )}
+                        <button
+                          onClick={() => handleLike(item.id)}
+                          className={`${styles.likeButton} ${
+                            item.liked ? styles.liked : ""
+                          }`}
+                        >
+                          <Image
+                            src={
+                              item.liked
+                                ? "/assets/icons/full_heart.svg"
+                                : "/assets/icons/empty_heart.svg"
+                            }
+                            alt="Like"
+                            width={45}
+                            height={41}
+                          />
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -254,3 +196,4 @@ export default function FeedClient() {
     </div>
   );
 }
+
