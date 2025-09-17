@@ -38,3 +38,30 @@ export const permanentDeleteMoodboard = async (moodboardId: string) => {
     throw error;
   }
 };
+
+// 무드보드의 공개 상태를 토글합니다 (true <-> false).
+export const toggleMoodboardPublicStatus = async (moodboardId: string) => {
+  const { data: currentData, error: selectError } = await supabase
+    .from("moodboard")
+    .select("is_public")
+    .eq("id", moodboardId)
+    .single();
+
+  if (selectError) {
+    console.error("Error fetching current public status:", selectError);
+    throw selectError;
+  }
+
+  const newStatus = !currentData.is_public;
+  const { error: updateError } = await supabase
+    .from("moodboard")
+    .update({ is_public: newStatus })
+    .eq("id", moodboardId);
+
+  if (updateError) {
+    console.error("Error toggling public status:", updateError);
+    throw updateError;
+  }
+
+  return newStatus;
+};

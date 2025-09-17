@@ -20,6 +20,8 @@ type MoodboardOverlayProps = {
   onRemoveFromFolder?: (moodboardId: string) => void;
   onRestore?: (moodboardId: string) => void;
   onPermanentDelete?: (moodboardId: string) => void;
+  isPublic: boolean;
+  onTogglePublic: (moodboardId: string) => void;
 };
 
 const MoodboardOverlay = ({
@@ -32,10 +34,10 @@ const MoodboardOverlay = ({
   onRemoveFromFolder,
   onRestore,
   onPermanentDelete,
+  isPublic,
+  onTogglePublic,
 }: MoodboardOverlayProps) => {
   const [showDeleteOptions, setShowDeleteOptions] = useState(false);
-
-  const handleTogglePublic = () => alert(`${moodboardId} 공개 상태 변경`);
 
   const renderOverlayContent = () => {
     switch (type) {
@@ -48,8 +50,12 @@ const MoodboardOverlay = ({
               alt="폴더에 추가"
             />
             <IconButton
-              onClick={handleTogglePublic}
-              src="/assets/icons/lock-icon.svg"
+              onClick={() => onTogglePublic(moodboardId)}
+              src={
+                isPublic
+                  ? "/assets/icons/open-icon.svg"
+                  : "/assets/icons/lock-icon.svg"
+              }
               alt="공개/비공개"
             />
             <IconButton
@@ -73,7 +79,7 @@ const MoodboardOverlay = ({
               <span style={{ color: "#ccc" }}>|</span>
               <DeleteOptionButton onClick={() => onMoveToTrash(moodboardId)}>
                 <Image
-                  src="/assets/icons/trash-icon.svg"
+                  src="/assets/icons/red-trash.svg"
                   alt="휴지통"
                   width={16}
                   height={16}

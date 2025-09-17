@@ -21,6 +21,9 @@ type MoodboardProps = {
   onRemoveFromFolder?: (moodboardId: string) => void;
   onRestore?: (moodboardId: string) => void;
   onPermanentDelete?: (moodboardId: string) => void;
+  authorName?: string;
+  isPublic: boolean;
+  onTogglePublic: (moodboardId: string) => void;
 };
 
 const Moodboard = ({
@@ -34,6 +37,9 @@ const Moodboard = ({
   onRemoveFromFolder,
   onRestore,
   onPermanentDelete,
+  authorName,
+  isPublic,
+  onTogglePublic,
 }: MoodboardProps) => {
   const displayImage = imageUrl || "/assets/images/sky.png";
 
@@ -63,7 +69,10 @@ const Moodboard = ({
       <MoodboardOverlay
         type={type}
         moodboardId={id}
+        isPublic={isPublic}
+        onTogglePublic={onTogglePublic}
         date={date}
+        authorName={authorName}
         onAddToFolder={onAddToFolder}
         onMoveToTrash={onMoveToTrash}
         onRemoveFromFolder={onRemoveFromFolder}

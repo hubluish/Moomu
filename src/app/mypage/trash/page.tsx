@@ -7,6 +7,7 @@ import Sidebar from "@/components/section/mypage/Sidebar";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import Toast from "@/components/common/toast/Toast";
 import ConfirmModal from "@/components/common/ConfirmModal/ConfirmModal";
+import { MoodboardGridSkeleton } from "@/components/section/mypage/moodboard/MoodboardSkeleton";
 
 interface MoodboardResult {
   id: string;
@@ -62,8 +63,9 @@ const TrashPage = ({}) => {
 
   const displayToast = (message: string, icon?: ReactNode) => {
     setToastInfo({ message, show: true, icon });
+
     setTimeout(() => {
-      setToastInfo({ message: "", show: false, icon: undefined });
+      setToastInfo((prev) => ({ ...prev, show: false }));
     }, 3000);
   };
 
@@ -130,40 +132,63 @@ const TrashPage = ({}) => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", height: "100vh" }}>
       <Sidebar />
-      <main style={{ flex: 1, padding: "50px 70px" }}>
+      <main
+        style={{
+          flex: 1,
+          padding: "50px 70px",
+          display: "flex",
+          flexDirection: "column",
+          overflowY: "auto",
+        }}
+      >
         <h1 style={{ marginBottom: "30px" }}>휴지통</h1>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
-            gap: "45px 28px",
-          }}
-        >
+
+        <div style={{ flex: 1, display: "grid" }}>
           {isLoading ? (
-            <p>목록을 불러오는 중...</p>
+            <MoodboardGridSkeleton count={6} />
           ) : trashedMoodboards.length === 0 ? (
-            <p>휴지통이 비어있습니다.</p>
+            // 👇 3. 휴지통이 비었을 때 메시지를 중앙에 배치합니다.
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                color: "#888",
+              }}
+            >
+              <p>휴지통이 비어있습니다.</p>
+            </div>
           ) : (
-            trashedMoodboards.map((board) => {
-              const allKeywords = (board.tags || []).slice(0, 4);
-              return (
-                <Moodboard
-                  key={board.id}
-                  id={board.id}
-                  imageUrl={board.cover_image_url}
-                  keywords={allKeywords}
-                  date={board.created_at}
-                  type="trash"
-                  onAddToFolder={() => {}}
-                  onMoveToTrash={() => {}}
-                  onRemoveFromFolder={() => {}}
-                  onRestore={() => openRestoreConfirmModal(board.id)}
-                  onPermanentDelete={() => openDeleteConfirmModal(board.id)}
-                />
-              );
-            })
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
+                gap: "45px 28px",
+              }}
+            >
+              {trashedMoodboards.map((board) => {
+                const allKeywords = (board.tags || []).slice(0, 4);
+                return (
+                  <Moodboard
+                    key={board.id}
+                    id={board.id}
+                    imageUrl={board.cover_image_url}
+                    keywords={allKeywords}
+                    date={board.created_at}
+                    type="trash"
+                    onAddToFolder={() => {}}
+                    onMoveToTrash={() => {}}
+                    onRemoveFromFolder={() => {}}
+                    onRestore={() => openRestoreConfirmModal(board.id)}
+                    onPermanentDelete={() => openDeleteConfirmModal(board.id)}
+                  />
+                );
+              })}
+            </div>
           )}
         </div>
       </main>

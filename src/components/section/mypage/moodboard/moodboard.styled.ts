@@ -92,7 +92,7 @@ export const DeleteOptionsWrapper = styled.div`
   gap: 10px;
   background-color: rgba(255, 255, 255, 0.9);
   padding: 8px 12px;
-  border-radius: 20px;
+  border-radius: 10px;
   align-items: center;
 `;
 
@@ -115,10 +115,10 @@ export const DeleteOptionButton = styled.button`
 // favorite 타입용 작성자 이름
 export const AuthorName = styled.span`
   position: absolute;
-  bottom: 12px;
-  left: 16px;
+  bottom: 30px;
+  left: 30px;
   color: white;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 `;
@@ -126,8 +126,8 @@ export const AuthorName = styled.span`
 // favorite 타입용 하트 아이콘
 export const HeartIcon = styled.img`
   position: absolute;
-  bottom: 12px;
-  right: 16px;
+  bottom: 30px;
+  right: 30px;
   width: 28px;
   height: 28px;
   cursor: pointer;

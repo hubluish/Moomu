@@ -11,12 +11,14 @@ import Toast from "@/components/common/toast/Toast";
 import Link from "next/link";
 import Image from "next/image";
 import ConfirmModal from "@/components/common/ConfirmModal/ConfirmModal";
+import { MoodboardGridSkeleton } from "@/components/section/mypage/moodboard/MoodboardSkeleton";
 
 interface MoodboardResult {
   id: string;
   cover_image_url: string | null;
   tags: string[];
   created_at: string;
+  is_public: boolean;
 }
 
 const TrashIcon = () => (
@@ -68,8 +70,9 @@ const FolderDetailPage = () => {
 
   const displayToast = (message: string, icon?: ReactNode) => {
     setToastInfo({ message, show: true, icon });
+
     setTimeout(() => {
-      setToastInfo({ message: "", show: false, icon: undefined });
+      setToastInfo((prev) => ({ ...prev, show: false }));
     }, 3000);
   };
 
@@ -140,10 +143,18 @@ const FolderDetailPage = () => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", height: "100vh" }}>
       <Sidebar />
 
-      <main style={{ flex: 1, padding: "50px 70px" }}>
+      <main
+        style={{
+          flex: 1,
+          padding: "50px 70px",
+          display: "flex",
+          flexDirection: "column",
+          overflowY: "auto",
+        }}
+      >
         <h1
           style={{
             marginBottom: "30px",
@@ -160,35 +171,53 @@ const FolderDetailPage = () => {
               height={24}
             />
           </Link>
-          {folderName}
+          {isLoading ? "..." : folderName}
         </h1>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
-            gap: "45px 28px",
-          }}
-        >
-          {isLoading ? (
-            <p>무드보드를 불러오는 중입니다...</p>
-          ) : (
-            moodboards.map((board) => {
-              const allKeywords = (board.tags || []).slice(0, 4);
 
-              return (
-                <Moodboard
-                  key={board.id}
-                  id={board.id}
-                  imageUrl={board.cover_image_url}
-                  keywords={allKeywords}
-                  date={board.created_at}
-                  type="folder"
-                  onRemoveFromFolder={() => openRemoveConfirmModal(board.id)}
-                  onMoveToTrash={() => openTrashConfirmModal(board.id)}
-                  onAddToFolder={() => handleOpenFolderModal(board.id)}
-                />
-              );
-            })
+        <div style={{ flex: 1, display: "grid" }}>
+          {isLoading ? (
+            <MoodboardGridSkeleton count={6} />
+          ) : moodboards.length === 0 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                color: "#888",
+              }}
+            >
+              <p>이 폴더에 무드보드가 없습니다.</p>
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
+                gap: "45px 28px",
+              }}
+            >
+              {moodboards.map((board) => {
+                const allKeywords = (board.tags || []).slice(0, 4);
+
+                return (
+                  <Moodboard
+                    key={board.id}
+                    id={board.id}
+                    imageUrl={board.cover_image_url}
+                    keywords={allKeywords}
+                    date={board.created_at}
+                    type="folder"
+                    onRemoveFromFolder={() => openRemoveConfirmModal(board.id)}
+                    onMoveToTrash={() => openTrashConfirmModal(board.id)}
+                    onAddToFolder={() => handleOpenFolderModal(board.id)}
+                    isPublic={board.is_public}
+                    onTogglePublic={() => {}}
+                  />
+                );
+              })}
+            </div>
           )}
         </div>
       </main>
