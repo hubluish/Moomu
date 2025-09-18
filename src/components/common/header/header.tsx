@@ -9,9 +9,9 @@ import {
 import LoginModal from "../Login/LoginModal";
 // const isLoggedIn = false; // 로그인 상태를 나타내는 변수 (예시로 false로 설정)
 const NAV_ITEMS = [
-  { href: "/", label: "home" },
-  { href: "/article", label: "article" },
-  { href: "/mypage/moodboard/page", label: "mymoodboard" },
+  { href: "/", label: "Explore Feeds" },
+  { href: "/article", label: "Article" },
+  { href: "/mypage/moodboard/page", label: "Generate Moodboard" },
 ];
 // 헤더 내용
 export default function Header() {

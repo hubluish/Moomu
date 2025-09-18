@@ -8,8 +8,6 @@ export const HeaderWrapper = styled.header`
   width: 100vw;
   height: 64px;
   padding: 0 32px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 `;
 // 로고 영역(이미지+이름)
 export const LogoSection = styled.div`
@@ -24,7 +22,7 @@ export const LogoImg = styled.img`
 export const LogoName = styled.span`
   font-size: 25px;
   font-weight: var(--font-weight-semibold);
-  color: var(--color-text-main);
+  color: var(--background);
   font-family: var(--font-family-logo);
   letter-spacing: -0.1em;
   height: 40px;
@@ -40,11 +38,11 @@ export const NavLink = styled(Link)<{ $active: boolean }>`
   position: relative;
   text-decoration: none;
   font: var(--text-body1);
-  color: ${({ $active }) => $active ? 'var(--color-main)' : 'var(--color-text-sub)'};
+  color: ${({ $active }) => $active ? 'var(--color-notice)' : 'var(--background)'};
   padding: 0 4px;
   transition: color 0.2s;
   &:hover {
-    color: var(--color-point);
+    color: var(--background);
   }
   &::after {
     content: ${({ $active }) => $active ? "''" : "none"};
@@ -65,15 +63,22 @@ export const RightSection = styled.div`
 `;
 // 로그인 버튼
 export const LoginButton = styled(Link)`
-  font: var(--text-notice);
-  padding: 6px 16px;
+  display: flex;
+  padding: 10px 20px;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 70px;
+  background: linear-gradient(180deg, rgba(61, 56, 245, 0.70) 16.41%, rgba(220, 188, 219, 0.70) 385.64%);
+  color: #FFF;
   border: none;
-  border-radius: 4px;
-  background: var(--color-main);
-  color: #fff;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
+  line : none;
+  /* button&notice */
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
   &:hover {
     background: var(--color-point);
   }
@@ -99,7 +104,7 @@ export const Dropdown = styled.div`
   background: var(--color-bg);
   border: 1px solid var(--color-outline);
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.08);
   min-width: 165px;
   z-index: 10;
   padding: 8px 0;

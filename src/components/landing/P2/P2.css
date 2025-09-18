@@ -1,0 +1,115 @@
+
+.about-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 40px;
+}
+
+.about-main-title {
+  gap : 10px;
+  font-family: Pretendard;
+  font-size: 75px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  color: white;
+  background: none;
+  transition: color 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.about-section{
+  margin: 100px 0px;
+}
+
+
+.about-sub-title {
+  color: var(--background, #FEFEFF);
+  font-family: Pretendard;
+  font-size: 54.613px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 98.985px; /* 181.25% */
+  line-height: 1.2;
+  display: flex;
+  align-items: baseline;
+  gap : 10px;
+  white-space: nowrap;
+  overflow: visible;
+  transition: color 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+
+
+.about-main-title .highlight{
+  font-size: 65px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.about-description {
+  font-size: 53px;
+  letter-spacing: -0.02em;
+
+  font-weight: 600;
+  color: white;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.about-description.moomu-text,
+.about-description.infinity-text {
+  text-align: center;
+  font-family: MuseoModerno;
+  font-size: 53px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.about-subdescription {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 80px;
+  line-height: 1.5;
+}
+
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 120px;
+}
+
+
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  background: #5B5FFF;
+  border-radius: 16px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: white;
+}
+
+.feature-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.about-sub-title:hover {
+  color: #6d63ff;
+}

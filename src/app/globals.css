@@ -76,16 +76,30 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body, * {
+  cursor: url('/assets/images/mouse1.svg') 8 8, auto;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+button:hover, .BtnContainer:hover, .BtnText:hover, a:hover, .footer:hover, .footer *:hover {
+  cursor: url('/assets/images/mouse2.svg') 8 8, pointer;
 }
+
+.p4-image, .image-card, .image-placeholder {
+  cursor: url('/assets/images/mouse1.svg') 8 8, auto;
+}
+
+
+.image-card:hover {
+  cursor: url('/assets/images/mouse2.svg') 8 8, pointer;
+}
+
+
 
 .markdown-title1 {
   font: var(--text-title1);
