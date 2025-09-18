@@ -13,6 +13,7 @@ interface FeedPost {
   image_url: string | null;
   categories: string[];
   created_at: string;
+  authorName: string;
 }
 
 const TrashIcon = () => (
@@ -141,11 +142,13 @@ const FavoritePage = ({}) => {
                   keywords={(feed.categories || []).slice(0, 4)}
                   date={feed.created_at}
                   type="favorite"
-                  authorName="작성자"
+                  authorName={feed.authorName}
                   onAddToFolder={() => {}}
                   onMoveToTrash={() => {}}
                   onRemoveFromFolder={() => {}}
                   onUnlike={() => handleUnlikeFeed(feed.id)}
+                  isPublic={true}
+                  onTogglePublic={() => {}}
                 />
               ))}
             </div>
