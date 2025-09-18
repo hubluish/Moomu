@@ -13,13 +13,20 @@
 .modal {
   width: 990px;
   height: 717px;
-  background: #fff;
+  /* Use the same background as result page */
+  background: url('/data/images/background/light.png') no-repeat fixed center/cover;
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.25);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
+}
+
+@media (prefers-color-scheme: dark) {
+  .modal {
+    background: url('/data/images/background/dark.png') no-repeat center/cover;
+  }
 }
 
 .header {
