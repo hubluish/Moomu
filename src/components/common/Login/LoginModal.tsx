@@ -43,8 +43,19 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      const lastProvider = localStorage.getItem("lastLoginProvider");
-      setLastLoginProvider(lastProvider);
+      const recordString = localStorage.getItem("lastLoginRecord");
+      if (recordString) {
+        const record = JSON.parse(recordString);
+        const now = new Date().getTime();
+
+        const sevenDaysInMillis = 7 * 24 * 60 * 60 * 1000;
+        if (now - record.timestamp > sevenDaysInMillis) {
+          localStorage.removeItem("lastLoginRecord");
+          setLastLoginProvider(null);
+        } else {
+          setLastLoginProvider(record.provider);
+        }
+      }
     }
   }, [isOpen]);
 
@@ -105,6 +116,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
     try {
       if (isLoginMode) {
+        localStorage.removeItem("lastLoginProvider");
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -163,7 +175,15 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
   };
 
   const handleGoogleLogin = async () => {
+    localStorage.removeItem("lastLoginProvider");
     localStorage.setItem("lastLoginProvider", "google");
+
+    const loginRecord = {
+      provider: "google",
+      timestamp: new Date().getTime(),
+    };
+    localStorage.setItem("lastLoginRecord", JSON.stringify(loginRecord));
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -176,7 +196,15 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
   };
 
   const handleKakaoLogin = async () => {
+    localStorage.removeItem("lastLoginProvider");
     localStorage.setItem("lastLoginProvider", "kakao");
+
+    const loginRecord = {
+      provider: "kakao",
+      timestamp: new Date().getTime(),
+    };
+    localStorage.setItem("lastLoginRecord", JSON.stringify(loginRecord));
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "kakao",
       options: {
@@ -201,7 +229,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
           <Title>
             {isLoginMode
               ? "끝없는\n당신의 아이디어를\n무한하게"
-              : "지금 바로\n당신의 아이디어를\n무무로 실현하세요!"}
+              : "지금바로\n당신의 아이디어를\n무무로 실현하세요!"}
             {isLoginMode && <MovingDot />}
           </Title>
         </TitleContent>
