@@ -10,7 +10,7 @@ import Image from "next/image";
 
 interface FeedPost {
   id: string;
-  cover_image_url: string | null;
+  image_url: string | null;
   categories: string[];
   created_at: string;
 }
@@ -137,7 +137,7 @@ const FavoritePage = ({}) => {
                 <Moodboard
                   key={feed.id}
                   id={feed.id}
-                  imageUrl={feed.cover_image_url}
+                  imageUrl={feed.image_url}
                   keywords={(feed.categories || []).slice(0, 4)}
                   date={feed.created_at}
                   type="favorite"
