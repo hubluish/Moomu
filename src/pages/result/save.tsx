@@ -220,6 +220,11 @@ export default function SavePage() {
         return;
     }
 
+    const { error: updateError } = await supabase
+      .from('moodboard')
+      .update({ is_public: true })
+      .eq('id', mid);
+
     alert("피드에 게시했어요!");
     sessionStorage.removeItem('resultPageState');
     // 예: 피드 상세 페이지로 이동
