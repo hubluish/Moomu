@@ -195,11 +195,22 @@ export default function SavePage() {
     }
 
     // feed_posts payload 만들기
+    // Supabase Auth의 사용자 메타데이터에서 표시 이름 추출
+    const authorName =
+        (user.user_metadata && (
+          (user.user_metadata.full_name as string | undefined) ||
+          (user.user_metadata.name as string | undefined) ||
+          (user.user_metadata.display_name as string | undefined) ||
+          (user.user_metadata.nickname as string | undefined)
+        )) ||
+        (user.email ? (user.email as string).split("@")[0] : "Unknown");
+
     const payload = {
         id: mb.id,
         moodboard_id: mb.id,
         request_id: mb.request_id,
         user_id: user.id,
+        authorName,
         title: mb.title || "무드보드",
         image_url: mb.cover_image_url,
         categories: mb.tags ?? [], // feed_posts.categories가 text[]라면 그대로 저장

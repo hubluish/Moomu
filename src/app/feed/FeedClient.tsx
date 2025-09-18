@@ -52,7 +52,7 @@ export default function FeedClient() {
         const { data, count, error } = await supabase
           .from("feed_posts")
           .select(
-            "id, moodboard_id, user_id, title, image_url, categories, likes, is_public, created_at",
+            "id, moodboard_id, user_id, title, image_url, categories, likes, is_public, created_at, authorName",
             { count: "exact" }
           )
           .order("created_at", { ascending: false })
@@ -62,7 +62,9 @@ export default function FeedClient() {
 
         let mapped: FeedItem[] = (data ?? []).map((row: any) => {
           const userId = row?.user_id ? String(row.user_id) : "";
-          const creator = userId ? `user_${userId.slice(0, 6)}` : "Unknown";
+          const creator = (row?.authorName && String(row.authorName).trim().length > 0)
+            ? String(row.authorName)
+            : (userId ? `user_${userId.slice(0, 6)}` : "Unknown");
 
           return {
             id: String(row.id),
