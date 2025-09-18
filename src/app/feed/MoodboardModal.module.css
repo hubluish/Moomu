@@ -13,8 +13,8 @@
 .modal {
   width: 990px;
   height: 717px;
-  /* Use the same background as result page */
-  background: url('/data/images/background/light.png') no-repeat fixed center/cover;
+  /* Overall modal background is white */
+  background: #fff;
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.25);
   overflow: hidden;
@@ -25,17 +25,21 @@
 
 @media (prefers-color-scheme: dark) {
   .modal {
-    background: url('/data/images/background/dark.png') no-repeat center/cover;
+    /* Keep modal background white in dark mode as requested */
+    background: #fff;
   }
 }
 
 .header {
+  /* Remove top white area by collapsing header height */
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
+  padding: 0;
+  border: none;
+  height: 0;
+  overflow: visible;
 }
 
 .title {
@@ -82,12 +86,20 @@
 }
 
 .content {
-  padding: 12px 16px 20px;
+  /* Apply inner background with more horizontal reduction and slightly taller vertical */
+  padding: 0 18px 20px; /* remove top white, keep slight side gutters */
+  background: url('/data/images/background/light.png') no-repeat center/85% 75%;
   overflow: hidden; /* 모달 내부 스크롤 제거 */
   height: 100%;
   display: flex;             /* 가운데 정렬을 위한 래핑 */
   align-items: center;       /* 수직 가운데 */
   justify-content: center;   /* 수평 가운데 */
+}
+
+@media (prefers-color-scheme: dark) {
+  .content {
+    background: url('/data/images/background/dark.png') no-repeat center/92% 96%;
+  }
 }
 
 .scaledRoot {
