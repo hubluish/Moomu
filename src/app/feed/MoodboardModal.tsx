@@ -6,6 +6,7 @@ import TitleBox from "@/components/section/result/TitleBox";
 import ConceptBox from "@/components/section/result/ConceptBox";
 import ColorPaletteBox from "@/components/section/result/ColorPaletteBox";
 import KeywordBox from "@/components/section/result/KeywordBox";
+import ExampleBox from "@/components/section/result/ExampleBox";
 import type { GeminiSet } from "@/types/result";
 
 type Props = {
@@ -65,14 +66,9 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     if (e.target === backdropRef.current) onClose();
   };
 
-  // prepare adapters for existing boxes
   const geminiFromBoard: GeminiSet[] | null = board
     ? [{ colors: (board.palette_json || []).map((p: any) => p?.hex).filter(Boolean), image: "", font: "", sentences: board.concept_text || [] }]
     : null;
-
-  const paletteColors: string[] = Array.isArray(board?.palette_json)
-    ? board!.palette_json!.map((p: any) => p?.hex).filter(Boolean)
-    : [];
 
   return (
     <div
@@ -85,19 +81,31 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     >
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <div className={styles.title}>{board?.title || "무드보드"}</div>
+          {moodboardId && (
+            <a
+              className={styles.openBtn}
+              href={`/feed?open=${encodeURIComponent(moodboardId)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="새 탭에서 열기"
+              onClick={(e) => e.stopPropagation()}
+            >
+              새 탭에서 열기
+            </a>
+          )}
           <button className={styles.closeBtn} onClick={onClose} aria-label="닫기">
             ×
           </button>
         </div>
         <div className={styles.content}>
+          <div className={styles.scaledRoot}>
           <div className={styles.gridContainer}>
             <div className={`${styles.section} ${styles.titleBox}`}>
               <TitleBox readOnly value={(board?.title || "").trim() || "NEW\nMOODBOARD"} />
             </div>
 
             <div className={`${styles.section} ${styles.imageBox}`}>
-              <div className={styles.boxTitle}>IMAGE</div>
+              <div className={styles.boxTitle}>IMAGES</div>
               <div className={styles.imageGrid}>
                 {(Array.isArray(board?.images_json) ? board!.images_json! : []).slice(0, 9).map((img: any, idx: number) => (
                   <div className={styles.imageItem} key={idx}>
@@ -135,6 +143,11 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
             <div className={`${styles.section} ${styles.keywordBox}`}>
               <KeywordBox tags={(board?.tags || []) as string[]} />
             </div>
+
+            <div className={`${styles.section} ${styles.exampleBox}`}>
+              <ExampleBox />
+            </div>
+          </div>
           </div>
         </div>
       </div>

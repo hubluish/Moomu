@@ -19,12 +19,14 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 8px;
   padding: 12px 16px;
   border-bottom: 1px solid #eee;
 }
@@ -40,13 +42,51 @@
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 0;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 27.397px;
+  height: 27.397px;
+  flex-shrink: 0;
+  position: absolute;
+  top: 31px;
+  right: 40.55px;
+  color: #000;
+  z-index: 2;
+}
+
+.openBtn {
+  display: inline-flex;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  border: 1px solid #000;
+  background: #fff;
+  color: #333;
+  text-decoration: none;
+  font-size: 13px;
+  position: absolute;
+  top: 31px;
+  left: 781px;
+  z-index: 1;
 }
 
 .content {
   padding: 12px 16px 20px;
-  overflow: auto;
+  overflow: hidden; /* 모달 내부 스크롤 제거 */
   height: 100%;
+  display: flex;             /* 가운데 정렬을 위한 래핑 */
+  align-items: center;       /* 수직 가운데 */
+  justify-content: center;   /* 수평 가운데 */
+}
+
+.scaledRoot {
+  width: 1200px; /* result 레이아웃 기준 너비 */
+  transform: scale(0.6); /* 모달에 스크롤 없이 들어가도록 축소 */
+  transform-origin: center; /* 가운데 기준으로 축소 */
 }
 
 .meta {
@@ -75,12 +115,14 @@
   grid-template-columns: 3.8fr 2.4fr 1.4fr 2.5fr;
   grid-template-rows: repeat(4, auto);
   grid-template-areas:
-    ' title concept font . '
-    ' images concept font . '
-    ' images palette palette . '
-    ' images keyword keyword . ';
+    ' title concept font examples '
+    ' images concept font examples '
+    ' images palette palette examples '
+    ' images keyword keyword examples ';
   gap: 16px;
   height: 100%;
+  align-items: start;        /* 각 셀의 세로 정렬 */
+  justify-items: center;     /* 각 셀의 가로 가운데 정렬 */
 }
 
 .titleBox { grid-area: title; }
@@ -89,6 +131,7 @@
 .fontBox { grid-area: font; }
 .paletteBox { grid-area: palette; }
 .keywordBox { grid-area: keyword; }
+.exampleBox { grid-area: examples; }
 
 .section {
   width: 100%;
@@ -103,7 +146,7 @@
 
 .imageItem {
   width: 100%;
-  aspect-ratio: 1.2 / 1; /* approximate landscape */
+  aspect-ratio: 1 / 1; /* 정사각형 유지 */
   border-radius: 10px;
   overflow: hidden;
   background: #f2f2f2;

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import SearchBar from "@/components/common/searchBar/SearchBar";
 import Toast from "@/components/common/toast/Toast";
 import styles from "./feed.module.css";
@@ -23,6 +24,7 @@ interface FeedItem {
 }
 
 export default function FeedClient() {
+  const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
@@ -35,6 +37,15 @@ export default function FeedClient() {
   const [totalCount, setTotalCount] = useState<number>(0);
   const [openModal, setOpenModal] = useState(false);
   const [selectedMoodboardId, setSelectedMoodboardId] = useState<string | null>(null);
+
+  // Open modal automatically when `open` query is present
+  useEffect(() => {
+    const openId = searchParams?.get("open");
+    if (openId) {
+      setSelectedMoodboardId(openId);
+      setOpenModal(true);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchData = async () => {
