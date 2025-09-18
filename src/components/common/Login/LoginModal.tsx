@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "@/utils/supabase";
 import Image from "next/image";
 import {
@@ -16,6 +16,11 @@ import {
   SignUpButton,
   LoginLinkWrapper,
   ErrorMessage,
+  RecentLoginTooltip,
+  TitleContent,
+  BackgroundText,
+  ModalContainer,
+  MovingDot,
 } from "./loginmodal.styled";
 
 interface LoginModalProps {
@@ -30,8 +35,18 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [isLoginMode, setIsLoginMode] = useState(false);
+  const [isLoginMode, setIsLoginMode] = useState(true);
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
+  const [lastLoginProvider, setLastLoginProvider] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (isOpen) {
+      const lastProvider = localStorage.getItem("lastLoginProvider");
+      setLastLoginProvider(lastProvider);
+    }
+  }, [isOpen]);
 
   const validateEmail = (inputEmail: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -148,26 +163,26 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
   };
 
   const handleGoogleLogin = async () => {
+    localStorage.setItem("lastLoginProvider", "google");
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: window.location.origin, // 현재 페이지로 리디렉션
       },
     });
-
     if (error) {
       alert(`구글 로그인 실패: ${error.message}`);
     }
   };
 
   const handleKakaoLogin = async () => {
+    localStorage.setItem("lastLoginProvider", "kakao");
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "kakao",
       options: {
         redirectTo: window.location.origin, // 현재 페이지로 리디렉션
       },
     });
-
     if (error) {
       alert(`카카오 로그인 실패: ${error.message}`);
     }
@@ -179,140 +194,156 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <ModalOverlay onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        {showVerificationMessage ? (
-          <div style={{ textAlign: "center", padding: "20px", width: "393px" }}>
-            <Title>이메일을 확인해 주세요!</Title>
-            <p
-              style={{
-                color: "var(--color-text-main)",
-                fontSize: "var(--font-body2)",
-                marginBottom: "20px",
-              }}
-            >
-              가입하신 이메일 주소로 인증 링크를 보냈습니다.
-              <br />
-              링크를 클릭하여 이메일 주소를 인증해 주세요.
-            </p>
-            <SignUpButton onClick={onClose} $isFormValid={true}>
-              닫기
-            </SignUpButton>
-          </div>
-        ) : (
-          <>
-            <Title>
-              {isLoginMode
-                ? "Log in to your mood!"
-                : "Start your mood journey!"}
-            </Title>
+      <ModalContainer onClick={(e) => e.stopPropagation()}>
+        <BackgroundText>Moomu</BackgroundText>
 
-            {!isLoginMode && (
+        <TitleContent>
+          <Title>
+            {isLoginMode
+              ? "끝없는\n당신의 아이디어를\n무한하게"
+              : "지금 바로\n당신의 아이디어를\n무무로 실현하세요!"}
+            {isLoginMode && <MovingDot />}
+          </Title>
+        </TitleContent>
+        <ModalContent>
+          {showVerificationMessage ? (
+            <div
+              style={{ textAlign: "center", padding: "20px", width: "393px" }}
+            >
+              <Title>이메일을 확인해 주세요!</Title>
+              <p
+                style={{
+                  color: "var(--color-text-main)",
+                  fontSize: "var(--font-body2)",
+                  marginBottom: "20px",
+                }}
+              >
+                가입하신 이메일 주소로 인증 링크를 보냈습니다.
+                <br />
+                링크를 클릭하여 이메일 주소를 인증해 주세요.
+              </p>
+              <SignUpButton onClick={onClose} $isFormValid={true}>
+                닫기
+              </SignUpButton>
+            </div>
+          ) : (
+            <>
+              {!isLoginMode && (
+                <InputGroup>
+                  <Label htmlFor="name">이름</Label>
+                  <Input
+                    type="text"
+                    id="name"
+                    placeholder="이름을 입력해 주세요"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </InputGroup>
+              )}
+
               <InputGroup>
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="email">이메일</Label>
                 <Input
-                  type="text"
-                  id="name"
-                  placeholder="이름을 입력해 주세요"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  type="email"
+                  id="email"
+                  placeholder="Name@example.com"
+                  value={email}
+                  onChange={handleEmailChange}
+                  $hasError={!!emailError}
                 />
+                {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
               </InputGroup>
-            )}
 
-            <InputGroup>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                type="email"
-                id="email"
-                placeholder="Name@example.com"
-                value={email}
-                onChange={handleEmailChange}
-                $hasError={!!emailError}
-              />
-              {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
-            </InputGroup>
+              <InputGroup>
+                <Label htmlFor="password">비밀번호</Label>
+                <PasswordInputWrapper>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    placeholder="비밀번호를 입력해 주세요"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSubmit();
+                      }
+                    }}
+                    $hasError={!!passwordError}
+                  />
+                  <PasswordToggle
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    {showPassword ? (
+                      <Image
+                        src="/assets/icons/eye-open.svg"
+                        alt="Show password"
+                        width={24}
+                        height={24}
+                        draggable="false"
+                      />
+                    ) : (
+                      <Image
+                        src="/assets/icons/eye-closed.svg"
+                        alt="Hide password"
+                        width={24}
+                        height={24}
+                        draggable="false"
+                      />
+                    )}
+                  </PasswordToggle>
+                </PasswordInputWrapper>
+                {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
+              </InputGroup>
 
-            <InputGroup>
-              <Label htmlFor="password">Password</Label>
-              <PasswordInputWrapper>
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  placeholder="비밀번호를 입력해 주세요"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSubmit();
-                    }
-                  }}
-                  $hasError={!!passwordError}
-                />
-                <PasswordToggle
-                  onClick={() => setShowPassword((prev) => !prev)}
-                >
-                  {showPassword ? (
-                    <Image
-                      src="/assets/icons/eye-open.svg"
-                      alt="Show password"
-                      width={24}
-                      height={24}
-                      draggable="false"
-                    />
-                  ) : (
-                    <Image
-                      src="/assets/icons/eye-closed.svg"
-                      alt="Hide password"
-                      width={24}
-                      height={24}
-                      draggable="false"
-                    />
+              <Separator>or</Separator>
+
+              <SocialLoginButtons>
+                <SocialButton onClick={handleGoogleLogin}>
+                  {lastLoginProvider === "google" && (
+                    <RecentLoginTooltip>최근 로그인!</RecentLoginTooltip>
                   )}
-                </PasswordToggle>
-              </PasswordInputWrapper>
-              {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
-            </InputGroup>
+                  <Image
+                    src="/assets/icons/google.svg"
+                    alt="Google"
+                    width={54}
+                    height={54}
+                    draggable="false"
+                  />
+                </SocialButton>
+                <SocialButton onClick={handleKakaoLogin}>
+                  {lastLoginProvider === "kakao" && (
+                    <RecentLoginTooltip>최근 로그인!</RecentLoginTooltip>
+                  )}
+                  <Image
+                    src="/assets/icons/kakao.svg"
+                    alt="Kakao"
+                    width={54}
+                    height={54}
+                    draggable="false"
+                  />
+                </SocialButton>
+              </SocialLoginButtons>
 
-            <Separator>or</Separator>
+              <SignUpButton
+                onClick={handleSubmit}
+                disabled={!isFormValid}
+                $isFormValid={isFormValid}
+              >
+                {isLoginMode ? "로그인" : "회원가입"}
+              </SignUpButton>
 
-            <SocialLoginButtons>
-              <SocialButton onClick={handleGoogleLogin}>
-                <Image
-                  src="/assets/icons/google.svg"
-                  alt="Google"
-                  width={54}
-                  height={54}
-                />
-              </SocialButton>
-              <SocialButton onClick={handleKakaoLogin}>
-                <Image
-                  src="/assets/icons/kakao.svg"
-                  alt="Kakao"
-                  width={54}
-                  height={54}
-                />
-              </SocialButton>
-            </SocialLoginButtons>
-
-            <SignUpButton
-              onClick={handleSubmit}
-              disabled={!isFormValid}
-              $isFormValid={isFormValid}
-            >
-              {isLoginMode ? "Login" : "Sign Up"}
-            </SignUpButton>
-
-            <LoginLinkWrapper>
-              {isLoginMode
-                ? "Don't have an account yet?"
-                : "Already have an account?"}{" "}
-              <a href="#" onClick={toggleMode}>
-                {isLoginMode ? "Sign in" : "Login"}
-              </a>
-            </LoginLinkWrapper>
-          </>
-        )}
-      </ModalContent>
+              <LoginLinkWrapper>
+                {isLoginMode
+                  ? "아직 계정이 없으신가요?"
+                  : "이미 계정이 있으신가요?"}{" "}
+                <a href="#" onClick={toggleMode}>
+                  {isLoginMode ? "회원가입" : "로그인"}
+                </a>
+              </LoginLinkWrapper>
+            </>
+          )}
+        </ModalContent>
+      </ModalContainer>
     </ModalOverlay>
   );
 };
