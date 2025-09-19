@@ -6,16 +6,20 @@ import styles from './TitleBox.module.css';
 interface TitleBoxProps {
     value?: string;
     onChangeTitle?: (v: string) => void;
+    readOnly?: boolean;
+    compact?: boolean; // smaller style for modal preview
 }
 
-export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle }: TitleBoxProps) {
+export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle, readOnly = false, compact = false }: TitleBoxProps) {
     const [editing, setEditing] = useState(false);
     const [localTitle, setLocalTitle] = useState(value.split('\n'));
 
     useEffect(() => {
         setLocalTitle(value.split('\n'));
     }, [value]);
-    const handleClick = () => setEditing(true);
+    const handleClick = () => {
+        if (!readOnly) setEditing(true);
+    };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const lines = e.target.value.split('\n');
@@ -41,8 +45,8 @@ export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle }: Ti
   const handleBlur = () => setEditing(false);
 
     return (
-        <div className={styles.container} onClick={handleClick}>
-        {editing ? (
+        <div className={`${styles.container} ${compact ? styles.compact : ''}`} onClick={handleClick}>
+        {editing && !readOnly ? (
             <textarea
             className={styles.textarea}
             value={localTitle.join('\n')}

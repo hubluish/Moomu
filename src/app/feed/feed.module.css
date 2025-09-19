@@ -27,11 +27,23 @@
     overflow: hidden;
 }
 
-.itemImage {
+.imageWrap {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    display: flex;
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
     border-radius: 30px;
+    overflow: hidden; /* 넘치는 부분 위아래 크롭 */
+}
+
+.itemImage {
+    width: 100%;
+    height: auto; /* 가로 기준 맞추고 세로 자동 */
+    display: block;
+    border-radius: 30px;
+    transform: translateY(19px) scale(1.06); /* 살짝 확대하고 위에서 19px 아래로 */
+    transform-origin: center;
 }
 
 .categoryContainer {
@@ -69,10 +81,27 @@
     justify-content: flex-end;
     padding: 30px;
     box-sizing: border-box;
+    z-index: 1;
+    pointer-events: none; /* hidden state should not intercept clicks */
 }
 
 .feedItem:hover .hoverOverlay {
     opacity: 1;
+    pointer-events: auto; /* enable interactions when visible */
+}
+
+/* Improve accessibility: show overlay when focused within (keyboard users) */
+.feedItem:focus-within .hoverOverlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* On touch devices (no hover), keep overlay interactive */
+@media (hover: none) {
+    .hoverOverlay {
+        opacity: 1;
+        pointer-events: auto;
+    }
 }
 
 .overlayFooter {
