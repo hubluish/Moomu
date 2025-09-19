@@ -117,8 +117,9 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
           </button>
         </div>
         <div className={styles.content}>
-          <div className={styles.scaledRoot}>
-          <div className={styles.gridContainer}>
+          <div className={styles.frame}>
+            <div className={styles.scaledRoot}>
+              <div className={styles.gridContainer}>
             <div className={`${styles.section} ${styles.titleBox}`}>
               <TitleBox readOnly compact value={(board?.title || "").trim() || "NEW\nMOODBOARD"} />
             </div>
@@ -147,10 +148,10 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
                   {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: any, i: number) => (
                     f?.image_link ? (
                       <a key={i} href={f?.link || '#'} target="_blank" rel="noopener noreferrer">
-                        <img src={f.image_link} alt={f?.name || 'font'} style={{ width: '100%', height: 50, objectFit: 'cover', borderRadius: 8 }} />
+                        <img src={f.image_link} alt={f?.name || 'font'} className={styles.fontImg} />
                       </a>
                     ) : (
-                      <div key={i} style={{ padding: '8px 10px', border: '1px solid #eee', borderRadius: 8, fontSize: 14 }}>
+                      <div key={i} className={styles.fontItem}>
                         {f?.name || 'Font'}
                       </div>
                     )
@@ -170,7 +171,8 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
             <div className={`${styles.section} ${styles.exampleBox}`}>
               <ExampleBox />
             </div>
-          </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

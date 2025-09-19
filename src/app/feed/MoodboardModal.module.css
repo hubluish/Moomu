@@ -148,8 +148,8 @@
 .imageBox { grid-area: images; width: 436.667px; height: 485.833px; position: relative; left: 100px; }
 .conceptBox { grid-area: concept;}
 .fontBox { grid-area: font;}
-.paletteBox { grid-area: palette; position: relative; left: 100px; }
-.keywordBox { grid-area: keyword; position: relative; left: 100px; }
+.paletteBox { grid-area: palette; position: relative; left: 100px; top: -2px; }
+.keywordBox { grid-area: keyword; position: relative; left: 100px; top: -4px; }
 .exampleBox { grid-area: examples; position: relative; left: 120px; }
 
 .section {
@@ -196,6 +196,13 @@
   margin-bottom: 8px;
 }
 
+/* Align FONT title vertically with CONCEPT title */
+.fontCard .boxTitle {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
 /* Specific design for FONT box */
 .fontCard {
   display: flex;
@@ -213,6 +220,7 @@
   width: 186.667px; /* 112 / 0.6: appear 112px after scale */
   overflow: hidden;
   margin-left: auto; /* align to right of its cell */
+  position: relative; /* allow absolute positioning inside */
 }
 
 .fontList {
@@ -220,12 +228,35 @@
   flex-direction: column;
   gap: 9.256px;
   width: 100%;
+  color: #fff; /* default text color inside font list */
+  margin-top: 32px; /* avoid overlapping absolute title */
+}
+
+/* Fallback font item (text example) */
+.fontItem {
+  padding: 6px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  font-size: 14px;       /* slightly smaller for balance */
+  line-height: 1.3;
+  color: #fff;           /* make sample text white */
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Image-based font sample: make dark glyphs appear white */
+.fontImg {
+  width: 100%;
+  height: 44px;                 /* reduced size for a tighter layout */
+  object-fit: cover;
+  border-radius: 8px;
+  filter: brightness(0) invert(1) contrast(1); /* turn black to white */
 }
 
 /* Concept card: fixed height only, keep width as-is */
 .conceptCard {
   display: flex;
-  height: 191.667px; /* 115 / 0.6 */
+  height: 191.667px; /* 115 / 0.6 => appears 115px after scale */
+  width: 289.167px;  /* 173.5 / 0.6 => appears 173.5px after scale */
   box-sizing: border-box;
   overflow: hidden;
   margin-left: auto; /* align to right within concept cell */
@@ -240,4 +271,19 @@
   position: relative;
   left: -140px;
   top: 12px;
+}
+
+/* Ensure content has a positioning context for the inner frame */
+.content { position: relative; }
+
+/* New inner frame that matches the small background bounds and clips content */
+.frame {
+  position: relative;
+  width: 85%;   /* match background-size width */
+  height: 75%;  /* match background-size height */
+  overflow: hidden;           /* clip anything outside the small background */
+  border-radius: 12px;        /* optional: soften edges like background image */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
