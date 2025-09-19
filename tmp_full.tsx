@@ -93,10 +93,9 @@ export default function FeedClient() {
           };
         });
 
-        // 현재 사용자 좋아요 상태 반영 (liked_feeds.user_id + post_id)
+        // ?�재 ?�용??좋아???�태 반영 (liked_feeds.user_id + post_id)
         if (user?.id && mapped.length > 0) {
-          // liked_feeds.post_id는 feed_posts.id를 참조
-          const postIds = mapped.map(m => m.id);
+          const postIds = mapped.map(m => m.moodboardId).filter(Boolean) as string[];
           if (postIds.length > 0) {
             try {
               const { data: likedRows } = await supabase
@@ -106,7 +105,7 @@ export default function FeedClient() {
                 .in('post_id', postIds);
               if (Array.isArray(likedRows)) {
                 const likedSet = new Set(likedRows.map((r: any) => String(r.post_id)));
-                mapped = mapped.map(m => ({ ...m, liked: likedSet.has(m.id) }));
+                mapped = mapped.map(m => ({ ...m, liked: m.moodboardId ? likedSet.has(m.moodboardId) : false }));
               }
             } catch {}
           }
@@ -137,24 +136,27 @@ export default function FeedClient() {
     setSelectedMoodboardId(null);
   };
 
-  // 좋아요 클릭 처리: liked_feeds(user_id, post_id) 기록 후 UI 토글
+  // 좋아???�릭 처리: liked_feeds(user_id, post_id) 기록 ??UI ?��?
   const handleLikeClick = async (id: string) => {
     const target = feedItems.find((i) => i.id === id);
     if (!target) return;
     if (!currentUserId) {
-      alert('로그인이 필요합니다.');
+      alert('로그?�이 ?�요?�니??');
       return;
     }
-    // liked_feeds.post_id는 feed_posts.id를 참조
+    if (!target.moodboardId) {
+      console.warn('[Feed] moodboardId missing for item', id);
+      return;
+    }
     const willLike = !target.liked;
     try {
       if (willLike) {
-        // 중복 좋아요 시에도 에러 없이 유지하도록 upsert 사용
+        // 중복 좋아???�에???�러 ?�이 ?��??�도�?upsert ?�용
         const { error } = await supabase
           .from('liked_feeds')
           .upsert(
-            { user_id: currentUserId, post_id: target.id },
-            { onConflict: 'post_id,user_id', ignoreDuplicates: true }
+            { user_id: currentUserId, post_id: target.moodboardId },
+            { onConflict: 'user_id,post_id', ignoreDuplicates: true }
           );
         if (error) throw error;
       } else {
@@ -162,13 +164,13 @@ export default function FeedClient() {
           .from('liked_feeds')
           .delete()
           .eq('user_id', currentUserId)
-          .eq('post_id', target.id);
+          .eq('post_id', target.moodboardId);
         if (error) throw error;
       }
       await handleLike(id);
     } catch (e) {
       console.error('[Feed] like click failed:', e);
-      alert('좋아요 처리에 실패했습니다.');
+      alert('좋아??처리???�패?�습?�다.');
     }
   };
 
@@ -191,11 +193,11 @@ export default function FeedClient() {
     );
 
     if (isNowLiked) {
-      setToastMessage("찜한 피드가 추가되었어요.");
+      setToastMessage("찜한 ?�드가 추�??�었?�요.");
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
     }
-    // TODO: 좋아요 저장 로직 연동 (feed_likes 등)
+    // TODO: 좋아???�??로직 ?�동 (feed_likes ??
   };
 
   const filteredItems = useMemo(() => {
@@ -251,7 +253,7 @@ export default function FeedClient() {
                   className={styles.feedItem}
                   onClick={() => handleOpenModal(item.moodboardId, item.id)}
                   role="button"
-                  aria-label="무드보드 미리보기 열기"
+                  aria-label="무드보드 미리보기 ?�기"
                   tabIndex={0}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') handleOpenModal(item.moodboardId, item.id);
@@ -325,9 +327,9 @@ export default function FeedClient() {
                 color: page === 0 ? "#aaa" : "#333",
                 cursor: page === 0 ? "not-allowed" : "pointer",
               }}
-              aria-label="이전 페이지"
+              aria-label="?�전 ?�이지"
             >
-              이전
+              ?�전
             </button>
 
             <Pagenation
@@ -347,9 +349,9 @@ export default function FeedClient() {
                 color: page >= totalPages - 1 ? "#aaa" : "#333",
                 cursor: page >= totalPages - 1 ? "not-allowed" : "pointer",
               }}
-              aria-label="다음 페이지"
+              aria-label="?�음 ?�이지"
             >
-              다음
+              ?�음
             </button>
           </div>
         )}
@@ -357,3 +359,4 @@ export default function FeedClient() {
     </div>
   );
 }
+
