@@ -7,7 +7,7 @@
   align-self: stretch;
   margin: 0px auto 50px auto;
   width: 100%;
-  /* max-width: 1400px; */
+  max-width: 1400px;
 }
 
 .P1-title-container {
@@ -55,21 +55,25 @@
   line-height: normal;
 }
 
+
 .image-gallery {
   display: flex;
-  gap: 20px;
   justify-content: center;
-  margin-bottom: 40px;
-  padding: 0 60px;
-  overflow: hidden;
+  align-items: center;
   width: 100%;
+  height: 260px;
   position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+  padding: 0;
 }
 
 .gallery-container {
   display: flex;
-  gap: 20px;
-  animation: slideRight 20s linear infinite;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 8px;
 }
 
 @keyframes slideRight {
@@ -82,8 +86,12 @@
 }
 
 .image-card {
-  width: 240px;
-  height: 240px;
+  width: 18vw;
+  height: 100%;
+  min-width: 120px;
+  max-width: 240px;
+  min-height: 120px;
+  max-height: 240px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
   display: flex;
@@ -94,9 +102,11 @@
 }
 
 .image-placeholder {
-  width: 120px;
-  height: 120px;
+  width: 60%;
+  height: 60%;
+  aspect-ratio: 1 / 1;
   border-radius: 16px;
+  object-fit: cover;
 }
 
 .gallery-description {

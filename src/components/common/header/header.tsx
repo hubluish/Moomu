@@ -17,7 +17,7 @@ const AVATAR_DARK = "/assets/icons/headerId-dark.png";
 const NAV_ITEMS = [
   { href: "/feed", label: "Explore Feeds" },
   { href: "/article", label: "Article" },
-  { href: "/mypage/moodboard/page", label: "Generate Moodboard" },
+  { href: "/generate", label: "Generate Moodboard" },
 ];
 const getMode = (bg: string, loggedIn: boolean) => {
   if (bg === "dark") return loggedIn ? "dark-logged" : "dark";
@@ -158,8 +158,8 @@ const DropdownButton = styled.button`
 function detectBgMode() {
   if (typeof window !== "undefined") {
     const path = window.location.pathname;
-    if (path === "/") return "dark";
-    if (["/feed", "/article", "/mypage/moodboard/page"].includes(path)) return "light";
+    if (path === "/" || path === "/generate" ) return "dark";
+    if (["/feed", "/article", "/mypage/moodboard"].includes(path)) return "light";
   }
   return "dark";
 }

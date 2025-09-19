@@ -1,12 +1,12 @@
-<svg width="52" height="52" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_n_4046_7499)">
-<path d="M0 0L30.2286 102.541L53.7202 79.0582L76.0133 101.423L101.423 76.0232L79.0497 53.7382L102.541 30.2551L0 0Z" fill="#3D38F5"/>
+<path d="M0 0L7.36986 25L13.0972 19.2747L18.5324 24.7274L24.7272 18.5348L19.2726 13.1016L25 7.37632L0 0Z" fill="#3D38F5"/>
 </g>
 <defs>
-<filter id="filter0_n_4046_7499" x="0" y="0" width="102.541" height="102.541" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_n_4046_7499" x="0" y="0" width="25" height="25" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feTurbulence type="fractalNoise" baseFrequency="2 2" stitchTiles="stitch" numOctaves="3" result="noise" seed="5901" />
+<feTurbulence type="fractalNoise" baseFrequency="6.0577983856201172 6.0577983856201172" stitchTiles="stitch" numOctaves="3" result="noise" seed="5901" />
 <feColorMatrix in="noise" type="luminanceToAlpha" result="alphaNoise" />
 <feComponentTransfer in="alphaNoise" result="coloredNoise1">
 <feFuncA type="discrete" tableValues="1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>

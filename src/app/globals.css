@@ -77,7 +77,7 @@ body {
 }
 
 body, * {
-  cursor: url('/assets/images/mouse1.svg') 8 8, auto;
+  cursor: url('/assets/images/cursor2.svg'), auto;
 }
 
 * {
@@ -86,17 +86,17 @@ body, * {
   margin: 0;
 }
 
-button:hover, .BtnContainer:hover, .BtnText:hover, a:hover, .footer:hover, .footer *:hover {
-  cursor: url('/assets/images/mouse2.svg') 8 8, pointer;
+button:hover, .BtnContainer:hover, .BtnText:hover, a:hover {
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
 }
 
 .p4-image, .image-card, .image-placeholder {
-  cursor: url('/assets/images/mouse1.svg') 8 8, auto;
+  cursor: url('/assets/images/cursor2.svg'), auto;
 }
 
 
 .image-card:hover {
-  cursor: url('/assets/images/mouse2.svg') 8 8, pointer;
+  cursor: url('/assets/images/cursor1.svg'), pointer;
 }
 
 

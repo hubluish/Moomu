@@ -1,4 +1,4 @@
-.footer {
+ .footer {
   padding: 32px 40px;
   background: rgba(248, 249, 250, 0.50);
   border-radius: 30px;
@@ -8,6 +8,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  color: #FFF;
+  cursor: url('/assets/images/cursor2.svg'), auto;
   margin : 0 auto;
 }
 
@@ -18,7 +20,7 @@
 }
 
 .footer-top .logo {
-  font-size: 20px;
+  color: #FFF;
   font-weight: 800;
   color: #000;
 }
@@ -34,6 +36,7 @@
   height: 1px;
   background: rgba(0, 0, 0, 0.12);
   margin: 12px 0 24px;
+  /* 타이틀은 hover 시 커서/색상 변경 없음 */
 }
 
 .footer-content {
@@ -53,11 +56,11 @@
 .footer-section {
   display: flex;
   height: 25px;
-  flex-direction: column;
+  /* hover effect removed */
   justify-content: center;
   align-self: stretch;
+  flex-direction: column;
 }
-
 /* footer-content 내 'Moomu' 텍스트 강조 (footer-bottom 제외) */
 .footer-content .moomu-name {
   color: #DFDFDF;
@@ -108,10 +111,16 @@
 
 .footer-section a:hover {
   color: #FFF;
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
 }
 
 .footer-content .moomu-name:hover {
   color: #FFF;
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
+}
+/* h4 hover 커서 변경 */
+.footer-section :hover {
+  cursor: url('/assets/images/cursor2.svg') 8 8, pointer;
 }
 
 .footer-bottom {
