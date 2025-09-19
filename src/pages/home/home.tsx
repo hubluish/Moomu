@@ -1,90 +1,107 @@
-'use client';
+"use client";
 
-import React, {useEffect, useRef, useState} from 'react';
-import { useRouter } from 'next/navigation';
-import styles from './home.module.css';
-import Header from '@/components/common/header/header';
-import PopAlert from '../../components/section/home/PopAlert';
-import ColorOption from '../../components/section/home/ColorOption';
-import TitleBlock from '../../components/section/home/TitleBlock';
-import NextButton from '../../components/section/home/NextButton';
-import PreviousButton from '../../components/section/home/PreviousButton';
-import ProgressBar from '../../components/section/home/ProgressBar';
-import MoodOption from '../../components/section/home/MoodOption';
-import TagGuideModal from '../../components/section/home/TagGuideModal';
-import SeeMoreButton from '../../components/section/home/SeeMoreButton';
-import {saveToSupabase} from '../../utils/saveToSupabase'
-import PopCheer from '../../components/section/home/PopCheer';
+import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import styles from "./home.module.css";
+import PopAlert from "../../components/section/home/PopAlert";
+import ColorOption from "../../components/section/home/ColorOption";
+import TitleBlock from "../../components/section/home/TitleBlock";
+import NextButton from "../../components/section/home/NextButton";
+import PreviousButton from "../../components/section/home/PreviousButton";
+import ProgressBar from "../../components/section/home/ProgressBar";
+import MoodOption from "../../components/section/home/MoodOption";
+import TagGuideModal from "../../components/section/home/TagGuideModal";
+import SeeMoreButton from "../../components/section/home/SeeMoreButton";
+import { saveToSupabase } from "../../utils/saveToSupabase";
+import PopCheer from "../../components/section/home/PopCheer";
 
-import stepMeta from '../../../public/data/stepMeta.json';
-import colorThemes from '../../../public/data/colorThemes.json';
-import fontThemes from '../../../public/data/fontThemes.json';
-import imageThemes from '../../../public/data/imageThemes.json';
-import imagePriority from '../../../public/data/imagePriority.json';    
-import fontPriority from '../../../public/data/fontPriority.json';
-import toastMessages from '../../../public/data/toastMessages.json';
+import stepMeta from "../../../public/data/stepMeta.json";
+import colorThemes from "../../../public/data/colorThemes.json";
+import fontThemes from "../../../public/data/fontThemes.json";
+import imageThemes from "../../../public/data/imageThemes.json";
+import imagePriority from "../../../public/data/imagePriority.json";
+import fontPriority from "../../../public/data/fontPriority.json";
+import toastMessages from "../../../public/data/toastMessages.json";
 
 interface Option {
-    title: string;
-    description: string;
-    colors?: string[];
-    key?: string;
+  title: string;
+  description: string;
+  colors?: string[];
+  key?: string;
 }
 
 function Home() {
-    const [step, setStep] = useState(1);
-    const router = useRouter();
-    const [selections, setSelections] = useState<(string | null)[]>([null, null, null, null]);
-    const [showAlert, setShowAlert] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [showAllOptions, setShowAllOptions] = useState(false);
-    const [cheerVisible, setCheerVisible] = useState(false);
-    const [cheerMsg, setCheerMsg] = useState<React.ReactNode>('');
-    const cheerTimerRef = useRef<number | null>(null);
-    const alertTimerRef = useRef<number | null>(null);
-    const [cheerTick, setCheerTick] = useState(0);
-    const [alertTick, setAlertTick] = useState(0);
+  const [step, setStep] = useState(1);
+  const router = useRouter();
+  const [selections, setSelections] = useState<(string | null)[]>([
+    null,
+    null,
+    null,
+    null,
+  ]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showAllOptions, setShowAllOptions] = useState(false);
+  const [cheerVisible, setCheerVisible] = useState(false);
+  const [cheerMsg, setCheerMsg] = useState<React.ReactNode>("");
+  const cheerTimerRef = useRef<number | null>(null);
+  const alertTimerRef = useRef<number | null>(null);
+  const [cheerTick, setCheerTick] = useState(0);
+  const [alertTick, setAlertTick] = useState(0);
 
+  const meta = stepMeta[step - 1];
 
-    const meta = stepMeta[step - 1];
+  const getStepContent = (): Array<{
+    title: string;
+    description: string;
+    colors?: string[];
+  }> => {
+    if (step === 1) return colorThemes;
 
-    const getStepContent = (): Array<{ title: string; description: string; colors?: string[] }> => {
-        if (step === 1) return colorThemes;
-        
-        if (step === 2) {
-            const selectedColor = selections[0]?.toLowerCase() || '';
-            const priority = imagePriority[selectedColor as keyof typeof imagePriority] || [];
+    if (step === 2) {
+      const selectedColor = selections[0]?.toLowerCase() || "";
+      const priority =
+        imagePriority[selectedColor as keyof typeof imagePriority] || [];
 
-            const priorityOptions = imageThemes.filter(opt => priority.includes(opt.title));
-            const remainingOptions = imageThemes.filter(opt => !priority.includes(opt.title));
+      const priorityOptions = imageThemes.filter((opt) =>
+        priority.includes(opt.title)
+      );
+      const remainingOptions = imageThemes.filter(
+        (opt) => !priority.includes(opt.title)
+      );
 
-            return [...priorityOptions, ...remainingOptions];
-        }
+      return [...priorityOptions, ...remainingOptions];
+    }
 
-        if (step === 3) {
-            const selectedColor = selections[0]?.toLowerCase() || '';
-            const priority = (fontPriority as Record<string, string[]>)[selectedColor] || [];
+    if (step === 3) {
+      const selectedColor = selections[0]?.toLowerCase() || "";
+      const priority =
+        (fontPriority as Record<string, string[]>)[selectedColor] || [];
 
-            const priorityOptions = fontThemes.filter(opt => priority.includes(opt.title));
-            const remainingOptions = fontThemes.filter(opt => !priority.includes(opt.title));
+      const priorityOptions = fontThemes.filter((opt) =>
+        priority.includes(opt.title)
+      );
+      const remainingOptions = fontThemes.filter(
+        (opt) => !priority.includes(opt.title)
+      );
 
-            return [...priorityOptions, ...remainingOptions];
-        }
+      return [...priorityOptions, ...remainingOptions];
+    }
 
-        if (step === 4) {
-            const tagUsedInStep2 = selections[1];
-            return imageThemes.filter(opt => opt.title !== tagUsedInStep2);
-        }
-        
-        return [];
-    };
+    if (step === 4) {
+      const tagUsedInStep2 = selections[1];
+      return imageThemes.filter((opt) => opt.title !== tagUsedInStep2);
+    }
 
-    const stepOptions = getStepContent();
-    const visibleOptions = showAllOptions
-        ? stepOptions
-        : step === 1
-            ? stepOptions.slice(0, 6)
-            : stepOptions.slice(0, 4);
+    return [];
+  };
+
+  const stepOptions = getStepContent();
+  const visibleOptions = showAllOptions
+    ? stepOptions
+    : step === 1
+    ? stepOptions.slice(0, 6)
+    : stepOptions.slice(0, 4);
 
     useEffect(() => {
         sessionStorage.removeItem('resultPageState');
@@ -92,80 +109,87 @@ function Home() {
 
     useEffect(() => {
     const timer = setTimeout(() => {
-        setShowModal(true);
-        }, 10000);
+      setShowModal(true);
+    }, 10000);
 
-        return () => clearTimeout(timer); 
-    }, [step]);
+    return () => clearTimeout(timer);
+  }, [step]);
 
-    useEffect(() => {
-        return () => {
-        if (cheerTimerRef.current) {
-            window.clearTimeout(cheerTimerRef.current);
-            cheerTimerRef.current = null;
-        }
-        if (alertTimerRef.current) {
-            window.clearTimeout(alertTimerRef.current);
-            alertTimerRef.current = null;
-        }
-        };
-    }, []);
+  useEffect(() => {
+    return () => {
+      if (cheerTimerRef.current) {
+        window.clearTimeout(cheerTimerRef.current);
+        cheerTimerRef.current = null;
+      }
+      if (alertTimerRef.current) {
+        window.clearTimeout(alertTimerRef.current);
+        alertTimerRef.current = null;
+      }
+    };
+  }, []);
 
-    const handleNext = async () => {
+  const handleNext = async () => {
     if (!selections[step - 1]) {
-        showAlertOnce(1500);
-        return;
+      showAlertOnce(1500);
+      return;
     }
 
     if (step >= 1 && step <= 3) {
-    const selectedTitle = selections[step - 1] as string;
-    const category = step === 1 ? 'color' : step === 2 ? 'image' : 'text' as
-        'color' | 'image' | 'text';
-    const moodText =
-        (toastMessages as any)[category]?.[selectedTitle] as string | undefined;
-    const thingLabel = category === 'color'
-        ? '컬러'
-        : category === 'image'
-        ? '이미지 태그'
-        : '텍스트';
-    const msg = moodText
-        ? (
-            <>
-            좋은 선택이에요! 이 <strong>{thingLabel}</strong>는{' '}
-            <strong>{moodText}</strong> 느낌을 잘 담아줘요.
-            </>
-        )
-        : (
-            <>
-            좋은 선택이에요! <strong>{selectedTitle}</strong> {thingLabel}
-            를 선택했어요.
-            </>
-        );
+      const selectedTitle = selections[step - 1] as string;
+      const category =
+        step === 1
+          ? "color"
+          : step === 2
+          ? "image"
+          : ("text" as "color" | "image" | "text");
+      const moodText = (toastMessages as any)[category]?.[selectedTitle] as
+        | string
+        | undefined;
+      const thingLabel =
+        category === "color"
+          ? "컬러"
+          : category === "image"
+          ? "이미지 태그"
+          : "텍스트";
+      const msg = moodText ? (
+        <>
+          좋은 선택이에요! 이 <strong>{thingLabel}</strong>는{" "}
+          <strong>{moodText}</strong> 느낌을 잘 담아줘요.
+        </>
+      ) : (
+        <>
+          좋은 선택이에요! <strong>{selectedTitle}</strong> {thingLabel}를
+          선택했어요.
+        </>
+      );
 
-    showCheer(msg, 1200);
+      showCheer(msg, 1200);
     }
 
-
     if (step < 4) {
-        setStep(step + 1);
-        setShowAllOptions(false);
-        return;
+      setStep(step + 1);
+      setShowAllOptions(false);
+      return;
     }
 
     const payload = {
-        color: selections[0],
-        font: selections[2],
-        image: [selections[1], ...(selections[3]?.split(',') || [])]
+      color: selections[0],
+      font: selections[2],
+      image: [selections[1], ...(selections[3]?.split(",") || [])]
         .filter(Boolean)
-        .join(', '),
+        .join(", "),
     };
 
-    console.log('%c✅ Gemini 요청 payload:', 'color: blue; font-weight: bold;', payload);
+    console.log(
+      "%c✅ Gemini 요청 payload:",
+      "color: blue; font-weight: bold;",
+      payload
+    );
 
     try {
-        const response = await fetch('/api/gemini_proxy', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/gemini_proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
         });
 
@@ -205,10 +229,10 @@ function Home() {
         console.error('%c❌ Supabase 저장 실패:', 'color: red; font-weight: bold;', error);
         }
     } catch (error) {
-        console.error('❌ Gemini 서버 호출 실패:', error);
-        alert('Gemini API 요청에 실패했습니다.');
+      console.error("❌ Gemini 서버 호출 실패:", error);
+      alert("Gemini API 요청에 실패했습니다.");
     }
-    };
+  };
 
     const showCheer = (message: React.ReactNode, duration = 1200) => {
         if (cheerTimerRef.current) {
@@ -231,94 +255,77 @@ function Home() {
             window.clearTimeout(alertTimerRef.current);
             alertTimerRef.current = null;
         }
-        setShowAlert(true);
-        setAlertTick(t => t + 1);              
+      } else {
+        updated[step - 1] = prev[step - 1] === option ? null : option;
+        for (let i = step; i < updated.length; i++) updated[i] = null;
+      }
+      return updated;
+    });
+  };
 
-        alertTimerRef.current = window.setTimeout(() => {
-            setShowAlert(false);
-            alertTimerRef.current = null;
-        }, duration);
-    };
+  return (
+    <main>
+      <ProgressBar step={step} />
+      <PopAlert visible={showAlert} top={70} zIndex={1002} />
+      <PopCheer
+        visible={cheerVisible}
+        message={cheerMsg}
+        top={70}
+        zIndex={1001}
+      />
+      <TitleBlock title={meta.title} subtitle={meta.subtitle} />
+      <NextButton
+        onClick={handleNext}
+        variant={step < 4 ? "black" : "gradient"}
+      />
+      <PreviousButton onClick={() => setStep(step > 1 ? step - 1 : step)} />
+      <div className={styles.gridContainer}>
+        {step === 1 ? (
+          <div className={styles.grid3columns}>
+            {visibleOptions.map((opt: Option, index: number) => (
+              <ColorOption
+                key={index}
+                title={opt.title}
+                description={opt.description}
+                colors={opt.colors || []}
+                isSelected={selections[0] === opt.title}
+                onClick={() => handleSelect(opt.title)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.grid2x2}>
+            {visibleOptions.map((opt: Option, index: number) => (
+              <MoodOption
+                key={index}
+                title={opt.title}
+                subtitle={opt.description}
+                keyName={opt.key}
+                step={step}
+                isSelected={
+                  step === 4
+                    ? selections[3]?.split(",").includes(opt.title)
+                    : selections[step - 1] === opt.title
+                }
+                onClick={() => handleSelect(opt.title)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+      {!showAllOptions && stepOptions.length > 4 && (
+        <div className={styles.seeMoreWrapper}>
+          <SeeMoreButton onClick={() => setShowAllOptions(true)} />
+        </div>
+      )}
 
-
-
-    const handleSelect = (option: string) => {
-        setSelections(prev => {
-            const updated = [...prev];
-
-            if (step === 4) {
-            const current = updated[3];
-            const selected = current ? current.split(',') : [];
-            if (selected.includes(option)) {
-                const filtered = selected.filter(item => item !== option);
-                updated[3] = filtered.join(',') || null;
-            } else {
-                if (selected.length < 2) updated[3] = [...selected, option].join(',');
-                else return prev;
-            }
-            } else {
-            updated[step - 1] = prev[step - 1] === option ? null : option;
-            for (let i = step; i < updated.length; i++) updated[i] = null;
-            }
-            return updated;
-        });
-
-    };
-
-    return (
-        <main>
-            <Header />
-            <ProgressBar step={step}/>
-            <PopAlert visible={showAlert} top={70} zIndex={1002} />
-            <PopCheer visible={cheerVisible} message={cheerMsg} top={70} zIndex={1001} />
-            <TitleBlock title={meta.title} subtitle= {meta.subtitle}/>
-            <NextButton onClick={handleNext} variant={step < 4 ? 'black' : 'gradient'} />
-            <PreviousButton onClick={() => setStep(step > 1 ? step - 1 : step)} />
-            <div className={styles.gridContainer}>
-                {step === 1 ? (
-                    <div className={styles.grid3columns}>
-                        {visibleOptions.map((opt: Option, index: number) => (
-                            <ColorOption
-                                key={index}
-                                title={opt.title}
-                                description={opt.description}
-                                colors={opt.colors || []}
-                                isSelected={selections[0] === opt.title}
-                                onClick={() => handleSelect(opt.title)}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <div className={styles.grid2x2}>
-                        {visibleOptions.map((opt: Option, index: number) => (
-                            <MoodOption
-                                key={index}
-                                title={opt.title}
-                                subtitle={opt.description}
-                                keyName={opt.key}
-                                step={step}
-                                isSelected={step===4? selections[3]?.split(',').includes(opt.title) : selections[step - 1] === opt.title}
-                                onClick={() => handleSelect(opt.title)}
-                            />
-                        ))}
-                    </div>
-                )}
-            </div>
-            {!showAllOptions && stepOptions.length > 4 && (
-                            <div className={styles.seeMoreWrapper}>
-                                <SeeMoreButton onClick={() => setShowAllOptions(true)} />
-                            </div>
-            )}
-
-            {showModal && (
-                <div className={styles.modalOverlay}>
-                    <TagGuideModal
-                        onClose={() => setShowModal(false)}
-                    />
-                </div>
-            )}
-        </main>
-    );
+      {showModal && (
+        <div className={styles.modalOverlay}>
+          <TagGuideModal onClose={() => setShowModal(false)} />
+        </div>
+      )}
+    </main>
+  );
 }
 
 export default Home;
