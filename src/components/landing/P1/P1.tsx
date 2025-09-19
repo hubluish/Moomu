@@ -7,7 +7,7 @@ import './P1.css';
 // import gsap from 'gsap';
 
 const P1 = ({ openLoginModal }: P1Props) => {
-  // 8개 이미지 배열
+  // 8占??占쏙옙?吏 諛곗뿴
   const images = [
     '/assets/images/img1.png',
     '/assets/images/img2.png',
@@ -19,45 +19,44 @@ const P1 = ({ openLoginModal }: P1Props) => {
     '/assets/images/img8.png'
   ];
   const visibleCount = 6;
-  const slideWidth = 300; // 이미지 한 장의 너비(px)
-  const gap = 10; // 이미지 사이 간격(px)
+  const slideWidth = 300; // ?占쏙옙?吏 ???占쎌쓽 ?占쎈퉬(px)
+  const gap = 10; // ?占쏙옙?吏 ?占쎌씠 媛꾧꺽(px)
   const totalWidth = visibleCount * slideWidth + (visibleCount - 1) * gap;
-  // 무한 반복을 위해 이미지 배열을 2번 이어붙임
-  const loopImages = [...images, ...images];
-  const [index, setIndex] = useState(0);
-  const [transitioning, setTransitioning] = useState(false);
+  // 臾댄븳 ?占쏀솚???占쏀빐 ?占쎈낯 諛곗뿴??2諛곕줈 ?占쎌옣
+  const loopImages = [...images, ...images, ...images];
 
-  // 자동 슬라이드 (한 번에 3칸씩, 더 빠른 속도)
-  const slideStep = 1;
-  const slideInterval = 1200; // 1.2초마다 이동
-  const slideDuration = 400; // transition 0.4초
+  // ?占쎌냽 ?占쏀겕濡ㅼ쓣 ?占쏀븳 ?占쏙옙? ?占쎌쐞 ?占쏀봽?占쎄낵 RAF 猷⑦봽
+  const [offset, setOffset] = useState(0);
+  const rafRef = useRef<number | null>(null);
+  const lastTsRef = useRef<number | null>(null);
+  const speedPxPerSec = 120; // ?占쎈룄(px/s)
+
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTransitioning(true);
-      setIndex(prev => prev + slideStep);
-    }, slideInterval);
-    return () => clearInterval(timer);
-  }, []);
-
-  // 슬라이드가 끝에 도달하면 처음 위치로 자연스럽게 이동
-  useEffect(() => {
-    if (index >= images.length) {
-      // 마지막 복제 이미지까지 이동 후, transition 없이 처음 위치로 점프
-      const timeout = setTimeout(() => {
-        setTransitioning(false);
-        setIndex(index % (images.length - 1));
-      }, slideDuration); // transition 시간과 맞춤
-      return () => clearTimeout(timeout);
-    } else {
-      setTransitioning(true);
-    }
-  }, [index, images.length, slideDuration]);
-
+    const track = images.length * (slideWidth + gap); // ?占쎈낯 ???占쏀듃 湲몄씠(px)
+    const wrapAt = Math.max(0, track - totalWidth + 1); // 遺꾧린?占쎌쓣 理쒙옙????占쎈Ⅸ占?酉고룷??占??占쎈줈
+    const loop = (ts: number) => {
+      if (lastTsRef.current == null) lastTsRef.current = ts;
+      const dt = (ts - lastTsRef.current) / 1000; // sec
+      lastTsRef.current = ts;
+      setOffset(prev => {
+        let next = prev + speedPxPerSec * dt;
+        if (next >= track) next -= track; // seam??蹂댁씠占??占쎌뿉 ?占쎄컧占?        return next;
+      });
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    rafRef.current = requestAnimationFrame(loop);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      lastTsRef.current = null;
+    };
+  }, [images.length, slideWidth, gap]);
 
 
-  // 이미지 카드 렌더링 (고정 8개)
+
+  // ?占쏙옙?吏 移대뱶 ?占쎈뜑占?(怨좎젙 8占?
   const renderImageCards = () => {
-    // 사용하지 않음 (슬라이드 방식으로 변경)
+    // ?占쎌슜?占쏙옙? ?占쎌쓬 (?占쎈씪?占쎈뱶 諛⑹떇?占쎈줈 蹂占?
     return null;
   };
 
@@ -91,9 +90,10 @@ const P1 = ({ openLoginModal }: P1Props) => {
           style={{
             display: 'flex',
             gap: `${gap}px`,
-            transition: transitioning ? `transform ${slideDuration}ms` : 'none',
-            transform: `translateX(-${index * (slideWidth + gap)}px)`,
+            transition: 'none',
+            transform: `translateX(-${offset}px)`,
             height: '100%',
+            willChange: 'transform',
           }}
         >
           {loopImages.map((src, idx) => (
@@ -135,3 +135,7 @@ const P1 = ({ openLoginModal }: P1Props) => {
 };
 
 export default P1;
+
+
+
+
