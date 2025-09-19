@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "./tabPage.module.css";
 import ArticleCard from "../bigCard/big";
 import Dropdown from "@/components/common/dropdown/dropdown";
+import { Article } from "../types/article";
 
 const TAB_INFO = [
   {
@@ -31,19 +32,6 @@ const TAB_INFO = [
     desc: "Exploring the latest trends and innovations in design trends.",
   },
 ];
-
-interface Article {
-  id: string | number;
-  title: string;
-  content: string;
-  category: string;
-  date: string;
-  imageUrl?: string;
-  description?: string;
-  views?: number;
-  isRecommended?: boolean;
-  slug: string;
-}
 
 interface TabPageProps {
   tabIdx: number;
@@ -115,7 +103,7 @@ export default function TabPage({
           <div className={styles.cardRow} key={idx}>
             {chunk.map((article: Article) => (
               <ArticleCard
-                key={article.slug}
+                key={article.id}
                 {...article}
                 slug={article.slug}
                 onDelete={handleDelete}
@@ -125,7 +113,6 @@ export default function TabPage({
             ))}
           </div>
         ))}
-
         {!showAll && chunked.length > 3 && (
           <div className={styles.moreBtnWrap}>
             <button className={styles.moreBtn} onClick={() => setShowAll(true)}>

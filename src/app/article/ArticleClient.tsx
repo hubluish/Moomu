@@ -10,16 +10,10 @@ import ArticleCreate from "@/components/section/article/create/ArticleCreate";
 import styles from "../../pages/article/article.module.css";
 import confetti from "canvas-confetti";
 import { useSearchParams } from "next/navigation";
-
-interface Article {
-  _id: string;
-  title: string;
-  content: string;
-  category: string;
-  date: string;
-  imageUrl?: string;
-  description?: string;
-}
+import {
+  Article,
+  ArticleFromAPI,
+} from "@/components/section/article/types/article";
 
 const TAB_LABELS = ["전체", "UI", "카드뉴스", "포스터", "용어사전", "트렌드"];
 
@@ -27,7 +21,7 @@ export default function ArticleClient() {
   const [activeTab, setActiveTab] = useState(0); // 현재 선택된 탭 인덱스
   const [search, setSearch] = useState(""); // 실제 검색어
   const [inputValue, setInputValue] = useState(""); // 검색 입력값
-  const [articles, setArticles] = useState<Article[]>([]); // 전체 게시글 목록
+  const [articles, setArticles] = useState<ArticleFromAPI[]>([]); // 전체 게시글 목록
   const [showCreate, setShowCreate] = useState(false);
   const [, setRCount] = useState(0);
   const rTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -53,9 +47,17 @@ export default function ArticleClient() {
   // 게시글 목록 불러오기
   useEffect(() => {
     fetch("/api/articles")
-      .then(res => res.json())
-      .then(data => setArticles(data));
+      .then((res) => res.json())
+      .then((data) => setArticles(data));
   }, []);
+
+  const articlesForTabPage: Article[] = articles.map((article) => ({
+    ...article,
+    id: article.id,
+    slug: article.slug,
+    description: article.description ?? "",
+    imageUrl: article.imageUrl ?? "",
+  }));
 
   // URL 파라미터(category)로 탭 자동 선택
   useEffect(() => {
@@ -68,9 +70,12 @@ export default function ArticleClient() {
   }, [searchParams]);
 
   // 현재 탭에 해당하는 게시글만 필터링
-  const filteredArticles = activeTab === 0
-    ? articles
-    : articles.filter(article => article.category === TAB_LABELS[activeTab]);
+  const filteredArticles =
+    activeTab === 0
+      ? articles
+      : articles.filter(
+          (article) => article.category === TAB_LABELS[activeTab]
+        );
 
   // 검색 실행 (검색 아이콘 또는 엔터키)
   const handleSearch = () => setSearch(inputValue);
@@ -79,7 +84,7 @@ export default function ArticleClient() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === "r") {
-        setRCount(prev => {
+        setRCount((prev) => {
           const next = prev + 1;
           if (next === 3) {
             setShowCreate(true);
@@ -125,7 +130,7 @@ export default function ArticleClient() {
         {/* 검색 입력창 */}
         <SearchField
           value={inputValue}
-          onChange={e => setInputValue(e.target.value)}
+          onChange={(e) => setInputValue(e.target.value)}
           onSearch={handleSearch}
         />
         {/* 탭 메뉴 */}
@@ -139,19 +144,9 @@ export default function ArticleClient() {
         ) : (
           <TabPage
             tabIdx={activeTab}
-            articles={articles.map(article => ({
-              ...article,
-              id: article._id, // ✅ _id를 id로 바꿔줌
-              slug: article.title
-                .toLowerCase()
-                .replace(/\s+/g, "-") // 공백을 -로
-                .replace(/[^\w-]+/g, ""), // 특수문자 제거
-              imageUrl: article.imageUrl ?? "",
-              description: article.description ?? "",
-            }))}
+            articles={articlesForTabPage}
             search={search}
           />
-
         )}
         {/* 게시글 없을 때 메시지 */}
         {activeTab !== 0 && filteredArticles.length === 0 ? (
@@ -166,8 +161,8 @@ export default function ArticleClient() {
               setShowCreate(false);
               // 새 글 등록 후 목록 새로고침
               fetch("/api/articles")
-                .then(res => res.json())
-                .then(data => setArticles(data));
+                .then((res) => res.json())
+                .then((data) => setArticles(data));
             }}
           />
         )}
