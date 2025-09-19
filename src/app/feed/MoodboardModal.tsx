@@ -116,23 +116,27 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
             </div>
 
             <div className={`${styles.section} ${styles.conceptBox}`}>
-              <ConceptBox geminiResult={geminiFromBoard} />
+              <div className={styles.conceptCard}>
+                <ConceptBox geminiResult={geminiFromBoard} />
+              </div>
             </div>
 
             <div className={`${styles.section} ${styles.fontBox}`}>
-              <div className={styles.boxTitle}>FONT</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: any, i: number) => (
-                  f?.image_link ? (
-                    <a key={i} href={f?.link || '#'} target="_blank" rel="noopener noreferrer">
-                      <img src={f.image_link} alt={f?.name || 'font'} style={{ width: '100%', height: 50, objectFit: 'cover', borderRadius: 8 }} />
-                    </a>
-                  ) : (
-                    <div key={i} style={{ padding: '8px 10px', border: '1px solid #eee', borderRadius: 8, fontSize: 14 }}>
-                      {f?.name || 'Font'}
-                    </div>
-                  )
-                ))}
+              <div className={styles.fontCard}>
+                <div className={styles.boxTitle}>FONT</div>
+                <div className={styles.fontList}>
+                  {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: any, i: number) => (
+                    f?.image_link ? (
+                      <a key={i} href={f?.link || '#'} target="_blank" rel="noopener noreferrer">
+                        <img src={f.image_link} alt={f?.name || 'font'} style={{ width: '100%', height: 50, objectFit: 'cover', borderRadius: 8 }} />
+                      </a>
+                    ) : (
+                      <div key={i} style={{ padding: '8px 10px', border: '1px solid #eee', borderRadius: 8, fontSize: 14 }}>
+                        {f?.name || 'Font'}
+                      </div>
+                    )
+                  ))}
+                </div>
               </div>
             </div>
 
