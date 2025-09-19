@@ -255,13 +255,31 @@ function Home() {
             window.clearTimeout(alertTimerRef.current);
             alertTimerRef.current = null;
         }
-      } else {
-        updated[step - 1] = prev[step - 1] === option ? null : option;
-        for (let i = step; i < updated.length; i++) updated[i] = null;
-      }
-      return updated;
-    });
-  };
+        setShowAlert(true);
+        setAlertTick(t => t + 1);
+
+        alertTimerRef.current = window.setTimeout(() => {
+            setShowAlert(false);
+            alertTimerRef.current = null;
+        }, duration);
+    };
+
+    const handleSelect = (option: string) => {
+        setSelections((prev) => {
+          const updated = [...prev];
+          if (step === 4) {
+            const currentSelections = updated[3] ? updated[3].split(",") : [];
+            const newSelections = currentSelections.includes(option)
+              ? currentSelections.filter((item) => item !== option)
+              : [...currentSelections, option];
+            updated[3] = newSelections.join(",");
+          } else {
+            updated[step - 1] = prev[step - 1] === option ? null : option;
+            for (let i = step; i < updated.length; i++) updated[i] = null;
+          }
+          return updated;
+        });
+      };
 
   return (
     <main>

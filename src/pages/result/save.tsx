@@ -203,7 +203,6 @@ export default function SavePage() {
         title: mb.title || "무드보드",
         image_url: mb.cover_image_url,
         categories: mb.tags ?? [], // feed_posts.categories가 text[]라면 그대로 저장
-        likes: 0,
         is_public: true,
     };
 
