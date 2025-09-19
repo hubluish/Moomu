@@ -87,6 +87,10 @@ function Home() {
             : stepOptions.slice(0, 4);
 
     useEffect(() => {
+        sessionStorage.removeItem('resultPageState');
+    }, []);
+
+    useEffect(() => {
     const timer = setTimeout(() => {
         setShowModal(true);
         }, 10000);
@@ -189,12 +193,17 @@ function Home() {
 
         console.log('%c💾 Supabase 저장 시작:', 'color: blue; font-weight: bold;');
         try {
-        await saveToSupabase(result);
+        const rid = await saveToSupabase(result);
         console.log('%c✅ Supabase 저장 성공:', 'color: green; font-weight: bold;');
+        if (rid) {
+            router.push(`/home/loading?rid=${encodeURIComponent(rid)}`);
+        } else {
+            console.error('❌ Request ID 생성 실패');
+            alert('요청 ID 생성에 실패했습니다.');
+        }
         } catch (error) {
         console.error('%c❌ Supabase 저장 실패:', 'color: red; font-weight: bold;', error);
         }
-        router.push('/home/loading');
     } catch (error) {
         console.error('❌ Gemini 서버 호출 실패:', error);
         alert('Gemini API 요청에 실패했습니다.');
