@@ -148,9 +148,9 @@
 .imageBox { grid-area: images; width: 100%; }
 .conceptBox { grid-area: concept; }
 .fontBox { grid-area: font; }
-.paletteBox { grid-area: palette; }
-.keywordBox { grid-area: keyword; }
-.exampleBox { grid-area: examples; }
+.paletteBox { grid-area: palette; position: relative; left: 100px; }
+.keywordBox { grid-area: keyword; position: relative; left: 100px; }
+.exampleBox { grid-area: examples; position: relative; left: 280px; }
 
 .section {
   width: 100%;
@@ -174,3 +174,10 @@
 .imageItem img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .boxTitle { font-weight: 700; margin-bottom: 8px; }
+
+/* Offset all inner sections slightly left and down, keeping backdrop/background fixed */
+.gridContainer {
+  position: relative;
+  left: -140px;
+  top: 12px;
+}
