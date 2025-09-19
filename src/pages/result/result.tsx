@@ -249,9 +249,7 @@ export default function ResultPage() {
 
   return (
     <main className={styles.pageBg}>
-      <div style={{ zIndex: 30 }}>
-        <Header />
-      </div>
+
       <div className={styles.topWrapper}>
         <div className={styles.topRightWrapper}>
           <></>

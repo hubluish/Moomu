@@ -7,8 +7,6 @@ import SearchBar from "@/components/common/searchBar/SearchBar";
 import styles from "./feed.module.css";
 import { supabase } from "@/utils/supabase";
 import Toast from "@/components/common/toast/Toast";
-import styles from "./feed.module.css";
-import { supabase } from "@/utils/supabaseClient";
 import Pagenation from "@/components/common/pagenation";
 import MoodboardModal from "./MoodboardModal";
 
