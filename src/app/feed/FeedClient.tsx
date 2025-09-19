@@ -390,7 +390,7 @@ export default function FeedClient() {
         <header className={styles.feedHeader}>
           <h1 className={styles.feedTitle}>Moomu&apos;s feed page</h1>
           <p className={styles.feedSubtitle}>
-            Select the color tones that resonate with your style.
+            Find inspiration in Moomu’s feed.
           </p>
         </header>
 
