@@ -20,6 +20,7 @@
     min-height: 100vh;
     padding-bottom: 40px; /* prevents white gap from last child's margin */
     background: url('/data/images/background/light.png') no-repeat fixed center/cover;
+    position: absolute;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +28,7 @@
         min-height: 100vh;
         padding-bottom: 40px;
         background: url('/data/images/background/dark.png') no-repeat center/cover;
+        position: absolute;
     }
 }
 

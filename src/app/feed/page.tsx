@@ -8,7 +8,6 @@ import "@/styles/variable.css";
 export default function FeedPage() {
   return (
     <>
-      <Header />
       <Suspense fallback={<div>로딩 중...</div>}>
         <FeedClient />
       </Suspense>

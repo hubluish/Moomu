@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import Header from '@/components/common/header/header';
 import BackButton from '../../components/section/result/BackButton';
 import ActionButtons from '@/components/section/result/ActionButtons';
 import ShareButton from '@/components/section/result/ShareButton';
@@ -274,7 +273,6 @@ export default function SavePage() {
 
     return (
         <main className={styles.pageBg}>
-            <Header />
             <div className={styles.topWrapper}>
                 {/* 이전 페이지로 돌아가기. 특정 경로로 이동하려면 push 유지 */}
                 <BackButton onClick={handleBack} />
