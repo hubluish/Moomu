@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // 생성
   if (req.method === "POST") {
-    const { title, content, category, date, imageUrl, description, keywords } = req.body;
+    const { title, content, category, date, imageUrl, description, keywords, userId } = req.body;
     if (!title || typeof title !== "string") {
       return res.status(400).json({ error: "title이 비어있거나 잘못된 값입니다." });
     }
@@ -52,6 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         keywords,
         views: 0,
         isRecommended: false,
+        userId, // userId를 insert 객체에 추가합니다.
       },
     ]).select();
     if (error) return res.status(500).json({ error: error.message });

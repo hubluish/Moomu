@@ -1,0 +1,155 @@
+.card {
+  --point: #8865F3;
+}
+
+/* 컨테이너 */
+.card {
+  display: flex;
+  width: 376px;
+  padding: 21px 30px 40px 30px;
+  flex-direction: column;
+  align-items: flex-start;
+
+  border-radius: 20px;
+  background: #FFF;
+  box-shadow: 0 0 10px 0 rgba(44, 44, 44, 0.25);
+}
+
+/* 상단 행: 제목 + 배지 오른쪽 정렬 느낌 */
+.headerRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start; /* 기본은 중앙 배치 */
+  position: relative;
+}
+
+.plusIcon {
+  width: 30px;
+  height: 30px;
+  color: #3D38F5;
+}
+
+/* 제목 (FREE) */
+.planTitle {
+  margin: 0;
+  color: #000;
+  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+/* "현재 플랜" 배지 */
+.badge {
+  display: flex;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  background: #E6E6E6;
+}
+
+.badgeText {
+  color: #000;
+  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+/* 가격(₩0) */
+.price {
+  margin-top: 14px; /* 살짝 간격 */
+  color: #000;
+  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+/* 설명 문단 */
+.desc {
+  margin-top: 10px;
+  margin-bottom: 16px;
+  color: #000;
+  text-align: left;
+  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+/* CTA 버튼 컨테이너 (요청 스펙 그대로) */
+.cta {
+  display: flex;
+  height: 49px;
+  padding: 10px 82px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+
+  border-radius: 10px;
+  border: 1px solid var(--point, #8865F3);
+  background: #8865F3;
+
+  color: #FFF;
+  text-align: center;
+  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  cursor: pointer;
+}
+
+/* features 리스트 */
+.features {
+  margin: 18px 0 0 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  display: grid;
+  grid-auto-rows: min-content;
+  row-gap: 12px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkIcon {
+  width: 20px;
+  height: 20px;
+  aspect-ratio: 1 / 1;
+  flex: 0 0 auto;
+}
+
+.featureText {
+  color: #000;
+  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.featureHighlight {
+  font-weight: 600;
+  color: var(--point);
+}
+
+/* (선택) 호버 효과 */
+.cta:hover {
+  background: rgba(64, 0, 255, 0.8);
+}

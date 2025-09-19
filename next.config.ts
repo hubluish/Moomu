@@ -3,9 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     domains: [
+      "images.pexels.com",
       "i.pinimg.com",
       "noonnucc-production.sfo2.cdn.digitaloceanspaces.com",
-      "images.pexels.com",
       "jqbxkbcwlxhzdhximrsb.supabase.co",
     ],
   },

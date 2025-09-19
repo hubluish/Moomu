@@ -103,7 +103,11 @@ function Home() {
     ? stepOptions.slice(0, 6)
     : stepOptions.slice(0, 4);
 
-  useEffect(() => {
+    useEffect(() => {
+        sessionStorage.removeItem('resultPageState');
+    }, []);
+
+    useEffect(() => {
     const timer = setTimeout(() => {
       setShowModal(true);
     }, 10000);
@@ -187,83 +191,69 @@ function Home() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      });
+        });
 
-      const result = await response.json();
-      console.log(
-        "%c🎨 Gemini 응답 결과:",
-        "color: green; font-weight: bold;",
-        result
-      );
+        const result = await response.json();
+        console.log('%c🎨 Gemini 응답 결과:', 'color: green; font-weight: bold;', result);
 
-      localStorage.setItem("gemini_result", JSON.stringify(result));
+        try {
+                const selectedColor = selections[0] ?? undefined;
+                const selectedFont = selections[2] ?? undefined;
+                const selectedImages = [
+                    selections[1],
+                    ...(selections[3]?.split(',') || []),
+                ].filter(Boolean) as string[];
 
-      console.log(
-        "%c💾 Supabase 저장 시작:",
-        "color: blue; font-weight: bold;"
-      );
-      try {
-        await saveToSupabase(result);
-        console.log(
-          "%c✅ Supabase 저장 성공:",
-          "color: green; font-weight: bold;"
-        );
-      } catch (error) {
-        console.error(
-          "%c❌ Supabase 저장 실패:",
-          "color: red; font-weight: bold;",
-          error
-        );
-      }
-      router.push("/home/loading");
+                const selectedKeywords = [
+                    ...(selectedColor ? [selectedColor] : []),
+                    ...selectedImages,
+                    ...(selectedFont ? [selectedFont] : []),
+                ];
+
+                localStorage.setItem('selected_keywords', JSON.stringify(selectedKeywords));
+            } catch (e) {
+                console.warn('선택 키워드 저장 실패:', e);
+            }
+
+        console.log('%c💾 Supabase 저장 시작:', 'color: blue; font-weight: bold;');
+        try {
+        const rid = await saveToSupabase(result);
+        console.log('%c✅ Supabase 저장 성공:', 'color: green; font-weight: bold;');
+        if (rid) {
+            router.push(`/home/loading?rid=${encodeURIComponent(rid)}`);
+        } else {
+            console.error('❌ Request ID 생성 실패');
+            alert('요청 ID 생성에 실패했습니다.');
+        }
+        } catch (error) {
+        console.error('%c❌ Supabase 저장 실패:', 'color: red; font-weight: bold;', error);
+        }
     } catch (error) {
       console.error("❌ Gemini 서버 호출 실패:", error);
       alert("Gemini API 요청에 실패했습니다.");
     }
   };
 
-  const showCheer = (message: React.ReactNode, duration = 1200) => {
-    if (cheerTimerRef.current) {
-      window.clearTimeout(cheerTimerRef.current);
-      cheerTimerRef.current = null;
-    }
-    setCheerMsg(message);
-    setCheerVisible(true);
-    setCheerTick((t) => t + 1);
+    const showCheer = (message: React.ReactNode, duration = 1200) => {
+        if (cheerTimerRef.current) {
+            window.clearTimeout(cheerTimerRef.current);
+            cheerTimerRef.current = null;
+          
+        }
+        setCheerMsg(message);
+        setCheerVisible(true);
+        setCheerTick(t => t + 1);              
 
-    cheerTimerRef.current = window.setTimeout(() => {
-      setCheerVisible(false);
-      cheerTimerRef.current = null;
-    }, duration);
-  };
+        cheerTimerRef.current = window.setTimeout(() => {
+            setCheerVisible(false);
+            cheerTimerRef.current = null;
+        }, duration);
+    };
 
-  const showAlertOnce = (duration = 1000) => {
-    if (alertTimerRef.current) {
-      window.clearTimeout(alertTimerRef.current);
-      alertTimerRef.current = null;
-    }
-    setShowAlert(true);
-    setAlertTick((t) => t + 1);
-
-    alertTimerRef.current = window.setTimeout(() => {
-      setShowAlert(false);
-      alertTimerRef.current = null;
-    }, duration);
-  };
-
-  const handleSelect = (option: string) => {
-    setSelections((prev) => {
-      const updated = [...prev];
-
-      if (step === 4) {
-        const current = updated[3];
-        const selected = current ? current.split(",") : [];
-        if (selected.includes(option)) {
-          const filtered = selected.filter((item) => item !== option);
-          updated[3] = filtered.join(",") || null;
-        } else {
-          if (selected.length < 2) updated[3] = [...selected, option].join(",");
-          else return prev;
+    const showAlertOnce = (duration = 1000) => {
+        if (alertTimerRef.current) {
+            window.clearTimeout(alertTimerRef.current);
+            alertTimerRef.current = null;
         }
       } else {
         updated[step - 1] = prev[step - 1] === option ? null : option;
