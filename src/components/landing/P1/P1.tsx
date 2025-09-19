@@ -19,7 +19,7 @@ const P1 = ({ openLoginModal }: P1Props) => {
     '/assets/images/img8.png'
   ];
   const visibleCount = 6;
-  const slideWidth = 120; // 이미지 한 장의 너비(px)
+  const slideWidth = 300; // 이미지 한 장의 너비(px)
   const gap = 10; // 이미지 사이 간격(px)
   const totalWidth = visibleCount * slideWidth + (visibleCount - 1) * gap;
   // 무한 반복을 위해 이미지 배열을 2번 이어붙임
@@ -28,7 +28,7 @@ const P1 = ({ openLoginModal }: P1Props) => {
   const [transitioning, setTransitioning] = useState(false);
 
   // 자동 슬라이드 (한 번에 3칸씩, 더 빠른 속도)
-  const slideStep = 3;
+  const slideStep = 1;
   const slideInterval = 1200; // 1.2초마다 이동
   const slideDuration = 400; // transition 0.4초
   useEffect(() => {
@@ -45,7 +45,7 @@ const P1 = ({ openLoginModal }: P1Props) => {
       // 마지막 복제 이미지까지 이동 후, transition 없이 처음 위치로 점프
       const timeout = setTimeout(() => {
         setTransitioning(false);
-        setIndex(index % images.length);
+        setIndex(index % (images.length - 1));
       }, slideDuration); // transition 시간과 맞춤
       return () => clearTimeout(timeout);
     } else {
