@@ -21,6 +21,7 @@ interface FeedItem {
   categories: string[];
   userId: string;
   isPublic: boolean;
+  colors?: string[];
 }
 
 export default function FeedClient() {
@@ -60,22 +61,123 @@ export default function FeedClient() {
         const from = page * pageSize;
         const to = from + pageSize - 1;
 
-        const { data, count, error } = await supabase
-          .from("feed_posts")
-          .select(
-            "id, moodboard_id, user_id, title, image_url, categories, likes, is_public, created_at, authorName",
-            { count: "exact" }
-          )
-          .order("created_at", { ascending: false })
-          .range(from, to);
-
-        if (error) throw error;
+        // Try selecting with tags/palette_json; if it fails, fall back to legacy columns.
+        let data: any[] | null = null;
+        let count: number | null = null;
+        {
+          const { data: d1, count: c1, error: e1 } = await supabase
+            .from("feed_posts")
+            .select(
+              "id, moodboard_id, user_id, title, image_url, tags, palette_json, likes, is_public, created_at, authorName",
+              { count: "exact" }
+            )
+            .order("created_at", { ascending: false })
+            .range(from, to);
+          if (!e1) {
+            data = d1 ?? [];
+            count = typeof c1 === 'number' ? c1 : null;
+          } else {
+            const { data: d2, count: c2, error: e2 } = await supabase
+              .from("feed_posts")
+              .select(
+                "id, moodboard_id, user_id, title, image_url, categories, likes, is_public, created_at, authorName",
+                { count: "exact" }
+              )
+              .order("created_at", { ascending: false })
+              .range(from, to);
+            if (e2) throw e2;
+            data = d2 ?? [];
+            count = typeof c2 === 'number' ? c2 : null;
+          }
+        }
 
         let mapped: FeedItem[] = (data ?? []).map((row: any) => {
           const userId = row?.user_id ? String(row.user_id) : "";
           const creator = (row?.authorName && String(row.authorName).trim().length > 0)
             ? String(row.authorName)
             : (userId ? `user_${userId.slice(0, 6)}` : "Unknown");
+
+          // Extract strings from palette_json and derive coarse Korean/English color names
+          const hexToBucket = (hx: string): string | null => {
+            const m = String(hx).trim().toLowerCase().match(/^#?([0-9a-f]{6})$/);
+            if (!m) return null;
+            const v = m[1];
+            const r = parseInt(v.slice(0, 2), 16) / 255;
+            const g = parseInt(v.slice(2, 4), 16) / 255;
+            const b = parseInt(v.slice(4, 6), 16) / 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            const l = (max + min) / 2;
+            const d = max - min;
+            let h = 0;
+            if (d !== 0) {
+              switch (max) {
+                case r: h = ((g - b) / d + (g < b ? 6 : 0)); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+              }
+              h = h * 60;
+            }
+            const s = max === 0 ? 0 : d / max;
+            if (s < 0.08) {
+              if (l > 0.9) return 'white';
+              if (l < 0.15) return 'black';
+              return 'gray';
+            }
+            if (h < 15 || h >= 345) return 'red';
+            if (h < 45) return 'orange';
+            if (h < 65) return 'yellow';
+            if (h < 170) return 'green';
+            if (h < 200) return 'teal';
+            if (h < 255) return 'blue';
+            if (h < 290) return 'purple';
+            if (h < 330) return 'pink';
+            return 'red';
+          };
+
+          let extractedColors: string[] = [];
+          const pj = (row as any)?.palette_json;
+          if (Array.isArray(pj)) {
+            for (const entry of pj) {
+              if (typeof entry === 'string') {
+                extractedColors.push(entry);
+              } else if (entry && typeof entry === 'object') {
+                // Common structure: { hex: "#xxxxxx", name: "..." }
+                for (const [k, v] of Object.entries(entry)) {
+                  if (typeof v === 'string') extractedColors.push(v);
+                  else if (v && typeof v === 'object') {
+                    for (const vv of Object.values(v as any)) {
+                      if (typeof vv === 'string') extractedColors.push(vv);
+                    }
+                  }
+                }
+              }
+            }
+          }
+          const bucketKo: Record<string, string[]> = {
+            red: ["빨강", "빨간", "빨간색"],
+            orange: ["주황", "주황색"],
+            yellow: ["노랑", "노란", "노란색"],
+            green: ["초록", "초록색", "녹색"],
+            teal: ["청록", "청록색"],
+            blue: ["파랑", "파란", "파란색", "블루"],
+            purple: ["보라", "보라색", "퍼플"],
+            pink: ["분홍", "분홍색", "핑크"],
+            gray: ["회색", "그레이"],
+            black: ["검정", "검은", "검은색", "블랙"],
+            white: ["흰색", "하양", "하얀", "하얀색", "화이트"],
+          };
+          const extraBuckets: string[] = [];
+          for (const s of extractedColors) {
+            const bucket = hexToBucket(String(s));
+            if (bucket) {
+              extraBuckets.push(bucket);
+              const ko = bucketKo[bucket];
+              if (ko) extraBuckets.push(...ko);
+            }
+          }
+          extractedColors = Array.from(new Set(
+            [...extractedColors, ...extraBuckets].map((s) => String(s).trim().toLowerCase())
+          )).filter(Boolean);
 
           return {
             id: String(row.id),
@@ -85,11 +187,12 @@ export default function FeedClient() {
             title: String(row?.title ?? ""),
             likes: typeof row?.likes === "number" ? row.likes : 0,
             liked: false,
-            categories: Array.isArray(row?.categories)
-              ? (row.categories as string[])
-              : [],
+            categories: Array.isArray(row?.tags)
+              ? (row.tags as string[])
+              : (Array.isArray(row?.categories) ? (row.categories as string[]) : []),
             userId,
             isPublic: Boolean(row?.is_public),
+            colors: extractedColors.length ? extractedColors : undefined,
           };
         });
 
@@ -125,6 +228,14 @@ export default function FeedClient() {
   }, [page]);
 
   const handleSearch = () => setSearch(inputValue);
+
+  // Live search: debounce input to update results as user types
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setSearch(inputValue);
+    }, 250);
+    return () => clearTimeout(id);
+  }, [inputValue]);
 
   const handleOpenModal = (moodboardId?: string, fallbackId?: string) => {
     const idToUse = moodboardId || fallbackId || null;
@@ -198,13 +309,66 @@ export default function FeedClient() {
     // TODO: 좋아요 저장 로직 연동 (feed_likes 등)
   };
 
+  // Fuzzy search helpers
+  const normalize = (s: string) => s.normalize('NFC').toLowerCase().trim();
+  const splitTokens = (s: string): string[] => normalize(s).split(/[^0-9a-zA-Z가-힣#]+/).filter(Boolean);
+  const withinLevenshtein = (a: string, b: string, maxDist: number): boolean => {
+    a = normalize(a); b = normalize(b);
+    const aLen = a.length, bLen = b.length;
+    if (Math.abs(aLen - bLen) > maxDist) return false;
+    if (aLen > bLen) { const tmp = a; a = b; b = tmp; }
+    const v0 = new Array(b.length + 1);
+    const v1 = new Array(b.length + 1);
+    for (let i = 0; i <= b.length; i++) v0[i] = i;
+    for (let i = 0; i < a.length; i++) {
+      v1[0] = i + 1;
+      let rowMin = v1[0];
+      for (let j = 0; j < b.length; j++) {
+        const cost = a[i] === b[j] ? 0 : 1;
+        v1[j + 1] = Math.min(
+          v1[j] + 1,
+          v0[j + 1] + 1,
+          v0[j] + cost
+        );
+        if (v1[j + 1] < rowMin) rowMin = v1[j + 1];
+      }
+      if (rowMin > maxDist) return false;
+      for (let j = 0; j <= b.length; j++) v0[j] = v1[j];
+    }
+    return v0[b.length] <= maxDist;
+  };
+  const thresholdFor = (q: string): number => q.length <= 3 ? 1 : q.length <= 6 ? 2 : 3;
+  const fuzzyMatch = (query: string, text: string): boolean => {
+    const q = normalize(query);
+    if (!q) return true;
+    const t = normalize(text);
+    if (t.includes(q)) return true;
+    const tokens = splitTokens(text);
+    const th = thresholdFor(q);
+    for (const tok of tokens) {
+      if (tok.includes(q)) return true;
+      if (withinLevenshtein(q, tok, th)) return true;
+    }
+    const m = q.length;
+    if (t.length >= m) {
+      for (let i = 0; i <= t.length - m && i < 200; i++) {
+        const sub = t.slice(i, Math.min(t.length, i + m + 1));
+        if (withinLevenshtein(q, sub, th)) return true;
+      }
+    }
+    return false;
+  };
+
   const filteredItems = useMemo(() => {
-    const q = search.toLowerCase();
-    return feedItems.filter(
-      (item) =>
-        item.title.toLowerCase().includes(q) ||
-        item.creator.toLowerCase().includes(q)
-    );
+    const q = search.trim();
+    if (!q) return feedItems;
+    return feedItems.filter((item) => {
+      if (item.title && fuzzyMatch(q, item.title)) return true;
+      if (Array.isArray(item.categories) && item.categories.some((c) => fuzzyMatch(q, String(c)))) return true;
+      if (Array.isArray(item.colors) && item.colors.some((c) => fuzzyMatch(q, String(c)))) return true;
+      if (item.creator && fuzzyMatch(q, item.creator)) return true;
+      return false;
+    });
   }, [feedItems, search]);
 
   const totalPages = useMemo(() => {
