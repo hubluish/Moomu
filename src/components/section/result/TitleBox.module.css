@@ -18,6 +18,23 @@
     -webkit-backdrop-filter: blur(6px);
 }
 
+/* Compact variant for modal preview */
+.container.compact {
+    display: flex;
+    /* Pre-scale size so it appears as 262x93.717 after 0.6 scale */
+    height: 156.195px; /* 93.717 / 0.6 */
+    width: 436.667px;  /* 262 / 0.6 */
+    max-width: 436.667px;
+    padding: 11.57px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6.912px;
+    align-self: stretch;
+    border-radius: 6.912px;
+    border: 0.289px solid var(--glass, #C5C2FF);
+    background: linear-gradient(180deg, rgba(254, 254, 255, 0.00) 0%, rgba(61, 56, 245, 0.14) 100%);
+}
+
 .titleWrapper {
     display: flex;
     flex-direction: column;

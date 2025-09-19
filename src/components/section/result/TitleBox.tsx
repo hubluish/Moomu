@@ -7,9 +7,10 @@ interface TitleBoxProps {
     value?: string;
     onChangeTitle?: (v: string) => void;
     readOnly?: boolean;
+    compact?: boolean; // smaller style for modal preview
 }
 
-export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle, readOnly = false }: TitleBoxProps) {
+export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle, readOnly = false, compact = false }: TitleBoxProps) {
     const [editing, setEditing] = useState(false);
     const [localTitle, setLocalTitle] = useState(value.split('\n'));
 
@@ -29,7 +30,7 @@ export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle, read
   const handleBlur = () => setEditing(false);
 
     return (
-        <div className={styles.container} onClick={handleClick}>
+        <div className={`${styles.container} ${compact ? styles.compact : ''}`} onClick={handleClick}>
         {editing && !readOnly ? (
             <textarea
             className={styles.textarea}

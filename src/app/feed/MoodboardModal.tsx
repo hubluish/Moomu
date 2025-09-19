@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import styles from "./MoodboardModal.module.css";
 import TitleBox from "@/components/section/result/TitleBox";
 import ConceptBox from "@/components/section/result/ConceptBox";
@@ -30,6 +31,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
   const [loading, setLoading] = useState(false);
   const [board, setBoard] = useState<MoodboardRow | null>(null);
   const backdropRef = useRef<HTMLDivElement | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     if (!open || !moodboardId) return;
@@ -60,6 +62,23 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, onClose]);
 
+  // Ensure portal target is available (avoid SSR mismatch)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Lock body scroll when modal is open to avoid layout shift on resize/scrollbar
+  useEffect(() => {
+    if (!mounted) return;
+    const originalOverflow = document.body.style.overflow;
+    if (open) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [mounted, open]);
+
   if (!open) return null;
 
   const handleBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -70,7 +89,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     ? [{ colors: (board.palette_json || []).map((p: any) => p?.hex).filter(Boolean), image: "", font: "", sentences: board.concept_text || [] }]
     : null;
 
-  return (
+  const modalContent = (
     <div
       ref={backdropRef}
       className={styles.backdrop}
@@ -101,7 +120,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
           <div className={styles.scaledRoot}>
           <div className={styles.gridContainer}>
             <div className={`${styles.section} ${styles.titleBox}`}>
-              <TitleBox readOnly value={(board?.title || "").trim() || "NEW\nMOODBOARD"} />
+              <TitleBox readOnly compact value={(board?.title || "").trim() || "NEW\nMOODBOARD"} />
             </div>
 
             <div className={`${styles.section} ${styles.imageBox}`}>
@@ -157,4 +176,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
       </div>
     </div>
   );
+
+  // Use portal so position: fixed is relative to viewport, not any transformed ancestor
+  return mounted ? createPortal(modalContent, document.body) : null;
 }

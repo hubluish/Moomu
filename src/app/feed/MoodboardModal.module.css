@@ -144,13 +144,13 @@
   justify-items: center;     /* 각 셀의 가로 가운데 정렬 */
 }
 
-.titleBox { grid-area: title; }
-.imageBox { grid-area: images; width: 100%; }
-.conceptBox { grid-area: concept; }
-.fontBox { grid-area: font; }
+.titleBox { grid-area: title; position: relative; left: 100px; }
+.imageBox { grid-area: images; width: 436.667px; height: 485.833px; position: relative; left: 100px; }
+.conceptBox { grid-area: concept;}
+.fontBox { grid-area: font;}
 .paletteBox { grid-area: palette; position: relative; left: 100px; }
 .keywordBox { grid-area: keyword; position: relative; left: 100px; }
-.exampleBox { grid-area: examples; position: relative; left: 280px; }
+.exampleBox { grid-area: examples; position: relative; left: 120px; }
 
 .section {
   width: 100%;
@@ -222,9 +222,9 @@
   margin-left: auto; /* align to right within concept cell */
 }
 
-/* Align concept/font to palette's right edge */
-.conceptBox { justify-self: end; position: relative; left: calc(100px + 182.33px); }
-.fontBox { justify-self: end; position: relative; left: 100px; display: flex; justify-content: flex-end; width: 100%; }
+/* Align concept box to the left within its grid cell */
+.conceptBox { justify-self: start; position: relative; left: 100px; }
+.fontBox { justify-self: end; position: relative; left: 115px; display: flex; justify-content: flex-end; width: 100%; }
 
 /* Offset all inner sections slightly left and down, keeping backdrop/background fixed */
 .gridContainer {
