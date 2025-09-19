@@ -1,27 +1,178 @@
 "use client";
+
+import styled, { css } from "styled-components";
 import React, { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { supabase } from "@/utils/supabase";
-import {
-  HeaderWrapper, LogoSection, LogoImg, LogoName, Nav, NavLink,
-  RightSection, LoginButton, AccountWrapper, Avatar, Dropdown, DropdownItem, DropdownButton
-} from "./header.styled";
 import LoginModal from "../Login/LoginModal";
-// const isLoggedIn = false; // 로그인 상태를 나타내는 변수 (예시로 false로 설정)
+import { useRouter, usePathname } from "next/navigation";
+import { supabase } from "@/utils/supabase";
+// 로고/아이콘 경로
+const NavFrame = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 32px;
+`;
+const LOGO_SRC = "/assets/icons/headerLogo.png";
+const AVATAR_LIGHT = "/assets/icons/headerId-light.png";
+const AVATAR_DARK = "/assets/icons/headerId-dark.png";
 const NAV_ITEMS = [
-  { href: "/", label: "Explore Feeds" },
+  { href: "/feed", label: "Explore Feeds" },
   { href: "/article", label: "Article" },
   { href: "/mypage/moodboard/page", label: "Generate Moodboard" },
 ];
-// 헤더 내용
+const getMode = (bg: string, loggedIn: boolean) => {
+  if (bg === "dark") return loggedIn ? "dark-logged" : "dark";
+  return loggedIn ? "light-logged" : "light";
+};
+const HeaderWrapper = styled.header<{ $mode: string }>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100vw;
+  height: 64px;
+  padding: 0 32px;
+  background: transparent;
+  ${(props) =>
+    props.$mode.startsWith("dark")
+      ? css`
+          color: #fff;
+        `
+      : css`
+          color: #222;
+        `}
+`;
+const LogoSection = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const LogoImg = styled.img`
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+`;
+const LogoName = styled.span`
+  font-size: 25px;
+  font-weight: 800;
+  font-family: var(--font-family-logo, Pretendard);
+  letter-spacing: -0.1em;
+  height: 40px;
+`;
+const Nav = styled.nav`
+  display: flex;
+  gap: 32px;
+  align-items: center;
+`;
+const NavLink = styled.a<{ $active: boolean; $mode: string }>`
+  position: relative;
+  text-decoration: none;
+  font-size: 16px;
+  color: ${({ $active, $mode }) =>
+    $active ? ($mode.startsWith("dark") ? "#6d63ff" : "#6d63ff") : $mode.startsWith("dark") ? "#fff" : "#222"};
+  padding: 0 4px;
+  transition: color 0.2s;
+  &:hover {
+    color: #6d63ff;
+  }
+`;
+const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+const LoginButton = styled.button<{ $mode: string }>`
+  display: flex;
+  padding: 10px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 70px;
+  background: ${({ $mode }) =>
+    $mode.startsWith("dark")
+      ? "linear-gradient(180deg, #3d38f5b3 16.41%, #dcbadb 385.64%)"
+      : "linear-gradient(180deg, #6d63ff 16.41%, #dcbadb 385.64%)"};
+  color: #fff;
+  border: none;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  &:hover {
+    background: #6d63ff;
+  }
+`;
+const AccountWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+const Avatar = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+const UserName = styled.span`
+  margin-left: 10px;
+  font-weight: bold;
+`;
+const Dropdown = styled.div<{ $mode: string }>`
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: ${({ $mode }) => ($mode.startsWith("dark") ? "#222" : "#fff")};
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  min-width: 165px;
+  z-index: 10;
+  padding: 8px 0;
+`;
+const DropdownItem = styled.a`
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  color: #6d63ff;
+  text-decoration: none;
+  font-size: 15px;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  &:hover {
+    color: #3d38f5;
+  }
+`;
+const DropdownButton = styled.button`
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  color: #6d63ff;
+  text-decoration: none;
+  font-size: 15px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  &:hover {
+    color: #3d38f5;
+  }
+`;
+function detectBgMode() {
+  if (typeof window !== "undefined") {
+    const path = window.location.pathname;
+    if (path === "/") return "dark";
+    if (["/feed", "/article", "/mypage/moodboard/page"].includes(path)) return "light";
+  }
+  return "dark";
+}
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter(); // 최상단에서 선언
   const [showDropdown, setShowDropdown] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 useState로 관리
-  const [userName, setUserName] = useState(''); // 사용자 이름 상태 추가
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [mode, setMode] = useState("dark");
   useEffect(() => {
-    // 초기 로그인 상태 확인
+    setMode(detectBgMode());
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
@@ -33,93 +184,69 @@ export default function Header() {
           .single();
         if (profile?.name) {
           setUserName(profile.name);
-        } else if (session.user.user_metadata?.full_name) { // user_metadata에서 이름 가져오기
+        } else if (session.user.user_metadata?.full_name) {
           setUserName(session.user.user_metadata.full_name);
-        } else if (error) {
-          console.error('프로필 로드 실패:', error.message);
         }
       } else {
         setIsLoggedIn(false);
-        setUserName('');
+        setUserName("");
       }
     };
     getSession();
-    // 인증 상태 변경 리스너 설정
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        setIsLoggedIn(true);
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('name')
-          .eq('id', session.user.id)
-          .single();
-        if (profile?.name) {
-          setUserName(profile.name);
-        } else if (session.user.user_metadata?.full_name) { // user_metadata에서 이름 가져오기
-          setUserName(session.user.user_metadata.full_name);
-        } else if (error) {
-          console.error('프로필 로드 실패:', error.message);
-        }
-      } else if (event === 'SIGNED_OUT') {
-        setIsLoggedIn(false);
-        setUserName('');
-      }
-    });
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
   }, []);
-  const handleLoginClick = () => {
-    setIsModalOpen(true);
-  };
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const handleLoginClick = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('로그아웃 실패:', error.message);
-      alert('로그아웃에 실패했습니다. 다시 시도해 주세요.');
-    }
-    setShowDropdown(false); // 드롭다운 닫기
-    window.location.reload(); // 페이지 새로고침 추가
+    if (error) alert('로그아웃에 실패했습니다. 다시 시도해 주세요.');
+    setShowDropdown(false);
+    window.location.reload();
   };
-
+  const headerMode = getMode(mode, isLoggedIn);
+  const avatarSrc = headerMode.startsWith("dark") ? AVATAR_DARK : AVATAR_LIGHT;
   return (
-    <HeaderWrapper>
-      <LogoSection>
-        <LogoImg src="/assets/icons/logo.svg" alt="로고" />
-        <LogoName>Moomu</LogoName>
-      </LogoSection>
-      <Nav>
-        {NAV_ITEMS.map(({ href, label }) => (
-          <NavLink href={href} key={href} $active={pathname === href}>
-            {label}
-          </NavLink>
-        ))}
-        <RightSection>
-          {isLoggedIn ? (
-            <AccountWrapper>
-              <Avatar
-                src="/assets/icons/id.png"
-                alt="계정"
-                style={{ cursor: "pointer" }}
-                onClick={() => setShowDropdown(prev => !prev)}
-              />
-              {userName && <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>{userName}</span>} {/* 사용자 이름 표시 */}
-              {showDropdown && (
-                <Dropdown>
-                  <DropdownItem href="/my_id">회원정보 수정</DropdownItem>
-                  <DropdownButton onClick={handleLogout}>로그아웃</DropdownButton>
-                </Dropdown>
+        <HeaderWrapper $mode={headerMode}>
+          <LogoSection>
+            <LogoImg src={LOGO_SRC} alt="로고" style={{ cursor: 'pointer' }} onClick={() => router.push('/')} />
+            <LogoName style={{ cursor: 'pointer' }} onClick={() => router.push('/')}>Moomu</LogoName>
+          </LogoSection>
+          <NavFrame>
+            <Nav>
+              {NAV_ITEMS.map(({ href, label }) => (
+                <NavLink
+                  key={href}
+                  href={href}
+                  $active={pathname === href}
+                  $mode={headerMode}
+                >
+                  {label}
+                </NavLink>
+              ))}
+            </Nav>
+            <RightSection>
+              {isLoggedIn ? (
+                <AccountWrapper>
+                  <Avatar
+                    src={avatarSrc}
+                    alt="계정"
+                    onClick={() => setShowDropdown((prev) => !prev)}
+                  />
+                  {userName && <UserName>{userName}</UserName>}
+                  {showDropdown && (
+                    <Dropdown $mode={headerMode}>
+                      <DropdownItem href="/my_id">회원정보 수정</DropdownItem>
+                      <DropdownButton onClick={handleLogout}>로그아웃</DropdownButton>
+                    </Dropdown>
+                  )}
+                </AccountWrapper>
+              ) : (
+                <LoginButton $mode={headerMode} onClick={handleLoginClick}>
+                  로그인/회원가입
+                </LoginButton>
               )}
-            </AccountWrapper>
-          ) : (
-            <LoginButton href="#" onClick={handleLoginClick}>로그인/회원가입</LoginButton>
-          )}
-        </RightSection>
-      </Nav>
-      <LoginModal isOpen={isModalOpen} onClose={handleCloseModal} />
-    </HeaderWrapper>
+            </RightSection>
+          </NavFrame>
+          <LoginModal isOpen={isModalOpen} onClose={handleCloseModal} />
+        </HeaderWrapper>
   );
 }
