@@ -55,7 +55,6 @@ export const CreateFolderModal = ({
       <ModalCreateContainer
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
-        {/* 👇 이미지에 맞게 UI 요소 변경 */}
         <CreateModalTitle>폴더명</CreateModalTitle>
         <FolderNameInput
           value={folderName}

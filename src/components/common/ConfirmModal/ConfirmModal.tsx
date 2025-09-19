@@ -12,6 +12,7 @@ type ConfirmModalProps = {
   onClose: () => void;
   onConfirm: () => void;
   title: ReactNode;
+  message?: string;
   hideCancel?: boolean;
   confirmText?: string;
   cancelText?: string;
@@ -23,6 +24,7 @@ const ConfirmModal = ({
   onClose,
   onConfirm,
   title,
+  message,
   hideCancel = false,
   confirmText = "확인",
   cancelText = "취소",
@@ -34,6 +36,9 @@ const ConfirmModal = ({
     <ModalBackdrop onClick={onClose}>
       <ModalContainer onClick={(e: React.MouseEvent) => e.stopPropagation()}>
         <ModalTitle>{title}</ModalTitle>
+        {message && (
+          <p style={{ margin: "-12px 0 24px", color: "#666" }}>{message}</p>
+        )}
         <ButtonWrapper>
           {!hideCancel && (
             <ModalButton onClick={onClose}>{cancelText}</ModalButton>

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/utils/supabase";
 import Sidebar from "@/components/section/mypage/Sidebar";
-import { getFolders } from "@/utils/folders";
+import { getFolders, deleteFolder, renameFolder } from "@/utils/folders";
 import FolderItem from "@/components/section/mypage/folder/FolderItem";
 import { FolderGridSkeleton } from "@/components/section/mypage/folder/FolderSkeleton";
 
@@ -14,6 +14,27 @@ interface Folder {
 const MyFolderPage = ({}) => {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleDeleteFolder = async (folderId: string) => {
+    try {
+      await deleteFolder(folderId);
+
+      setFolders((prev) => prev.filter((f) => f.id !== folderId));
+    } catch (error) {
+      console.error("폴더 삭제 실패:", error);
+    }
+  };
+
+  const handleUpdateFolder = async (folderId: string, newName: string) => {
+    try {
+      await renameFolder(folderId, newName);
+      setFolders((prev) =>
+        prev.map((f) => (f.id === folderId ? { ...f, name: newName } : f))
+      );
+    } catch (error) {
+      console.error("폴더 이름 변경 실패:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchFolders = async () => {
@@ -52,7 +73,13 @@ const MyFolderPage = ({}) => {
             }}
           >
             {folders.map((folder) => (
-              <FolderItem key={folder.id} id={folder.id} name={folder.name} />
+              <FolderItem
+                key={folder.id}
+                id={folder.id}
+                name={folder.name}
+                onDelete={handleDeleteFolder}
+                onUpdate={handleUpdateFolder}
+              />
             ))}
           </div>
         )}

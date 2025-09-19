@@ -87,3 +87,18 @@ export const moveMoodboardToAnotherFolder = async (
 
   if (error) throw error;
 };
+
+// 폴더 이름을 변경합니다.
+export const renameFolder = async (folderId: string, newName: string) => {
+  const { error } = await supabase
+    .from("folders")
+    .update({ name: newName })
+    .eq("id", folderId);
+  if (error) throw error;
+};
+
+// 폴더를 삭제합니다.
+export const deleteFolder = async (folderId: string) => {
+  const { error } = await supabase.from("folders").delete().eq("id", folderId);
+  if (error) throw error;
+};
