@@ -21,7 +21,7 @@ type MoodboardOverlayProps = {
   onRestore?: (moodboardId: string) => void;
   onPermanentDelete?: (moodboardId: string) => void;
   isPublic: boolean;
-  onTogglePublic: (moodboardId: string) => void;
+  onTogglePublic: () => void;
   onUnlike?: () => void;
 };
 
@@ -52,7 +52,7 @@ const MoodboardOverlay = ({
               alt="폴더에 추가"
             />
             <IconButton
-              onClick={() => onTogglePublic(moodboardId)}
+              onClick={onTogglePublic}
               src={
                 isPublic
                   ? "/assets/icons/open-icon.svg"

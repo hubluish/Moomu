@@ -18,6 +18,9 @@ interface MoodboardResult {
   tags: string[];
   created_at: string;
   is_public: boolean;
+  owner_id: string;
+  request_id: string;
+  title: string;
 }
 
 const TrashIcon = () => (
@@ -115,23 +118,49 @@ const MoodboardPage = () => {
     }, 3000);
   };
 
-  const handleTogglePublic = async (moodboardId: string) => {
+  const handleTogglePublic = async (board: MoodboardResult) => {
     try {
-      const newStatus = await toggleMoodboardPublicStatus(moodboardId);
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        displayToast("로그인이 필요합니다.", <ErrorIcon />);
+        return;
+      }
+
+      let authorName = "익명 사용자"; // 기본값
+
+      // 1. profiles 테이블에서 이름 먼저 조회
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("name")
+        .eq("id", session.user.id)
+        .single();
+
+      if (profile?.name) {
+        authorName = profile.name;
+      }
+      // 2. profiles에 없으면, Auth 메타데이터(소셜 로그인 시 저장된 이름)를 사용
+      else if (session.user.user_metadata?.full_name) {
+        authorName = session.user.user_metadata.full_name;
+      }
+
+      // API 함수에 찾은 authorName을 전달
+      const newStatus = await toggleMoodboardPublicStatus(board, authorName);
 
       setMoodboards((prev) =>
-        prev.map((board) =>
-          board.id === moodboardId ? { ...board, is_public: newStatus } : board
+        prev.map((m) =>
+          m.id === board.id ? { ...m, is_public: newStatus } : m
         )
       );
-
       displayToast(
         newStatus
-          ? "무드보드가 공개되었습니다."
-          : "무드보드를 비공개로 전환했습니다.",
+          ? "피드에 공개되었습니다."
+          : "피드에서 비공개 처리되었습니다.",
         newStatus ? <OpenIcon /> : <LockIcon />
       );
-    } catch {
+    } catch (error) {
+      console.error("상태 변경 실패:", error);
       displayToast("상태 변경에 실패했습니다.", <ErrorIcon />);
     }
   };
@@ -201,7 +230,7 @@ const MoodboardPage = () => {
                       onAddToFolder={() => handleOpenFolderModal(board.id)}
                       onMoveToTrash={() => openTrashConfirmModal(board.id)}
                       isPublic={board.is_public}
-                      onTogglePublic={() => handleTogglePublic(board.id)}
+                      onTogglePublic={() => handleTogglePublic(board)}
                     />
                   );
                 })}

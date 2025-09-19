@@ -1,6 +1,6 @@
 import { supabase } from "@/utils/supabase";
 
-// 무드보드를 휴지통으로 보냅니다 (soft delete).
+// 무드보드를 휴지통으로 보냄 (soft delete).
 export const moveMoodboardToTrash = async (moodboardId: string) => {
   const { error } = await supabase
     .from("moodboard")
@@ -13,7 +13,7 @@ export const moveMoodboardToTrash = async (moodboardId: string) => {
   }
 };
 
-// 휴지통의 무드보드를 복구합니다. (deleted_at을 null로 설정)
+// 휴지통의 무드보드를 복구 (deleted_at을 null로 설정)
 export const restoreMoodboard = async (moodboardId: string) => {
   const { error } = await supabase
     .from("moodboard")
@@ -26,7 +26,7 @@ export const restoreMoodboard = async (moodboardId: string) => {
   }
 };
 
-// 무드보드를 데이터베이스에서 영구적으로 삭제합니다.
+// 무드보드를 데이터베이스에서 영구적으로 삭제
 export const permanentDeleteMoodboard = async (moodboardId: string) => {
   const { error } = await supabase
     .from("moodboard")
@@ -39,27 +39,57 @@ export const permanentDeleteMoodboard = async (moodboardId: string) => {
   }
 };
 
-// 무드보드의 공개 상태를 토글합니다 (true <-> false).
-export const toggleMoodboardPublicStatus = async (moodboardId: string) => {
-  const { data: currentData, error: selectError } = await supabase
-    .from("moodboard")
-    .select("is_public")
-    .eq("id", moodboardId)
-    .single();
+// 무드보드의 공개 상태를 토글 (true <-> false).
+export const toggleMoodboardPublicStatus = async (
+  moodboard: {
+    id: string;
+    is_public: boolean;
+    owner_id: string;
+    request_id: string;
+    title?: string;
+    cover_image_url?: string | null;
+    tags?: string[];
+  },
+  authorName: string
+) => {
+  const newStatus = !moodboard.is_public;
 
-  if (selectError) {
-    console.error("Error fetching current public status:", selectError);
-    throw selectError;
+  if (newStatus) {
+    const { error: insertError } = await supabase.from("feed_posts").insert({
+      moodboard_id: moodboard.id,
+      user_id: moodboard.owner_id,
+      request_id: moodboard.request_id,
+      title: moodboard.title || "Untitled",
+      image_url: moodboard.cover_image_url,
+      categories: moodboard.tags,
+      is_public: newStatus,
+      authorName: authorName,
+      likes: [],
+    });
+
+    if (insertError) {
+      console.error("Error publishing to feed:", insertError);
+      throw insertError;
+    }
+  } else {
+    const { error: deleteError } = await supabase
+      .from("feed_posts")
+      .delete()
+      .eq("moodboard_id", moodboard.id);
+
+    if (deleteError) {
+      console.error("Error unpublishing from feed:", deleteError);
+      throw deleteError;
+    }
   }
 
-  const newStatus = !currentData.is_public;
   const { error: updateError } = await supabase
     .from("moodboard")
     .update({ is_public: newStatus })
-    .eq("id", moodboardId);
+    .eq("id", moodboard.id);
 
   if (updateError) {
-    console.error("Error toggling public status:", updateError);
+    console.error("Error updating moodboard public status:", updateError);
     throw updateError;
   }
 
