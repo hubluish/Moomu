@@ -103,17 +103,17 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
           {moodboardId && (
             <a
               className={styles.openBtn}
-              href={`/feed?open=${encodeURIComponent(moodboardId)}`}
+              href={`/feed/preview?id=${encodeURIComponent(moodboardId)}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="새 탭에서 열기"
+              aria-label="Open in new tab"
               onClick={(e) => e.stopPropagation()}
             >
               새 탭에서 열기
             </a>
           )}
-          <button className={styles.closeBtn} onClick={onClose} aria-label="닫기">
-            ×
+          <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
+            <img src="/assets/icons/material-symbols_close-rounded.svg" alt="" aria-hidden="true" />
           </button>
         </div>
         <div className={styles.content}>
@@ -182,3 +182,4 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
   // Use portal so position: fixed is relative to viewport, not any transformed ancestor
   return mounted ? createPortal(modalContent, document.body) : null;
 }
+
