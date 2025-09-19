@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./HomeIntro.module.css";
-import Header from "@/components/common/header/header";
 
 const images = [
   "/assets/carousel/1.jpg",
@@ -95,7 +94,6 @@ const HomeIntro = () => {
 
   return (
     <div className={styles.container}>
-      <Header />
       <div className={styles.contentWrapper}>
         {/* 1-1 내용 1 컨테이너 */}
         <div className={styles.section1}>
@@ -111,7 +109,12 @@ const HomeIntro = () => {
               <span className={styles.moodBtnText}>무드보드 만들기</span>
               <span className={styles.moodBtnIcon}>
                 <svg width="20" height="19" viewBox="0 0 20 19" fill="none">
-                  <path d="M5 9.5H15M15 9.5L11 5.5M15 9.5L11 13.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path
+                    d="M5 9.5H15M15 9.5L11 5.5M15 9.5L11 13.5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
                 </svg>
               </span>
             </button>
@@ -154,7 +157,8 @@ const HomeIntro = () => {
                 <div className={styles.reasonText1}>
                   무한한 핀터레스트 기반 이미지,
                   <br />
-                  <span className={styles.strongText}>oo한 눈누</span> 기반 폰트,
+                  <span className={styles.strongText}>oo한 눈누</span> 기반
+                  폰트,
                   <br />
                   수많은 컬러헌트 기반 색상…
                 </div>
@@ -222,8 +226,7 @@ const HomeIntro = () => {
             />
             <div className={styles.section4Text3}>
               이미 많은 디자이너들이
-              <br />
-              이 방법으로 작업을 시작해요!
+              <br />이 방법으로 작업을 시작해요!
             </div>
             <div className={styles.section4Item4}>
               <div className={styles.section4Item4Text}>
@@ -234,10 +237,14 @@ const HomeIntro = () => {
             </div>
             <div className={styles.section4Item5}>
               <div className={styles.section4Item5Box1}>
-                <span className={styles.section4Item5Text1}>디자인 용어를 몰라요</span>
+                <span className={styles.section4Item5Text1}>
+                  디자인 용어를 몰라요
+                </span>
               </div>
               <div className={styles.section4Item5Box2}>
-                <span className={styles.section4Item5Text2}>디자인이 처음이에요</span>
+                <span className={styles.section4Item5Text2}>
+                  디자인이 처음이에요
+                </span>
               </div>
             </div>
             <img
@@ -262,7 +269,10 @@ const HomeIntro = () => {
           <div className={styles.section5Logo}>
             <span>moomu</span>
           </div>
-          <button className={styles.startBtn} onClick={() => router.push("/home/home")}>
+          <button
+            className={styles.startBtn}
+            onClick={() => router.push("/home/home")}
+          >
             <div className={styles.startBtnInner}>
               <span className={styles.startBtnText}>지금 바로 시작하기</span>
             </div>

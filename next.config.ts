@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
       "images.pexels.com",
       "i.pinimg.com",
       "noonnucc-production.sfo2.cdn.digitaloceanspaces.com",
+      "jqbxkbcwlxhzdhximrsb.supabase.co",
     ],
   },
   compiler: {
@@ -13,6 +14,5 @@ const nextConfig: NextConfig = {
   },
 };
 module.exports = nextConfig;
-
 
 export default nextConfig;

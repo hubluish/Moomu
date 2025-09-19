@@ -12,9 +12,9 @@ import Header from "@/components/common/header/header";
 import RefreshButton from "../../components/section/result/RefreshButton";
 import SaveButton from "../../components/section/result/SaveButton";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
-import { supabase } from "@/utils/supabaseClient";
+import { supabase } from "@/utils/supabase";
 import type { GeminiSet } from "@/types/result";
 
 // Supabase 응답 스키마 타입 정의
@@ -44,12 +44,34 @@ export default function ResultPage() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [fontIndex, setFontIndex] = useState(0);
+  const [revealedCount, setRevealedCount] = useState(1);
+  const [conceptIndex, setConceptIndex] = useState(0);
+  const [colorIndex, setColorIndex] = useState(0);
 
   const [visibleImages, setVisibleImages] = useState<ImageItem[]>([]);
   const [resolvedFont, setResolvedFont] = useState<ResolvedFont | null>(null);
-  const [title, setTitle] = useState<string>("");
+  // Default title shows two lines: "New" and "Moodboard"
+  const [title, setTitle] = useState<string>("New\nMoodboard");
 
   useEffect(() => {
+    // Restore state from sessionStorage on page load
+    const savedStateJSON = sessionStorage.getItem('resultPageState');
+    if (savedStateJSON) {
+      try {
+        const savedState = JSON.parse(savedStateJSON);
+        if (savedState && typeof savedState.revealedCount === 'number') {
+          setRevealedCount(savedState.revealedCount);
+          setCurrentIndex(savedState.currentIndex ?? 0);
+          setFontIndex(savedState.fontIndex ?? 0);
+          setConceptIndex(savedState.conceptIndex ?? 0);
+          setColorIndex(savedState.colorIndex ?? 0);
+        }
+      } catch (e) {
+        console.error("Failed to parse saved state", e);
+      }
+    }
+
     (async () => {
       if (typeof window === "undefined") return;
 
@@ -126,7 +148,7 @@ export default function ResultPage() {
 
   // Prefetch disabled per request: load next only on refresh
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     if (!geminiResult || geminiResult.length === 0) return;
     const sp = new URLSearchParams(window.location.search);
     const requestId = sp.get("rid") || undefined;
@@ -184,12 +206,34 @@ export default function ResultPage() {
       }
 
       // 저장 성공 시 이동 (원하면 여기서 피드/상세로 라우팅)
+      const pageState = {
+        revealedCount,
+        currentIndex,
+        fontIndex,
+        conceptIndex,
+        colorIndex,
+      };
+      sessionStorage.setItem('resultPageState', JSON.stringify(pageState));
       router.push(`/result/save?mid=${data?.id}`);
     } catch (e) {
       console.error(e);
       alert("저장 중 오류가 발생했습니다.");
     }
-  };
+  }, [geminiResult, currentIndex, resolvedFont, visibleImages, title, selectedTags, router]);
+
+  // Persist state to sessionStorage whenever it changes
+  useEffect(() => {
+    if (!loading) {
+      const pageState = {
+        revealedCount,
+        currentIndex,
+        fontIndex,
+        conceptIndex,
+        colorIndex,
+      };
+      sessionStorage.setItem('resultPageState', JSON.stringify(pageState));
+    }
+  }, [loading, revealedCount, currentIndex, fontIndex, conceptIndex, colorIndex]);
 
   // 로딩/에러 상태 처리
   if (loading) return <div>로딩 중…</div>;
@@ -197,6 +241,9 @@ export default function ResultPage() {
   if (!geminiResult || geminiResult.length === 0) return <div>표시할 결과가 없습니다.</div>;
 
   const currentSet = geminiResult[currentIndex] ?? geminiResult[0];
+  const currentFontSet = geminiResult[fontIndex] ?? geminiResult[0];
+  const currentConceptSet = geminiResult[conceptIndex] ?? geminiResult[0];
+  const currentColorSet = geminiResult[colorIndex] ?? geminiResult[0];
   const tags = selectedTags;
 
 
@@ -211,12 +258,16 @@ export default function ResultPage() {
           <SaveButton onClick={handleSave} />
           <RefreshButton
             onClick={() => {
-              const next = Math.min(geminiResult.length - 1, currentIndex + 1);
-              if (next !== currentIndex) {
-                console.info('[Result] Refresh -> index', next, 'keyword:', geminiResult[next].image);
-                setCurrentIndex(next);
+              if (revealedCount < geminiResult.length) {
+                const nextRevealed = revealedCount + 1;
+                setRevealedCount(nextRevealed);
+                setCurrentIndex(nextRevealed - 1);
+                setFontIndex(nextRevealed - 1);
+                setConceptIndex(nextRevealed - 1);
+                setColorIndex(nextRevealed - 1);
               }
             }}
+            disabled={revealedCount >= geminiResult.length}
           />
         </div>
       </div>
@@ -231,20 +282,39 @@ export default function ResultPage() {
             orientation="landscape"
             useColorFilter
             onPrev={() => setCurrentIndex((idx) => Math.max(0, idx - 1))}
-            onNext={() => setCurrentIndex((idx) => Math.min(geminiResult.length - 1, idx + 1))}
+            onNext={() => setCurrentIndex((idx) => Math.min(revealedCount - 1, idx + 1))}
             disablePrev={currentIndex <= 0}
-            disableNext={currentIndex >= geminiResult.length - 1}
+            disableNext={currentIndex >= revealedCount - 1}
             onImagesChange={setVisibleImages}
           />
         </div>
         <div className={styles.conceptBox}>
-          <ConceptBox geminiResult={geminiResult} />
+          <ConceptBox
+            geminiSet={currentConceptSet}
+            onPrev={() => setConceptIndex((idx) => Math.max(0, idx - 1))}
+            onNext={() => setConceptIndex((idx) => Math.min(revealedCount - 1, idx + 1))}
+            disablePrev={conceptIndex <= 0}
+            disableNext={conceptIndex >= revealedCount - 1}
+          />
         </div>
         <div className={styles.fontBox}>
-          <FontBox fontKeyword={currentSet.font} onResolved={setResolvedFont} />
+          <FontBox
+            geminiSet={currentFontSet}
+            onResolved={setResolvedFont}
+            onPrev={() => setFontIndex((idx) => Math.max(0, idx - 1))}
+            onNext={() => setFontIndex((idx) => Math.min(revealedCount - 1, idx + 1))}
+            disablePrev={fontIndex <= 0}
+            disableNext={fontIndex >= revealedCount - 1}
+          />
         </div>
         <div className={styles.paletteBox}>
-          <ColorPaletteBox geminiResult={geminiResult} />
+          <ColorPaletteBox
+            geminiSet={currentColorSet}
+            onPrev={() => setColorIndex((idx) => Math.max(0, idx - 1))}
+            onNext={() => setColorIndex((idx) => Math.min(revealedCount - 1, idx + 1))}
+            disablePrev={colorIndex <= 0}
+            disableNext={colorIndex >= revealedCount - 1}
+          />
         </div>
         <div className={styles.keywordBox}>
           <KeywordBox tags={tags} />

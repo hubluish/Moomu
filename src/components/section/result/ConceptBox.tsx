@@ -6,13 +6,15 @@ import TopRightArrows from '@/components/common/TopRightArrows';
 import type { GeminiSet } from '@/types/result';
 
 interface ConceptBoxProps {
-  geminiResult: GeminiSet[] | null;
+  geminiSet: GeminiSet | null;
+  onPrev?: () => void;
+  onNext?: () => void;
+  disablePrev?: boolean;
+  disableNext?: boolean;
 }
 
-export default function ConceptBox({ geminiResult }: ConceptBoxProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  if (!geminiResult || geminiResult.length === 0) {
+export default function ConceptBox({ geminiSet, onPrev, onNext, disablePrev, disableNext }: ConceptBoxProps) {
+  if (!geminiSet) {
     return (
       <div className={styles.container}>
         <div className={styles.title}>CONCEPT</div>
@@ -23,24 +25,16 @@ export default function ConceptBox({ geminiResult }: ConceptBoxProps) {
     );
   }
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => Math.max(0, prevIndex - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => Math.min(geminiResult.length - 1, prevIndex + 1));
-  };
-
-  const currentSentences = geminiResult[currentIndex].sentences;
+  const currentSentences = geminiSet.sentences;
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>CONCEPT</div>
       <TopRightArrows
-        onPrev={handlePrev}
-        onNext={handleNext}
-        disablePrev={currentIndex <= 0}
-        disableNext={currentIndex >= geminiResult.length - 1}
+        onPrev={onPrev}
+        onNext={onNext}
+        disablePrev={disablePrev}
+        disableNext={disableNext}
       />
       <div className={styles.content}>
         {currentSentences.map((sentence, index) => (

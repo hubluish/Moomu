@@ -23,8 +23,23 @@ export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle, read
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const lines = e.target.value.split('\n');
-    setLocalTitle(lines);
-    onChangeTitle?.(e.target.value); // 부모에 전체 문자열 전달
+    const newLines = lines.map(line => {
+        let currentWidth = 0;
+        let limitedLine = '';
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            // 한글 음절(가-힣)을 2, 그 외 문자를 1로 계산합니다.
+            const charWidth = (char.charCodeAt(0) >= 0xAC00 && char.charCodeAt(0) <= 0xD7A3) ? 2 : 1;
+            if (currentWidth + charWidth > 28) {
+                break;
+            }
+            currentWidth += charWidth;
+            limitedLine += char;
+        }
+        return limitedLine;
+    });
+    setLocalTitle(newLines);
+    onChangeTitle?.(newLines.join('\n'));
   };
 
   const handleBlur = () => setEditing(false);

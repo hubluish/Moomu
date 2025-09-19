@@ -1,12 +1,17 @@
 // components/Sidebar.styled.ts
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const SidebarWrapper = styled.nav`
   width: 230px;
   background-color: var(--color-background);
   padding: 50px 0;
-  height: 100vh;
-  border-right: 1px solid #EEE;
+  min-height: 100vh;
+  border-right: 1px solid #eee;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 `;
 
 export const MenuList = styled.div`
@@ -19,7 +24,7 @@ export const MenuItem = styled.li<{ $active?: boolean }>`
   display: flex;
   align-items: center;
   padding: 14px 30px;
-  background-color: ${({ $active }) => ($active ? '#efefef' : 'transparent')};
+  background-color: ${({ $active }) => ($active ? "#efefef" : "transparent")};
   cursor: pointer;
   transition: background 0.2s ease;
 

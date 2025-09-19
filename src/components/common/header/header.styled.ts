@@ -15,6 +15,11 @@ export const HeaderWrapper = styled.header`
 export const LogoSection = styled.div`
   display: flex;
   align-items: center;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 `;
 export const LogoImg = styled.img`
   width: 40px;
@@ -34,20 +39,25 @@ export const Nav = styled.nav`
   display: flex;
   gap: 32px;
   align-items: center;
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 `;
 // 네비게이션 링크
 export const NavLink = styled(Link)<{ $active: boolean }>`
   position: relative;
   text-decoration: none;
   font: var(--text-body1);
-  color: ${({ $active }) => $active ? 'var(--color-main)' : 'var(--color-text-sub)'};
+  color: ${({ $active }) =>
+    $active ? "var(--color-main)" : "var(--color-text-sub)"};
   padding: 0 4px;
   transition: color 0.2s;
   &:hover {
     color: var(--color-point);
   }
   &::after {
-    content: ${({ $active }) => $active ? "''" : "none"};
+    content: ${({ $active }) => ($active ? "''" : "none")};
     display: block;
     position: absolute;
     left: 0;

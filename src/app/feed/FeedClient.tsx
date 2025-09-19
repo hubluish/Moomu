@@ -4,6 +4,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import SearchBar from "@/components/common/searchBar/SearchBar";
+import styles from "./feed.module.css";
+import { supabase } from "@/utils/supabase";
 import Toast from "@/components/common/toast/Toast";
 import styles from "./feed.module.css";
 import { supabase } from "@/utils/supabaseClient";

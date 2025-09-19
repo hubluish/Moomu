@@ -6,7 +6,7 @@ import ShareButton from '@/components/section/result/ShareButton';
 import { useRouter } from "next/router";
 
 import MoodboardPreview from '@/components/section/result/MoodboardPreview';
-import { supabase } from '@/utils/supabaseClient';
+import { supabase } from '@/utils/supabase';
 import styles from './save.module.css';
 
 export default function SavePage() {
@@ -30,54 +30,54 @@ export default function SavePage() {
             return;
             }
             const { data, error } = await supabase
-              .from('moodboard')
-              .select('cover_image_url, images_json, palette_json, tags')
-              .eq('id', mid)
-              .single();
+                .from('moodboard')
+                .select('cover_image_url, images_json, palette_json, tags')
+                .eq('id', mid)
+                .single();
 
-            if (error) {
-              console.error('moodboard 불러오기 실패:', error);
-            } else {
-              const curUrl = data?.cover_image_url ?? null;
-              setCoverUrl(curUrl);
+                if (error) {
+                console.error('moodboard 불러오기 실패:', error);
+                } else {
+                const curUrl = data?.cover_image_url ?? null;
+                setCoverUrl(curUrl);
 
-              // 우리 스토리지에 생성된 커버가 아니면 생성 요청
-              const supaBase = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/?$/, '');
-              const shouldGenerate = !curUrl
-                || !/\/storage\/v1\/object\/public\/moodboard\//.test(String(curUrl))
-                || !String(curUrl).toLowerCase().endsWith('.webp');
+                // 우리 스토리지에 생성된 커버가 아니면 생성 요청
+                const supaBase = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/?$/, '');
+                const shouldGenerate = !curUrl
+                    || !/\/storage\/v1\/object\/public\/moodboard\//.test(String(curUrl))
+                    || !String(curUrl).toLowerCase().endsWith('.webp');
 
-              if (!coverRequestedRef.current && shouldGenerate) {
-                coverRequestedRef.current = true;
-                try {
-                  const thumbs = Array.isArray(data?.images_json)
-                    ? data.images_json.map((img: any) => img?.thumb || img?.url).filter(Boolean).slice(0, 9)
-                    : [];
-                  const palette = Array.isArray(data?.palette_json)
-                    ? data.palette_json.map((p: any) => p?.hex).filter(Boolean).slice(0, 4)
-                    : [];
-                  const categories = Array.isArray(data?.tags) ? data.tags.slice(0, 6) : [];
+                if (!coverRequestedRef.current && shouldGenerate) {
+                    coverRequestedRef.current = true;
+                    try {
+                    const thumbs = Array.isArray(data?.images_json)
+                        ? data.images_json.map((img: any) => img?.thumb || img?.url).filter(Boolean).slice(0, 9)
+                        : [];
+                    const palette = Array.isArray(data?.palette_json)
+                        ? data.palette_json.map((p: any) => p?.hex).filter(Boolean).slice(0, 4)
+                        : [];
+                    const categories = Array.isArray(data?.tags) ? data.tags.slice(0, 6) : [];
 
-                  const res = await fetch('/api/generate-cover', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      boardId: mid,
-                      categories,
-                      thumbs,
-                      palette,
-                    }),
-                  });
-                  if (res.ok) {
-                    const j = await res.json();
-                    if (j?.cover_image_url) setCoverUrl(j.cover_image_url);
-                  } else {
-                    console.warn('generate-cover failed with status', res.status);
-                  }
-                } catch (e) {
-                  console.warn('generate-cover error:', e);
+                    const res = await fetch('/api/generate-cover', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                        boardId: mid,
+                        categories,
+                        thumbs,
+                        palette,
+                        }),
+                    });
+                    if (res.ok) {
+                        const j = await res.json();
+                        if (j?.cover_image_url) setCoverUrl(j.cover_image_url);
+                    } else {
+                        console.warn('generate-cover failed with status', res.status);
+                    }
+                    } catch (e) {
+                    console.warn('generate-cover error:', e);
+                    }
                 }
-              }
             }
         } catch (e) {
             console.error('moodboard 조회 에러:', e);
@@ -214,7 +214,6 @@ export default function SavePage() {
         title: mb.title || "무드보드",
         image_url: mb.cover_image_url,
         categories: mb.tags ?? [], // feed_posts.categories가 text[]라면 그대로 저장
-        likes: 0,
         is_public: true,
     };
 
@@ -231,7 +230,13 @@ export default function SavePage() {
         return;
     }
 
+    const { error: updateError } = await supabase
+      .from('moodboard')
+      .update({ is_public: true })
+      .eq('id', mid);
+
     alert("피드에 게시했어요!");
+    sessionStorage.removeItem('resultPageState');
     // 예: 피드 상세 페이지로 이동
     router.push(`/feed`);
     }, [router]);
