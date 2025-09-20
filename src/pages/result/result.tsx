@@ -8,7 +8,6 @@ import ColorPaletteBox from "../../components/section/result/ColorPaletteBox";
 import TitleBox from "../../components/section/result/TitleBox";
 import ExampleBox from "../../components/section/result/ExampleBox";
 import styles from "./result.module.css";
-import Header from "@/components/common/header/header";
 import RefreshButton from "../../components/section/result/RefreshButton";
 import SaveButton from "../../components/section/result/SaveButton";
 

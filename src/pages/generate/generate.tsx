@@ -220,7 +220,7 @@ function Home() {
         const rid = await saveToSupabase(result);
         console.log('%c✅ Supabase 저장 성공:', 'color: green; font-weight: bold;');
         if (rid) {
-            router.push(`/home/loading?rid=${encodeURIComponent(rid)}`);
+            router.push(`/generate/loading?rid=${encodeURIComponent(rid)}`);
         } else {
             console.error('❌ Request ID 생성 실패');
             alert('요청 ID 생성에 실패했습니다.');

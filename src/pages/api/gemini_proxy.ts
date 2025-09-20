@@ -4,23 +4,23 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const API_KEY = process.env.GEMINI_API_KEY;
 
 if (!API_KEY) {
-  throw new Error('GEMINI_API_KEY is not set in environment variables.');
+    throw new Error('GEMINI_API_KEY is not set in environment variables.');
 }
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Only POST method is allowed' });
-  }
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Only POST method is allowed' });
+    }
 
-  const { color, font, image } = req.body;
+    const { color, font, image } = req.body;
 
-  if (!color || !font || !image) {
-    return res.status(400).json({ error: 'Missing required fields: color, font, image' });
-  }
+    if (!color || !font || !image) {
+        return res.status(400).json({ error: 'Missing required fields: color, font, image' });
+    }
 
-  const prompt = `
+const prompt = `
 당신은 최신 디자인 트렌드와 색채 심리학에 정통하며, ColorHunt, Pinterest, Noonnu 데이터베이스에서 실제 검색 가능한 키워드를 기반으로 감성 무드보드를 기획하는 전문 컨설턴트입니다.
 
 [입력]
@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 colors: You are a professional color palette designer. Based on the following description, create a color palette with 4 HEX codes.
 
-image: 1 actual searchable image keyword with words that match the selected mood(By English, only one word)
+image: 선택된 무드에 맞는 한 단어로 된 실제 검색 가능한 이미지 키워드 1개
 
 font: 폰트 키워드 (제공 리스트 중 입력 키워드와 유사한 단어 1개 선택)
 
@@ -57,23 +57,23 @@ colors, image, font, sentences
 모든 세트는 겹치지 않도록 구성(폰트 제외), colors와 sentences는 배열로 구성할 것
 `;
 
-  try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = await response.text();
+    try {
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = await response.text();
 
-    // Extract JSON from the response
-    const match = text.match(/```json\s*([\s\S]+?)\s*```/);
-    const jsonStr = match ? match[1] : text;
+        // Extract JSON from the response
+        const match = text.match(/```json\s*([\s\S]+?)\s*```/);
+        const jsonStr = match ? match[1] : text;
 
-    const outputJson = JSON.parse(jsonStr);
-    
-    console.log("파싱된 JSON 응답 : ", outputJson)
+        const outputJson = JSON.parse(jsonStr);
+        
+        console.log("파싱된 JSON 응답 : ", outputJson)
 
-    return res.status(200).json(outputJson);
-  } catch (error) {
-    console.error('Error calling Gemini API:', error instanceof Error ? error.message : error);
-    return res.status(500).json({ error: 'Failed to call Gemini API' });
-  }
+        return res.status(200).json(outputJson);
+    } catch (error) {
+        console.error('Error calling Gemini API:', error instanceof Error ? error.message : error);
+        return res.status(500).json({ error: 'Failed to call Gemini API' });
+    }
 }
