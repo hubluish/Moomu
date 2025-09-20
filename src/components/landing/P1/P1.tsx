@@ -6,14 +6,14 @@ import './P1.css';
 
 const P1 = ({ openLoginModal }: P1Props) => {
   const images = [
-    '/assets/images/img1.png',
-    '/assets/images/img2.png',
-    '/assets/images/img3.png',
-    '/assets/images/img4.png',
-    '/assets/images/img5.png',
-    '/assets/images/img6.png',
-    '/assets/images/img7.png',
-    '/assets/images/img8.png'
+    '/assets/carousel/img1.png',
+    '/assets/carousel/img2.png',
+    '/assets/carousel/img3.png',
+    '/assets/carousel/img4.png',
+    '/assets/carousel/img5.png',
+    '/assets/carousel/img6.png',
+    '/assets/carousel/img7.png',
+    '/assets/carousel/img8.png'
   ];
   const visibleCount = 6;
   const slideWidth = 300;

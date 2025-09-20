@@ -17,7 +17,7 @@ const AVATAR_DARK = "/assets/icons/headerId-dark.png";
 const NAV_ITEMS = [
   { href: "/feed", label: "Explore Feeds" },
   { href: "/article", label: "Article" },
-  { href: "/generate", label: "Generate Moodboard" },
+  { href: "/generate/generate", label: "Generate Moodboard" },
 ];
 const getMode = (bg: string, loggedIn: boolean) => {
   if (bg === "dark") return loggedIn ? "dark-logged" : "dark";
