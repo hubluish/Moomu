@@ -14,12 +14,11 @@ export interface Article {
 }
 
 export interface ArticleFromAPI {
-  id: string | number;
+  _id: string; // Assuming _id is always a string from the API
   title: string;
   content: string;
   category: string;
   date: string;
-  slug: string;
   imageUrl?: string;
   description?: string;
   views?: number;

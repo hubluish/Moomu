@@ -10,6 +10,7 @@ import ArticleCreate from "@/components/section/article/create/ArticleCreate";
 import styles from "../../pages/article/article.module.css";
 import confetti from "canvas-confetti";
 import { useSearchParams } from "next/navigation";
+import { toSlug } from "@/utils/slug";
 import {
   Article,
   ArticleFromAPI,
@@ -19,7 +20,6 @@ const TAB_LABELS = ["전체", "UI", "카드뉴스", "포스터", "용어사전",
 
 export default function ArticleClient() {
   const [activeTab, setActiveTab] = useState(0); // 현재 선택된 탭 인덱스
-  const [search, setSearch] = useState(""); // 실제 검색어
   const [inputValue, setInputValue] = useState(""); // 검색 입력값
   const [articles, setArticles] = useState<ArticleFromAPI[]>([]); // 전체 게시글 목록
   const [showCreate, setShowCreate] = useState(false);
@@ -51,12 +51,12 @@ export default function ArticleClient() {
       .then((data) => setArticles(data));
   }, []);
 
-  const articlesForTabPage: Article[] = articles.map((article) => ({
-    ...article,
-    id: article.id,
-    slug: article.slug,
-    description: article.description ?? "",
-    imageUrl: article.imageUrl ?? "",
+  const articlesForTabPage: Article[] = articles.map(({ _id, ...rest }) => ({
+    id: _id,
+    slug: toSlug(rest.title),
+    ...rest,
+    description: rest.description ?? "",
+    imageUrl: rest.imageUrl ?? "",
   }));
 
   // URL 파라미터(category)로 탭 자동 선택
@@ -76,9 +76,6 @@ export default function ArticleClient() {
       : articles.filter(
           (article) => article.category === TAB_LABELS[activeTab]
         );
-
-  // 검색 실행 (검색 아이콘 또는 엔터키)
-  const handleSearch = () => setSearch(inputValue);
 
   // R 세 번 누르면 글쓰기 모달 열기
   useEffect(() => {
@@ -132,7 +129,7 @@ export default function ArticleClient() {
         <SearchField
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          onSearch={handleSearch}
+          onSearch={() => {}} // handleSearch removed, provide an empty function or remove prop if not needed
         />
         {/* 탭 메뉴 */}
         <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -146,7 +143,7 @@ export default function ArticleClient() {
           <TabPage
             tabIdx={activeTab}
             articles={articlesForTabPage}
-            search={search}
+            search={inputValue}
           />
         )}
         {/* 게시글 없을 때 메시지 */}

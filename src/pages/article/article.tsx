@@ -10,9 +10,12 @@ import ArticleCreate from "@/components/section/article/create/ArticleCreate";
 import styles from "./article.module.css";
 import confetti from "canvas-confetti";
 import { useSearchParams } from "next/navigation";
+import { toSlug } from "@/utils/slug";
+import { ArticleFromAPI } from "@/components/section/article/types/article";
 
 interface Article {
-  _id: string;
+  id: string;
+  slug: string;
   title: string;
   content: string;
   category: string;
@@ -25,9 +28,8 @@ const TAB_LABELS = ["전체", "UI", "카드뉴스", "포스터", "용어사전",
 
 export default function Article() {
   const [activeTab, setActiveTab] = useState(0); // 현재 선택된 탭 인덱스
-  const [search, setSearch] = useState(""); // 실제 검색어
   const [inputValue, setInputValue] = useState(""); // 검색 입력값
-  const [articles, setArticles] = useState<Article[]>([]); // 전체 게시글 목록
+  const [articles, setArticles] = useState<ArticleFromAPI[]>([]); // 전체 게시글 목록
   const [showCreate, setShowCreate] = useState(false);
   const [, setRCount] = useState(0);
   const rTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -51,12 +53,18 @@ export default function Article() {
   };
 
   // 게시글 목록 불러오기
-  useEffect(() => {
-    fetch("/api/articles")
-      .then(res => res.json())
-      .then(data => setArticles(data));
-  }, []);
-
+        useEffect(() => {
+          fetch("/api/articles")
+            .then(res => res.json())
+            .then(data => {
+              const transformedData = data.map((article: ArticleFromAPI) => ({
+                id: article._id,
+                slug: toSlug(article.title),
+                ...article,
+              }));
+              setArticles(transformedData);
+            });
+        }, []);
   // URL 파라미터(category)로 탭 자동 선택
   useEffect(() => {
     if (!searchParams) return;
@@ -71,9 +79,6 @@ export default function Article() {
   const filteredArticles = activeTab === 0
     ? articles
     : articles.filter(article => article.category === TAB_LABELS[activeTab]);
-
-  // 검색 실행 (검색 아이콘 또는 엔터키)
-  const handleSearch = () => setSearch(inputValue);
 
   // R 세 번 누르면 글쓰기 모달 열기
   useEffect(() => {
@@ -126,7 +131,7 @@ export default function Article() {
         <SearchField
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}
-          onSearch={handleSearch}
+          onSearch={() => {}} // handleSearch removed, provide an empty function or remove prop if not needed
         />
         {/* 탭 메뉴 */}
         <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -139,12 +144,14 @@ export default function Article() {
         ) : (
           <TabPage
             tabIdx={activeTab}
-            articles={articles.map(article => ({
-              ...article,
-              imageUrl: article.imageUrl ?? "",
-              description: article.description ?? "",
-            }))}
-            search={search}
+                                            articles={articles.map(({ _id, ...rest }) => ({
+                                              id: _id,
+                                              slug: toSlug(rest.title),
+                                              ...rest,
+                                              imageUrl: rest.imageUrl ?? "",
+                                              description: rest.description ?? "",
+                                            }))}
+            search={inputValue}
           />
         )}
         {/* 게시글 없을 때 메시지 */}
