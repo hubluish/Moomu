@@ -76,16 +76,30 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body, * {
+  cursor: url('/assets/images/cursor2.svg'), auto;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+button:hover, .BtnContainer:hover, .BtnText:hover, a:hover {
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
 }
+
+.p4-image, .image-card, .image-placeholder {
+  cursor: url('/assets/images/cursor2.svg'), auto;
+}
+
+
+.image-card:hover {
+  cursor: url('/assets/images/cursor1.svg'), pointer;
+}
+
+
 
 .markdown-title1 {
   font: var(--text-title1);

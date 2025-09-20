@@ -3,6 +3,8 @@ import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./big.module.css";
 import { useRouter } from "next/navigation";
+import { supabase } from '@/utils/supabase';
+import { toSlug } from '@/utils/slug';
 
 interface ArticleCardProps {
   id: string | number;

@@ -9,6 +9,10 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+/src/pages/moomuintro-1/node_modules/
+**/node_modules/
+
+
 
 # testing
 /coverage

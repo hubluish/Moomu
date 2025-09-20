@@ -141,17 +141,11 @@ export default function Article() {
             tabIdx={activeTab}
             articles={articles.map(article => ({
               ...article,
-              id: article._id, // ✅ _id를 id로 바꿔줌
-              slug: article.title
-                .toLowerCase()
-                .replace(/\s+/g, "-") // 공백을 -로
-                .replace(/[^\w-]+/g, ""), // 특수문자 제거
               imageUrl: article.imageUrl ?? "",
               description: article.description ?? "",
             }))}
             search={search}
           />
-
         )}
         {/* 게시글 없을 때 메시지 */}
         {activeTab !== 0 && filteredArticles.length === 0 ? (

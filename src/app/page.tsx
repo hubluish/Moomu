@@ -1,8 +1,8 @@
 "use client";
 
 import "@/app/globals.css";
-import HomeIntro from "@/pages/homeIntro/HomeIntro"
+import LandingPage from "@/pages/landing/LandingPage";
 
 export default function Home() {
-  return <HomeIntro />
+  return <LandingPage />;
 }
