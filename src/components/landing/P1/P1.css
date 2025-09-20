@@ -8,6 +8,11 @@
   margin: 0px auto 50px auto;
   width: 100%;
   max-width: 1400px;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 }
 
 .P1-title-container {
@@ -20,7 +25,7 @@
   flex-direction: column;
 }
 
-.p1-title{
+.p1-title {
   display: flex;
   width: 100%;
   height: 150px;
@@ -28,7 +33,7 @@
   justify-content: center;
   flex-shrink: 0;
 
-  color: var(--main, #3D38F5);
+  color: var(--main, #3d38f5);
   text-align: center;
   font-family: MuseoModerno;
   font-size: clamp(96px, 20vw, 229.524px);
@@ -40,8 +45,8 @@
   overflow: visible;
 }
 
-.p1-subtitle{
-  color: var(--background, #FEFEFF);
+.p1-subtitle {
+  color: var(--background, #fefeff);
   text-align: center;
   width: auto;
   height: auto;
@@ -54,7 +59,6 @@
   font-weight: 800;
   line-height: normal;
 }
-
 
 .image-gallery {
   display: flex;
@@ -129,16 +133,16 @@
   justify-content: center;
   align-items: center;
   gap: 9.429px;
-  border-top: 1px solid var(--background, #FEFEFF);
-  border-bottom: 1px solid var(--background, #FEFEFF);
+  border-top: 1px solid var(--background, #fefeff);
+  border-bottom: 1px solid var(--background, #fefeff);
 }
 
-.description{
+.description {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  color: var(--background, #FEFEFF);
+  color: var(--background, #fefeff);
 
   /* body1 */
   font-family: Pretendard;
@@ -148,7 +152,7 @@
   line-height: normal;
 }
 
-.BtnContainer{
+.BtnContainer {
   display: flex;
   width: 209px;
   height: 57px;
@@ -157,7 +161,7 @@
   align-items: center;
   gap: 9.429px;
   border-radius: 30px;
-  background: var(--start, linear-gradient(90deg, #6047AC 0%, #3D38F5 100%));
+  background: var(--start, linear-gradient(90deg, #6047ac 0%, #3d38f5 100%));
 }
 
 .BtnText {
@@ -166,7 +170,7 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  color: var(--background, #FEFEFF);
+  color: var(--background, #fefeff);
   background: none;
-  border:none;
+  border: none;
 }
