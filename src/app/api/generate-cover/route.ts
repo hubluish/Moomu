@@ -33,8 +33,9 @@ const supabase = createClient(
         }),
         cache: "no-store",
       });
-    } catch (e: any) {
-      return NextResponse.json({ error: `OG fetch failed: ${e?.message || e}` }, { status: 500 });
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      return NextResponse.json({ error: `OG fetch failed: ${message}` }, { status: 500 });
     }
 
     if (!ogRes.ok) {

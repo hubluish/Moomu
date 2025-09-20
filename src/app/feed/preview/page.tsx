@@ -23,7 +23,7 @@ type MoodboardRow = {
 
 export default function FeedPreviewPage() {
   const params = useSearchParams();
-  const id = params.get("id");
+  const id = params?.get("id");
   const [board, setBoard] = useState<MoodboardRow | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,20 +48,25 @@ export default function FeedPreviewPage() {
     return () => { cancelled = true; };
   }, [id]);
 
-  const geminiFromBoard: GeminiSet[] | null = board
-    ? [{ colors: (board.palette_json || []).map((p: any) => p?.hex).filter(Boolean), image: "", font: "", sentences: board.concept_text || [] }]
+  const geminiFromBoard: GeminiSet | null = board
+    ? {
+        colors: (board.palette_json || []).map((p: any) => p?.hex).filter(Boolean),
+        image: "",
+        font: "",
+        sentences: board.concept_text || [],
+      }
     : null;
 
   if (!id) {
-    return <div style={{ padding: 24 }}>잘못된 접근입니다. id 파라미터가 필요합니다.</div>;
+    return <div style={{ padding: 24 }}>Invalid request. The "id" query parameter is required.</div>;
   }
 
   if (loading) {
-    return <div style={{ padding: 24 }}>불러오는 중…</div>;
+    return <div style={{ padding: 24 }}>Loading moodboard...</div>;
   }
 
   if (error) {
-    return <div style={{ padding: 24 }}>오류: {error}</div>;
+    return <div style={{ padding: 24 }}>Error: {error}</div>;
   }
 
   return (
@@ -89,7 +94,7 @@ export default function FeedPreviewPage() {
 
               <div className={`${styles.section} ${styles.conceptBox}`}>
                 <div className={styles.conceptCard}>
-                  <ConceptBox geminiResult={geminiFromBoard} />
+                  <ConceptBox geminiSet={geminiFromBoard} />
                 </div>
               </div>
 
@@ -113,7 +118,7 @@ export default function FeedPreviewPage() {
               </div>
 
               <div className={`${styles.section} ${styles.paletteBox}`}>
-                <ColorPaletteBox geminiResult={geminiFromBoard} title="COLOR" />
+                <ColorPaletteBox geminiSet={geminiFromBoard} title="COLOR" />
               </div>
 
               <div className={`${styles.section} ${styles.keywordBox}`}>

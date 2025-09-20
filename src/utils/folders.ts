@@ -56,7 +56,7 @@ export const getMoodboardsByFolder = async (folderId: string) => {
     return [];
   }
 
-  return data.map((item) => item.moodboard).filter(Boolean);
+  return data.flatMap((item) => item.moodboard).filter(Boolean);
 };
 
 // 특정 폴더에서 특정 무드보드와의 연결을 제거합니다.

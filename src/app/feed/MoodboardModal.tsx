@@ -85,8 +85,13 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     if (e.target === backdropRef.current) onClose();
   };
 
-  const geminiFromBoard: GeminiSet[] | null = board
-    ? [{ colors: (board.palette_json || []).map((p: any) => p?.hex).filter(Boolean), image: "", font: "", sentences: board.concept_text || [] }]
+  const geminiFromBoard: GeminiSet | null = board
+    ? {
+        colors: (board.palette_json || []).map((p: any) => p?.hex).filter(Boolean),
+        image: "",
+        font: "",
+        sentences: board.concept_text || [],
+      }
     : null;
 
   const modalContent = (
@@ -111,6 +116,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
             >
               새 탭에서 열기
             </a>
+
           )}
           <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
             <img src="/assets/icons/material-symbols_close-rounded.svg" alt="" aria-hidden="true" />
@@ -137,7 +143,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
 
             <div className={`${styles.section} ${styles.conceptBox}`}>
               <div className={styles.conceptCard}>
-                <ConceptBox geminiResult={geminiFromBoard} />
+                <ConceptBox geminiSet={geminiFromBoard} />
               </div>
             </div>
 
@@ -161,7 +167,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
             </div>
 
             <div className={`${styles.section} ${styles.paletteBox}`}>
-              <ColorPaletteBox geminiResult={geminiFromBoard} title="COLOR" />
+              <ColorPaletteBox geminiSet={geminiFromBoard} title="COLOR" />
             </div>
 
             <div className={`${styles.section} ${styles.keywordBox}`}>
@@ -182,4 +188,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
   // Use portal so position: fixed is relative to viewport, not any transformed ancestor
   return mounted ? createPortal(modalContent, document.body) : null;
 }
+
+
+
 
