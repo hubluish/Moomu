@@ -26,11 +26,11 @@ export default function ArticleDetail() {
   useEffect(() => {
     if (!safeSlug) return;
     fetch(`/api/articles?slug=${safeSlug}`)
-      .then(res => {
+      .then((res) => {
         if (!res.ok) throw new Error("게시글을 불러오지 못했습니다.");
         return res.json();
       })
-      .then(data => setArticle(data))
+      .then((data) => setArticle(data))
       .catch(() => setArticle(null));
   }, [safeSlug]);
 
@@ -95,7 +95,9 @@ export default function ArticleDetail() {
         <div className={styles.keywordSection}>
           <div className={styles.keywordBox}>
             <div className={styles.keywordTitle}>추천 키워드</div>
-            <div className={styles.keywordDesc}>무드보드 제작시 활용해보세요!</div>
+            <div className={styles.keywordDesc}>
+              무드보드 제작시 활용해보세요!
+            </div>
             <div className={styles.keywordList}>
               {article.keywords.map((kw, i) => (
                 <div

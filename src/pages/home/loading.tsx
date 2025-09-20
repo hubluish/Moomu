@@ -31,42 +31,18 @@ export default function LoadingPage() {
 
         // 3초 후에 결과 페이지로 이동
         const timer = setTimeout(() => {
-            const geminiResult = localStorage.getItem('gemini_result');
-            if (geminiResult) {
-                try {
-                    const data = JSON.parse(geminiResult);
-                    console.log('Gemini 결과:', data); // 디버깅용 로그
+            if (typeof window === 'undefined') return;
 
-                    // 데이터가 배열이 아닌 경우 배열로 변환
-                    const dataArray = Array.isArray(data) ? data : [data];
-                    console.log('변환된 데이터:', dataArray);
+            const sp = new URLSearchParams(window.location.search);
+            const rid = sp.get('rid');
 
-                    // 각 세트에서 image 필드 추출
-                    const imageKeywords = dataArray.reduce((acc: string[], set) => {
-                        if (set && typeof set === 'object') {
-                            // image 필드가 있는지 확인
-                            if ('image' in set && set.image) {
-                                acc.push(set.image);
-                            }
-                        }
-                        return acc;
-                    }, []);
-
-                    console.log('추출된 이미지 키워드:', imageKeywords); // 디버깅용 로그
-
-                    if (imageKeywords.length > 0) {
-                        localStorage.setItem('image_keywords', JSON.stringify(imageKeywords));
-                        router.push('/result/result');
-                    } else {
-                        console.error('이미지 키워드를 찾을 수 없습니다.');
-                        // 디버깅을 위해 전체 데이터 구조 출력
-                        console.log('전체 데이터 구조:', JSON.stringify(dataArray, null, 2));
-                    }
-                } catch (error) {
-                    console.error('Gemini 결과 파싱 에러:', error);
-                }
+            if (rid) {
+                // 결과 페이지로 rid를 전달하며 이동
+                router.push(`/result/result?rid=${encodeURIComponent(rid)}`);
             } else {
-                console.error('Gemini 결과가 없습니다.');
+                console.error('Loading page: No request_id (rid) found in URL. Redirecting to home.');
+                alert('오류가 발생했습니다. 홈으로 이동합니다.');
+                router.push('/');
             }
         }, 3000);
 

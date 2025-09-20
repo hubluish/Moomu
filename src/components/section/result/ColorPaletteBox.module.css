@@ -1,0 +1,108 @@
+
+
+    .container {
+    border-radius: 0;
+    border: 0.5px solid var(--glass, #C5C2FF);
+    background: var(--glass_backFill, rgba(255, 255, 255, 0.02));
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25) inset;
+    width: 519px;
+    backdrop-filter: blur(6px);
+    height: 279px;
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    border-radius: 11.948px;
+    }
+
+    .title {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #fff;
+    font-family: 'Pretendard';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 15px;
+    }
+
+    .content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    height: auto;
+    margin-top: 16px;
+    }
+
+    .colorItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    }
+
+    .colorBlock {
+    width: 119px;
+    height: 172px;
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    }
+
+    .colorCode {
+    margin-top: 20px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    }
+
+    .toast {
+    position: fixed;
+    left: 50%;
+    top: 32px;
+    transform: translateX(-50%);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 30px;
+    width: 235px;
+    height: 35px;
+    border-radius: 80px;
+    background: rgba(233, 233, 233, 0.50);
+    box-shadow: 0 1px 44px 0 rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+
+    /* hide original inline text, use ::before */
+    font-size: 0;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 9999;
+    }
+
+    .toast::before {
+    content: '클립보드에 복사되었습니다';
+    color: #FFF;
+    font-family: Pretendard, system-ui, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    white-space: nowrap;
+    }
+
+    .show {
+    opacity: 1;
+    }

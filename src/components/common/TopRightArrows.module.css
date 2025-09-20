@@ -1,0 +1,36 @@
+.container {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 40px; /* spec says 40px structure */
+  height: 20px;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  width: 14px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+
+.icon {
+  width: 10px; /* updated size */
+  height: 16px;
+}

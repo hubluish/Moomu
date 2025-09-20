@@ -41,7 +41,6 @@
     top: 70px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1000;
     transition: transform 0.3s ease, opacity 0.3s ease;
     opacity: 0;
     pointer-events: none;

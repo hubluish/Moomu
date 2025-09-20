@@ -1,0 +1,8 @@
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.header}>
+          <div className={styles.title}>{board?.title || "무드보드"}</div>
+          <button className={styles.closeBtn} onClick={onClose} aria-label="?�기">
+            ×
+          </button>
+        </div>
+        <div className={styles.content}>

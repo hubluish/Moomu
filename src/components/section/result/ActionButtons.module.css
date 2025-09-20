@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  gap: 20px; /* 필요시 조절 */
+  align-items: flex-start;
+}
+
+/* 버튼 래퍼: 아이콘(원) + 라벨 수직 정렬 */
+.btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn:focus-visible {
+  outline: 2px solid rgba(61, 56, 245, 0.35);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+/* 44 x 44 원형 배경 (요구사항 반영) */
+.iconCircle {
+  width: 44px;
+  height: 44px;
+  aspect-ratio: 1 / 1;
+  border-radius: 44px;
+  border: 0.181px solid rgba(61, 56, 245, 0.10); /* var(--button) 사용 시 교체 */
+  background: rgba(255, 255, 255, 0.12);
+  display: grid;
+  place-items: center;
+  transition: transform 120ms ease;
+}
+
+/* 살짝 인터랙션 느낌 */
+.btn:hover .iconCircle {
+  transform: translateY(-1px);
+}
+
+.label {
+  font-size: 12px;
+  line-height: 1;
+  color: #ffffff; /* 흰색 소문자 라벨 */
+  white-space: nowrap;
+  user-select: none;
+}

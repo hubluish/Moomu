@@ -1,0 +1,74 @@
+.wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.button {
+    position: relative;
+    width: 39px;
+    height: 39px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden; /* clip blur to circle */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.button svg:first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.icon {
+    width: 21px;
+    height: 21px;
+    aspect-ratio: 1/1;
+    z-index: 1;
+}
+
+/* Hover tooltip below the button */
+.tooltip {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    height: 17.829px;
+    padding: 1.371px 4.571px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 4.571px;
+    background: rgba(254, 254, 255, 0.70);
+    color: #030303;
+    text-align: center;
+    font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    font-size: 10.057px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 120ms ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.wrap:hover .tooltip,
+.wrap:focus-within .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
