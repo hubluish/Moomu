@@ -3,6 +3,7 @@
 import styles from './PlanUpgrade.module.css';
 import FreeCard from '@/components/section/planupgrade/FreeCard';
 import PaidCard from '@/components/section/planupgrade/PaidCard';
+import Image from 'next/image';
 
 export default function PlanUpgrade() {
     return (
@@ -11,11 +12,13 @@ export default function PlanUpgrade() {
             끝없는 당신의 아이디어를{' '}
             <span className={styles.wordWrap}>
             <span className={styles.word}>무한하게</span>
-            <img
+            <Image
                 className={styles.decoration}
                 src="/assets/icons/logo_translucent.svg"
                 alt=""
                 aria-hidden="true"
+                width={163}
+                height={80}
             />
             </span>
         </h1>

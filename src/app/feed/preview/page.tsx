@@ -75,7 +75,11 @@ export default function FeedPreviewPage() {
     : null;
 
   if (!id) {
-    return <div style={{ padding: 24 }}>Invalid request. The "id" query parameter is required.</div>;
+    return (
+      <div style={{ padding: 24 }}>
+        Invalid request. The &quot;id&quot; query parameter is required.
+      </div>
+    );
   }
 
   if (loading) {
@@ -95,7 +99,11 @@ export default function FeedPreviewPage() {
           <div className={styles.scaledRoot}>
             <div className={styles.gridContainer}>
               <div className={`${styles.section} ${styles.titleBox}`}>
-                <TitleBox readOnly compact value={(board?.title || "").trim() || <span style={{ whiteSpace: 'pre-line' }}>NEW\nMOODBOARD</span>} />
+                <TitleBox
+                  readOnly
+                  compact
+                  value={(board?.title || "").trim() || 'NEW\nMOODBOARD'}
+                />
               </div>
 
               <div className={`${styles.section} ${styles.imageBox}`}>

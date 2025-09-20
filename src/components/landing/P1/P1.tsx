@@ -15,7 +15,6 @@ const P1 = ({ openLoginModal }: P1Props) => {
     '/assets/carousel/img7.png',
     '/assets/carousel/img8.png'
   ];
-  const visibleCount = 6;
   const slideWidth = 300;
   const gap = 10;
 

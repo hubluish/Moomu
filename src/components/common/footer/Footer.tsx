@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Footer.css';
+import Image from 'next/image';
 
 const Footer = () => {
   const footerSections = [
@@ -46,7 +47,13 @@ const Footer = () => {
       <div className="footer-top">
         <div className="logo">Moomu</div>
         <a className="social-link" href="https://instagram.com" target="_blank" rel="noreferrer noopener">
-          <img src="/assets/images/instaIcon.svg" alt="instagram" className="social-icon" />
+          <Image
+            src="/assets/images/instaIcon.svg"
+            alt="instagram"
+            className="social-icon"
+            width={25}
+            height={25}
+          />
         </a>
       </div>
 
