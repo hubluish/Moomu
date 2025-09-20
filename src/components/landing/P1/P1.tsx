@@ -1,19 +1,45 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/utils/supabase";
+
 interface P1Props {
   openLoginModal?: () => void;
 }
-import './P1.css';
+import "./P1.css";
 
 const P1 = ({ openLoginModal }: P1Props) => {
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session) {
+        setIsLoggedIn(true);
+      }
+    };
+    checkLoginStatus();
+  }, []);
+
+  const handleStartClick = () => {
+    if (isLoggedIn) {
+      router.push("/generate/generate");
+    } else {
+      openLoginModal?.();
+    }
+  };
+
   const images = [
-    '/assets/carousel/img1.png',
-    '/assets/carousel/img2.png',
-    '/assets/carousel/img3.png',
-    '/assets/carousel/img4.png',
-    '/assets/carousel/img5.png',
-    '/assets/carousel/img6.png',
-    '/assets/carousel/img7.png',
-    '/assets/carousel/img8.png'
+    "/assets/carousel/img1.png",
+    "/assets/carousel/img2.png",
+    "/assets/carousel/img3.png",
+    "/assets/carousel/img4.png",
+    "/assets/carousel/img5.png",
+    "/assets/carousel/img6.png",
+    "/assets/carousel/img7.png",
+    "/assets/carousel/img8.png",
   ];
   const slideWidth = 300;
   const gap = 10;
@@ -31,7 +57,7 @@ const P1 = ({ openLoginModal }: P1Props) => {
       if (lastTsRef.current == null) lastTsRef.current = ts;
       const dt = (ts - lastTsRef.current) / 1000;
       lastTsRef.current = ts;
-      setOffset(prev => {
+      setOffset((prev) => {
         let next = prev + speedPxPerSec * dt;
         if (next >= track) next -= track;
         return next;
@@ -49,32 +75,28 @@ const P1 = ({ openLoginModal }: P1Props) => {
   return (
     <section className="P1">
       <div className="P1-title-container">
-        <div className="p1-subtitle">
-          누구나 디자인을 쉽게
-        </div>
-        <div className="p1-title">
-          Moomu
-        </div>
+        <div className="p1-subtitle">누구나 디자인을 쉽게</div>
+        <div className="p1-title">Moomu</div>
       </div>
 
       <div
         className="image-gallery"
         style={{
-          position: 'relative',
-          height: '180px',
-          margin: '0 auto',
-          overflow: 'hidden',
-          borderRadius: '16px',
+          position: "relative",
+          height: "180px",
+          margin: "0 auto",
+          overflow: "hidden",
+          borderRadius: "16px",
         }}
       >
         <div
           style={{
-            display: 'flex',
+            display: "flex",
             gap: `${gap}px`,
-            transition: 'none',
+            transition: "none",
             transform: `translateX(-${offset}px)`,
-            height: '100%',
-            willChange: 'transform',
+            height: "100%",
+            willChange: "transform",
           }}
         >
           {loopImages.map((src, idx) => (
@@ -82,17 +104,17 @@ const P1 = ({ openLoginModal }: P1Props) => {
               key={idx}
               style={{
                 width: `${slideWidth}px`,
-                height: '100%',
+                height: "100%",
                 flexShrink: 0,
-                borderRadius: '12px',
-                overflow: 'hidden',
-                background: '#ddd',
+                borderRadius: "12px",
+                overflow: "hidden",
+                background: "#ddd",
               }}
             >
               <img
                 src={src}
                 alt={`image${(idx % images.length) + 1}`}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 draggable={false}
               />
             </div>
@@ -102,11 +124,16 @@ const P1 = ({ openLoginModal }: P1Props) => {
 
       <div className="p1-description">
         <div className="p1-description-container">
-          <p className="description">무한한 아이디어를 시각화하는 무드보드 제작 서비스, Moomu</p>
+          <p className="description">
+            무한한 아이디어를 시각화하는 무드보드 제작 서비스, Moomu
+          </p>
         </div>
 
         <div className="BtnContainer gradient-button">
-          <button className="BtnText gradient-button" onClick={openLoginModal}>
+          <button
+            className="BtnText gradient-button"
+            onClick={handleStartClick}
+          >
             지금 바로 시작하기
           </button>
         </div>
@@ -116,7 +143,3 @@ const P1 = ({ openLoginModal }: P1Props) => {
 };
 
 export default P1;
-
-
-
-
