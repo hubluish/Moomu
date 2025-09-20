@@ -218,8 +218,20 @@ export default function ResultPage() {
       console.error(e);
       alert("저장 중 오류가 발생했습니다.");
     }
-  }, [geminiResult, currentIndex, resolvedFont, visibleImages, title, selectedTags, router]);
-
+  }, [
+    geminiResult,
+    currentIndex,
+    resolvedFont,
+    visibleImages,
+    title,
+    selectedTags,
+    router,
+    revealedCount,
+    fontIndex,
+    conceptIndex,
+    colorIndex,
+  ]);
+  
   // Persist state to sessionStorage whenever it changes
   useEffect(() => {
     if (!loading) {
