@@ -16,19 +16,33 @@ type Props = {
   onClose: () => void;
 };
 
+interface Image {
+  thumb?: string;
+  url?: string;
+}
+
+interface PaletteColor {
+  hex?: string;
+}
+
+interface Font {
+  image_link?: string;
+  link?: string;
+  name?: string;
+}
+
 type MoodboardRow = {
   id: string;
   title: string | null;
   cover_image_url: string | null;
   tags: string[] | null;
-  images_json?: any;
-  palette_json?: any;
-  fonts_json?: any;
+  images_json?: Image[];
+  palette_json?: PaletteColor[];
+  fonts_json?: Font[];
   concept_text?: string[] | null;
 };
 
 export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
-  const [loading, setLoading] = useState(false);
   const [board, setBoard] = useState<MoodboardRow | null>(null);
   const backdropRef = useRef<HTMLDivElement | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -38,15 +52,12 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     let cancelled = false;
     const run = async () => {
       try {
-        setLoading(true);
         const res = await fetch(`/api/feed/moodboard?id=${encodeURIComponent(moodboardId)}`, { cache: "no-store" });
         if (!res.ok) throw new Error(`status ${res.status}`);
         const j = await res.json();
         if (!cancelled) setBoard(j.moodboard as MoodboardRow);
       } catch (e) {
         console.error("[FeedModal] failed to load moodboard:", e);
-      } finally {
-        if (!cancelled) setLoading(false);
       }
     };
     run();
@@ -87,7 +98,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
 
   const geminiFromBoard: GeminiSet | null = board
     ? {
-        colors: (board.palette_json || []).map((p: any) => p?.hex).filter(Boolean),
+        colors: (board.palette_json || []).map((p: PaletteColor) => p?.hex).filter(Boolean) as string[],
         image: "",
         font: "",
         sentences: board.concept_text || [],
@@ -133,7 +144,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
             <div className={`${styles.section} ${styles.imageBox}`}>
               <div className={styles.boxTitle}>IMAGES</div>
               <div className={styles.imageGrid}>
-                {(Array.isArray(board?.images_json) ? board!.images_json! : []).slice(0, 9).map((img: any, idx: number) => (
+                {(Array.isArray(board?.images_json) ? board!.images_json! : []).slice(0, 9).map((img: Image, idx: number) => (
                   <div className={styles.imageItem} key={idx}>
                     <img src={img?.thumb || img?.url} alt={`image-${idx}`} />
                   </div>
@@ -151,7 +162,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
               <div className={styles.fontCard}>
                 <div className={styles.boxTitle}>FONT</div>
                 <div className={styles.fontList}>
-                  {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: any, i: number) => (
+                  {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: Font, i: number) => (
                     f?.image_link ? (
                       <a key={i} href={f?.link || '#'} target="_blank" rel="noopener noreferrer">
                         <img src={f.image_link} alt={f?.name || 'font'} className={styles.fontImg} />

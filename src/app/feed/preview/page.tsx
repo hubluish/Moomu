@@ -10,14 +10,29 @@ import KeywordBox from "@/components/section/result/KeywordBox";
 import ExampleBox from "@/components/section/result/ExampleBox";
 import type { GeminiSet } from "@/types/result";
 
+interface Image {
+  thumb?: string;
+  url?: string;
+}
+
+interface PaletteColor {
+  hex?: string;
+}
+
+interface Font {
+  image_link?: string;
+  link?: string;
+  name?: string;
+}
+
 type MoodboardRow = {
   id: string;
   title: string | null;
   cover_image_url: string | null;
   tags: string[] | null;
-  images_json?: any;
-  palette_json?: any;
-  fonts_json?: any;
+  images_json?: Image[];
+  palette_json?: PaletteColor[];
+  fonts_json?: Font[];
   concept_text?: string[] | null;
 };
 
@@ -38,8 +53,9 @@ export default function FeedPreviewPage() {
         if (!res.ok) throw new Error(`status ${res.status}`);
         const j = await res.json();
         if (!cancelled) setBoard(j.moodboard as MoodboardRow);
-      } catch (e: any) {
-        if (!cancelled) setError(e?.message || "Failed to load");
+      } catch (e: unknown) {
+        const message = e instanceof Error ? e.message : String(e);
+        if (!cancelled) setError(message || "Failed to load");
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -50,7 +66,7 @@ export default function FeedPreviewPage() {
 
   const geminiFromBoard: GeminiSet | null = board
     ? {
-        colors: (board.palette_json || []).map((p: any) => p?.hex).filter(Boolean),
+        colors: (board.palette_json || []).map((p: PaletteColor) => p?.hex).filter(Boolean) as string[],
         image: "",
         font: "",
         sentences: board.concept_text || [],
@@ -84,7 +100,7 @@ export default function FeedPreviewPage() {
               <div className={`${styles.section} ${styles.imageBox}`}>
                 <div className={styles.boxTitle}>IMAGES</div>
                 <div className={styles.imageGrid}>
-                  {(Array.isArray(board?.images_json) ? board!.images_json! : []).slice(0, 9).map((img: any, idx: number) => (
+                  {(Array.isArray(board?.images_json) ? board!.images_json! : []).slice(0, 9).map((img: Image, idx: number) => (
                     <div className={styles.imageItem} key={idx}>
                       <img src={img?.thumb || img?.url} alt={`image-${idx}`} />
                     </div>
@@ -102,7 +118,7 @@ export default function FeedPreviewPage() {
                 <div className={styles.fontCard}>
                   <div className={styles.boxTitle}>FONT</div>
                   <div className={styles.fontList}>
-                    {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: any, i: number) => (
+                    {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: Font, i: number) => (
                       f?.image_link ? (
                         <a key={i} href={f?.link || '#'} target="_blank" rel="noopener noreferrer">
                           <img src={f.image_link} alt={f?.name || 'font'} className={styles.fontImg} />

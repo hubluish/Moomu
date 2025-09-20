@@ -235,7 +235,7 @@ export default function Header() {
                   {userName && <UserName>{userName}</UserName>}
                   {showDropdown && (
                     <Dropdown $mode={headerMode}>
-                      <DropdownItem href="/my_id">회원정보 수정</DropdownItem>
+                      <DropdownItem href="/mypage/moodboard">마이페이지</DropdownItem>
                       <DropdownButton onClick={handleLogout}>로그아웃</DropdownButton>
                     </Dropdown>
                   )}

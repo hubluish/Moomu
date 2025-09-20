@@ -12,6 +12,14 @@ interface PexelsPhoto {
   photographer_url?: string;
 }
 
+interface MappedPhoto {
+  thumbnail_url: string;
+  pin_url: string;
+  alt: string;
+  photographer: string;
+  photographer_url: string;
+}
+
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const q = searchParams.get('q');
@@ -51,7 +59,7 @@ export async function GET(req: Request) {
         photographer: p?.photographer ?? '',
         photographer_url: p?.photographer_url ?? '',
         }))
-        .filter((i) => i.thumbnail_url && i.pin_url);
+        .filter((i: MappedPhoto) => i.thumbnail_url && i.pin_url);
 
     const res = NextResponse.json({
         photos,

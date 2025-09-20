@@ -184,6 +184,8 @@ const TrashPage = ({}) => {
                     onRemoveFromFolder={() => {}}
                     onRestore={() => openRestoreConfirmModal(board.id)}
                     onPermanentDelete={() => openDeleteConfirmModal(board.id)}
+                    isPublic={false}
+                    onTogglePublic={() => {}}
                   />
                 );
               })}
