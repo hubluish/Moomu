@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import styles from "../MoodboardModal.module.css";
 import TitleBox from "@/components/section/result/TitleBox";
@@ -94,7 +95,7 @@ export default function FeedPreviewPage() {
           <div className={styles.scaledRoot}>
             <div className={styles.gridContainer}>
               <div className={`${styles.section} ${styles.titleBox}`}>
-                <TitleBox readOnly compact value={(board?.title || "").trim() || "NEW\nMOODBOARD"} />
+                <TitleBox readOnly compact value={(board?.title || "").trim() || <span style={{ whiteSpace: 'pre-line' }}>NEW\nMOODBOARD</span>} />
               </div>
 
               <div className={`${styles.section} ${styles.imageBox}`}>
@@ -102,7 +103,7 @@ export default function FeedPreviewPage() {
                 <div className={styles.imageGrid}>
                   {(Array.isArray(board?.images_json) ? board!.images_json! : []).slice(0, 9).map((img: Image, idx: number) => (
                     <div className={styles.imageItem} key={idx}>
-                      <img src={img?.thumb || img?.url} alt={`image-${idx}`} />
+                      <Image src={img?.thumb || img?.url || ''} alt={`image-${idx}`} width={130} height={130} unoptimized />
                     </div>
                   ))}
                 </div>
@@ -121,7 +122,7 @@ export default function FeedPreviewPage() {
                     {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: Font, i: number) => (
                       f?.image_link ? (
                         <a key={i} href={f?.link || '#'} target="_blank" rel="noopener noreferrer">
-                          <img src={f.image_link} alt={f?.name || 'font'} className={styles.fontImg} />
+                          <Image src={f.image_link || ''} alt={f?.name || 'font'} className={styles.fontImg} width={187} height={44} unoptimized />
                         </a>
                       ) : (
                         <div key={i} className={styles.fontItem}>

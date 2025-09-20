@@ -104,7 +104,8 @@ const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading }) => {
                 src={coverUrl}
                 alt="Moodboard cover"
                 className={styles.coverImage}
-                fill
+                width={427}
+                height={176}
             />
             ) : (
             <p className={styles.placeholder}>커버 이미지가 아직 없어요</p>

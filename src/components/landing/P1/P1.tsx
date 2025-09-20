@@ -18,7 +18,7 @@ const P1 = ({ openLoginModal }: P1Props) => {
   const visibleCount = 6;
   const slideWidth = 300;
   const gap = 10;
-  const totalWidth = visibleCount * slideWidth + (visibleCount - 1) * gap;
+
   const loopImages = [...images, ...images, ...images];
 
   const [offset, setOffset] = useState(0);

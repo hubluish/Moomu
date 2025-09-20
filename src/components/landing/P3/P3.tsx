@@ -30,7 +30,7 @@ const P3 = () => {
     <section className="about-section">
       <SectionTitle category="why moomu">
         <div className="features">
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <div key={feature.id} className="feature-card">
               <div className="card-inner">
                 {/* Front Side (Image) */}

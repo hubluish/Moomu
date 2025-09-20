@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { createPortal } from "react-dom";
 import styles from "./MoodboardModal.module.css";
 import TitleBox from "@/components/section/result/TitleBox";
@@ -130,7 +131,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
 
           )}
           <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
-            <img src="/assets/icons/material-symbols_close-rounded.svg" alt="" aria-hidden="true" />
+            <Image src="/assets/icons/material-symbols_close-rounded.svg" alt="" aria-hidden="true" width={50} height={50} />
           </button>
         </div>
         <div className={styles.content}>
@@ -146,7 +147,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
               <div className={styles.imageGrid}>
                 {(Array.isArray(board?.images_json) ? board!.images_json! : []).slice(0, 9).map((img: Image, idx: number) => (
                   <div className={styles.imageItem} key={idx}>
-                    <img src={img?.thumb || img?.url} alt={`image-${idx}`} />
+                    <Image src={img?.thumb || img?.url || ''} alt={`image-${idx}`} width={130} height={130} unoptimized />
                   </div>
                 ))}
               </div>
@@ -165,7 +166,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
                   {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: Font, i: number) => (
                     f?.image_link ? (
                       <a key={i} href={f?.link || '#'} target="_blank" rel="noopener noreferrer">
-                        <img src={f.image_link} alt={f?.name || 'font'} className={styles.fontImg} />
+                        <Image src={f.image_link || ''} alt={f?.name || 'font'} className={styles.fontImg} width={187} height={44} unoptimized />
                       </a>
                     ) : (
                       <div key={i} className={styles.fontItem}>
