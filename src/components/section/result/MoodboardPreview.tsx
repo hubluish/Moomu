@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './MoodboardPreview.module.css';
 import { supabase } from '@/utils/supabase';
+import Image from 'next/image';
 
 type Props = {
     coverUrl?: string | null;
@@ -99,7 +100,12 @@ const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading }) => {
             {loading ? (
             <p className={styles.placeholder}>미리보기 로딩 중...</p>
             ) : coverUrl ? (
-            <img src={coverUrl} alt="Moodboard cover" className={styles.coverImage} />
+            <Image
+                src={coverUrl}
+                alt="Moodboard cover"
+                className={styles.coverImage}
+                fill
+            />
             ) : (
             <p className={styles.placeholder}>커버 이미지가 아직 없어요</p>
             )}

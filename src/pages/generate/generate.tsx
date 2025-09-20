@@ -21,7 +21,15 @@ import fontThemes from "../../../public/data/fontThemes.json";
 import imageThemes from "../../../public/data/imageThemes.json";
 import imagePriority from "../../../public/data/imagePriority.json";
 import fontPriority from "../../../public/data/fontPriority.json";
-import toastMessages from "../../../public/data/toastMessages.json";
+import rawtoastMessages from "../../../public/data/toastMessages.json";
+
+type ToastMessages = {
+  color: Record<string, string>;
+  image: Record<string, string>;
+  text: Record<string, string>;
+};
+
+const toastMessages = rawtoastMessages as ToastMessages;
 
 interface Option {
   title: string;
@@ -46,9 +54,6 @@ function Home() {
   const [cheerMsg, setCheerMsg] = useState<React.ReactNode>("");
   const cheerTimerRef = useRef<number | null>(null);
   const alertTimerRef = useRef<number | null>(null);
-  const [cheerTick, setCheerTick] = useState(0);
-  const [alertTick, setAlertTick] = useState(0);
-
   const meta = stepMeta[step - 1];
 
   const getStepContent = (): Array<{
@@ -142,9 +147,7 @@ function Home() {
           : step === 2
           ? "image"
           : ("text" as "color" | "image" | "text");
-      const moodText = (toastMessages as any)[category]?.[selectedTitle] as
-        | string
-        | undefined;
+      const moodText = toastMessages[category]?.[selectedTitle];
       const thingLabel =
         category === "color"
           ? "컬러"
@@ -241,8 +244,7 @@ function Home() {
           
         }
         setCheerMsg(message);
-        setCheerVisible(true);
-        setCheerTick(t => t + 1);              
+        setCheerVisible(true);           
 
         cheerTimerRef.current = window.setTimeout(() => {
             setCheerVisible(false);
@@ -256,7 +258,6 @@ function Home() {
             alertTimerRef.current = null;
         }
         setShowAlert(true);
-        setAlertTick(t => t + 1);
 
         alertTimerRef.current = window.setTimeout(() => {
             setShowAlert(false);

@@ -40,8 +40,6 @@ export default function SavePage() {
                 const curUrl = data?.cover_image_url ?? null;
                 setCoverUrl(curUrl);
 
-                // 우리 스토리지에 생성된 커버가 아니면 생성 요청
-                const supaBase = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/?$/, '');
                 const shouldGenerate = !curUrl
                     || !/\/storage\/v1\/object\/public\/moodboard\//.test(String(curUrl))
                     || !String(curUrl).toLowerCase().endsWith('.webp');
@@ -50,10 +48,17 @@ export default function SavePage() {
                     coverRequestedRef.current = true;
                     try {
                     const thumbs = Array.isArray(data?.images_json)
-                        ? data.images_json.map((img: any) => img?.thumb || img?.url).filter(Boolean).slice(0, 9)
+                        ? (data.images_json as { thumb?: string; url?: string }[])
+                            .map((img) => img.thumb || img.url)
+                            .filter(Boolean)
+                            .slice(0, 9)
                         : [];
-                    const palette = Array.isArray(data?.palette_json)
-                        ? data.palette_json.map((p: any) => p?.hex).filter(Boolean).slice(0, 4)
+
+                        const palette = Array.isArray(data?.palette_json)
+                        ? (data.palette_json as { hex?: string }[])
+                            .map((p) => p.hex)
+                            .filter(Boolean)
+                            .slice(0, 4)
                         : [];
                     const categories = Array.isArray(data?.tags) ? data.tags.slice(0, 6) : [];
 
@@ -197,10 +202,10 @@ export default function SavePage() {
     // Supabase Auth의 사용자 메타데이터에서 표시 이름 추출
     const authorName =
         (user.user_metadata && (
-          (user.user_metadata.full_name as string | undefined) ||
-          (user.user_metadata.name as string | undefined) ||
-          (user.user_metadata.display_name as string | undefined) ||
-          (user.user_metadata.nickname as string | undefined)
+            (user.user_metadata.full_name as string | undefined) ||
+            (user.user_metadata.name as string | undefined) ||
+            (user.user_metadata.display_name as string | undefined) ||
+            (user.user_metadata.nickname as string | undefined)
         )) ||
         (user.email ? (user.email as string).split("@")[0] : "Unknown");
 
@@ -217,7 +222,7 @@ export default function SavePage() {
     };
 
     // upsert: moodboard_id 중복이면 덮어씀
-    const { data: post, error: perr } = await supabase
+    const { error: perr } = await supabase
         .from("feed_posts")
         .upsert(payload, { onConflict: "moodboard_id" })
         .select("id")
@@ -228,11 +233,6 @@ export default function SavePage() {
         alert("피드 게시에 실패했습니다.");
         return;
     }
-
-    const { error: updateError } = await supabase
-      .from('moodboard')
-      .update({ is_public: true })
-      .eq('id', mid);
 
     alert("피드에 게시했어요!");
     sessionStorage.removeItem('resultPageState');
@@ -262,7 +262,7 @@ export default function SavePage() {
             document.execCommand('copy');
             document.body.removeChild(textarea);
             alert('링크가 클립보드에 복사되었습니다.');
-        } catch (e) {
+        } catch (error) {
             alert('링크 복사에 실패했어요.');
         }
     }, []);
