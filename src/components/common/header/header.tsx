@@ -24,7 +24,7 @@ const getMode = (bg: string, loggedIn: boolean) => {
   return loggedIn ? "light-logged" : "light";
 };
 const HeaderWrapper = styled.header<{ $mode: string }>`
-  position:absolute;
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -33,6 +33,7 @@ const HeaderWrapper = styled.header<{ $mode: string }>`
   height: 64px;
   padding: 0 32px;
   background: transparent;
+  z-index: 100;
   ${(props) =>
     props.$mode.startsWith("dark")
       ? css`
@@ -68,7 +69,13 @@ const NavLink = styled.a<{ $active: boolean; $mode: string }>`
   text-decoration: none;
   font-size: 16px;
   color: ${({ $active, $mode }) =>
-    $active ? ($mode.startsWith("dark") ? "#6d63ff" : "#6d63ff") : $mode.startsWith("dark") ? "#fff" : "#222"};
+    $active
+      ? $mode.startsWith("dark")
+        ? "#6d63ff"
+        : "#6d63ff"
+      : $mode.startsWith("dark")
+      ? "#fff"
+      : "#222"};
   padding: 0 4px;
   transition: color 0.2s;
   &:hover {
@@ -122,7 +129,7 @@ const Dropdown = styled.div<{ $mode: string }>`
   background: ${({ $mode }) => ($mode.startsWith("dark") ? "#222" : "#fff")};
   border: 1px solid #eee;
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   min-width: 165px;
   z-index: 10;
   padding: 8px 0;
@@ -159,8 +166,13 @@ const DropdownButton = styled.button`
 function detectBgMode() {
   if (typeof window !== "undefined") {
     const path = window.location.pathname;
-    if (path === "/" || path === "/result" ) return "dark";
-    if (["/feed", "/article", "/mypage/moodboard", "/generate/generate"].includes(path)) return "light";
+    if (path === "/" || path === "/result") return "dark";
+    if (
+      ["/feed", "/article", "/mypage/moodboard", "/generate/generate"].includes(
+        path
+      )
+    )
+      return "light";
   }
   return "dark";
 }
@@ -168,20 +180,22 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter(); // 최상단에서 선언
   const [showDropdown, setShowDropdown] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const [mode, setMode] = useState("dark");
   useEffect(() => {
     setMode(detectBgMode());
     const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (session) {
         setIsLoggedIn(true);
         const { data: profile } = await supabase
-          .from('profiles')
-          .select('name')
-          .eq('id', session.user.id)
+          .from("profiles")
+          .select("name")
+          .eq("id", session.user.id)
           .single();
         if (profile?.name) {
           setUserName(profile.name);
@@ -199,55 +213,69 @@ export default function Header() {
   const handleCloseModal = () => setIsModalOpen(false);
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) alert('로그아웃에 실패했습니다. 다시 시도해 주세요.');
+    if (error) alert("로그아웃에 실패했습니다. 다시 시도해 주세요.");
     setShowDropdown(false);
     window.location.reload();
   };
   const headerMode = getMode(mode, isLoggedIn);
   const avatarSrc = headerMode.startsWith("dark") ? AVATAR_DARK : AVATAR_LIGHT;
   return (
-        <HeaderWrapper $mode={headerMode}>
-          <LogoSection>
-            <LogoImg src={LOGO_SRC} alt="로고" style={{ cursor: 'pointer' }} onClick={() => router.push('/')} />
-            <LogoName style={{ cursor: 'pointer' }} onClick={() => router.push('/')}>Moomu</LogoName>
-          </LogoSection>
-          <NavFrame>
-            <Nav>
-              {NAV_ITEMS.map(({ href, label }) => (
-                <NavLink
-                  key={href}
-                  href={href}
-                  $active={pathname === href}
-                  $mode={headerMode}
-                >
-                  {label}
-                </NavLink>
-              ))}
-            </Nav>
-            <RightSection>
-              {isLoggedIn ? (
-                <AccountWrapper>
-                  <Avatar
-                    src={avatarSrc}
-                    alt="계정"
-                    onClick={() => setShowDropdown((prev) => !prev)}
-                  />
-                  {userName && <UserName>{userName}</UserName>}
-                  {showDropdown && (
-                    <Dropdown $mode={headerMode}>
-                      <DropdownItem href="/mypage/moodboard">마이페이지</DropdownItem>
-                      <DropdownButton onClick={handleLogout}>로그아웃</DropdownButton>
-                    </Dropdown>
-                  )}
-                </AccountWrapper>
-              ) : (
-                <LoginButton $mode={headerMode} onClick={handleLoginClick}>
-                  로그인/회원가입
-                </LoginButton>
+    <HeaderWrapper $mode={headerMode}>
+      <LogoSection>
+        <LogoImg
+          src={LOGO_SRC}
+          alt="로고"
+          style={{ cursor: "pointer" }}
+          onClick={() => router.push("/")}
+        />
+        <LogoName
+          style={{ cursor: "pointer" }}
+          onClick={() => router.push("/")}
+        >
+          Moomu
+        </LogoName>
+      </LogoSection>
+      <NavFrame>
+        <Nav>
+          {NAV_ITEMS.map(({ href, label }) => (
+            <NavLink
+              key={href}
+              href={href}
+              $active={pathname === href}
+              $mode={headerMode}
+            >
+              {label}
+            </NavLink>
+          ))}
+        </Nav>
+        <RightSection>
+          {isLoggedIn ? (
+            <AccountWrapper>
+              <Avatar
+                src={avatarSrc}
+                alt="계정"
+                onClick={() => setShowDropdown((prev) => !prev)}
+              />
+              {userName && <UserName>{userName}</UserName>}
+              {showDropdown && (
+                <Dropdown $mode={headerMode}>
+                  <DropdownItem href="/mypage/moodboard">
+                    마이페이지
+                  </DropdownItem>
+                  <DropdownButton onClick={handleLogout}>
+                    로그아웃
+                  </DropdownButton>
+                </Dropdown>
               )}
-            </RightSection>
-          </NavFrame>
-          <LoginModal isOpen={isModalOpen} onClose={handleCloseModal} />
-        </HeaderWrapper>
+            </AccountWrapper>
+          ) : (
+            <LoginButton $mode={headerMode} onClick={handleLoginClick}>
+              로그인/회원가입
+            </LoginButton>
+          )}
+        </RightSection>
+      </NavFrame>
+      <LoginModal isOpen={isModalOpen} onClose={handleCloseModal} />
+    </HeaderWrapper>
   );
 }
