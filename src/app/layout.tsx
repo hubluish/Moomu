@@ -38,7 +38,6 @@ export default function RootLayout({
             <Header />
           </div>
           {children}
-          <Bottom />
         </StyledComponentsRegistry>
       </body>
     </html>

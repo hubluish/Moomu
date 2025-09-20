@@ -1,6 +1,5 @@
 import React from 'react';
 import './LandingPage.css';
-import Header from '../../components/common/header/header';
 import P1 from '../../components/landing/P1/P1';
 import P2 from '../../components/landing/P2/P2';
 import P3 from '../../components/landing/P3/P3';
@@ -15,7 +14,6 @@ const LandingPage = () => {
   const closeModal = () => setIsModalOpen(false);
   return (
     <div className="app">
-      <Header />
       <LoginModal isOpen={isModalOpen} onClose={closeModal} />
       <div className="app-content">
         <P1 openLoginModal={openModal} />

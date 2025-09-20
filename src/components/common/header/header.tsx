@@ -24,6 +24,7 @@ const getMode = (bg: string, loggedIn: boolean) => {
   return loggedIn ? "light-logged" : "light";
 };
 const HeaderWrapper = styled.header<{ $mode: string }>`
+  position:absolute;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -158,8 +159,8 @@ const DropdownButton = styled.button`
 function detectBgMode() {
   if (typeof window !== "undefined") {
     const path = window.location.pathname;
-    if (path === "/" || path === "/generate" ) return "dark";
-    if (["/feed", "/article", "/mypage/moodboard"].includes(path)) return "light";
+    if (path === "/" || path === "/result" ) return "dark";
+    if (["/feed", "/article", "/mypage/moodboard", "/generate/generate"].includes(path)) return "light";
   }
   return "dark";
 }

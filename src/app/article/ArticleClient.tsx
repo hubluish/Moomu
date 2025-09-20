@@ -112,6 +112,7 @@ export default function ArticleClient() {
         flexDirection: "column",
         alignItems: "center",
         width: "100%",
+        marginTop: "64px",
       }}
     >
       <div className={styles.container}>

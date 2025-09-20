@@ -8,6 +8,7 @@ export const HeaderWrapper = styled.header`
   width: 100vw;
   height: 64px;
   padding: 0 32px;
+  z-index:100;
 `;
 // 로고 영역(이미지+이름)
 export const LogoSection = styled.div`

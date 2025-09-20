@@ -12,7 +12,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       {!isHomeIntro && <Header />}
       <Component {...pageProps} />
-      {!isHomeIntro && <Bottom />}
     </>
   );
 }
