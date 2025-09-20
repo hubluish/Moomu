@@ -30,6 +30,18 @@ export async function saveToSupabase(
             : (data.sentences ? String(data.sentences).trim() : null);
 
         try {
+            const { error } = await supabase.from('moodboard_results').insert({
+                request_id: requestId,
+                color_keyword,
+                font_keyword,
+                image_keyword,
+                mood_sentence,
+            });
+
+            if (error) {
+                throw error;
+            }
+
             console.log('📦 insert payload:', {
                 request_id: requestId,
                 color_keyword,
@@ -38,14 +50,6 @@ export async function saveToSupabase(
                 mood_sentence,
             });
 
-            const { error } = await supabase.from('moodboard_results').insert({
-                request_id: requestId,
-                color_keyword,
-                font_keyword,
-                image_keyword,
-                mood_sentence,
-            });
-            
         } catch (err) {
             console.error(`❌ 저장 실패 (index: ${i}):`, err);
         }

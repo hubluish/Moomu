@@ -13,7 +13,7 @@ export const getLikedFeeds = async (userId: string) => {
     return [];
   }
 
-  return data.map((item) => item.feed_posts).filter(Boolean);
+  return data.flatMap((item) => item.feed_posts).filter(Boolean);
 };
 
 // 피드에 '좋아요'를 추가합니다.

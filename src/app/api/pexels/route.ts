@@ -2,6 +2,24 @@ import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 
+interface PexelsPhoto {
+  src?: {
+    medium?: string;
+  };
+  url?: string;
+  alt?: string;
+  photographer?: string;
+  photographer_url?: string;
+}
+
+interface MappedPhoto {
+  thumbnail_url: string;
+  pin_url: string;
+  alt: string;
+  photographer: string;
+  photographer_url: string;
+}
+
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const q = searchParams.get('q');
@@ -34,14 +52,14 @@ export async function GET(req: Request) {
     const data = await upstream.json();
 
     const photos = (data?.photos ?? [])
-        .map((p: any) => ({
+        .map((p: PexelsPhoto) => ({
         thumbnail_url: p?.src?.medium ?? '',
         pin_url: p?.url ?? '',
         alt: p?.alt ?? '',
         photographer: p?.photographer ?? '',
         photographer_url: p?.photographer_url ?? '',
         }))
-        .filter((i: any) => i.thumbnail_url && i.pin_url);
+        .filter((i: MappedPhoto) => i.thumbnail_url && i.pin_url);
 
     const res = NextResponse.json({
         photos,

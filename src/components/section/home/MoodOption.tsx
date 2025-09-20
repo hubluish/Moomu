@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import styles from "./MoodOption.module.css";
+import Image from "next/image";
 
 type MoodOptionProps = {
   title: string;
@@ -27,7 +27,13 @@ export default function MoodOption({
       onClick={onClick}
     >
       <div className={styles.imageArea}>
-        <img src={imageUrl} alt={title} className={styles.image} />
+        <Image
+          src={imageUrl}
+          alt={title}
+          className={styles.image}
+          fill
+          sizes="100px"
+        />
       </div>
 
       <div className={styles.textArea}>

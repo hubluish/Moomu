@@ -67,9 +67,11 @@ export async function POST(req: Request) {
               {Array.from({ length: 9 }).map((_, i) => {
                 const src = thumbs[i];
                 return src ? (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     key={i}
                     src={src}
+                    alt=""
                     style={{
                       width: thumbSize,
                       height: thumbSize,

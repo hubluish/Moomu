@@ -4,7 +4,6 @@ import styles from './PaidCard.module.css';
 
 type Props = {
     title?: string;               // ex) "FREE"
-    isCurrent?: boolean;          // "현재 플랜" 배지 표시
     priceLabel?: string;          // ex) "₩0"
     description?: string;         // 줄바꿈 포함 가능
     ctaText?: string;             // ex) "무료로 시작하기"
@@ -14,7 +13,6 @@ type Props = {
 
 export default function PaymentCard({
     title = 'PLUS',
-    isCurrent = true,
     priceLabel = '₩4,900', // 사용자가 "\0"라고 적었는데 실제 표기 의도는 '₩0'일 가능성이 높아 기본값을 이렇게 둠
     description = '더 많은 보드와 더 큰 가능성,\n제한 없는 창작을 위한 요금제입니다.',
     ctaText = 'Plus 이용하기',

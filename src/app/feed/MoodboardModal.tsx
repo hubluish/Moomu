@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { createPortal } from "react-dom";
 import styles from "./MoodboardModal.module.css";
 import TitleBox from "@/components/section/result/TitleBox";
@@ -16,19 +17,33 @@ type Props = {
   onClose: () => void;
 };
 
+interface Image {
+  thumb?: string;
+  url?: string;
+}
+
+interface PaletteColor {
+  hex?: string;
+}
+
+interface Font {
+  image_link?: string;
+  link?: string;
+  name?: string;
+}
+
 type MoodboardRow = {
   id: string;
   title: string | null;
   cover_image_url: string | null;
   tags: string[] | null;
-  images_json?: any;
-  palette_json?: any;
-  fonts_json?: any;
+  images_json?: Image[];
+  palette_json?: PaletteColor[];
+  fonts_json?: Font[];
   concept_text?: string[] | null;
 };
 
 export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
-  const [loading, setLoading] = useState(false);
   const [board, setBoard] = useState<MoodboardRow | null>(null);
   const backdropRef = useRef<HTMLDivElement | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -38,15 +53,12 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     let cancelled = false;
     const run = async () => {
       try {
-        setLoading(true);
         const res = await fetch(`/api/feed/moodboard?id=${encodeURIComponent(moodboardId)}`, { cache: "no-store" });
         if (!res.ok) throw new Error(`status ${res.status}`);
         const j = await res.json();
         if (!cancelled) setBoard(j.moodboard as MoodboardRow);
       } catch (e) {
         console.error("[FeedModal] failed to load moodboard:", e);
-      } finally {
-        if (!cancelled) setLoading(false);
       }
     };
     run();
@@ -85,8 +97,13 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     if (e.target === backdropRef.current) onClose();
   };
 
-  const geminiFromBoard: GeminiSet[] | null = board
-    ? [{ colors: (board.palette_json || []).map((p: any) => p?.hex).filter(Boolean), image: "", font: "", sentences: board.concept_text || [] }]
+  const geminiFromBoard: GeminiSet | null = board
+    ? {
+        colors: (board.palette_json || []).map((p: PaletteColor) => p?.hex).filter(Boolean) as string[],
+        image: "",
+        font: "",
+        sentences: board.concept_text || [],
+      }
     : null;
 
   const modalContent = (
@@ -111,9 +128,10 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
             >
               새 탭에서 열기
             </a>
+
           )}
           <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
-            <img src="/assets/icons/material-symbols_close-rounded.svg" alt="" aria-hidden="true" />
+            <Image src="/assets/icons/material-symbols_close-rounded.svg" alt="" aria-hidden="true" width={50} height={50} />
           </button>
         </div>
         <div className={styles.content}>
@@ -127,9 +145,9 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
             <div className={`${styles.section} ${styles.imageBox}`}>
               <div className={styles.boxTitle}>IMAGES</div>
               <div className={styles.imageGrid}>
-                {(Array.isArray(board?.images_json) ? board!.images_json! : []).slice(0, 9).map((img: any, idx: number) => (
+                {(Array.isArray(board?.images_json) ? board!.images_json! : []).slice(0, 9).map((img: Image, idx: number) => (
                   <div className={styles.imageItem} key={idx}>
-                    <img src={img?.thumb || img?.url} alt={`image-${idx}`} />
+                    <Image src={img?.thumb || img?.url || ''} alt={`image-${idx}`} width={130} height={130} unoptimized />
                   </div>
                 ))}
               </div>
@@ -137,7 +155,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
 
             <div className={`${styles.section} ${styles.conceptBox}`}>
               <div className={styles.conceptCard}>
-                <ConceptBox geminiResult={geminiFromBoard} />
+                <ConceptBox geminiSet={geminiFromBoard} />
               </div>
             </div>
 
@@ -145,10 +163,10 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
               <div className={styles.fontCard}>
                 <div className={styles.boxTitle}>FONT</div>
                 <div className={styles.fontList}>
-                  {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: any, i: number) => (
+                  {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: Font, i: number) => (
                     f?.image_link ? (
                       <a key={i} href={f?.link || '#'} target="_blank" rel="noopener noreferrer">
-                        <img src={f.image_link} alt={f?.name || 'font'} className={styles.fontImg} />
+                        <Image src={f.image_link || ''} alt={f?.name || 'font'} className={styles.fontImg} width={187} height={44} unoptimized />
                       </a>
                     ) : (
                       <div key={i} className={styles.fontItem}>
@@ -161,7 +179,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
             </div>
 
             <div className={`${styles.section} ${styles.paletteBox}`}>
-              <ColorPaletteBox geminiResult={geminiFromBoard} title="COLOR" />
+              <ColorPaletteBox geminiSet={geminiFromBoard} title="COLOR" />
             </div>
 
             <div className={`${styles.section} ${styles.keywordBox}`}>
@@ -182,4 +200,7 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
   // Use portal so position: fixed is relative to viewport, not any transformed ancestor
   return mounted ? createPortal(modalContent, document.body) : null;
 }
+
+
+
 

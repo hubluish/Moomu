@@ -33,6 +33,7 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+    position: relative;
 }
 
 /* 카테고리 관련 스타일 */

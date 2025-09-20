@@ -24,6 +24,21 @@ interface FeedItem {
   colors?: string[];
 }
 
+interface FeedPostRow {
+  id: string;
+  moodboard_id?: string;
+  user_id: string;
+  title: string;
+  image_url: string;
+  tags?: string[];
+  categories?: string[];
+  palette_json?: unknown;
+  likes: number;
+  is_public: boolean;
+  created_at: string;
+  authorName: string;
+}
+
 export default function FeedClient() {
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
@@ -62,7 +77,7 @@ export default function FeedClient() {
         const to = from + pageSize - 1;
 
         // Try selecting with tags/palette_json; if it fails, fall back to legacy columns.
-        let data: any[] | null = null;
+        let data: FeedPostRow[] | null = null;
         let count: number | null = null;
         {
           const { data: d1, count: c1, error: e1 } = await supabase
@@ -91,7 +106,7 @@ export default function FeedClient() {
           }
         }
 
-        let mapped: FeedItem[] = (data ?? []).map((row: any) => {
+        let mapped: FeedItem[] = (data ?? []).map((row: FeedPostRow) => {
           const userId = row?.user_id ? String(row.user_id) : "";
           const creator = (row?.authorName && String(row.authorName).trim().length > 0)
             ? String(row.authorName)
@@ -135,16 +150,17 @@ export default function FeedClient() {
           };
 
           let extractedColors: string[] = [];
-          const pj = (row as any)?.palette_json;
+          const pj = row?.palette_json;
           if (Array.isArray(pj)) {
             for (const entry of pj) {
               if (typeof entry === 'string') {
                 extractedColors.push(entry);
               } else if (entry && typeof entry === 'object') {
                 // Common structure: { hex: "#xxxxxx", name: "..." }
-                for (const [k, v] of Object.entries(entry)) {
+                for (const [, v] of Object.entries(entry)) {
                   if (typeof v === 'string') extractedColors.push(v);
                   else if (v && typeof v === 'object') {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     for (const vv of Object.values(v as any)) {
                       if (typeof vv === 'string') extractedColors.push(vv);
                     }
@@ -208,7 +224,7 @@ export default function FeedClient() {
                 .eq('user_id', user.id)
                 .in('post_id', postIds);
               if (Array.isArray(likedRows)) {
-                const likedSet = new Set(likedRows.map((r: any) => String(r.post_id)));
+                const likedSet = new Set(likedRows.map((r: { post_id: string }) => String(r.post_id)));
                 mapped = mapped.map(m => ({ ...m, liked: likedSet.has(m.id) }));
               }
             } catch {}
@@ -408,7 +424,6 @@ export default function FeedClient() {
         ) : (
           <div className={styles.feedGrid}>
             {filteredItems.map((item) => {
-              const isOwner = item.userId === currentUserId;
               return (
                 <div
                   key={item.id}

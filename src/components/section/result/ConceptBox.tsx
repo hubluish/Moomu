@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './ConceptBox.module.css';
 import TopRightArrows from '@/components/common/TopRightArrows';
 import type { GeminiSet } from '@/types/result';

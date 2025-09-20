@@ -34,11 +34,7 @@ export const Nav = styled.nav`
   gap: 32px;
   align-items: center;
 `;
-const NavFrame = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 32px;
-`;
+
 // 네비게이션 링크
 export const NavLink = styled(Link)<{ $active: boolean }>`
   position: relative;

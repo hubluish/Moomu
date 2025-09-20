@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import styles from './ColorPaletteBox.module.css';
 import TopRightArrows from '@/components/common/TopRightArrows';
 import ColorPalette from './ColorPalette';

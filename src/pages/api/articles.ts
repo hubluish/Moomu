@@ -56,7 +56,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     ]).select();
     if (error) return res.status(500).json({ error: error.message });
-    return res.status(201).json({ insertedId: (data as any)?.[0]?.id });
+    const inserted = data as unknown as { id: number }[];
+    return res.status(201).json({ insertedId: inserted[0]?.id });
   }
 
   res.status(405).json({ error: "Method Not Allowed" });

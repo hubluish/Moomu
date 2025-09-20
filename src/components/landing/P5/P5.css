@@ -8,7 +8,12 @@
   border-radius: 30px;
   width: 100%;
   max-width: 1400px;
-  margin : 50px auto ;
+  margin: 50px auto;
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
 }
 .title {
   display: flex;
@@ -18,7 +23,7 @@
   align-items: flex-start;
   gap: 7px;
 }
-.oo{
+.oo {
   display: flex;
   width: 69px;
   height: 37px;
@@ -32,13 +37,13 @@
   font-weight: 800;
   line-height: normal;
   letter-spacing: -4.831px;
-  background: linear-gradient(180deg, #E5E4FF 43.27%, #5B57FF 100%);
+  background: linear-gradient(180deg, #e5e4ff 43.27%, #5b57ff 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .cta-title {
-  color: var(--background, #FEFEFF);
+  color: var(--background, #fefeff);
   text-align: center;
 
   /* Title1 */

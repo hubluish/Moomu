@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./ShareButton.module.css";
+import Image from "next/image";
 
 type ShareButtonProps = {
   linkImgSrc?: string;   // 예: "/images/share-link.png"
@@ -26,7 +27,13 @@ export default function ShareButton({
             aria-label="Share as link"
             onClick={onClickLink}
             >
-            <img className={styles.iconImg} src={linkImgSrc} alt="Link icon" />
+            <Image
+                className={styles.iconImg}
+                src={linkImgSrc}
+                alt="Link icon"
+                width={44}
+                height={44}
+            />
             </button>
             <span className={styles.label}>Link</span>
         </div>
@@ -39,7 +46,13 @@ export default function ShareButton({
             aria-label="Share via KakaoTalk"
             onClick={onClickKakao}
             >
-            <img className={styles.iconImg} src={kakaoImgSrc} alt="KakaoTalk icon" />
+            <Image
+                className={styles.iconImg}
+                src={kakaoImgSrc}
+                alt="KakaoTalk icon"
+                width={44}
+                height={44}
+            />
             </button>
             <span className={styles.label}>KakaoTalk</span>
         </div>

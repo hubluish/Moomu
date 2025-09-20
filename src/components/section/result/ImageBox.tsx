@@ -15,12 +15,6 @@ interface PinterestImage {
     photographer_url?: string;
 }
 
-interface ImageItem {
-    url: string;
-    thumb?: string;
-    source?: string;
-}
-
 type Props = {
     geminiSet: GeminiSet;     // { colors, image, font, sentences }
     perPage?: number;         // 기본 9
@@ -100,8 +94,10 @@ const ImageBox: React.FC<Props> = ({
                 }
 
                 setImages(entry.photos);
-            } catch (e: any) {
-                if (e.name !== 'AbortError') setErr(e.message ?? '이미지 로딩 실패');
+            } catch (e: unknown) {
+                if (e instanceof Error) {
+                    setErr(e.message ?? '이미지 로딩 실패');
+                }
             } finally {
                 setLoading(false);
             }

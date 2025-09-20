@@ -1,104 +1,112 @@
 .topWrapper {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row-reverse;
-    position: relative;
-    width: 100%;
-    margin: 88px auto 24px auto;
-    width: 1338px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  position: relative;
+  width: 100%;
+  margin: 88px auto 24px auto;
+  width: 1338px;
 }
 
 .topRightWrapper {
-    display: flex;
-    gap: 15px;
-    align-items: center;
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
-.pageBg{
-    /* Ensure background covers full viewport and avoids bottom margin collapse */
-    min-height: 100vh;
-    padding-bottom: 40px; /* prevents white gap from last child's margin */
-    background: url('/data/images/background/light.png') no-repeat fixed center/cover;
-    position: absolute;
+.pageBg {
+  /* Ensure background covers full viewport and avoids bottom margin collapse */
+  min-height: 100vh;
+  min-width: 100vw;
+  padding-bottom: 40px; /* prevents white gap from last child's margin */
+  background: url("/data/images/background/light.png") no-repeat fixed
+    center/cover;
+  position: absolute;
 }
 
 @media (prefers-color-scheme: dark) {
-    .pageBg {
-        min-height: 100vh;
-        padding-bottom: 40px;
-        background: url('/data/images/background/dark.png') no-repeat center/cover;
-        position: absolute;
-    }
+  .pageBg {
+    min-height: 100vh;
+    padding-bottom: 40px;
+    background: url("/data/images/background/dark.png") no-repeat center/cover;
+    position: absolute;
+  }
 }
 
-    .chips {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1; /* 버튼 위로 올라가게 */
-    }
+.chips {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1; /* 버튼 위로 올라가게 */
+}
 
-    .actionsWrapper {
-    width: 1200px;
-    margin: 0 auto;
-    position: relative;
-    height: 40px; /* chips와 같은 높이 */
-    }
+.actionsWrapper {
+  width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  height: 40px; /* chips와 같은 높이 */
+}
 
-    .actions {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    }
+.actions {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 .gridContainer {
-    display: grid;
-    
-    grid-template-rows: auto auto;
-    gap: 25px;
-    margin: 40px ;
-    align-items: center;
-    grid-template-columns: 3.8fr 2.4fr 1.4fr 2.5fr;
-    grid-template-rows: repeat(4,auto);
-    grid-template-areas:
-    ' title concept font examples '
-    ' images concept font examples '
-    ' images palette palette examples '
-    ' images keyword keyword examples ';
+  display: grid;
 
-    align-items: start;
-    justify-items: center;
+  grid-template-rows: auto auto;
+  gap: 25px;
+  margin: 40px;
+  align-items: center;
+  grid-template-columns: 3.8fr 2.4fr 1.4fr 2.5fr;
+  grid-template-rows: repeat(4, auto);
+  grid-template-areas:
+    " title concept font examples "
+    " images concept font examples "
+    " images palette palette examples "
+    " images keyword keyword examples ";
+
+  align-items: start;
+  justify-items: center;
 }
 
 .conceptBox {
-    grid-area: concept;
-    }
+  grid-area: concept;
+}
 
-    .fontBox {
-    grid-area: font;
-    }
+.fontBox {
+  grid-area: font;
+}
 
-    .imageBox {
-    grid-area: images;
-    }
+.imageBox {
+  grid-area: images;
+}
 
-    .paletteBox {
-    grid-area: palette;
-    }
+.paletteBox {
+  grid-area: palette;
+}
 
-    .titleBox {
-    grid-area: title;
-    }
+.titleBox {
+  grid-area: title;
+}
 
-    .keywordBox {
-    grid-area: keyword;
-    }
+.keywordBox {
+  grid-area: keyword;
+}
 
-    .exampleBox {
-    grid-area: examples;
-    }
+.exampleBox {
+  grid-area: examples;
+}
 
-    .titleBox, .imageBox, .conceptBox, .exampleBox, .keywordBox,.paletteBox, .fontBox{
-        width: 100%;
-    }
+.titleBox,
+.imageBox,
+.conceptBox,
+.exampleBox,
+.keywordBox,
+.paletteBox,
+.fontBox {
+  width: 100%;
+}
