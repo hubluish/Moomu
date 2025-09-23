@@ -198,7 +198,7 @@ const MoodboardPage = () => {
 
   return (
     <div>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", marginTop: "64px" }}>
         <Sidebar />
 
         <main style={{ flex: 1, padding: "50px 70px" }}>
