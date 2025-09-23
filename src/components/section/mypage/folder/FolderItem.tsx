@@ -52,7 +52,7 @@ const PopoverMenu = styled.div`
   position: absolute;
   top: -80px;
   right: 18px;
-  background: #dadce0;
+  background: rgb(218, 220, 224, 0.8);
   border-radius: 10px;
   padding: 6px 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
@@ -70,7 +70,7 @@ const PopoverButton = styled.button<{ variant?: "default" | "danger" }>`
   font-size: 12px;
   text-align: center;
   cursor: pointer;
-  background: white;
+  background: rgb(255, 255, 255, 0.8);
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
