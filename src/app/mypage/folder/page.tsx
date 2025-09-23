@@ -56,7 +56,7 @@ const MyFolderPage = ({}) => {
   }, []);
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", marginTop: "64px" }}>
       <Sidebar />
       <main style={{ flex: 1, padding: "50px 70px" }}>
         <h1 style={{ marginBottom: "30px", userSelect: "none" }}>내 폴더</h1>

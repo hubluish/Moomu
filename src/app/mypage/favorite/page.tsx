@@ -97,7 +97,7 @@ const FavoritePage = ({}) => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", marginTop: "64px" }}>
       <Sidebar />
       <main
         style={{
