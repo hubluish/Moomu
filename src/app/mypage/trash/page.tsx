@@ -95,9 +95,9 @@ const TrashPage = ({}) => {
     try {
       await restoreMoodboard(moodboardId);
       setTrashedMoodboards((prev) => prev.filter((m) => m.id !== moodboardId));
-      displayToast("무드보드가 복구 되었어요", <RestoreIcon />);
+      displayToast("무드보드가 복구 되었어요.", <RestoreIcon />);
     } catch {
-      displayToast("복구에 실패했습니다.", <ErrorIcon />);
+      displayToast("복구에 실패했어요.", <ErrorIcon />);
     }
   };
 
@@ -112,9 +112,9 @@ const TrashPage = ({}) => {
     try {
       await permanentDeleteMoodboard(moodboardId);
       setTrashedMoodboards((prev) => prev.filter((m) => m.id !== moodboardId));
-      displayToast("피드가 영구삭제 되었어요", <DeleteForeverIcon />);
+      displayToast("피드가 영구삭제 되었어요.", <DeleteForeverIcon />);
     } catch {
-      displayToast("삭제에 실패했습니다.", <ErrorIcon />);
+      displayToast("삭제에 실패했어요.", <ErrorIcon />);
     }
   };
 
