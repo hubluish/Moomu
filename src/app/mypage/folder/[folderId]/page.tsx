@@ -126,7 +126,7 @@ const FolderDetailPage = () => {
       displayToast("폴더에서 삭제되었어요", <FolderIcon />);
     } catch (error) {
       console.error("삭제 실패:", error);
-      displayToast("삭제에 실패했습니다.", <ErrorIcon />);
+      displayToast("삭제에 실패했어요.", <ErrorIcon />);
     }
   };
 
@@ -144,7 +144,7 @@ const FolderDetailPage = () => {
       displayToast("휴지통으로 이동했어요", <TrashIcon />);
     } catch (error) {
       console.error("이동 실패:", error);
-      displayToast("이동에 실패했습니다.", <ErrorIcon />);
+      displayToast("이동에 실패했어요.", <ErrorIcon />);
     }
   };
 

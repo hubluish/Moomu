@@ -124,7 +124,7 @@ const MoodboardPage = () => {
         data: { session },
       } = await supabase.auth.getSession();
       if (!session) {
-        displayToast("로그인이 필요합니다.", <ErrorIcon />);
+        displayToast("로그인이 필요해요.", <ErrorIcon />);
         return;
       }
 
@@ -154,14 +154,12 @@ const MoodboardPage = () => {
         )
       );
       displayToast(
-        newStatus
-          ? "피드에 공개되었습니다."
-          : "피드에서 비공개 처리되었습니다.",
+        newStatus ? "피드가 공개 되었어요!" : "피드가 비공개 되었어요.",
         newStatus ? <OpenIcon /> : <LockIcon />
       );
     } catch (error) {
       console.error("상태 변경 실패:", error);
-      displayToast("상태 변경에 실패했습니다.", <ErrorIcon />);
+      displayToast("상태 변경에 실패했어요.", <ErrorIcon />);
     }
   };
 
@@ -169,9 +167,9 @@ const MoodboardPage = () => {
     try {
       await moveMoodboardToTrash(moodboardId);
       setMoodboards((prev) => prev.filter((board) => board.id !== moodboardId));
-      displayToast("휴지통으로 이동했어요", <TrashIcon />);
+      displayToast("휴지통으로 이동했어요.", <TrashIcon />);
     } catch {
-      displayToast("작업에 실패했습니다.", <ErrorIcon />);
+      displayToast("작업에 실패했어요.", <ErrorIcon />);
     }
   };
 
@@ -192,7 +190,7 @@ const MoodboardPage = () => {
   };
 
   const handleAddToFolderSuccess = (folderName: string) => {
-    displayToast(`'${folderName}' 폴더에 추가했어요`, <FolderIcon />);
+    displayToast(`'${folderName}' 폴더에 추가했어요.`, <FolderIcon />);
     handleCloseFolderModal();
   };
 

@@ -84,7 +84,7 @@ const FavoritePage = ({}) => {
         data: { session },
       } = await supabase.auth.getSession();
       if (!session) {
-        displayToast("로그인이 필요합니다.", <ErrorIcon />);
+        displayToast("로그인이 필요해요.", <ErrorIcon />);
         return;
       }
 
@@ -92,7 +92,7 @@ const FavoritePage = ({}) => {
       setLikedFeeds((prev) => prev.filter((feed) => feed.id !== postId));
       displayToast("찜한 피드에서 삭제했어요", <TrashIcon />);
     } catch {
-      displayToast("삭제에 실패했습니다.", <ErrorIcon />);
+      displayToast("삭제에 실패했어요.", <ErrorIcon />);
     }
   };
 
