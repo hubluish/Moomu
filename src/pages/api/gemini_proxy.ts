@@ -35,7 +35,7 @@ const prompt = `
 
 colors: You are a professional color palette designer. Based on the following description, create a color palette with 4 HEX codes.
 
-image: 선택된 무드에 맞는 한 단어로 된 실제 검색 가능한 이미지 키워드 1개
+image: 선택된 무드에 맞는 한 단어로 된 실제 검색 가능한 영어 이미지 키워드 1개
 
 font: 폰트 키워드 (제공 리스트 중 입력 키워드와 유사한 단어 1개 선택)
 
