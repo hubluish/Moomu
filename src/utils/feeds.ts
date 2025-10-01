@@ -24,11 +24,11 @@ export const likeFeed = async (userId: string, postId: string) => {
 
   if (insertError) throw insertError;
 
-  const { error: rpcError } = await supabase.rpc("increment_likes", {
-    post_id_to_update: postId,
-  });
+  // const { error: rpcError } = await supabase.rpc("increment_likes", {
+  //   post_id_to_update: postId,
+  // });
 
-  if (rpcError) throw rpcError;
+  // if (rpcError) throw rpcError;
 };
 
 // 피드 '좋아요'를 취소합니다.
@@ -41,9 +41,9 @@ export const unlikeFeed = async (userId: string, postId: string) => {
 
   if (deleteError) throw deleteError;
 
-  const { error: rpcError } = await supabase.rpc("decrement_likes", {
-    post_id_to_update: postId,
-  });
+  // const { error: rpcError } = await supabase.rpc("decrement_likes", {
+  //   post_id_to_update: postId,
+  // });
 
-  if (rpcError) throw rpcError;
+  // if (rpcError) throw rpcError;
 };
