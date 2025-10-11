@@ -6,19 +6,30 @@ const Footer = () => {
   const footerSections = [
     {
       title: 'Moomu 소개',
-      links: ['시작하기', 'Moomu 소개']
+      links: [
+        { text: '시작하기', url: '/landing' },
+        { text: 'Moomu 소개', url: '/about' }
+      ]
     },
     {
       title: '학습 및 지원',
-      links: ['고객센터', '자주 묻는 질문']
+      links: [
+        { text: '고객센터', url: '/support' },
+        { text: '자주 묻는 질문', url: '/faq' }
+      ]
     },
     {
       title: '제품',
-      links: ['요금', '환불 정책']
+      links: [
+        { text: '요금', url: '/pricing' },
+        { text: '환불 정책', url: '/refund-policy' }
+      ]
     },
     {
       title: '왜 Moomu여야 할까요?',
-      links: ['Moomu만의 차별성']
+      links: [
+        { text: 'Moomu만의 차별성', url: '/features' }
+      ]
     }
   ];
 
@@ -64,14 +75,14 @@ const Footer = () => {
           <div key={index} className="footer-section">
             <h4>{wrapMoomu(section.title)}</h4>
             {section.links.map((link, linkIndex) => (
-              <a key={linkIndex} href="#">{wrapMoomu(link)}</a>
+              <a key={linkIndex} href={link.url}>{link.text}</a>
             ))}
           </div>
         ))}
       </div>
 
       <div className="footer-bottom">
-        <span className="policy" role="button" tabIndex={0}>개인정보 처리 방침</span>
+        <a href="/privacy-policy" className="policy">개인정보 처리 방침</a>
         <span className="dot" />
         <button type="button" className="email" onClick={handleCopyEmail} title="클릭하면 복사됩니다">이메일: yourmoomu@gmail.com</button>
         <span className="dot" />

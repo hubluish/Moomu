@@ -15,8 +15,8 @@
 
 .footer-top {
   display: flex;
-  align-items: center;
   gap: 12px;
+  align-items: flex-end;
 }
 
 .footer-top .logo {
@@ -27,8 +27,15 @@
 
 .social-icon {
   width: 25px;
-  height: 25px;
+  height: 36px;
   opacity: 0.9;
+  transition: filter 0.2s ease;
+  cursor: url('/assets/images/cursor2.svg'), auto;
+}
+
+.social-icon:hover {
+  filter: brightness(0) invert(1);
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer !important;
 }
 
 .footer-divider {
@@ -43,7 +50,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(140px, 1fr));
   gap: 24px 40px;
-  margin: 45px 0px;
+  margin: 0px 0px 80px 0px;
   color: #DFDFDF;
   font-family: Pretendard;
   font-size: 16px;
@@ -55,9 +62,8 @@
 
 .footer-section {
   display: flex;
-  height: 25px;
-  /* hover effect removed */
-  justify-content: center;
+  height: 36px;
+  justify-content: flex-start;
   align-self: stretch;
   flex-direction: column;
 }
@@ -91,45 +97,49 @@
   font: inherit;
   cursor: url('/assets/images/cursor2.svg'), auto;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .footer-bottom .email:hover {
-  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer !important;
+  color: #FFF;
 }
 
 .footer-section h4 {
   color: #DFDFDF;
   font-size: 14px;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
+  cursor: url('/assets/images/cursor2.svg'), auto;
+}
+
+/* h4는 호버 효과 없음 */
+.footer-section h4:hover {
+  cursor: url('/assets/images/cursor2.svg'), auto;
 }
 
 .footer-section a {
   color: #DFDFDF;
   text-decoration: none;
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   font-size: 12px;
   transition: color 0.2s ease;
+  cursor: url('/assets/images/cursor2.svg'), auto;
 }
 
 .footer-section a:hover {
   color: #FFF;
-  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer !important;
 }
 
-.footer-content .moomu-name:hover {
-  color: #FFF;
-  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
-}
-/* h4 hover 커서 변경 */
-.footer-section h4:hover {
-  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
+/* 소셜 링크 호버 효과 수정 */
+.social-link {
+  transition: opacity 0.2s ease;
 }
 
-/* 소셜 링크 호버 효과 추가 */
 .social-link:hover {
-  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer !important;
 }
 
 .footer-bottom {
@@ -144,10 +154,14 @@
 
 .footer-bottom .policy {
   cursor: url('/assets/images/cursor2.svg'), auto;
+  transition: color 0.2s ease;
+  text-decoration: none;
+  color: #000;
 }
 
 .footer-bottom .policy:hover {
-  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer !important;
+  color: #FFF;
 }
 
 .footer-bottom .dot {
