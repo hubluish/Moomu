@@ -89,8 +89,12 @@
   padding: 0;
   color: #000;
   font: inherit;
-  cursor: pointer;
+  cursor: url('/assets/images/cursor2.svg'), auto;
   text-decoration: none;
+}
+
+.footer-bottom .email:hover {
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
 }
 
 .footer-section h4 {
@@ -119,8 +123,13 @@
   cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
 }
 /* h4 hover 커서 변경 */
-.footer-section :hover {
-  cursor: url('/assets/images/cursor2.svg') 8 8, pointer;
+.footer-section h4:hover {
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
+}
+
+/* 소셜 링크 호버 효과 추가 */
+.social-link:hover {
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
 }
 
 .footer-bottom {
@@ -131,6 +140,14 @@
   font-size: 12px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   padding-top: 12px;
+}
+
+.footer-bottom .policy {
+  cursor: url('/assets/images/cursor2.svg'), auto;
+}
+
+.footer-bottom .policy:hover {
+  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
 }
 
 .footer-bottom .dot {

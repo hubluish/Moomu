@@ -1,0 +1,190 @@
+/* Header Component Styles */
+
+.headerWrapper {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100vw;
+  height: 64px;
+  padding: 0 32px;
+  background: transparent;
+  z-index: 100;
+}
+
+.headerWrapper.dark {
+  color: #fff;
+}
+
+.headerWrapper.light {
+  color: #222;
+}
+
+/* Logo Section */
+.logoSection {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logoImg {
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+}
+
+.logoName {
+  font-size: 25px;
+  font-weight: 800;
+  font-family: var(--font-family-logo, Pretendard);
+  letter-spacing: -0.1em;
+  height: 40px;
+}
+
+/* Navigation */
+.navFrame {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.navLink {
+  position: relative;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: #6d63ff;
+}
+
+/* Nav Link Colors by Mode */
+.navLink.dark {
+  color: #fff;
+}
+
+.navLink.light {
+  color: #222;
+}
+
+.navLink.active {
+  color: #6d63ff;
+}
+
+/* Right Section */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Login Button */
+.loginButton {
+  display: flex;
+  padding: 10px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 70px;
+  color: #fff;
+  border: none;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.loginButton.dark {
+  background: linear-gradient(180deg, #3d38f5b3 16.41%, #dcbadb 385.64%);
+}
+
+.loginButton.light {
+  background: linear-gradient(180deg, #6d63ff 16.41%, #dcbadb 385.64%);
+}
+
+.loginButton:hover {
+  background: #6d63ff;
+}
+
+/* Account Section */
+.accountWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.userName {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  min-width: 165px;
+  z-index: 10;
+  padding: 8px 0;
+}
+
+.dropdown.dark {
+  background: #222;
+}
+
+.dropdown.light {
+  background: #fff;
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  color: #6d63ff;
+  text-decoration: none;
+  font-size: 15px;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.dropdownItem:hover {
+  color: #3d38f5;
+}
+
+.dropdownButton {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  color: #6d63ff;
+  text-decoration: none;
+  font-size: 15px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.dropdownButton:hover {
+  color: #3d38f5;
+}

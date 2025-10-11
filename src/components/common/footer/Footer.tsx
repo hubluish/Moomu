@@ -71,7 +71,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <span className="policy">개인정보 처리 방침</span>
+        <span className="policy" role="button" tabIndex={0}>개인정보 처리 방침</span>
         <span className="dot" />
         <button type="button" className="email" onClick={handleCopyEmail} title="클릭하면 복사됩니다">이메일: yourmoomu@gmail.com</button>
         <span className="dot" />

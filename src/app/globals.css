@@ -99,8 +99,6 @@ button:hover, .BtnContainer:hover, .BtnText:hover, a:hover {
   cursor: url('/assets/images/cursor1.svg'), pointer;
 }
 
-
-
 .markdown-title1 {
   font: var(--text-title1);
   margin: 24px 0 12px 0;
