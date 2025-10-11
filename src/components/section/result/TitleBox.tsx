@@ -28,9 +28,9 @@ export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle, read
         let limitedLine = '';
         for (let i = 0; i < line.length; i++) {
             const char = line[i];
-            // 한글 음절(가-힣)을 2, 그 외 문자를 1로 계산합니다.
-            const charWidth = (char.charCodeAt(0) >= 0xAC00 && char.charCodeAt(0) <= 0xD7A3) ? 2 : 1;
-            if (currentWidth + charWidth > 28) {
+            // 한글은 11, 그 외 문자는 9로 가중치를 주어 계산합니다. (한글 18자, 영어 22자)
+            const charWidth = /[\uac00-\ud7a3]|[\u1100-\u11ff]|[\u3130-\u318f]/.test(char) ? 11 : 9;
+            if (currentWidth + charWidth > 198) {
                 break;
             }
             currentWidth += charWidth;
@@ -57,7 +57,7 @@ export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle, read
         ) : (
             <div className={styles.titleWrapper}>
             {localTitle.map((line, idx) => (
-                <div key={idx} className={styles.title}>{line}</div>
+                <div key={idx} className={styles.title}>{line || '\u00A0'}</div>
             ))}
             </div>
         )}
