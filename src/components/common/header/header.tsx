@@ -186,6 +186,9 @@ export default function Header() {
   const [mode, setMode] = useState("dark");
   useEffect(() => {
     setMode(detectBgMode());
+  }, [pathname]);
+
+  useEffect(() => {
     const getSession = async () => {
       const {
         data: { session },

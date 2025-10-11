@@ -46,7 +46,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-top">
         <div className="logo">Moomu</div>
-        <a className="social-link" href="https://instagram.com" target="_blank" rel="noreferrer noopener">
+        <a className="social-link" href="https://www.instagram.com/your_moomu/?igsh=NXdyc2N2ZjM5NW10#" target="_blank" rel="noreferrer noopener">
           <Image
             src="/assets/images/instaIcon.svg"
             alt="instagram"
