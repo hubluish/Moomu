@@ -55,11 +55,11 @@
 }
 
 .gridContainer {
+  margin: 40px auto;
   display: grid;
-
+  width: 1338px;
   grid-template-rows: auto auto;
   gap: 25px;
-  margin: 40px;
   align-items: center;
   grid-template-columns: 3.8fr 2.4fr 1.4fr 2.5fr;
   grid-template-rows: repeat(4, auto);
