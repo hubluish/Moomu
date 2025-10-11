@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const API_KEY = process.env.GEMINI_API_KEY;
@@ -9,15 +8,11 @@ if (!API_KEY) {
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Only POST method is allowed' });
-    }
-
-    const { color, font, image } = req.body;
+export async function POST(req: Request) {
+    const { color, font, image } = await req.json();
 
     if (!color || !font || !image) {
-        return res.status(400).json({ error: 'Missing required fields: color, font, image' });
+        return new Response(JSON.stringify({ error: 'Missing required fields: color, font, image' }), { status: 400 });
     }
 
 const prompt = `
@@ -71,9 +66,9 @@ colors, image, font, sentences
         
         console.log("파싱된 JSON 응답 : ", outputJson)
 
-        return res.status(200).json(outputJson);
+        return new Response(JSON.stringify(outputJson), { status: 200 });
     } catch (error) {
         console.error('Error calling Gemini API:', error instanceof Error ? error.message : error);
-        return res.status(500).json({ error: 'Failed to call Gemini API' });
+        return new Response(JSON.stringify({ error: 'Failed to call Gemini API' }), { status: 500 });
     }
 }
