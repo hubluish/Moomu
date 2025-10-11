@@ -2,6 +2,8 @@
 
 .headerWrapper {
   position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -9,7 +11,35 @@
   height: 64px;
   padding: 0 32px;
   background: transparent;
-  z-index: 100;
+  z-index: 1000;
+  transition: all 0.3s ease-in-out;
+}
+
+/* When header is in fixed hover mode (after scroll) */
+.headerWrapper.fixedMode {
+  position: fixed;
+  top: -64px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.headerWrapper.fixedMode.visible {
+  top: 0;
+}
+
+/* Hover trigger area - only active when scrolled */
+.headerTrigger {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 80px;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.headerTrigger.active {
+  pointer-events: auto;
 }
 
 .headerWrapper.dark {
@@ -17,6 +47,35 @@
 }
 
 .headerWrapper.light {
+  color: #222;
+}
+
+.headerWrapper.dark-logged {
+  color: #fff;
+}
+
+.headerWrapper.light-logged {
+  color: #222;
+}
+
+/* Fixed mode backgrounds */
+.headerWrapper.fixedMode.dark {
+  background: rgba(34, 34, 34, 0.95);
+  color: #fff;
+}
+
+.headerWrapper.fixedMode.light {
+  background: rgba(255, 255, 255, 0.95);
+  color: #222;
+}
+
+.headerWrapper.fixedMode.dark-logged {
+  background: rgba(34, 34, 34, 0.95);
+  color: #fff;
+}
+
+.headerWrapper.fixedMode.light-logged {
+  background: rgba(255, 255, 255, 0.95);
   color: #222;
 }
 
