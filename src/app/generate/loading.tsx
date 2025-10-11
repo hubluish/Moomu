@@ -1,13 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import styles from './loading.module.css';
 
-export default function LoadingPage() {
+export default function Loading() {
     const message = '무무가 좋은 무드보드를 위해 고민하고 있어요.';
     const [displayedText, setDisplayedText] = useState('');
-    const router = useRouter();
 
     useEffect(() => {
         let index = 0;
@@ -18,34 +16,16 @@ export default function LoadingPage() {
                     index++;
                     return prev + nextChar;
                 } else {
-                    clearInterval(interval); 
-                    return prev;
+                    index = 0;
+                    return '';
                 }
             });
         }, 100);
 
-        // 3초 후에 결과 페이지로 이동
-        const timer = setTimeout(() => {
-            if (typeof window === 'undefined') return;
-
-            const sp = new URLSearchParams(window.location.search);
-            const rid = sp.get('rid');
-
-            if (rid) {
-                // 결과 페이지로 rid를 전달하며 이동
-                router.push(`/result/result?rid=${encodeURIComponent(rid)}`);
-            } else {
-                console.error('Loading page: No request_id (rid) found in URL. Redirecting to home.');
-                alert('오류가 발생했습니다. 홈으로 이동합니다.');
-                router.push('/');
-            }
-        }, 3000);
-
         return () => {
             clearInterval(interval);
-            clearTimeout(timer);
         };
-    }, [router]);
+    }, []);
 
     return (
         <div className={styles.container}>
