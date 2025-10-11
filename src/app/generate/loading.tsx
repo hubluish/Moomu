@@ -10,16 +10,12 @@ export default function Loading() {
     useEffect(() => {
         let index = 0;
         const interval = setInterval(() => {
-            setDisplayedText((prev) => {
-                if (index < message.length) {
-                    const nextChar = message[index];
-                    index++;
-                    return prev + nextChar;
-                } else {
-                    index = 0;
-                    return '';
-                }
-            });
+            if (index < message.length) {
+                setDisplayedText(message.slice(0, index + 1));
+                index++;
+            } else {
+                clearInterval(interval);
+            }
         }, 100);
 
         return () => {
