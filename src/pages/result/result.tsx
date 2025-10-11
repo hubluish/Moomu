@@ -57,24 +57,31 @@ export default function ResultPage() {
   const [title, setTitle] = useState<string>("New\nMoodboard");
 
   useEffect(() => {
-    // Restore state from sessionStorage on page load
-    const savedStateJSON = sessionStorage.getItem('resultPageState');
-    if (savedStateJSON) {
-      try {
-        const savedState = JSON.parse(savedStateJSON);
-        if (savedState && typeof savedState.revealedCount === 'number') {
-          setRevealedCount(savedState.revealedCount);
-          setCurrentIndex(savedState.currentIndex ?? 0);
-          setFontIndex(savedState.fontIndex ?? 0);
-          setConceptIndex(savedState.conceptIndex ?? 0);
-          setColorIndex(savedState.colorIndex ?? 0);
-        }
-      } catch (e) {
-        console.error("Failed to parse saved state", e);
-      }
-    }
-
     (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+          setErrorMsg("로그인을 다시 한 후 이용해 주세요");
+          setLoading(false);
+          return;
+      }
+
+      // Restore state from sessionStorage on page load
+      const savedStateJSON = sessionStorage.getItem('resultPageState');
+      if (savedStateJSON) {
+        try {
+          const savedState = JSON.parse(savedStateJSON);
+          if (savedState && typeof savedState.revealedCount === 'number') {
+            setRevealedCount(savedState.revealedCount);
+            setCurrentIndex(savedState.currentIndex ?? 0);
+            setFontIndex(savedState.fontIndex ?? 0);
+            setConceptIndex(savedState.conceptIndex ?? 0);
+            setColorIndex(savedState.colorIndex ?? 0);
+          }
+        } catch (e) {
+          console.error("Failed to parse saved state", e);
+        }
+      }
+
       if (typeof window === "undefined") return;
 
       // URL에서 request_id 추출
