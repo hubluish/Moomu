@@ -1,20 +1,23 @@
 'use client';
 
-import KeywordBox from "../../components/section/result/KeywordBox";
-import ConceptBox from "../../components/section/result/ConceptBox";
-import FontBox from "../../components/section/result/FontBox";
-import ImageBox from "../../components/section/result/ImageBox";
-import ColorPaletteBox from "../../components/section/result/ColorPaletteBox";
-import TitleBox from "../../components/section/result/TitleBox";
-import ExampleBox from "../../components/section/result/ExampleBox";
+import KeywordBox from "@/components/section/result/KeywordBox";
+import ConceptBox from "@/components/section/result/ConceptBox";
+import FontBox from "@/components/section/result/FontBox";
+import ImageBox from "@/components/section/result/ImageBox";
+import ColorPaletteBox from "@/components/section/result/ColorPaletteBox";
+import TitleBox from "@/components/section/result/TitleBox";
+import ExampleBox from "@/components/section/result/ExampleBox";
 import styles from "./result.module.css";
-import RefreshButton from "../../components/section/result/RefreshButton";
-import SaveButton from "../../components/section/result/SaveButton";
+import RefreshButton from "@/components/section/result/RefreshButton";
+import SaveButton from "@/components/section/result/SaveButton";
+import Spinner from "@/components/common/spinner/Spinner";
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "@/utils/supabase";
 import type { GeminiSet } from "@/types/result";
+
+import ErrorDisplay from '@/components/common/ErrorDisplay';
 
 // Supabase 응답 스키마 타입 정의
 interface ResultRow {
@@ -247,8 +250,8 @@ export default function ResultPage() {
   }, [loading, revealedCount, currentIndex, fontIndex, conceptIndex, colorIndex]);
 
   // 로딩/에러 상태 처리
-  if (loading) return <div>로딩 중…</div>;
-  if (errorMsg) return <div>{errorMsg}</div>;
+  if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><Spinner /></div>;
+  if (errorMsg) return <ErrorDisplay message={errorMsg} />;
   if (!geminiResult || geminiResult.length === 0) return <div>표시할 결과가 없습니다.</div>;
 
   const currentSet = geminiResult[currentIndex] ?? geminiResult[0];

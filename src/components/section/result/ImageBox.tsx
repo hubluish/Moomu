@@ -5,6 +5,7 @@ import Image from 'next/image';
 import styles from './ImageBox.module.css';
 import TopRightArrows from '@/components/common/TopRightArrows';
 import type { GeminiSet } from '@/types/result';
+import Spinner from '@/components/common/spinner/Spinner';
 import { fetchWithCache } from './imageCache';
 
 interface PinterestImage {
@@ -114,7 +115,7 @@ const ImageBox: React.FC<Props> = ({
 
             <div className={styles.imageGrid}>
                 {loading && images.length === 0 ? (
-                    <div className={styles.loading}>이미지 로딩 중...</div>
+                    <div className={styles.loading}><Spinner /></div>
                 ) : err && images.length === 0 ? (
                     <div className={styles.noImages}>{err}</div>
                 ) : images.length === 0 ? (
