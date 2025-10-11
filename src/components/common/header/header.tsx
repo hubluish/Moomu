@@ -237,16 +237,25 @@ export default function Header() {
       </LogoSection>
       <NavFrame>
         <Nav>
-          {NAV_ITEMS.map(({ href, label }) => (
-            <NavLink
-              key={href}
-              href={href}
-              $active={pathname === href}
-              $mode={headerMode}
-            >
-              {label}
-            </NavLink>
-          ))}
+          {NAV_ITEMS.map(({ href, label }) => {
+            const isGenerateButton = label === "Generate Moodboard";
+            return (
+              <NavLink
+                key={href}
+                href={href}
+                $active={pathname === href}
+                $mode={headerMode}
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                  if (isGenerateButton && !isLoggedIn) {
+                    e.preventDefault();
+                    handleLoginClick();
+                  }
+                }}
+              >
+                {label}
+              </NavLink>
+            );
+          })}
         </Nav>
         <RightSection>
           {isLoggedIn ? (
