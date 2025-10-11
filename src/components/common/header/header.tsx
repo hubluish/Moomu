@@ -42,16 +42,13 @@ const getMode = (bg: string, loggedIn: boolean) => {
   return loggedIn ? "light-logged" : "light";
 };
 
-function detectBgMode() {
-  if (typeof window !== "undefined") {
-    const path = window.location.pathname;
-    if (path === "/" || path === "/result") return "dark";
-    if (
-      ["/feed", "/article", "/mypage/moodboard", "/generate/generate"].includes(
-        path
-      )
-    )
-      return "light";
+function detectBgMode(path: string) {
+  if (path === "/" || path === "/result") return "dark";
+  if (
+    ["/feed", "/article", "/generate/generate"].includes(path) ||
+    path.startsWith("/mypage")
+  ) {
+    return "light";
   }
   return "dark";
 }
@@ -67,7 +64,12 @@ export default function Header() {
   const [hasNotification, setHasNotification] = useState(false); // 알림 유무 예시 상태
 
   useEffect(() => {
-    setMode(detectBgMode());
+    if (pathname !== null) {
+      setMode(detectBgMode(pathname));
+    }
+  }, [pathname]);
+
+  useEffect(() => {
     const getSession = async () => {
       const {
         data: { session },
@@ -115,6 +117,7 @@ export default function Header() {
           onClick={() => router.push("/")}
         />
         <LogoName
+          $mode={headerMode}
           style={{ cursor: "pointer" }}
           onClick={() => router.push("/")}
         >

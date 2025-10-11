@@ -14,6 +14,10 @@ interface LoginButtonProps {
   $mode: string;
 }
 
+interface LogoNameProps {
+  $mode: string;
+}
+
 export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   position: absolute;
   display: flex;
@@ -47,13 +51,18 @@ export const LogoImg = styled.img`
   margin-right: 12px;
 `;
 
-export const LogoName = styled.span`
+export const LogoName = styled.span<LogoNameProps>`
   font-size: 25px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--background);
-  font-family: var(--font-family-logo);
+  font-weight: 800;
+  font-family: var(--font-family-logo, Pretendard);
   letter-spacing: -0.1em;
   height: 40px;
+
+  /* $mode 값에 따라 색상을 변경합니다. */
+  color: ${({ $mode }) => ($mode.startsWith("dark") ? "#fff" : "#222")};
+
+  /* 부드러운 색상 전환 효과를 위해 transition 추가 */
+  transition: color 0.2s;
 `;
 
 export const Nav = styled.nav`
