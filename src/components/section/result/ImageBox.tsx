@@ -5,7 +5,7 @@ import Image from 'next/image';
 import styles from './ImageBox.module.css';
 import TopRightArrows from '@/components/common/TopRightArrows';
 import type { GeminiSet } from '@/types/result';
-import Spinner from '@/components/common/spinner/Spinner';
+import ImageGridSkeleton from './ImageGridSkeleton';
 import { fetchWithCache } from './imageCache';
 
 interface PinterestImage {
@@ -113,35 +113,37 @@ const ImageBox: React.FC<Props> = ({
             <h2 className={styles.title}>IMAGES</h2>
             <TopRightArrows onPrev={onPrev} onNext={onNext} disablePrev={disablePrev} disableNext={disableNext} />
 
-            <div className={styles.imageGrid}>
-                {loading && images.length === 0 ? (
-                    <div className={styles.loading}><Spinner /></div>
-                ) : err && images.length === 0 ? (
-                    <div className={styles.noImages}>{err}</div>
-                ) : images.length === 0 ? (
-                    <div className={styles.noImages}>이미지를 찾을 수 없습니다.</div>
-                ) : (
-                    images.map((image, idx) => (
-                        <a
-                            key={`${image.pin_url}-${idx}`}
-                            href={image.pin_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.imageWrapper}
-                            title={image.alt || query}
-                        >
-                            <Image
-                                src={image.thumbnail_url}
-                                alt={image.alt || query}
-                                className={styles.image}
-                                width={130}
-                                height={130}
-                                loading="lazy"
-                            />
-                        </a>
-                    ))
-                )}
-            </div>
+            {loading && images.length === 0 ? (
+                <ImageGridSkeleton />
+            ) : (
+                <div className={styles.imageGrid}>
+                    {err && images.length === 0 ? (
+                        <div className={styles.noImages}>{err}</div>
+                    ) : images.length === 0 ? (
+                        <div className={styles.noImages}>이미지를 찾을 수 없습니다.</div>
+                    ) : (
+                        images.map((image, idx) => (
+                            <a
+                                key={`${image.pin_url}-${idx}`}
+                                href={image.pin_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.imageWrapper}
+                                title={image.alt || query}
+                            >
+                                <Image
+                                    src={image.thumbnail_url}
+                                    alt={image.alt || query}
+                                    className={styles.image}
+                                    width={130}
+                                    height={130}
+                                    loading="lazy"
+                                />
+                            </a>
+                        ))
+                    )}
+                </div>
+            )}
 
             <div className={styles.credit}>
                 <a href="https://www.pexels.com" target="_blank" rel="noreferrer">
