@@ -17,7 +17,7 @@ const AVATAR_DARK = "/assets/icons/headerId-dark.png";
 const NAV_ITEMS = [
   { href: "/feed", label: "Explore Feeds" },
   { href: "/article", label: "Article" },
-  { href: "/generate/generate", label: "Generate Moodboard" },
+  { href: "/generate", label: "Generate Moodboard" },
 ];
 const getMode = (bg: string, loggedIn: boolean) => {
   if (bg === "dark") return loggedIn ? "dark-logged" : "dark";
@@ -168,7 +168,7 @@ function detectBgMode() {
     const path = window.location.pathname;
     if (path === "/" || path === "/result") return "dark";
     if (
-      ["/feed", "/article", "/mypage/moodboard", "/generate/generate"].includes(
+      ["/feed", "/article", "/mypage/moodboard", "/generate"].includes(
         path
       )
     )
@@ -237,16 +237,25 @@ export default function Header() {
       </LogoSection>
       <NavFrame>
         <Nav>
-          {NAV_ITEMS.map(({ href, label }) => (
-            <NavLink
-              key={href}
-              href={href}
-              $active={pathname === href}
-              $mode={headerMode}
-            >
-              {label}
-            </NavLink>
-          ))}
+          {NAV_ITEMS.map(({ href, label }) => {
+            const isGenerateButton = label === "Generate Moodboard";
+            return (
+              <NavLink
+                key={href}
+                href={href}
+                $active={pathname === href}
+                $mode={headerMode}
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                  if (isGenerateButton && !isLoggedIn) {
+                    e.preventDefault();
+                    handleLoginClick();
+                  }
+                }}
+              >
+                {label}
+              </NavLink>
+            );
+          })}
         </Nav>
         <RightSection>
           {isLoggedIn ? (

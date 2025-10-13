@@ -25,7 +25,7 @@ const P5 = ({ openLoginModal }: P5Props) => {
 
   const handleStartClick = () => {
     if (isLoggedIn) {
-      router.push("/generate/generate");
+      router.push("/generate");
     } else {
       openLoginModal?.();
     }

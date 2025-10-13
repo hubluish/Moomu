@@ -1,0 +1,25 @@
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 130px);
+  gap: 16px;
+}
+
+.skeletonItem {
+  width: 130px;
+  height: 130px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}

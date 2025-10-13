@@ -1,29 +1,32 @@
+'use client';
+
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import BackButton from '../../components/section/result/BackButton';
+import BackButton from '@/components/section/result/BackButton';
 import ActionButtons from '@/components/section/result/ActionButtons';
 import ShareButton from '@/components/section/result/ShareButton';
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import MoodboardPreview from '@/components/section/result/MoodboardPreview';
 import { supabase } from '@/utils/supabase';
-import styles from './save.module.css';
+import styles from './page.module.css';
 
 export default function SavePage() {
 
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [showShare, setShowShare] = useState(false);
     const shareBtnRef = useRef<HTMLDivElement>(null);
-
     const [coverUrl, setCoverUrl] = useState<string | null>(null);
+    const [categories, setCategories] = useState<string[]>([]);
     const [loadingCover, setLoadingCover] = useState<boolean>(true);
     const coverRequestedRef = useRef<boolean>(false);
 
     useEffect(() => {
+        if (!searchParams) return;
         const run = async () => {
         try {
             if (typeof window === 'undefined') return;
-            const sp = new URLSearchParams(window.location.search);
-            const mid = sp.get('mid');
+            const mid = searchParams.get('mid');
             if (!mid) {
             setLoadingCover(false);
             return;
@@ -33,17 +36,15 @@ export default function SavePage() {
                 .select('cover_image_url, images_json, palette_json, tags')
                 .eq('id', mid)
                 .single();
-
                 if (error) {
                 console.error('moodboard 불러오기 실패:', error);
                 } else {
                 const curUrl = data?.cover_image_url ?? null;
                 setCoverUrl(curUrl);
-
+                setCategories(data?.tags ?? []);
                 const shouldGenerate = !curUrl
                     || !/\/storage\/v1\/object\/public\/moodboard\//.test(String(curUrl))
                     || !String(curUrl).toLowerCase().endsWith('.webp');
-
                 if (!coverRequestedRef.current && shouldGenerate) {
                     coverRequestedRef.current = true;
                     try {
@@ -53,7 +54,6 @@ export default function SavePage() {
                             .filter(Boolean)
                             .slice(0, 9)
                         : [];
-
                         const palette = Array.isArray(data?.palette_json)
                         ? (data.palette_json as { hex?: string }[])
                             .map((p) => p.hex)
@@ -61,7 +61,6 @@ export default function SavePage() {
                             .slice(0, 4)
                         : [];
                     const categories = Array.isArray(data?.tags) ? data.tags.slice(0, 6) : [];
-
                     const res = await fetch('/api/generate-cover', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -90,7 +89,7 @@ export default function SavePage() {
         }
         };
         run();
-    }, []);
+    }, [searchParams]);
     
     // ESC로 공유 패널 닫기
     useEffect(() => {
@@ -120,13 +119,10 @@ export default function SavePage() {
     const handleToggleShare = useCallback(() => setShowShare(prev => !prev), []);
 
     const handleBack = useCallback(async () => {
+        if (!searchParams) return;
         // 1) Try to delete the just-created moodboard by mid
         try {
-            let mid: string | null = null;
-            if (typeof window !== 'undefined') {
-                const sp = new URLSearchParams(window.location.search);
-                mid = sp.get('mid');
-            }
+            const mid = searchParams.get('mid');
             if (mid) {
                 const { error } = await supabase.from('moodboard').delete().eq('id', mid);
                 if (error) {
@@ -153,18 +149,19 @@ export default function SavePage() {
                 } catch {}
             }
             if (rid) {
-                router.push(`/result/result?rid=${encodeURIComponent(rid)}`);
+                router.push(`/result?rid=${encodeURIComponent(rid)}`);
                 return;
             }
         } catch {}
         if (typeof window !== 'undefined' && window.history.length > 1) {
             router.back();
         } else {
-            router.push('/result/result');
+            router.push('/result');
         }
-    }, [router]);
+    }, [router, searchParams]);
 
     const handlePostFeed = useCallback(async () => {
+    if (!searchParams) return;
   // 로그인 확인
     const { data: { user }, error: uerr } = await supabase.auth.getUser();
     if (uerr || !user) {
@@ -173,8 +170,7 @@ export default function SavePage() {
     }
 
     // mid 가져오기 (방금 만든 moodboard id)
-    const sp = new URLSearchParams(window.location.search);
-    const mid = sp.get("mid");
+    const mid = searchParams.get("mid");
     if (!mid) {
         alert("잘못된 접근입니다. (mid 없음)");
         return;
@@ -238,7 +234,7 @@ export default function SavePage() {
     sessionStorage.removeItem('resultPageState');
     // 예: 피드 상세 페이지로 이동
     router.push(`/feed`);
-    }, [router]);
+    }, [router, searchParams]);
 
 
     // Clipboard API 실패 시 textarea fallback 제공
@@ -286,11 +282,12 @@ export default function SavePage() {
                 <div className={styles.actionButtons}>
                     <div style={{ display: 'inline-block', position: 'relative' }} ref={shareBtnRef}>
                         <ActionButtons
-                            // TODO: 이미지 저장/피드 게시 기능 구현 필요
+                        // TODO: 이미지 저장/피드 게시 기능 구현 필요
                             onSaveImage={() => { alert('이미지 저장 기능은 준비 중이에요.'); }}
-                            onPostFeed={handlePostFeed}
+                        onPostFeed={handlePostFeed}
                             onShare={handleToggleShare}
                         />
+
                         {showShare && (
                             <div
                                 className={styles.shareContainer}
@@ -302,9 +299,9 @@ export default function SavePage() {
                         )}
                     </div>
                 </div>
-                <MoodboardPreview coverUrl={coverUrl} loading={loadingCover} />
+                <MoodboardPreview coverUrl={coverUrl} loading={loadingCover} categories={categories} />
             </div>
         </main>
     );
-}
 
+}
