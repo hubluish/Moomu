@@ -1,49 +1,16 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styles from './MoodboardPreview.module.css';
-import { supabase } from '@/utils/supabase';
 import Image from 'next/image';
 
 type Props = {
     coverUrl?: string | null;
     loading?: boolean;
+    categories?: string[];
 };
 
-const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading }) => {
-    const [categories, setCategories] = useState<string[]>([]);
-    const [catLoading, setCatLoading] = useState<boolean>(true);
-
-  // 카테고리 로드
-    useEffect(() => {
-        (async () => {
-        try {
-            if (typeof window === 'undefined') return;
-            const sp = new URLSearchParams(window.location.search);
-            const mid = sp.get('mid');
-            if (!mid) { setCatLoading(false); return; }
-
-            const { data, error } = await supabase
-            .from('moodboard')
-            .select('tags')
-            .eq('id', mid)
-            .single();
-
-            if (error) {
-            console.warn('Failed to load categories:', error);
-            } else {
-            const tags = Array.isArray(data?.tags) ? (data!.tags as string[]) : [];
-            setCategories(tags);
-            }
-        } catch (e) {
-            console.warn('Error fetching categories:', e);
-        } finally {
-            setCatLoading(false);
-        }
-        })();
-    }, []);
-
-    // 드래그 스크롤(뷰포트 기준)
+const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading, categories = [] }) => {
     const viewportRef = useRef<HTMLDivElement>(null);
     const isDown = useRef(false);
     const startX = useRef(0);
@@ -72,8 +39,7 @@ const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading }) => {
 
     return (
         <div className={styles.container}>
-        {/* 카테고리 영역(전체 컨테이너 안에 포함) */}
-        {!catLoading && categories.length > 0 && (
+        {categories.length > 0 && (
             <div
             ref={viewportRef}
             className={styles.catViewport}
@@ -95,7 +61,6 @@ const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading }) => {
             </div>
         )}
 
-        {/* 커버 미리보기 */}
         <div className={styles.content}>
             {loading ? (
             <div className={styles.skeleton}></div>

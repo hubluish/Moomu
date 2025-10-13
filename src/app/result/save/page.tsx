@@ -12,13 +12,12 @@ import styles from './page.module.css';
 
 export default function SavePage() {
 
-
-
     const router = useRouter();
     const searchParams = useSearchParams();
     const [showShare, setShowShare] = useState(false);
     const shareBtnRef = useRef<HTMLDivElement>(null);
     const [coverUrl, setCoverUrl] = useState<string | null>(null);
+    const [categories, setCategories] = useState<string[]>([]);
     const [loadingCover, setLoadingCover] = useState<boolean>(true);
     const coverRequestedRef = useRef<boolean>(false);
 
@@ -42,6 +41,7 @@ export default function SavePage() {
                 } else {
                 const curUrl = data?.cover_image_url ?? null;
                 setCoverUrl(curUrl);
+                setCategories(data?.tags ?? []);
                 const shouldGenerate = !curUrl
                     || !/\/storage\/v1\/object\/public\/moodboard\//.test(String(curUrl))
                     || !String(curUrl).toLowerCase().endsWith('.webp');
@@ -299,16 +299,9 @@ export default function SavePage() {
                         )}
                     </div>
                 </div>
-                <MoodboardPreview coverUrl={coverUrl} loading={loadingCover} />
+                <MoodboardPreview coverUrl={coverUrl} loading={loadingCover} categories={categories} />
             </div>
         </main>
     );
 
 }
-
-
-
-
-
-
-
