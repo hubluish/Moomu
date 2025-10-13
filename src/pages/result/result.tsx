@@ -9,6 +9,7 @@ import TitleBox from "@/components/section/result/TitleBox";
 import ExampleBox from "@/components/section/result/ExampleBox";
 import styles from "./result.module.css";
 import RefreshButton from "@/components/section/result/RefreshButton";
+import RefreshCount from "@/components/section/result/RefreshCount";
 import SaveButton from "@/components/section/result/SaveButton";
 import Spinner from "@/components/common/spinner/Spinner";
 
@@ -266,6 +267,7 @@ export default function ResultPage() {
   const currentConceptSet = geminiResult[conceptIndex] ?? geminiResult[0];
   const currentColorSet = geminiResult[colorIndex] ?? geminiResult[0];
   const tags = selectedTags;
+  const remainingRefreshes = geminiResult ? geminiResult.length - revealedCount : 0;
 
 
   return (
@@ -288,6 +290,7 @@ export default function ResultPage() {
             }}
             disabled={revealedCount >= geminiResult.length}
           />
+          <RefreshCount remaining={remainingRefreshes} />
         </div>
       </div>
       <div className={styles.gridContainer}>
