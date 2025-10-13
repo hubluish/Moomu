@@ -11,8 +11,8 @@ type Props = {
 };
 
 const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading }) => {
-  const [categories, setCategories] = useState<string[]>([]);
-  const [catLoading, setCatLoading] = useState<boolean>(true);
+    const [categories, setCategories] = useState<string[]>([]);
+    const [catLoading, setCatLoading] = useState<boolean>(true);
 
   // 카테고리 로드
     useEffect(() => {
@@ -98,7 +98,7 @@ const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading }) => {
         {/* 커버 미리보기 */}
         <div className={styles.content}>
             {loading ? (
-            <p className={styles.placeholder}>미리보기 로딩 중...</p>
+            <div className={styles.skeleton}></div>
             ) : coverUrl ? (
             <Image
                 src={coverUrl}
