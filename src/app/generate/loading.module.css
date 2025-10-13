@@ -15,8 +15,8 @@
     font-weight: 700;
     line-height: 48px;
     height: 48px;
-    margin-bottom: 30px;
-    white-space: pre; 
+    margin: 30px auto;
+    white-space: pre;
 }
 
 .fadeText {

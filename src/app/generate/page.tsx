@@ -349,11 +349,7 @@ function GeneratePage() {
         </div>
       )}
 
-      {showModal && (
-        <div className={styles.modalOverlay}>
-          <TagGuideModal onClose={() => setShowModal(false)} />
-        </div>
-      )}
+      {showModal && <TagGuideModal onClose={() => setShowModal(false)} />}
     </main>
   );
 }
