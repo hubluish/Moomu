@@ -14,6 +14,11 @@ export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle, read
     const [editing, setEditing] = useState(false);
     const [localTitle, setLocalTitle] = useState(value.split('\n'));
 
+    // character width constants - extracted from inline magic numbers
+    const HANGUL_CHAR_WIDTH = 11;
+    const OTHER_CHAR_WIDTH = 9;
+    const MAX_TITLE_WIDTH = 198;
+
     useEffect(() => {
         setLocalTitle(value.split('\n'));
     }, [value]);
@@ -28,9 +33,8 @@ export default function TitleBox({ value = 'NEW\nMOODBOARD', onChangeTitle, read
         let limitedLine = '';
         for (let i = 0; i < line.length; i++) {
             const char = line[i];
-            // 한글은 11, 그 외 문자는 9로 가중치를 주어 계산합니다. (한글 18자, 영어 22자)
-            const charWidth = /[\uac00-\ud7a3]|[\u1100-\u11ff]|[\u3130-\u318f]/.test(char) ? 11 : 9;
-            if (currentWidth + charWidth > 198) {
+            const charWidth = /[\uac00-\ud7a3]|[\u1100-\u11ff]|[\u3130-\u318f]/.test(char) ? HANGUL_CHAR_WIDTH : OTHER_CHAR_WIDTH;
+            if (currentWidth + charWidth > MAX_TITLE_WIDTH) {
                 break;
             }
             currentWidth += charWidth;

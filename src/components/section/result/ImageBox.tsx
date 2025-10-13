@@ -108,18 +108,20 @@ const ImageBox: React.FC<Props> = ({
         return () => controller.abort();
     }, [query, colorHex, orientation, perPage]);
 
+    const isEmpty = images.length === 0;
+
     return (
         <div className={styles.container}>
             <h2 className={styles.title}>IMAGES</h2>
             <TopRightArrows onPrev={onPrev} onNext={onNext} disablePrev={disablePrev} disableNext={disableNext} />
 
-            {loading && images.length === 0 ? (
+            {loading && isEmpty ? (
                 <ImageGridSkeleton />
             ) : (
                 <div className={styles.imageGrid}>
-                    {err && images.length === 0 ? (
+                    {err && isEmpty ? (
                         <div className={styles.noImages}>{err}</div>
-                    ) : images.length === 0 ? (
+                    ) : isEmpty ? (
                         <div className={styles.noImages}>이미지를 찾을 수 없습니다.</div>
                     ) : (
                         images.map((image, idx) => (

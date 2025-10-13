@@ -13,8 +13,8 @@ export default function Loading() {
         let index = 0;
         const interval = setInterval(() => {
             if (index < message.length) {
-                setDisplayedText(message.slice(0, index + 1));
                 index++;
+                setDisplayedText(message.slice(0, index));
             } else {
                 clearInterval(interval);
             }
