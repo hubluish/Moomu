@@ -15,21 +15,18 @@
 }
 
 .pageBg {
-  /* Ensure background covers full viewport and avoids bottom margin collapse */
-  min-height: 100vh;
-  min-width: 100vw;
-  padding-bottom: 40px; /* prevents white gap from last child's margin */
-  background: url("/data/images/background/light.png") no-repeat fixed
-    center/cover;
-  position: absolute;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: url('/data/images/background/light.png') center/cover no-repeat fixed;
+    color: #FFF;
 }
 
 @media (prefers-color-scheme: dark) {
   .pageBg {
-    min-height: 100vh;
-    padding-bottom: 40px;
-    background: url("/data/images/background/dark.png") no-repeat center/cover;
-    position: absolute;
+    background-image: url('/data/images/background/dark.png');
   }
 }
 

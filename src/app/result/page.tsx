@@ -7,14 +7,14 @@ import ImageBox from "@/components/section/result/ImageBox";
 import ColorPaletteBox from "@/components/section/result/ColorPaletteBox";
 import TitleBox from "@/components/section/result/TitleBox";
 import ExampleBox from "@/components/section/result/ExampleBox";
-import styles from "./result.module.css";
+import styles from "./page.module.css";
 import RefreshButton from "@/components/section/result/RefreshButton";
 import RefreshCount from "@/components/section/result/RefreshCount";
 import SaveButton from "@/components/section/result/SaveButton";
 import Spinner from "@/components/common/spinner/Spinner";
 
 import React, { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/utils/supabase";
 import type { GeminiSet } from "@/types/result";
 
@@ -42,6 +42,7 @@ interface ResolvedFont {
 
 export default function ResultPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [geminiResult, setGeminiResult] = useState<GeminiSet[] | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,6 +59,7 @@ export default function ResultPage() {
   const [title, setTitle] = useState<string>("New\nMoodboard");
 
   useEffect(() => {
+    if (!searchParams) return;
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -86,8 +88,7 @@ export default function ResultPage() {
       if (typeof window === "undefined") return;
 
       // URL에서 request_id 추출
-      const sp = new URLSearchParams(window.location.search);
-      let rid: string | null = sp.get("rid");
+      let rid: string | null = searchParams.get("rid");
       if (!rid) {
         try {
           rid = localStorage.getItem("last_request_id");
@@ -154,14 +155,14 @@ export default function ResultPage() {
         console.warn("선택 키워드 로드 실패", e);
       }
     })();
-  }, []);
+  }, [searchParams]);
 
   // Prefetch disabled per request: load next only on refresh
 
   const handleSave = useCallback(async () => {
+    if (!searchParams) return;
     if (!geminiResult || geminiResult.length === 0) return;
-    const sp = new URLSearchParams(window.location.search);
-    const requestId = sp.get("rid") || undefined;
+    const requestId = searchParams.get("rid") || undefined;
 
     const currentSet = geminiResult[currentIndex] ?? geminiResult[0];
 
@@ -241,6 +242,7 @@ export default function ResultPage() {
     fontIndex,
     conceptIndex,
     colorIndex,
+    searchParams,
   ]);
   
   // Persist state to sessionStorage whenever it changes
