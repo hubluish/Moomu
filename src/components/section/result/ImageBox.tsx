@@ -63,10 +63,10 @@ const ImageBox: React.FC<Props> = ({
     useEffect(() => {
         const controller = new AbortController();
         const fetchPage = async () => {
+            let wasAborted = false;
             try {
                 setLoading(true);
                 setErr(null);
-                console.info('[ImageBox] fetch', { query, colorHex, perPage, orientation });
 
                 if (!query) throw new Error('이미지 키워드가 비어 있습니다.');
 
@@ -80,7 +80,6 @@ const ImageBox: React.FC<Props> = ({
 
                 // fallback: if color filter yields no results, retry without color
                 if ((entry.photos?.length ?? 0) === 0 && colorHex) {
-                    console.info('[ImageBox] fallback without color');
                     entry = await fetchWithCache({
                         q: query,
                         per_page: perPage,
@@ -92,16 +91,19 @@ const ImageBox: React.FC<Props> = ({
                 setImages(entry.photos);
             } catch (e: unknown) {
                 if (e instanceof Error) {
-                    // In development, React StrictMode can cause a fetch to be aborted.
-                    // This is expected behavior and should not be treated as a user-facing error.
                     if (e.name === 'AbortError') {
+                        wasAborted = true;
+                        // In development, React StrictMode can cause a fetch to be aborted.
+                        // This is expected behavior and should not be treated as a user-facing error.
                         console.warn('Fetch aborted (expected in dev StrictMode).');
                     } else {
                         setErr(e.message ?? '이미지 로딩 실패');
                     }
                 }
             } finally {
-                setLoading(false);
+                if (!wasAborted) {
+                    setLoading(false);
+                }
             }
         };
 
@@ -116,11 +118,11 @@ const ImageBox: React.FC<Props> = ({
             <h2 className={styles.title}>IMAGES</h2>
             <TopRightArrows onPrev={onPrev} onNext={onNext} disablePrev={disablePrev} disableNext={disableNext} />
 
-            {loading && isEmpty ? (
+            {loading ? (
                 <ImageGridSkeleton />
             ) : (
                 <div className={styles.imageGrid}>
-                    {err && isEmpty ? (
+                    {err ? (
                         <div className={styles.noImages}>{err}</div>
                     ) : isEmpty ? (
                         <div className={styles.noImages}>이미지를 찾을 수 없습니다.</div>
