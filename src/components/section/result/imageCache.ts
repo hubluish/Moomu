@@ -21,7 +21,6 @@ type FetchParams = {
 };
 
 const cache = new Map<string, CacheEntry>();
-const inflight = new Map<string, Promise<CacheEntry>>();
 
 const toKey = (p: FetchParams) => [
   p.q?.trim() ?? '',
@@ -56,21 +55,13 @@ export async function fetchWithCache(p: FetchParams, signal?: AbortSignal): Prom
   const hit = cache.get(key);
   if (hit) return hit;
 
-  const inprog = inflight.get(key);
-  if (inprog) return inprog;
-
-  const promise = (async () => {
-    try {
-      const entry = await fetchFromNetwork(p, signal);
-      cache.set(key, entry);
-      return entry;
-    } finally {
-      inflight.delete(key);
-    }
-  })();
-
-  inflight.set(key, promise);
-  return promise;
+  try {
+    const entry = await fetchFromNetwork(p, signal);
+    cache.set(key, entry);
+    return entry;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export function prefetchWithCache(p: FetchParams) {
@@ -79,6 +70,5 @@ export function prefetchWithCache(p: FetchParams) {
 
 export function clearImageCache() {
   cache.clear();
-  inflight.clear();
 }
 

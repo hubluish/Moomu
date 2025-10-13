@@ -46,11 +46,6 @@ const ImageBox: React.FC<Props> = ({
     const query = useMemo(() => (geminiSet?.image || '').trim(), [geminiSet]);
     const colorHex = useMemo(() => (useColorFilter ? geminiSet?.colors?.[0] : ''), [geminiSet, useColorFilter]);
 
-    // 키워드 변경 시 이미지 초기화
-    useEffect(() => {
-        setImages([]);
-    }, [query, colorHex, orientation, perPage]);
-
     // 이미지 변경 시 부모에게 알림
     useEffect(() => {
         if (!images || images.length === 0) {
@@ -97,7 +92,13 @@ const ImageBox: React.FC<Props> = ({
                 setImages(entry.photos);
             } catch (e: unknown) {
                 if (e instanceof Error) {
-                    setErr(e.message ?? '이미지 로딩 실패');
+                    // In development, React StrictMode can cause a fetch to be aborted.
+                    // This is expected behavior and should not be treated as a user-facing error.
+                    if (e.name === 'AbortError') {
+                        console.warn('Fetch aborted (expected in dev StrictMode).');
+                    } else {
+                        setErr(e.message ?? '이미지 로딩 실패');
+                    }
                 }
             } finally {
                 setLoading(false);
