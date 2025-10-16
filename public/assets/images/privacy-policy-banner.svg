@@ -1,0 +1,37 @@
+<!-- privacy-policy-banner.svg -->
+<svg width="1200" height="400" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="400" fill="url(#bgGradient)"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="100" cy="80" r="40" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1100" cy="320" r="60" fill="rgba(255,255,255,0.1)"/>
+  <rect x="200" y="50" width="80" height="80" rx="10" fill="rgba(255,255,255,0.1)" transform="rotate(15 240 90)"/>
+  
+  <!-- Main content -->
+  <text x="600" y="180" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="48" font-weight="bold">
+    개인정보처리방침
+  </text>
+  
+  <text x="600" y="220" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="Arial, sans-serif" font-size="18">
+    Privacy Policy
+  </text>
+  
+  <text x="600" y="260" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="Arial, sans-serif" font-size="16">
+    개인정보 보호에 대한 Moomu의 정책을 확인하세요
+  </text>
+  
+  <!-- Shield icon -->
+  <g transform="translate(600, 290)">
+    <path d="M0,-20 L-15,-10 L-15,5 C-15,15 0,20 0,20 C0,20 15,15 15,5 L15,-10 Z" 
+          fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2"/>
+    <path d="M-5,-5 L-2,0 L5,-8" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

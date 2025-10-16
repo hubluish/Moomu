@@ -67,6 +67,7 @@ function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }: SectionP
           width={510}
           height={400}
           style={{
+            width: "400px",
             marginRight: "8px",
             verticalAlign: "middle",
           }}
@@ -97,18 +98,27 @@ export default function Articlehome({ setActiveTab }: ArticlehomeProps) {
   useEffect(() => {
     fetch("/api/articles?category=용어사전&limit=4")
       .then(res => res.json())
-      .then(data => setDictArticles(data));
+      .then(data => setDictArticles(Array.isArray(data) ? data : []))
+      .catch(err => {
+        console.error('용어사전 데이터 로드 실패:', err);
+        setDictArticles([]);
+      });
+    
     fetch("/api/articles?category=트렌드&limit=4")
       .then(res => res.json())
-      .then(data => setTrendArticles(data));
+      .then(data => setTrendArticles(Array.isArray(data) ? data : []))
+      .catch(err => {
+        console.error('트렌드 데이터 로드 실패:', err);
+        setTrendArticles([]);
+      });
   }, []);
 
   return (
     <div className={styles.container}>
       <Section
         title="디자인 용어 사전 ✒️"
-        imageUrl="https://i.pinimg.com/736x/5b/ae/c4/5baec48bdac5e5f23a3f91aeaab1166b.jpg"
-        bigCard={dictArticles[0] || {
+        imageUrl="/assets/images/article_dictionary.png"
+        bigCard={(dictArticles && dictArticles[0]) || {
           imageUrl: "",
           title: "",
           description: "",
@@ -116,15 +126,16 @@ export default function Articlehome({ setActiveTab }: ArticlehomeProps) {
           date: "",
           id: "",
           slug: "",
+
         }}
-        smallCards={dictArticles.slice(1, 4)}
+        smallCards={(dictArticles || []).slice(1, 4)}
         onMoreClick={() => setActiveTab(4)}
       />
       <div className={styles.line} />
       <Section
         title="트렌드 탐험대 🔍 "
-        imageUrl="https://i.pinimg.com/736x/9c/19/d1/9c19d1cc03ca1ebfd8507afdb483b272.jpg"
-        bigCard={trendArticles[0] || {
+        imageUrl="/assets/images/article_trend.png"
+        bigCard={(trendArticles && trendArticles[0]) || {
           imageUrl: "",
           title: "",
           description: "",
@@ -132,8 +143,9 @@ export default function Articlehome({ setActiveTab }: ArticlehomeProps) {
           date: "",
           id: "",
           slug: "",
+          
         }}
-        smallCards={trendArticles.slice(1, 4)}
+        smallCards={(trendArticles || []).slice(1, 4)}
         onMoreClick={() => setActiveTab(5)}
       />
     </div>

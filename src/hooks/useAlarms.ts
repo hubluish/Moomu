@@ -55,6 +55,14 @@ export const useAlarms = (userId?: string) => {
       setLoading(true);
       setError(null);
 
+      // 개발 환경에서는 바로 목 데이터 사용
+      if (process.env.NODE_ENV === 'development') {
+        console.log('개발 환경: 목 데이터 사용');
+        setAlarms(getMockAlarms());
+        setLoading(false);
+        return;
+      }
+
       // 사용자 세션에서 토큰 가져오기
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -85,10 +93,9 @@ export const useAlarms = (userId?: string) => {
       console.error('알림 데이터 가져오기 실패:', err);
       setError('알림을 불러오는 중 오류가 발생했습니다.');
       
-      // 개발 환경에서는 임시 데이터 사용
-      if (process.env.NODE_ENV === 'development') {
-        setAlarms(getMockAlarms());
-      }
+      // 에러 발생 시 항상 목 데이터 사용 (개발/운영 관계없이)
+      console.log('에러 발생으로 목 데이터 사용');
+      setAlarms(getMockAlarms());
     } finally {
       setLoading(false);
     }
@@ -166,6 +173,19 @@ export const useAlarms = (userId?: string) => {
   // 알림 읽음 처리
   const markAsRead = async (alarmIds: string[]) => {
     try {
+      // 개발 환경에서는 로컬 상태만 업데이트
+      if (process.env.NODE_ENV === 'development') {
+        console.log('개발 환경: 로컬 상태만 업데이트');
+        setAlarms(prev => 
+          prev.map(alarm => 
+            alarmIds.includes(alarm.id) 
+              ? { ...alarm, isRead: true }
+              : alarm
+          )
+        );
+        return;
+      }
+
       // 사용자 세션에서 토큰 가져오기
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -196,6 +216,15 @@ export const useAlarms = (userId?: string) => {
       );
     } catch (err) {
       console.error('알림 읽음 처리 실패:', err);
+      
+      // 에러 발생 시에도 로컬 상태는 업데이트 (UX 개선)
+      setAlarms(prev => 
+        prev.map(alarm => 
+          alarmIds.includes(alarm.id) 
+            ? { ...alarm, isRead: true }
+            : alarm
+        )
+      );
     }
   };
 

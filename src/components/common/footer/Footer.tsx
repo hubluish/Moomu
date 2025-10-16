@@ -3,47 +3,47 @@ import './Footer.css';
 import Image from 'next/image';
 
 const Footer = () => {
-  const footerSections = [
-    {
-      title: 'Moomu 소개',
-      links: [
-        { text: '시작하기', url: '/landing' },
-        { text: 'Moomu 소개', url: '/about' }
-      ]
-    },
-    {
-      title: '학습 및 지원',
-      links: [
-        { text: '고객센터', url: '/support' },
-        { text: '자주 묻는 질문', url: '/faq' }
-      ]
-    },
-    {
-      title: '제품',
-      links: [
-        { text: '요금', url: '/pricing' },
-        { text: '환불 정책', url: '/refund-policy' }
-      ]
-    },
-    {
-      title: '왜 Moomu여야 할까요?',
-      links: [
-        { text: 'Moomu만의 차별성', url: '/features' }
-      ]
-    }
-  ];
+  // const footerSections = [
+  //   {
+  //     title: 'Moomu 소개',
+  //     links: [
+  //       { text: '시작하기', url: '/landing' },
+  //       { text: 'Moomu 소개', url: '/about' }
+  //     ]
+  //   },
+  //   {
+  //     title: '학습 및 지원',
+  //     links: [
+  //       { text: '고객센터', url: '/support' },
+  //       { text: '자주 묻는 질문', url: '/faq' }
+  //     ]
+  //   },
+  //   {
+  //     title: '제품',
+  //     links: [
+  //       { text: '요금', url: '/pricing' },
+  //       { text: '환불 정책', url: '/refund-policy' }
+  //     ]
+  //   },
+  //   {
+  //     title: '왜 Moomu여야 할까요?',
+  //     links: [
+  //       { text: 'Moomu만의 차별성', url: '/features' }
+  //     ]
+  //   }
+  // ];
 
-  const wrapMoomu = (text: string) => {
-    if (typeof text !== 'string') return text;
-    const parts = text.split(/(Moomu)/gi);
-    return parts.map((part, idx) =>
-      part.toLowerCase() === 'moomu' ? (
-        <span key={idx} className="moomu-name">{part}</span>
-      ) : (
-        <span key={idx}>{part}</span>
-      )
-    );
-  };
+  // const wrapMoomu = (text: string) => {
+  //   if (typeof text !== 'string') return text;
+  //   const parts = text.split(/(Moomu)/gi);
+  //   return parts.map((part, idx) =>
+  //     part.toLowerCase() === 'moomu' ? (
+  //       <span key={idx} className="moomu-name">{part}</span>
+  //     ) : (
+  //       <span key={idx}>{part}</span>
+  //     )
+  //   );
+  // };
 
   const [showToast, setShowToast] = useState(false);
   const handleCopyEmail = () => {
