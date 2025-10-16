@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import LoginModal from "../Login/LoginModal";
+import AlarmModal from "../headerAlarm/AlarmModal";
 import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/utils/supabase";
+import { useAlarms } from "@/hooks/useAlarms";
 import styles from "./Header.module.css";
 
 // Constants
@@ -146,6 +148,7 @@ const useBackgroundMode = (pathname: string | null) => {
 const useAuth = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState<string | undefined>(undefined);
   
   useEffect(() => {
     const getSession = async () => {
@@ -153,6 +156,7 @@ const useAuth = () => {
       
       if (session) {
         setIsLoggedIn(true);
+        setUserId(session.user.id);
         
         const { data: profile } = await supabase
           .from("profiles")
@@ -168,6 +172,7 @@ const useAuth = () => {
       } else {
         setIsLoggedIn(false);
         setUserName("");
+        setUserId(undefined);
       }
     };
     
@@ -183,7 +188,7 @@ const useAuth = () => {
     }
   };
   
-  return { isLoggedIn, userName, handleLogout };
+  return { isLoggedIn, userName, userId, handleLogout };
 };
 
 // Main Component
@@ -192,12 +197,16 @@ export default function Header() {
   const router = useRouter();
   
   const bgMode = useBackgroundMode(pathname);
-  const { isLoggedIn, userName, handleLogout } = useAuth();
+  const { isLoggedIn, userName, userId, handleLogout } = useAuth();
+  
+  // 알림 데이터 가져오기
+  const { alarms, markAsRead } = useAlarms(userId);
   
   const [showDropdown, setShowDropdown] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(false);
   const [isScrolledPastHeader, setIsScrolledPastHeader] = useState(false);
+  const [isAlarmModalOpen, setIsAlarmModalOpen] = useState(false);
   
   const headerMode = getHeaderModeClass(bgMode, isLoggedIn);
   const avatarSrc = headerMode.startsWith("dark") ? AVATAR_DARK : AVATAR_LIGHT;
@@ -230,7 +239,24 @@ export default function Header() {
   const handleLogoClick = () => router.push("/");
   const handleLoginClick = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-  const handleAvatarClick = () => setShowDropdown(prev => !prev);
+  const handleAvatarClick = () => {
+    // 알림 모달 열기
+    setIsAlarmModalOpen(true);
+    setShowDropdown(false);
+  };
+  
+  const handleCloseAlarmModal = () => {
+    // 모달 닫을 때 안 읽은 알림들 읽음 처리
+    const unreadAlarmIds = alarms
+      .filter(alarm => !alarm.isRead)
+      .map(alarm => alarm.id);
+    
+    if (unreadAlarmIds.length > 0) {
+      markAsRead(unreadAlarmIds);
+    }
+    
+    setIsAlarmModalOpen(false);
+  };
   const handleLogoutClick = () => {
     handleLogout();
     setShowDropdown(false);
@@ -318,6 +344,11 @@ export default function Header() {
         </div>
         
         <LoginModal isOpen={isModalOpen} onClose={handleCloseModal} />
+        <AlarmModal 
+          isOpen={isAlarmModalOpen} 
+          onClose={handleCloseAlarmModal} 
+          alarms={alarms} 
+        />
       </header>
     </>
   );
