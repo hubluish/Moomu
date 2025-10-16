@@ -56,6 +56,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-top">
+        <div className="top-content">
         <div className="logo">Moomu</div>
         <a className="social-link" href="https://www.instagram.com/your_moomu/?igsh=NXdyc2N2ZjM5NW10#" target="_blank" rel="noreferrer noopener">
           <Image
@@ -65,12 +66,13 @@ const Footer = () => {
             width={25}
             height={25}
           />
-        </a>
+          </a>
+        </div>
       </div>
 
-      <div className="footer-divider" />
+      {/* <div className="footer-divider" /> */}
 
-      <div className="footer-content">
+      {/* <div className="footer-content">
         {footerSections.map((section, index) => (
           <div key={index} className="footer-section">
             <h4>{wrapMoomu(section.title)}</h4>
@@ -79,14 +81,16 @@ const Footer = () => {
             ))}
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div className="footer-bottom">
-        <a href="/privacy-policy" className="policy">개인정보 처리 방침</a>
-        <span className="dot" />
-        <button type="button" className="email" onClick={handleCopyEmail} title="클릭하면 복사됩니다">이메일: yourmoomu@gmail.com</button>
-        <span className="dot" />
-        <span className="copyright">© 2025, Moomu. All rights reserved.</span>
+        <div className="footer-bottom-content">
+          <a href="/privacy-policy" className="policy">개인정보 처리 방침</a>
+          <span className="line" />
+          <button type="button" className="email" onClick={handleCopyEmail} title="클릭하면 복사됩니다">이메일: yourmoomu@gmail.com</button>
+          <span className="line" />
+          <span className="copyright">© 2025, Moomu. All rights reserved.</span>
+        </div>
       </div>
       <div className={`footer-toast${showToast ? '' : ' hide'}`}>복사되었습니다</div>
     </footer>
