@@ -34,7 +34,7 @@ const AVATAR_DARK = "/assets/icons/headerId-dark.png";
 const NAV_ITEMS = [
   { href: "/feed", label: "Explore Feeds" },
   { href: "/article", label: "Article" },
-  { href: "/generate/generate", label: "Generate Moodboard" },
+  { href: "/generate", label: "Generate Moodboard" },
 ];
 
 const getMode = (bg: string, loggedIn: boolean) => {
@@ -42,13 +42,150 @@ const getMode = (bg: string, loggedIn: boolean) => {
   return loggedIn ? "light-logged" : "light";
 };
 
-function detectBgMode(path: string) {
-  if (path === "/" || path === "/result") return "dark";
-  if (
-    ["/feed", "/article", "/generate/generate"].includes(path) ||
-    path.startsWith("/mypage")
-  ) {
-    return "light";
+  width: 100vw;
+  height: 64px;
+  padding: 0 32px;
+  background: transparent;
+  z-index: 100;
+  ${(props) =>
+    props.$mode.startsWith("dark")
+      ? css`
+          color: #fff;
+        `
+      : css`
+          color: #222;
+        `}
+`;
+const LogoSection = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const LogoImg = styled.img`
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+`;
+const LogoName = styled.span`
+  font-size: 25px;
+  font-weight: 800;
+  font-family: var(--font-family-logo, Pretendard);
+  letter-spacing: -0.1em;
+  height: 40px;
+`;
+const Nav = styled.nav`
+  display: flex;
+  gap: 32px;
+  align-items: center;
+`;
+const NavLink = styled.a<{ $active: boolean; $mode: string }>`
+  position: relative;
+  text-decoration: none;
+  font-size: 16px;
+  color: ${({ $active, $mode }) =>
+    $active
+      ? $mode.startsWith("dark")
+        ? "#6d63ff"
+        : "#6d63ff"
+      : $mode.startsWith("dark")
+      ? "#fff"
+      : "#222"};
+  padding: 0 4px;
+  transition: color 0.2s;
+  &:hover {
+    color: #6d63ff;
+  }
+`;
+const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+const LoginButton = styled.button<{ $mode: string }>`
+  display: flex;
+  padding: 10px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 70px;
+  background: ${({ $mode }) =>
+    $mode.startsWith("dark")
+      ? "linear-gradient(180deg, #3d38f5b3 16.41%, #dcbadb 385.64%)"
+      : "linear-gradient(180deg, #6d63ff 16.41%, #dcbadb 385.64%)"};
+  color: #fff;
+  border: none;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  &:hover {
+    background: #6d63ff;
+  }
+`;
+const AccountWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+const Avatar = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+const UserName = styled.span`
+  margin-left: 10px;
+  font-weight: bold;
+`;
+const Dropdown = styled.div<{ $mode: string }>`
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: ${({ $mode }) => ($mode.startsWith("dark") ? "#222" : "#fff")};
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  min-width: 165px;
+  z-index: 10;
+  padding: 8px 0;
+`;
+const DropdownItem = styled.a`
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  color: #6d63ff;
+  text-decoration: none;
+  font-size: 15px;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  &:hover {
+    color: #3d38f5;
+  }
+`;
+const DropdownButton = styled.button`
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  color: #6d63ff;
+  text-decoration: none;
+  font-size: 15px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  &:hover {
+    color: #3d38f5;
+  }
+`;
+function detectBgMode() {
+  if (typeof window !== "undefined") {
+    const path = window.location.pathname;
+    if (path === "/" || path === "/result") return "dark";
+    if (
+      ["/feed", "/article", "/mypage/moodboard", "/generate"].includes(
+        path
+      )
+    )
+      return "light";
   }
   return "dark";
 }
@@ -127,16 +264,25 @@ export default function Header() {
 
       <NavFrame>
         <Nav>
-          {NAV_ITEMS.map(({ href, label }) => (
-            <NavLink
-              key={href}
-              href={href}
-              $active={pathname === href}
-              $mode={headerMode}
-            >
-              {label}
-            </NavLink>
-          ))}
+          {NAV_ITEMS.map(({ href, label }) => {
+            const isGenerateButton = label === "Generate Moodboard";
+            return (
+              <NavLink
+                key={href}
+                href={href}
+                $active={pathname === href}
+                $mode={headerMode}
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                  if (isGenerateButton && !isLoggedIn) {
+                    e.preventDefault();
+                    handleLoginClick();
+                  }
+                }}
+              >
+                {label}
+              </NavLink>
+            );
+          })}
         </Nav>
 
         <RightSection>

@@ -36,6 +36,23 @@
     position: relative;
 }
 
+.skeleton {
+    width: 350px;
+    height: 176px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: #e0e0e0;
+    }
+    100% {
+        background-color: #f0f0f0;
+    }
+}
+
 /* 카테고리 관련 스타일 */
 .catViewport {
     width: 100%;

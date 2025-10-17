@@ -15,21 +15,18 @@
 }
 
 .pageBg {
-  /* Ensure background covers full viewport and avoids bottom margin collapse */
-  min-height: 100vh;
-  min-width: 100vw;
-  padding-bottom: 40px; /* prevents white gap from last child's margin */
-  background: url("/data/images/background/light.png") no-repeat fixed
-    center/cover;
-  position: absolute;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: url('/data/images/background/light.png') center/cover no-repeat fixed;
+    color: #FFF;
 }
 
 @media (prefers-color-scheme: dark) {
   .pageBg {
-    min-height: 100vh;
-    padding-bottom: 40px;
-    background: url("/data/images/background/dark.png") no-repeat center/cover;
-    position: absolute;
+    background-image: url('/data/images/background/dark.png');
   }
 }
 
@@ -55,11 +52,11 @@
 }
 
 .gridContainer {
+  margin: 40px auto;
   display: grid;
-
+  width: 1338px;
   grid-template-rows: auto auto;
   gap: 25px;
-  margin: 40px;
   align-items: center;
   grid-template-columns: 3.8fr 2.4fr 1.4fr 2.5fr;
   grid-template-rows: repeat(4, auto);
@@ -109,4 +106,51 @@
 .paletteBox,
 .fontBox {
   width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .topWrapper,
+  .gridContainer {
+    width: 997px;
+  }
+
+  .gridContainer {
+    grid-template-columns: 3.8fr 2.4fr 1.4fr;
+    grid-template-areas:
+      " title concept font "
+      " images concept font "
+      " images palette palette "
+      " images keyword keyword ";
+  }
+
+  .exampleBox {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .topWrapper,
+  .gridContainer {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    margin: 44px auto 24px auto;
+  }
+
+  .topWrapper {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 15px;
+  }
+
+  .gridContainer {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      " title   title   "
+      " images  images  "
+      " concept font    "
+      " palette palette "
+      " keyword keyword ";
+    gap: 20px;
+  }
 }

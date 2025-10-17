@@ -1,4 +1,5 @@
 .container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -25,4 +26,34 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+}
+
+.comingSoonContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 11.95px;
+    z-index: 1;
+}
+
+.comingSoonIcon {
+    width: 48px;
+    height: 48px;
+    opacity: 0.5;
+}
+
+.comingSoonText {
+    color: #fff;
+    font-family: Pretendard, system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 16px;
+    opacity: 0.7;
 }

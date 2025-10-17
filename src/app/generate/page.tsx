@@ -1,19 +1,20 @@
-"use client";
+'use client';
 
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./generate.module.css";
-import PopAlert from "../../components/section/home/PopAlert";
-import ColorOption from "../../components/section/home/ColorOption";
-import TitleBlock from "../../components/section/home/TitleBlock";
-import NextButton from "../../components/section/home/NextButton";
-import PreviousButton from "../../components/section/home/PreviousButton";
-import ProgressBar from "../../components/section/home/ProgressBar";
-import MoodOption from "../../components/section/home/MoodOption";
-import TagGuideModal from "../../components/section/home/TagGuideModal";
-import SeeMoreButton from "../../components/section/home/SeeMoreButton";
-import { saveToSupabase } from "../../utils/saveToSupabase";
-import PopCheer from "../../components/section/home/PopCheer";
+import PopAlert from "@/components/section/generate/PopAlert";
+import ColorOption from "@/components/section/generate/ColorOption";
+import TitleBlock from "@/components/section/generate/TitleBlock";
+import NextButton from "@/components/section/generate/NextButton";
+import PreviousButton from "@/components/section/generate/PreviousButton";
+import ProgressBar from "@/components/section/generate/ProgressBar";
+import MoodOption from "@/components/section/generate/MoodOption";
+import TagGuideModal from "@/components/section/generate/TagGuideModal";
+import SeeMoreButton from "@/components/section/generate/SeeMoreButton";
+import { saveToSupabase } from "@/utils/saveToSupabase";
+import PopCheer from "@/components/section/generate/PopCheer";
+import Loading from './loading';
 
 import stepMeta from "../../../public/data/stepMeta.json";
 import colorThemes from "../../../public/data/colorThemes.json";
@@ -38,7 +39,7 @@ interface Option {
   key?: string;
 }
 
-function Home() {
+function GeneratePage() {
   const [step, setStep] = useState(1);
   const router = useRouter();
   const [selections, setSelections] = useState<(string | null)[]>([
@@ -54,6 +55,7 @@ function Home() {
   const [cheerMsg, setCheerMsg] = useState<React.ReactNode>("");
   const cheerTimerRef = useRef<number | null>(null);
   const alertTimerRef = useRef<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const meta = stepMeta[step - 1];
 
   const getStepContent = (): Array<{
@@ -175,6 +177,8 @@ function Home() {
       return;
     }
 
+    setIsLoading(true);
+
     const payload = {
       color: selections[0],
       font: selections[2],
@@ -223,17 +227,20 @@ function Home() {
         const rid = await saveToSupabase(result);
         console.log('%c✅ Supabase 저장 성공:', 'color: green; font-weight: bold;');
         if (rid) {
-            router.push(`/generate/loading?rid=${encodeURIComponent(rid)}`);
+            router.push(`/result?rid=${encodeURIComponent(rid)}`);
         } else {
             console.error('❌ Request ID 생성 실패');
             alert('요청 ID 생성에 실패했습니다.');
+            setIsLoading(false);
         }
         } catch (error) {
         console.error('%c❌ Supabase 저장 실패:', 'color: red; font-weight: bold;', error);
+        setIsLoading(false);
         }
     } catch (error) {
       console.error("❌ Gemini 서버 호출 실패:", error);
       alert("Gemini API 요청에 실패했습니다.");
+      setIsLoading(false);
     }
   };
 
@@ -281,6 +288,10 @@ function Home() {
           return updated;
         });
       };
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
   return (
     <main>
@@ -338,13 +349,9 @@ function Home() {
         </div>
       )}
 
-      {showModal && (
-        <div className={styles.modalOverlay}>
-          <TagGuideModal onClose={() => setShowModal(false)} />
-        </div>
-      )}
+      {showModal && <TagGuideModal onClose={() => setShowModal(false)} />}
     </main>
   );
 }
 
-export default Home;
+export default GeneratePage;

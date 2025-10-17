@@ -1,0 +1,137 @@
+.wrapper {
+    width: 499px;
+    height: 177px;
+    position: absolute;
+    top: 80px; 
+    right: 20px;
+    z-index: 1000;
+    border-radius: 30px;
+    background: var(--notice, #F1F3F5);
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.25);
+    animation: fadeInScale 0.3s ease-out;
+    transform-origin: center;
+    overflow: hidden; /* 안전망 */
+    }
+
+    .icon {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    }
+
+    /* 텍스트 영역: 아이콘을 피해서 패딩으로 오프셋 */
+    .content {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    padding: 21px 17px;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+    height: 92px;
+    }
+
+    /* 모든 텍스트 18px, 줄바꿈 방지 */
+    .title,
+    .subtext,
+    .leftButton,
+    .rightButton {
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    line-height: 1.2;
+    white-space: nowrap;      /* 줄바꿈 X */
+    overflow: hidden;         /* 혹시 넘칠 때 대비 */
+    text-overflow: ellipsis;  /* 아주 길면 말줄임 */
+    color: var(--main-text, #1C1C1E);
+    }
+
+    .title {
+    font-weight: 700;
+    }
+
+    .subtext {
+    color: var(--sub-text, #6B7280);
+    font-weight: 400;
+    }
+
+    .textContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    /* 버튼 영역: 하단 중앙 정렬 */
+    .buttonRow {
+    position: relative;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    border-top: 1px solid #E9EAEB;
+    border-radius: 0 0 16px 16px;
+    height: 85px;
+    align-items: center;
+    }
+
+    /* 버튼 크기 및 배치: 요청 스펙 그대로 */
+    .leftButton,
+    .rightButton {
+    display: flex;
+    width: 220px;
+    padding: 10px 18px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    font-weight: 700;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px 0 rgba(10, 13, 18, 0.05);
+    cursor: pointer;
+    height: 39px;
+    }
+
+    .leftButton {
+        border-radius: 8px;
+        border: 1px solid #9A8CF2;
+        color: white;
+        background: var(--folder-icon-hover, #C5C2FF);
+        transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+    }
+
+    .rightButton {
+        border-radius: 8px;
+        border: 1px solid var(--Gray-300, #D5D7DA);
+        background: #F8F9FA;
+    }
+
+    .leftButton:hover {
+        border-radius: 8px;
+        border: 1px solid #9A8CF2;
+        background: var(--point, #8865F3);
+        box-shadow: 0 1px 2px 0 rgba(10, 13, 18, 0.05);
+    }
+
+    .closeIconWrapper {
+    position: relative;
+    margin: 0px 0px auto auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+
+    @keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* (선택) 모달 오버레이가 필요한 경우 */
+    .modalOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.1);
+    }
