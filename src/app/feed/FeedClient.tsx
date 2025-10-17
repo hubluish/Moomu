@@ -52,7 +52,8 @@ export default function FeedClient() {
   const pageSize = 10;
   const [totalCount, setTotalCount] = useState<number>(0);
   const [openModal, setOpenModal] = useState(false);
-  const [selectedMoodboardId, setSelectedMoodboardId] = useState<string | null>(null);
+    const [selectedMoodboardId, setSelectedMoodboardId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   // Open modal automatically when `open` query is present
   useEffect(() => {
@@ -429,6 +430,10 @@ export default function FeedClient() {
                   key={item.id}
                   className={styles.feedItem}
                   onClick={() => handleOpenModal(item.moodboardId, item.id)}
+                  onMouseEnter={() => setHoveredId(item.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  onFocus={() => setHoveredId(item.id)}
+                  onBlur={() => setHoveredId(null)}
                   role="button"
                   aria-label="무드보드 미리보기 열기"
                   tabIndex={0}
@@ -457,7 +462,11 @@ export default function FeedClient() {
                       ))}
                   </div>
 
-                  <div className={styles.hoverOverlay}>
+                  <div
+                    className={`${styles.hoverOverlay} ${
+                      hoveredId === item.id ? styles.active : ""
+                    }`}
+                  >
                     <div className={styles.overlayFooter}>
                       <span className={styles.overlayUsername}>{item.creator}</span>
                       <div className={styles.overlayLikeButton}>
@@ -505,9 +514,9 @@ export default function FeedClient() {
                 color: page === 0 ? "#aaa" : "#333",
                 cursor: page === 0 ? "not-allowed" : "pointer",
               }}
-              aria-label="Previous page"
+              aria-label="이전"
             >
-              Previous
+              이전
             </button>
 
             <Pagenation
@@ -528,9 +537,9 @@ export default function FeedClient() {
                 color: page >= totalPages - 1 ? "#aaa" : "#333",
                 cursor: page >= totalPages - 1 ? "not-allowed" : "pointer",
               }}
-              aria-label="Next page"
+              aria-label="다음"
             >
-              Next
+              다음
             </button>
           </div>
         )}

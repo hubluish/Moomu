@@ -86,24 +86,12 @@
     pointer-events: none; /* hidden state should not intercept clicks */
 }
 
-.feedItem:hover .hoverOverlay {
-    opacity: 1;
-    pointer-events: auto; /* enable interactions when visible */
-}
-
-/* Improve accessibility: show overlay when focused within (keyboard users) */
-.feedItem:focus-within .hoverOverlay {
+.hoverOverlay.active {
     opacity: 1;
     pointer-events: auto;
 }
 
-/* On touch devices (no hover), keep overlay interactive */
-@media (hover: none) {
-    .hoverOverlay {
-        opacity: 1;
-        pointer-events: auto;
-    }
-}
+
 
 .overlayFooter {
     display: flex;
