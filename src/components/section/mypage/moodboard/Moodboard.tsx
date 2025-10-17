@@ -23,7 +23,7 @@ type MoodboardProps = {
   onPermanentDelete?: (moodboardId: string) => void;
   authorName?: string;
   isPublic: boolean;
-  onTogglePublic: () => void;
+  onTogglePublic: (moodboardId: string) => void;
   onUnlike?: (postId: string) => void;
 };
 

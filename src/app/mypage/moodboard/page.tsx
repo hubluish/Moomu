@@ -135,7 +135,12 @@ const MoodboardPage = () => {
     setSelectedBoardIdForModal(null);
   };
 
-  const handleTogglePublic = async (board: MoodboardResult) => {
+  const handleTogglePublic = async (moodboardId: string) => {
+    const board = moodboards.find((m) => m.id === moodboardId);
+    if (!board) {
+      displayToast("무드보드를 찾을 수 없습니다.", <ErrorIcon />);
+      return;
+    }
     try {
       const {
         data: { session },
@@ -250,7 +255,7 @@ const MoodboardPage = () => {
                         onAddToFolder={() => handleOpenFolderModal(board.id)}
                         onMoveToTrash={() => openTrashConfirmModal(board.id)}
                         isPublic={board.is_public}
-                        onTogglePublic={() => handleTogglePublic(board)}
+                        onTogglePublic={handleTogglePublic}
                       />
                     </div>
                   );

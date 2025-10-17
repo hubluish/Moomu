@@ -169,7 +169,7 @@ const FavoritePage = ({}) => {
                     onRemoveFromFolder={() => {}}
                     onUnlike={() => handleUnlikeFeed(feed.id)}
                     isPublic={true}
-                    onTogglePublic={() => {}}
+                    onTogglePublic={(_moodboardId: string) => {}}
                   />
                 </div>
               ))}

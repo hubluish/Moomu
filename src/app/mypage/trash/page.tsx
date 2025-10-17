@@ -185,7 +185,7 @@ const TrashPage = ({}) => {
                     onRestore={() => openRestoreConfirmModal(board.id)}
                     onPermanentDelete={() => openDeleteConfirmModal(board.id)}
                     isPublic={false}
-                    onTogglePublic={() => {}}
+                    onTogglePublic={(_moodboardId: string) => {}}
                   />
                 );
               })}

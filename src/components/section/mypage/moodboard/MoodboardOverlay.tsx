@@ -21,7 +21,7 @@ type MoodboardOverlayProps = {
   onRestore?: (moodboardId: string) => void;
   onPermanentDelete?: (moodboardId: string) => void;
   isPublic: boolean;
-  onTogglePublic: () => void;
+  onTogglePublic: (moodboardId: string) => void;
   onUnlike?: () => void;
 };
 
