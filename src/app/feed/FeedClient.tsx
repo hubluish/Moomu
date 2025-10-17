@@ -503,10 +503,11 @@ export default function FeedClient() {
                 background: page === 0 ? "#f5f5f5" : "white",
                 color: page === 0 ? "#aaa" : "#333",
                 cursor: page === 0 ? "not-allowed" : "pointer",
+                fontFamily: "Pretendard",
               }}
-              aria-label="이전 페이지"
+              aria-label="Previous page"
             >
-              이전
+              Previous
             </button>
 
             <Pagenation
@@ -525,10 +526,11 @@ export default function FeedClient() {
                 background: page >= totalPages - 1 ? "#f5f5f5" : "white",
                 color: page >= totalPages - 1 ? "#aaa" : "#333",
                 cursor: page >= totalPages - 1 ? "not-allowed" : "pointer",
+                fontFamily: "Pretendard",
               }}
-              aria-label="다음 페이지"
+              aria-label="Next page"
             >
-              다음
+              Next
             </button>
           </div>
         )}
