@@ -251,7 +251,7 @@ const FolderDetailPage = () => {
                       onMoveToTrash={() => openTrashConfirmModal(board.id)}
                       onAddToFolder={() => handleOpenFolderModal(board.id)}
                       isPublic={board.is_public}
-                      onTogglePublic={() => {}}
+                      onTogglePublic={(_moodboardId: string) => {}}
                     />
                   </div>
                 );
