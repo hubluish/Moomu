@@ -26,23 +26,10 @@
         justify-items: center;
     }
 
-
     .grid2x2{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap:40px;
-    }
-
-    .modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     }
 
     .seeMoreButton {

@@ -1,20 +1,24 @@
 'use client';
 
-import KeywordBox from "../../components/section/result/KeywordBox";
-import ConceptBox from "../../components/section/result/ConceptBox";
-import FontBox from "../../components/section/result/FontBox";
-import ImageBox from "../../components/section/result/ImageBox";
-import ColorPaletteBox from "../../components/section/result/ColorPaletteBox";
-import TitleBox from "../../components/section/result/TitleBox";
-import ExampleBox from "../../components/section/result/ExampleBox";
-import styles from "./result.module.css";
-import RefreshButton from "../../components/section/result/RefreshButton";
-import SaveButton from "../../components/section/result/SaveButton";
+import KeywordBox from "@/components/section/result/KeywordBox";
+import ConceptBox from "@/components/section/result/ConceptBox";
+import FontBox from "@/components/section/result/FontBox";
+import ImageBox from "@/components/section/result/ImageBox";
+import ColorPaletteBox from "@/components/section/result/ColorPaletteBox";
+import TitleBox from "@/components/section/result/TitleBox";
+import ExampleBox from "@/components/section/result/ExampleBox";
+import styles from "./page.module.css";
+import RefreshButton from "@/components/section/result/RefreshButton";
+import RefreshCount from "@/components/section/result/RefreshCount";
+import SaveButton from "@/components/section/result/SaveButton";
+import Spinner from "@/components/common/spinner/Spinner";
 
 import React, { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/utils/supabase";
 import type { GeminiSet } from "@/types/result";
+
+import ErrorDisplay from '@/components/common/ErrorDisplay';
 
 // Supabase 응답 스키마 타입 정의
 interface ResultRow {
@@ -36,8 +40,9 @@ interface ResolvedFont {
   image_link?: string;
 }
 
-export default function ResultPage() {
+export default function ResultClient() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [geminiResult, setGeminiResult] = useState<GeminiSet[] | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,29 +59,36 @@ export default function ResultPage() {
   const [title, setTitle] = useState<string>("New\nMoodboard");
 
   useEffect(() => {
-    // Restore state from sessionStorage on page load
-    const savedStateJSON = sessionStorage.getItem('resultPageState');
-    if (savedStateJSON) {
-      try {
-        const savedState = JSON.parse(savedStateJSON);
-        if (savedState && typeof savedState.revealedCount === 'number') {
-          setRevealedCount(savedState.revealedCount);
-          setCurrentIndex(savedState.currentIndex ?? 0);
-          setFontIndex(savedState.fontIndex ?? 0);
-          setConceptIndex(savedState.conceptIndex ?? 0);
-          setColorIndex(savedState.colorIndex ?? 0);
-        }
-      } catch (e) {
-        console.error("Failed to parse saved state", e);
-      }
-    }
-
+    if (!searchParams) return;
     (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+          setErrorMsg("로그인을 다시 한 후 이용해 주세요");
+          setLoading(false);
+          return;
+      }
+
+      // Restore state from sessionStorage on page load
+      const savedStateJSON = sessionStorage.getItem('resultPageState');
+      if (savedStateJSON) {
+        try {
+          const savedState = JSON.parse(savedStateJSON);
+          if (savedState && typeof savedState.revealedCount === 'number') {
+            setRevealedCount(savedState.revealedCount);
+            setCurrentIndex(savedState.currentIndex ?? 0);
+            setFontIndex(savedState.fontIndex ?? 0);
+            setConceptIndex(savedState.conceptIndex ?? 0);
+            setColorIndex(savedState.colorIndex ?? 0);
+          }
+        } catch (e) {
+          console.error("Failed to parse saved state", e);
+        }
+      }
+
       if (typeof window === "undefined") return;
 
       // URL에서 request_id 추출
-      const sp = new URLSearchParams(window.location.search);
-      let rid: string | null = sp.get("rid");
+      let rid: string | null = searchParams.get("rid");
       if (!rid) {
         try {
           rid = localStorage.getItem("last_request_id");
@@ -143,21 +155,21 @@ export default function ResultPage() {
         console.warn("선택 키워드 로드 실패", e);
       }
     })();
-  }, []);
+  }, [searchParams]);
 
   // Prefetch disabled per request: load next only on refresh
 
   const handleSave = useCallback(async () => {
+    if (!searchParams) return;
     if (!geminiResult || geminiResult.length === 0) return;
-    const sp = new URLSearchParams(window.location.search);
-    const requestId = sp.get("rid") || undefined;
+    const requestId = searchParams.get("rid") || undefined;
 
     const currentSet = geminiResult[currentIndex] ?? geminiResult[0];
 
     // auth user 가져오기 (owner_id 용)
-    const {
-      data: { user },
-      error: userErr,
+    const { 
+      data: { user }, 
+      error: userErr, 
     } = await supabase.auth.getUser();
     if (userErr || !user) {
       alert("로그인이 필요합니다.");
@@ -230,6 +242,7 @@ export default function ResultPage() {
     fontIndex,
     conceptIndex,
     colorIndex,
+    searchParams,
   ]);
   
   // Persist state to sessionStorage whenever it changes
@@ -247,8 +260,8 @@ export default function ResultPage() {
   }, [loading, revealedCount, currentIndex, fontIndex, conceptIndex, colorIndex]);
 
   // 로딩/에러 상태 처리
-  if (loading) return <div>로딩 중…</div>;
-  if (errorMsg) return <div>{errorMsg}</div>;
+  if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><Spinner /></div>;
+  if (errorMsg) return <ErrorDisplay message={errorMsg} />;
   if (!geminiResult || geminiResult.length === 0) return <div>표시할 결과가 없습니다.</div>;
 
   const currentSet = geminiResult[currentIndex] ?? geminiResult[0];
@@ -256,6 +269,7 @@ export default function ResultPage() {
   const currentConceptSet = geminiResult[conceptIndex] ?? geminiResult[0];
   const currentColorSet = geminiResult[colorIndex] ?? geminiResult[0];
   const tags = selectedTags;
+  const remainingRefreshes = geminiResult ? geminiResult.length - revealedCount : 0;
 
 
   return (
@@ -278,6 +292,7 @@ export default function ResultPage() {
             }}
             disabled={revealedCount >= geminiResult.length}
           />
+          <RefreshCount remaining={remainingRefreshes} />
         </div>
       </div>
       <div className={styles.gridContainer}>
@@ -335,4 +350,3 @@ export default function ResultPage() {
     </main>
   );
 }
-

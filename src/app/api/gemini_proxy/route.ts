@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const API_KEY = process.env.GEMINI_API_KEY;
@@ -9,15 +8,11 @@ if (!API_KEY) {
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Only POST method is allowed' });
-    }
-
-    const { color, font, image } = req.body;
+export async function POST(req: Request) {
+    const { color, font, image } = await req.json();
 
     if (!color || !font || !image) {
-        return res.status(400).json({ error: 'Missing required fields: color, font, image' });
+        return new Response(JSON.stringify({ error: 'Missing required fields: color, font, image' }), { status: 400 });
     }
 
 const prompt = `
@@ -46,7 +41,8 @@ sentences: 입력된 키워드들의 분위기와 감정을 반영하여, 감성
 - 각 문장은 15자 이내, 문장 내 쉼표 절대 포함하지 말 것
 - 시 구절처럼 따뜻하고 직관적으로 표현할 것  
 - 은유적이면서도 이해하기 쉬운 표현  
-- 키워드의 감성을 직접적으로 드러내되, 너무 설명적이지 않고 감각적으로 쓸 것  
+- 키워드의 감성을 직접적으로 드러내되, 너무 설명적이지 않고 감각적으로 쓸 것 
+- The three sentences should be organically connected.
 
 기존 프롬프트 구조(3세트, JSON 파일로 출력) 반드시 유지  
 결과 외 다른 말 절대 출력 금지
@@ -71,9 +67,9 @@ colors, image, font, sentences
         
         console.log("파싱된 JSON 응답 : ", outputJson)
 
-        return res.status(200).json(outputJson);
+        return new Response(JSON.stringify(outputJson), { status: 200 });
     } catch (error) {
         console.error('Error calling Gemini API:', error instanceof Error ? error.message : error);
-        return res.status(500).json({ error: 'Failed to call Gemini API' });
+        return new Response(JSON.stringify({ error: 'Failed to call Gemini API' }), { status: 500 });
     }
 }

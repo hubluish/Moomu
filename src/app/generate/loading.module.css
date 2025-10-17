@@ -6,28 +6,6 @@
     align-items: center;
 }
 
-.spinner {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 20px;
-    }
-
-    .spinnerSvg {
-    width: 100%;
-    height: 100%;
-    animation: spinner-rotate 1s linear infinite;
-    }
-
-    @keyframes spinner-rotate {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-
 .typingText {
     color: #000;
     text-align: center;
@@ -37,8 +15,8 @@
     font-weight: 700;
     line-height: 48px;
     height: 48px;
-    margin-bottom: 30px;
-    white-space: pre; 
+    margin: 30px auto;
+    white-space: pre;
 }
 
 .fadeText {
