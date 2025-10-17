@@ -3,6 +3,7 @@ import React, { useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/utils/supabase";
 import { getLikedFeeds, unlikeFeed } from "@/utils/feeds";
 import Sidebar from "@/components/section/mypage/Sidebar";
+import MoodboardModal from "@/app/feed/MoodboardModal";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import Toast from "@/components/common/toast/Toast";
 import { MoodboardGridSkeleton } from "@/components/section/mypage/moodboard/MoodboardSkeleton";
@@ -39,6 +40,11 @@ const ErrorIcon = () => (
 const FavoritePage = ({}) => {
   const [likedFeeds, setLikedFeeds] = useState<FeedPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [isBoardModalOpen, setBoardModalOpen] = useState(false);
+  const [selectedBoardIdForModal, setSelectedBoardIdForModal] = useState<
+    string | null
+  >(null);
 
   const [toastInfo, setToastInfo] = useState<{
     message: string;
@@ -77,6 +83,16 @@ const FavoritePage = ({}) => {
     };
     fetchLikedFeeds();
   }, []);
+
+  const handleMoodboardClick = (moodboardId: string) => {
+    setSelectedBoardIdForModal(moodboardId);
+    setBoardModalOpen(true);
+  };
+
+  const handleCloseBoardModal = () => {
+    setBoardModalOpen(false);
+    setSelectedBoardIdForModal(null);
+  };
 
   const handleUnlikeFeed = async (postId: string) => {
     try {
@@ -135,26 +151,38 @@ const FavoritePage = ({}) => {
               }}
             >
               {likedFeeds.map((feed) => (
-                <Moodboard
+                <div
                   key={feed.id}
-                  id={feed.id}
-                  imageUrl={feed.image_url}
-                  keywords={(feed.categories || []).slice(0, 4)}
-                  date={feed.created_at}
-                  type="favorite"
-                  authorName={feed.authorName}
-                  onAddToFolder={() => {}}
-                  onMoveToTrash={() => {}}
-                  onRemoveFromFolder={() => {}}
-                  onUnlike={() => handleUnlikeFeed(feed.id)}
-                  isPublic={true}
-                  onTogglePublic={() => {}}
-                />
+                  onClick={() => handleMoodboardClick(feed.id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Moodboard
+                    key={feed.id}
+                    id={feed.id}
+                    imageUrl={feed.image_url}
+                    keywords={(feed.categories || []).slice(0, 4)}
+                    date={feed.created_at}
+                    type="favorite"
+                    authorName={feed.authorName}
+                    onAddToFolder={() => {}}
+                    onMoveToTrash={() => {}}
+                    onRemoveFromFolder={() => {}}
+                    onUnlike={() => handleUnlikeFeed(feed.id)}
+                    isPublic={true}
+                    onTogglePublic={() => {}}
+                  />
+                </div>
               ))}
             </div>
           )}
         </div>
       </main>
+
+      <MoodboardModal
+        moodboardId={selectedBoardIdForModal}
+        open={isBoardModalOpen}
+        onClose={handleCloseBoardModal}
+      />
 
       <Toast
         message={toastInfo.message}

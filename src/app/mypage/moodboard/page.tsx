@@ -4,6 +4,7 @@ import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import { supabase } from "@/utils/supabase";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import FolderListModal from "@/components/section/mypage/folder/FolderListModal";
+import MoodboardModal from "@/app/feed/MoodboardModal";
 import {
   moveMoodboardToTrash,
   toggleMoodboardPublicStatus,
@@ -79,6 +80,12 @@ const MoodboardPage = () => {
   const [selectedMoodboardId, setSelectedMoodboardId] = useState<string | null>(
     null
   );
+
+  const [isBoardModalOpen, setBoardModalOpen] = useState(false);
+  const [selectedBoardIdForModal, setSelectedBoardIdForModal] = useState<
+    string | null
+  >(null);
+
   const [isLoading, setIsLoading] = useState(true);
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -116,6 +123,16 @@ const MoodboardPage = () => {
     setTimeout(() => {
       setToastInfo((prev) => ({ ...prev, show: false }));
     }, 3000);
+  };
+
+  const handleMoodboardClick = (moodboardId: string) => {
+    setSelectedBoardIdForModal(moodboardId);
+    setBoardModalOpen(true);
+  };
+
+  const handleCloseBoardModal = () => {
+    setBoardModalOpen(false);
+    setSelectedBoardIdForModal(null);
   };
 
   const handleTogglePublic = async (board: MoodboardResult) => {
@@ -218,18 +235,24 @@ const MoodboardPage = () => {
                   const allKeywords = (board.tags || []).slice(0, 4);
 
                   return (
-                    <Moodboard
+                    <div
                       key={board.id}
-                      id={board.id}
-                      imageUrl={board.cover_image_url}
-                      keywords={allKeywords}
-                      date={board.created_at}
-                      type="mymoodboard"
-                      onAddToFolder={() => handleOpenFolderModal(board.id)}
-                      onMoveToTrash={() => openTrashConfirmModal(board.id)}
-                      isPublic={board.is_public}
-                      onTogglePublic={() => handleTogglePublic(board)}
-                    />
+                      onClick={() => handleMoodboardClick(board.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <Moodboard
+                        key={board.id}
+                        id={board.id}
+                        imageUrl={board.cover_image_url}
+                        keywords={allKeywords}
+                        date={board.created_at}
+                        type="mymoodboard"
+                        onAddToFolder={() => handleOpenFolderModal(board.id)}
+                        onMoveToTrash={() => openTrashConfirmModal(board.id)}
+                        isPublic={board.is_public}
+                        onTogglePublic={() => handleTogglePublic(board)}
+                      />
+                    </div>
                   );
                 })}
               </div>
@@ -256,6 +279,12 @@ const MoodboardPage = () => {
         }}
         title={modalTitle}
         confirmText="이동"
+      />
+
+      <MoodboardModal
+        moodboardId={selectedBoardIdForModal}
+        open={isBoardModalOpen}
+        onClose={handleCloseBoardModal}
       />
 
       <Toast
