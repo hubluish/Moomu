@@ -221,11 +221,19 @@ const MoodboardPage = () => {
       <div style={{ display: "flex", marginTop: "64px" }}>
         <Sidebar />
 
-        <main style={{ flex: 1, padding: "50px 70px" }}>
+        <main
+          style={{
+            flex: 1,
+            padding: "50px 70px",
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+          }}
+        >
           <h1 style={{ marginBottom: "30px", userSelect: "none" }}>
             내 무드보드
           </h1>
-          <div>
+          <div style={{ flex: 1, display: "grid" }}>
             {isLoading ? (
               <MoodboardGridSkeleton count={6} />
             ) : moodboards.length === 0 ? (
