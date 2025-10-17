@@ -99,6 +99,15 @@ export default function Header() {
     getSession();
   }, []);
 
+  useEffect(() => {
+    const checkNotifications = async () => {
+      if (isLoggedIn) {
+        setHasNotification(true);
+      }
+    };
+    checkNotifications();
+  }, [isLoggedIn]);
+
   const handleLoginClick = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
