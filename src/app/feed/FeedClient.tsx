@@ -496,6 +496,7 @@ export default function FeedClient() {
             <button
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page === 0}
+              className={styles.pagerButton}
               style={{
                 padding: "8px 12px",
                 borderRadius: 8,
@@ -503,7 +504,6 @@ export default function FeedClient() {
                 background: page === 0 ? "#f5f5f5" : "white",
                 color: page === 0 ? "#aaa" : "#333",
                 cursor: page === 0 ? "not-allowed" : "pointer",
-                fontFamily: "Pretendard",
               }}
               aria-label="Previous page"
             >
@@ -519,6 +519,7 @@ export default function FeedClient() {
             <button
               onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1 || (typeof totalCount !== 'number' && feedItems.length < pageSize)}
+              className={styles.pagerButton}
               style={{
                 padding: "8px 12px",
                 borderRadius: 8,
@@ -526,7 +527,6 @@ export default function FeedClient() {
                 background: page >= totalPages - 1 ? "#f5f5f5" : "white",
                 color: page >= totalPages - 1 ? "#aaa" : "#333",
                 cursor: page >= totalPages - 1 ? "not-allowed" : "pointer",
-                fontFamily: "Pretendard",
               }}
               aria-label="Next page"
             >
