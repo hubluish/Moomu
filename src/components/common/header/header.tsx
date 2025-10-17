@@ -106,6 +106,9 @@ export default function Header() {
 
   const headerMode = getMode(mode, isLoggedIn);
   const avatarSrc = headerMode.startsWith("dark") ? AVATAR_DARK : AVATAR_LIGHT;
+  if (pathname === "/feed/preview") {
+    return null;
+  }
 
   return (
     <HeaderWrapper $mode={headerMode}>
