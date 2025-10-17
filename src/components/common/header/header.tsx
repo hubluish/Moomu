@@ -45,9 +45,13 @@ const getMode = (bg: string, loggedIn: boolean) => {
 function detectBgMode(path: string) {
   if (path === "/" || path === "/result") return "dark";
   if (
-    ["/feed", "/article", "/generate/generate", "/planupgrade"].includes(
-      path
-    ) ||
+    [
+      "/feed",
+      "/article",
+      "/generate/generate",
+      "/planupgrade",
+      "/settings",
+    ].includes(path) ||
     path.startsWith("/mypage")
   ) {
     return "light";
