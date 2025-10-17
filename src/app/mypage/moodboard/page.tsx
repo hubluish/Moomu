@@ -228,6 +228,19 @@ const MoodboardPage = () => {
           <div>
             {isLoading ? (
               <MoodboardGridSkeleton count={6} />
+            ) : moodboards.length === 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  color: "#888",
+                }}
+              >
+                <p>생성된 무드보드가 없습니다.</p>
+              </div>
             ) : (
               <div
                 style={{
