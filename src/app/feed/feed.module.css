@@ -165,3 +165,7 @@
         max-width: 640px; /* allow larger width when single column */
     }
 }
+
+.pagerButton {
+  font-family: "Pretendard";
+}
