@@ -1,9 +1,9 @@
-<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_n_4046_7499)">
-<path d="M0 0L7.36986 25L13.0972 19.2747L18.5324 24.7274L24.7272 18.5348L19.2726 13.1016L25 7.37632L0 0Z" fill="#3D38F5"/>
+<path d="M0 0L5.89589 20L10.4778 15.4198L14.8259 19.7819L19.7818 14.8278L15.4181 10.4813L20 5.90106L0 0Z" fill="#3D38F5"/>
 </g>
 <defs>
-<filter id="filter0_n_4046_7499" x="0" y="0" width="25" height="25" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_n_4046_7499" x="0" y="0" width="20" height="20" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feTurbulence type="fractalNoise" baseFrequency="6.0577983856201172 6.0577983856201172" stitchTiles="stitch" numOctaves="3" result="noise" seed="5901" />
