@@ -303,7 +303,32 @@
 }
 
 /* Preview (new tab) specific overrides */
-.previewRoot { --scale: 1.2; }
+.previewRoot {
+  --scale: 1;
+}
+
+/* Responsive scaling for preview */
+@media (max-width: 1450px) {
+  .previewRoot { --scale: 0.9; }
+}
+@media (max-width: 1300px) {
+  .previewRoot { --scale: 0.8; }
+}
+@media (max-width: 1150px) {
+  .previewRoot { --scale: 0.7; }
+}
+@media (max-width: 1000px) {
+  .previewRoot { --scale: 0.6; }
+}
+@media (max-width: 850px) {
+  .previewRoot { --scale: 0.5; }
+}
+@media (max-width: 700px) {
+  .previewRoot { --scale: 0.4; }
+}
+@media (max-width: 550px) {
+  .previewRoot { --scale: 0.35; }
+}
 
 .previewContent {
   padding: 0;
