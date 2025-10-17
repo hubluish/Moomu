@@ -3,7 +3,7 @@ import Image from "next/image";
 import { StyledButton } from "./IconButton.styled";
 
 type IconButtonProps = {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
   src: string;
   alt: string;
   variant?: "default" | "danger" | "folder";

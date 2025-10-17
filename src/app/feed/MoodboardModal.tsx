@@ -53,7 +53,10 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     let cancelled = false;
     const run = async () => {
       try {
-        const res = await fetch(`/api/feed/moodboard?id=${encodeURIComponent(moodboardId)}`, { cache: "no-store" });
+        const res = await fetch(
+          `/api/feed/moodboard?id=${encodeURIComponent(moodboardId)}`,
+          { cache: "no-store" }
+        );
         if (!res.ok) throw new Error(`status ${res.status}`);
         const j = await res.json();
         if (!cancelled) setBoard(j.moodboard as MoodboardRow);
@@ -62,7 +65,9 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
       }
     };
     run();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [open, moodboardId]);
 
   useEffect(() => {
@@ -99,7 +104,9 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
 
   const geminiFromBoard: GeminiSet | null = board
     ? {
-        colors: (board.palette_json || []).map((p: PaletteColor) => p?.hex).filter(Boolean) as string[],
+        colors: (board.palette_json || [])
+          .map((p: PaletteColor) => p?.hex)
+          .filter(Boolean) as string[],
         image: "",
         font: "",
         sentences: board.concept_text || [],
@@ -128,67 +135,108 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
             >
               새 탭에서 열기
             </a>
-
           )}
-          <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
-            <Image src="/assets/icons/material-symbols_close-rounded.svg" alt="" aria-hidden="true" width={50} height={50} />
+          <button
+            className={styles.closeBtn}
+            onClick={onClose}
+            aria-label="Close"
+          >
+            <Image
+              src="/assets/icons/material-symbols_close-rounded.svg"
+              alt=""
+              aria-hidden="true"
+              width={50}
+              height={50}
+            />
           </button>
         </div>
         <div className={styles.content}>
           <div className={styles.frame}>
             <div className={styles.scaledRoot}>
               <div className={styles.gridContainer}>
-            <div className={`${styles.section} ${styles.titleBox}`}>
-              <TitleBox readOnly compact value={(board?.title || "").trim() || "NEW\nMOODBOARD"} />
-            </div>
-
-            <div className={`${styles.section} ${styles.imageBox}`}>
-              <div className={styles.boxTitle}>IMAGES</div>
-              <div className={styles.imageGrid}>
-                {(Array.isArray(board?.images_json) ? board!.images_json! : []).slice(0, 9).map((img: Image, idx: number) => (
-                  <div className={styles.imageItem} key={idx}>
-                    <Image src={img?.thumb || img?.url || ''} alt={`image-${idx}`} width={130} height={130} unoptimized />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className={`${styles.section} ${styles.conceptBox}`}>
-              <div className={styles.conceptCard}>
-                <ConceptBox geminiSet={geminiFromBoard} />
-              </div>
-            </div>
-
-            <div className={`${styles.section} ${styles.fontBox}`}>
-              <div className={styles.fontCard}>
-                <div className={styles.boxTitle}>FONT</div>
-                <div className={styles.fontList}>
-                  {(Array.isArray(board?.fonts_json) ? board!.fonts_json! : []).slice(0, 3).map((f: Font, i: number) => (
-                    f?.image_link ? (
-                      <a key={i} href={f?.link || '#'} target="_blank" rel="noopener noreferrer">
-                        <Image src={f.image_link || ''} alt={f?.name || 'font'} className={styles.fontImg} width={187} height={44} unoptimized />
-                      </a>
-                    ) : (
-                      <div key={i} className={styles.fontItem}>
-                        {f?.name || 'Font'}
-                      </div>
-                    )
-                  ))}
+                <div className={`${styles.section} ${styles.titleBox}`}>
+                  <TitleBox
+                    readOnly
+                    compact
+                    value={(board?.title || "").trim() || "NEW\nMOODBOARD"}
+                  />
                 </div>
-              </div>
-            </div>
 
-            <div className={`${styles.section} ${styles.paletteBox}`}>
-              <ColorPaletteBox geminiSet={geminiFromBoard} title="COLOR" />
-            </div>
+                <div className={`${styles.section} ${styles.imageBox}`}>
+                  <div className={styles.boxTitle}>IMAGES</div>
+                  <div className={styles.imageGrid}>
+                    {(Array.isArray(board?.images_json)
+                      ? board!.images_json!
+                      : []
+                    )
+                      .slice(0, 9)
+                      .map((img: Image, idx: number) => (
+                        <div className={styles.imageItem} key={idx}>
+                          <Image
+                            src={img?.thumb || img?.url || ""}
+                            alt={`image-${idx}`}
+                            width={130}
+                            height={130}
+                            unoptimized
+                          />
+                        </div>
+                      ))}
+                  </div>
+                </div>
 
-            <div className={`${styles.section} ${styles.keywordBox}`}>
-              <KeywordBox tags={(board?.tags || []) as string[]} />
-            </div>
+                <div className={`${styles.section} ${styles.conceptBox}`}>
+                  <div className={styles.conceptCard}>
+                    <ConceptBox geminiSet={geminiFromBoard} />
+                  </div>
+                </div>
 
-            <div className={`${styles.section} ${styles.exampleBox}`}>
-              <ExampleBox />
-            </div>
+                <div className={`${styles.section} ${styles.fontBox}`}>
+                  <div className={styles.fontCard}>
+                    <div className={styles.boxTitle}>FONT</div>
+                    <div className={styles.fontList}>
+                      {(Array.isArray(board?.fonts_json)
+                        ? board!.fonts_json!
+                        : []
+                      )
+                        .slice(0, 3)
+                        .map((f: Font, i: number) =>
+                          f?.image_link ? (
+                            <a
+                              key={i}
+                              href={f?.link || "#"}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <Image
+                                src={f.image_link || ""}
+                                alt={f?.name || "font"}
+                                className={styles.fontImg}
+                                width={187}
+                                height={44}
+                                unoptimized
+                              />
+                            </a>
+                          ) : (
+                            <div key={i} className={styles.fontItem}>
+                              {f?.name || "Font"}
+                            </div>
+                          )
+                        )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`${styles.section} ${styles.paletteBox}`}>
+                  <ColorPaletteBox geminiSet={geminiFromBoard} title="COLOR" />
+                </div>
+
+                <div className={`${styles.section} ${styles.keywordBox}`}>
+                  <KeywordBox tags={(board?.tags || []) as string[]} />
+                </div>
+
+                <div className={`${styles.section} ${styles.exampleBox}`}>
+                  <ExampleBox />
+                </div>
               </div>
             </div>
           </div>
@@ -200,7 +248,3 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
   // Use portal so position: fixed is relative to viewport, not any transformed ancestor
   return mounted ? createPortal(modalContent, document.body) : null;
 }
-
-
-
-

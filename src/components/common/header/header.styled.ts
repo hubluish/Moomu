@@ -1,53 +1,89 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Link from "next/link";
-// 헤더 전체
-export const HeaderWrapper = styled.header`
+
+interface HeaderWrapperProps {
+  $mode: string;
+}
+
+interface NavLinkProps {
+  $active: boolean;
+  $mode: string;
+}
+
+interface LoginButtonProps {
+  $mode: string;
+}
+
+interface LogoNameProps {
+  $mode: string;
+}
+
+export const HeaderWrapper = styled.header<HeaderWrapperProps>`
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   width: 100vw;
   height: 64px;
   padding: 0 32px;
-  z-index:100;
+  background: transparent;
+  z-index: 100;
+
+  ${({ $mode }) =>
+    $mode.startsWith("dark")
+      ? css`
+          color: #fff;
+        `
+      : css`
+          color: #222;
+        `}
 `;
-// 로고 영역(이미지+이름)
+
 export const LogoSection = styled.div`
   display: flex;
   align-items: center;
 `;
+
 export const LogoImg = styled.img`
   width: 40px;
   height: 40px;
   margin-right: 12px;
 `;
-export const LogoName = styled.span`
+
+export const LogoName = styled.span<LogoNameProps>`
   font-size: 25px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--background);
-  font-family: var(--font-family-logo);
+  font-weight: 800;
+  font-family: var(--font-family-logo, Pretendard);
   letter-spacing: -0.1em;
   height: 40px;
+
+  /* $mode 값에 따라 색상을 변경합니다. */
+  color: ${({ $mode }) => ($mode.startsWith("dark") ? "#fff" : "#222")};
+
+  /* 부드러운 색상 전환 효과를 위해 transition 추가 */
+  transition: color 0.2s;
 `;
-// 네비게이션 영역
+
 export const Nav = styled.nav`
   display: flex;
   gap: 32px;
   align-items: center;
 `;
 
-// 네비게이션 링크
-export const NavLink = styled(Link)<{ $active: boolean }>`
+export const NavLink = styled.a<NavLinkProps>`
   position: relative;
   text-decoration: none;
   font: var(--text-body1);
-  color: ${({ $active }) => $active ? 'var(--color-notice)' : 'var(--background)'};
+  color: ${({ $active, $mode }) =>
+    $active ? "#6d63ff" : $mode.startsWith("dark") ? "#fff" : "#222"};
   padding: 0 4px;
   transition: color 0.2s;
   &:hover {
     color: var(--background);
   }
   &::after {
-    content: ${({ $active }) => $active ? "''" : "none"};
+    content: ${({ $active }) => ($active ? "''" : "none")};
     display: block;
     position: absolute;
     left: 0;
@@ -57,24 +93,27 @@ export const NavLink = styled(Link)<{ $active: boolean }>`
     background: var(--color-main);
   }
 `;
-// 오른쪽 영역
+
 export const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
 `;
-// 로그인 버튼
-export const LoginButton = styled(Link)`
+
+export const LoginButton = styled.button<LoginButtonProps>`
   display: flex;
   padding: 10px 20px;
   justify-content: center;
   align-items: center;
   align-self: stretch;
   border-radius: 70px;
-  background: linear-gradient(180deg, rgba(61, 56, 245, 0.70) 16.41%, rgba(220, 188, 219, 0.70) 385.64%);
-  color: #FFF;
+  background: ${({ $mode }) =>
+    $mode.startsWith("dark")
+      ? "linear-gradient(180deg, #3d38f5b3 16.41%, #dcbadb 385.64%)"
+      : "linear-gradient(180deg, #6d63ff 16.41%, #dcbadb 385.64%)"};
+  color: #fff;
   border: none;
-  line : none;
+  line: none;
   /* button&notice */
   font-family: Pretendard;
   font-size: 16px;
@@ -85,7 +124,7 @@ export const LoginButton = styled(Link)`
     background: var(--color-point);
   }
 `;
-// 계정
+
 export const AccountWrapper = styled.div`
   position: relative;
   display: flex;
@@ -98,7 +137,6 @@ export const Avatar = styled.img`
   border-radius: 50%;
 `;
 
-// 드롭다운 메뉴
 export const Dropdown = styled.div`
   position: absolute;
   top: 48px;
@@ -111,6 +149,7 @@ export const Dropdown = styled.div`
   z-index: 10;
   padding: 8px 0;
 `;
+
 export const DropdownItem = styled(Link)`
   display: block;
   width: 100%;
