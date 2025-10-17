@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import styled from "styled-components";
-import Sidebar from "@/components/section/mypage/Sidebar";
+import Sidebar from "@/components/section/settings/Sidebar";
 
 const Main = styled.main`
   flex: 1;
