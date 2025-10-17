@@ -1,65 +1,67 @@
 .hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center; /* 하위 텍스트 중앙 정렬 */
-    min-height: 100vh;
-    padding: 60px 20px;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* 하위 텍스트 중앙 정렬 */
+  min-height: 666px;
+  padding: 53px 20px;
+  margin-top: 64px;
+  box-sizing: border-box;
 }
 
 .title {
-    color: #000;
-    font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    font-size: 40px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal; /* 요청 그대로 */
-    margin: 0; /* 기본 여백 제거 */
+  color: #000;
+  font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal; /* 요청 그대로 */
+  margin: 0; /* 기본 여백 제거 */
 }
 
 /* "무한하게" 단어와 데코레이션을 포지셔닝하기 위한 래퍼 */
 .wordWrap {
-    position: relative;
-    display: inline-block; /* 단어 뒤에 SVG를 겹치기 위함 */
+  position: relative;
+  display: inline-block; /* 단어 뒤에 SVG를 겹치기 위함 */
 }
 
 /* 실제 단어 */
 .word {
-    position: relative;
-    z-index: 2; /* SVG보다 위에 오도록 */
+  position: relative;
+  z-index: 2; /* SVG보다 위에 오도록 */
 }
 
 /* 단어 '뒤에(배경으로)' 오는 SVG */
 .decoration {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -8px; /* 단어 아래로 적당히 내림 (필요 시 미세 조정) */
-    width: 163px;
-    height: 80.017px;
-    flex-shrink: 0;
-    z-index: 1;
-    pointer-events: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -8px; /* 단어 아래로 적당히 내림 (필요 시 미세 조정) */
+  width: 163px;
+  height: 80.017px;
+  flex-shrink: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
 /* 제목 바로 아래 13px 간격 */
 .subtitle {
-    margin-top: 13px;
-    color: #000;
-    text-align: center;
-    font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    margin-bottom: 0;
+  margin-top: 13px;
+  color: #000;
+  text-align: center;
+  font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: 0;
 }
 
 .cardContainer {
-    display: flex;
-    gap: 45px;
-    margin-top: 65px;
+  display: flex;
+  gap: 45px;
+  margin-top: 45px;
 }
-

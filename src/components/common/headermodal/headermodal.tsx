@@ -35,7 +35,7 @@ export default function HeaderModal({
 
   const menuItems = [
     { label: "내 무드보드", icon: "board.svg", path: "/mypage/moodboard" },
-    { label: "플랜 업그레이드", icon: "plan-icon.svg", path: "/plan-upgrade" },
+    { label: "플랜 업그레이드", icon: "plan-icon.svg", path: "/planupgrade" },
     { label: "설정", icon: "setting-icon.svg", path: "/settings" },
   ];
 
