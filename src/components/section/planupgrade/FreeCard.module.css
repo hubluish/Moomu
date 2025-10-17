@@ -1,17 +1,17 @@
 .card {
-  --point: #8865F3;
+  --point: #8865f3;
 }
 
 /* 컨테이너 */
 .card {
   display: flex;
   width: 376px;
-  padding: 21px 30px 40px 30px;
+  padding: 21px 30px;
   flex-direction: column;
   align-items: flex-start;
 
   border-radius: 20px;
-  background: #FFF;
+  background: #fff;
   box-shadow: 0 0 10px 0 rgba(44, 44, 44, 0.25);
 }
 
@@ -29,7 +29,8 @@
 .planTitle {
   margin: 0;
   color: #000;
-  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
   font-size: 32px;
   font-style: normal;
   font-weight: 600;
@@ -44,12 +45,13 @@
   align-items: center;
   gap: 8px;
   border-radius: 10px;
-  background: #E6E6E6;
+  background: #e6e6e6;
 }
 
 .badgeText {
   color: #000;
-  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -60,7 +62,8 @@
 .price {
   margin-top: 14px; /* 살짝 간격 */
   color: #000;
-  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
   font-size: 48px;
   font-style: normal;
   font-weight: 600;
@@ -73,7 +76,8 @@
   margin-bottom: 16px;
   color: #000;
   text-align: left;
-  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -91,12 +95,13 @@
   align-self: stretch;
 
   border-radius: 10px;
-  border: 1px solid var(--point, #8865F3);
-  background: #FFF;
+  border: 1px solid var(--point, #8865f3);
+  background: #fff;
 
-  color: var(--point, #8865F3);
+  color: var(--point, #8865f3);
   text-align: center;
-  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
@@ -131,7 +136,8 @@
 
 .featureText {
   color: #000;
-  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: Pretendard, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
