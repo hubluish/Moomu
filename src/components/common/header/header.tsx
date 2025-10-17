@@ -34,7 +34,7 @@ const AVATAR_DARK = "/assets/icons/headerId-dark.png";
 const NAV_ITEMS = [
   { href: "/feed", label: "Explore Feeds" },
   { href: "/article", label: "Article" },
-  { href: "/generate/generate", label: "Generate Moodboard" },
+  { href: "/generate", label: "Generate Moodboard" },
 ];
 
 const getMode = (bg: string, loggedIn: boolean) => {
@@ -43,19 +43,18 @@ const getMode = (bg: string, loggedIn: boolean) => {
 };
 
 function detectBgMode(path: string) {
-  if (path === "/" || path === "/result") return "dark";
+  if (path === "/" || path === "/result") {
+    return "dark";
+  }
+
   if (
-    [
-      "/feed",
-      "/article",
-      "/generate/generate",
-      "/planupgrade",
-      "/settings",
-    ].includes(path) ||
-    path.startsWith("/mypage")
+    ["/feed", "/article", "/generate", "/planupgrade"].includes(path) ||
+    path.startsWith("/mypage") ||
+    path.startsWith("/settings")
   ) {
     return "light";
   }
+
   return "dark";
 }
 
