@@ -11,8 +11,8 @@
 }
 
 .modal {
-  width: 990px;
-  height: 717px;
+  width: 880px;
+  height: 640px;
   /* Overall modal background is white */
   background: #fff;
   border-radius: 16px;
@@ -117,7 +117,7 @@
 
 .scaledRoot {
   width: 1200px; /* result 레이아웃 기준 너비 */
-  transform: scale(0.6); /* 모달에 스크롤 없이 들어가도록 축소 */
+  transform: scale(0.55); /* 모달에 스크롤 없이 들어가도록 축소 */
   transform-origin: center; /* 가운데 기준으로 축소 */
 }
 
@@ -302,6 +302,8 @@
   justify-content: center;
 }
 
+
+
 /* Preview (new tab) specific overrides */
 .previewRoot {
   --scale: clamp(0.35, calc(0.35 + (100vw - 550px) * 0.65 / 900), 1);
@@ -324,4 +326,4 @@
 }
 
 /* Ensure scaledRoot scales up in preview via CSS var */
-.scaledRoot { transform: scale(var(--scale, 0.6)); }
+.scaledRoot { transform: scale(var(--scale, 0.55)); }
