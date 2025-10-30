@@ -31,31 +31,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const G_TAG_ID = "G-V50JJSBVK4";
   const GTM_ID = "GTM-M9QNXDRV";
 
   return (
     <html lang="en">
-      {/* Google Analytics - Next.js Script 컴포넌트 사용 */}
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${G_TAG_ID}`}
-      />
-      
-      <Script
-        id="google-analytics-config"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${G_TAG_ID}', {
-              send_page_view: true
-            });
-          `,
-        }}
-      />
       {/* Google Tag Manager - load as early as possible in head */}
       <Script id="gtm-init" strategy="beforeInteractive">
         {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'? '&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`}
