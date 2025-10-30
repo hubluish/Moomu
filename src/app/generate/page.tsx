@@ -15,6 +15,7 @@ import SeeMoreButton from "@/components/section/generate/SeeMoreButton";
 import { saveToSupabase } from "@/utils/saveToSupabase";
 import PopCheer from "@/components/section/generate/PopCheer";
 import Loading from './loading';
+import Script from "next/script";
 
 import stepMeta from "../../../public/data/stepMeta.json";
 import colorThemes from "../../../public/data/colorThemes.json";
@@ -295,6 +296,20 @@ function GeneratePage() {
 
   return (
     <main>
+      {/* Google Analytics */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-V50JJSBVK4"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-V50JJSBVK4');
+        `}
+      </Script>
+      
       <ProgressBar step={step} />
       <PopAlert visible={showAlert} top={70} zIndex={1002} />
       <PopCheer
