@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/common/header/header";
+import Script from "next/script";
 
 import StyledComponentsRegistry from "@/components/common/registry/registry";
 
@@ -30,24 +31,31 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const G_TAG_ID = "G-V50JJSBVK4";
+
   return (
     <html lang="en">
-      <head>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V50JJSBVK4"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-V50JJSBVK4', {
-                send_page_view: true
-              });
-              window.gtag = gtag;
-            `,
-          }}
-        />
-      </head>
+      {/* Google Analytics - Next.js Script 컴포넌트 사용 */}
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${G_TAG_ID}`}
+      />
+      
+      <Script
+        id="google-analytics-config"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${G_TAG_ID}', {
+              send_page_view: true
+            });
+          `,
+        }}
+      />
+      
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <StyledComponentsRegistry>
           <div style={{ position: "relative", zIndex: 30 }}>
