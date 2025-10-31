@@ -108,11 +108,24 @@ const MoodboardPage = () => {
       setIsLoading(true);
       const { data, error } = await supabase
         .from("moodboard")
-        .select("*")
+        .select(
+          `
+          *, 
+          feed_posts ( moodboard_id ) 
+        `
+        )
         .is("deleted_at", null);
 
-      if (error) console.error("Error fetching moodboards:", error);
-      else if (data) setMoodboards(data);
+      if (error) {
+        console.error("Error fetching moodboards:", error);
+        setMoodboards([]);
+      } else if (data) {
+        const augmentedMoodboards = data.map((board) => ({
+          ...board,
+          is_public: board.feed_posts.length > 0,
+        }));
+        setMoodboards(augmentedMoodboards as MoodboardResult[]);
+      }
       setIsLoading(false);
     };
     fetchMoodboards();
@@ -151,9 +164,8 @@ const MoodboardPage = () => {
         return;
       }
 
-      let authorName = "익명 사용자"; // 기본값
+      let authorName = "익명 사용자";
 
-      // 1. profiles 테이블에서 이름 먼저 조회
       const { data: profile } = await supabase
         .from("profiles")
         .select("name")
@@ -162,14 +174,15 @@ const MoodboardPage = () => {
 
       if (profile?.name) {
         authorName = profile.name;
-      }
-      // 2. profiles에 없으면, Auth 메타데이터(소셜 로그인 시 저장된 이름)를 사용
-      else if (session.user.user_metadata?.full_name) {
+      } else if (session.user.user_metadata?.full_name) {
         authorName = session.user.user_metadata.full_name;
       }
 
-      // API 함수에 찾은 authorName을 전달
-      const newStatus = await toggleMoodboardPublicStatus(board, authorName);
+      const newStatus = await toggleMoodboardPublicStatus(
+        board,
+        authorName,
+        board.is_public
+      );
 
       setMoodboards((prev) =>
         prev.map((m) =>
