@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import {
   MoodboardWrapper,
   CategoryContainer,
   CategoryChip,
   ImageWrapper,
+  ThumbnailImage,
 } from "./moodboard.styled";
 import MoodboardOverlay from "./MoodboardOverlay";
 
@@ -56,7 +56,7 @@ const Moodboard = ({
       </CategoryContainer>
 
       <ImageWrapper>
-        <Image
+        <ThumbnailImage
           src={displayImage}
           alt="무드보드 썸네일"
           width={311}

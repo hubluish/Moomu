@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import styled from "styled-components";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import Footer from "@/components/common/footer/Footer";
 import { supabase } from "@/utils/supabase";
@@ -230,20 +231,52 @@ const MoodboardPage = () => {
     handleCloseFolderModal();
   };
 
+  const MoodboardGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
+    gap: 28px;
+
+    @media (max-width: 1421px) {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    @media (max-width: 1309px) {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    @media (max-width: 1249px) {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    @media (max-width: 1121px) {
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    }
+  `;
+
+  const Wrapper = styled.div`
+    flex: 1;
+    padding: 50px 70px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    @media (max-width: 439px) {
+      padding: 30px 50px;
+    }
+
+    @media (max-width: 379px) {
+      padding: 30px 22px;
+    }
+  `;
+
   return (
     <div>
       <div style={{ display: "flex", marginTop: "64px" }}>
         <Sidebar />
 
-        <main
-          style={{
-            flex: 1,
-            padding: "50px 70px",
-            display: "flex",
-            flexDirection: "column",
-            overflowY: "auto",
-          }}
-        >
+        <Wrapper>
           <h1 style={{ marginBottom: "30px", userSelect: "none" }}>
             내 무드보드
           </h1>
@@ -264,13 +297,7 @@ const MoodboardPage = () => {
                 <p>생성된 무드보드가 없습니다.</p>
               </div>
             ) : (
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
-                  gap: "45px 28px",
-                }}
-              >
+              <MoodboardGrid>
                 {moodboards.map((board) => {
                   const allKeywords = (board.tags || []).slice(0, 4);
 
@@ -295,10 +322,10 @@ const MoodboardPage = () => {
                     </div>
                   );
                 })}
-              </div>
+              </MoodboardGrid>
             )}
           </div>
-        </main>
+        </Wrapper>
 
         {isFolderModalOpen && selectedMoodboardId && (
           <FolderListModal
