@@ -174,7 +174,14 @@ const FolderDetailPage = () => {
 
   return (
     <div>
-      <div style={{ display: "flex", height: "100vh", marginTop: "64px" }}>
+      <div
+        style={{
+          display: "flex",
+          height: "100vh",
+          marginTop: "64px",
+          minHeight: "100vh",
+        }}
+      >
         <Sidebar />
 
         <main
