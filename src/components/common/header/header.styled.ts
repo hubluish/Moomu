@@ -65,6 +65,28 @@ export const LogoName = styled.span<LogoNameProps>`
   transition: color 0.2s;
 `;
 
+export const NavFrame = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 32px;
+
+  /* 900px 이하일 때 숨김 (375px보다 여유 있게) */
+  @media (max-width: 900px) {
+    display: none;
+  }
+`;
+
+export const MenuButton = styled.button`
+  display: none; /* 기본(데스크톱)에서는 숨김 */
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  @media (max-width: 900px) {
+    display: block;
+  }
+`;
+
 export const Nav = styled.nav`
   display: flex;
   gap: 32px;
