@@ -33,16 +33,55 @@ const FolderIconWrapper = styled.div`
   border: 1px solid rgba(136, 101, 243, 0.5);
   border-radius: 16px;
   position: relative;
+
+  @media (max-width: 527px) {
+    width: 140px;
+    height: 140px;
+  }
+
+  @media (max-width: 439px) {
+    width: 130px;
+    height: 130px;
+  }
+
+  @media (max-width: 379px) {
+    width: 110px;
+    height: 110px;
+  }
+`;
+
+const FolderIcon = styled(Image)`
+  width: 100px;
+  height: 100px;
+
+  @media (max-width: 527px) {
+    width: 80px;
+    height: 80px;
+  }
+
+  @media (max-width: 439px) {
+    width: 60px;
+    height: 60px;
+  }
+
+  @media (max-width: 379px) {
+    width: 55px;
+    height: 55px;
+  }
 `;
 
 const FolderName = styled.span`
   font-weight: bold;
+
+  @media (max-width: 500px) {
+    font-size: 14px;
+  }
 `;
 
 const SettingsButton = styled.button`
   position: absolute;
-  top: 2px;
-  right: 22px;
+  top: 0px;
+  right: 2px;
   background: none;
   border: none;
   cursor: pointer;
@@ -124,11 +163,11 @@ const FolderItem = ({ id, name, onDelete, onUpdate }: FolderItemProps) => {
     <Wrapper>
       <FolderLink href={`/mypage/folder/${id}`}>
         <FolderIconWrapper>
-          <Image
+          <FolderIcon
             src="/assets/icons/fill-folder.svg"
             alt="폴더"
-            width={120}
-            height={120}
+            width={80}
+            height={80}
             draggable={false}
           />
           <SettingsButton onClick={handleSettingsClick}>

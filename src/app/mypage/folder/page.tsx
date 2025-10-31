@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import { supabase } from "@/utils/supabase";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import { getFolders, deleteFolder, renameFolder } from "@/utils/folders";
@@ -11,6 +12,39 @@ interface Folder {
   id: string;
   name: string;
 }
+
+const FolderGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 28px;
+
+  @media (max-width: 527px) {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 439px) {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 379px) {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 20px;
+  }
+`;
+
+const Wrapper = styled.div`
+  flex: 1;
+  padding: 50px 70px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  @media (max-width: 439px) {
+    padding: 30px 50px;
+  }
+`;
 
 const MyFolderPage = ({}) => {
   const [folders, setFolders] = useState<Folder[]>([]);
@@ -61,15 +95,7 @@ const MyFolderPage = ({}) => {
       <div style={{ display: "flex", marginTop: "64px", minHeight: "100vh" }}>
         <Sidebar />
 
-        <main
-          style={{
-            flex: 1,
-            padding: "50px 70px",
-            display: "flex",
-            flexDirection: "column",
-            overflowY: "auto",
-          }}
-        >
+        <Wrapper>
           <h1 style={{ marginBottom: "30px", userSelect: "none" }}>내 폴더</h1>
           {isLoading ? (
             <FolderGridSkeleton count={6} />
@@ -87,13 +113,7 @@ const MyFolderPage = ({}) => {
               <p>생성된 폴더가 없습니다.</p>
             </div>
           ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-                gap: "28px",
-              }}
-            >
+            <FolderGrid>
               {folders.map((folder) => (
                 <FolderItem
                   key={folder.id}
@@ -103,9 +123,9 @@ const MyFolderPage = ({}) => {
                   onUpdate={handleUpdateFolder}
                 />
               ))}
-            </div>
+            </FolderGrid>
           )}
-        </main>
+        </Wrapper>
       </div>
       <Footer />
     </div>
