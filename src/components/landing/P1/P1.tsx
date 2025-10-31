@@ -6,6 +6,7 @@ interface P1Props {
   openLoginModal?: () => void;
 }
 import "./P1.css";
+import "./P1.mobile.css";
 
 const P1 = ({ openLoginModal }: P1Props) => {
   const router = useRouter();

@@ -131,6 +131,7 @@
   justify-content: space-between;
   align-items: flex-start;
   align-self: stretch;
+  padding: 0 25px;
 }
 
 .p1-description-container {
@@ -139,9 +140,21 @@
   justify-content: center;
   align-items: center;
   gap: 9.429px;
-  border-top: 1px solid var(--background, #fefeff);
-  border-bottom: 1px solid var(--background, #fefeff);
+  position: relative; /* 가짜 보더를 위해 */
 }
+
+/* 상·하 흰 선을 좌우 여백을 두고 그리기 */
+.p1-description-container::before,
+.p1-description-container::after {
+  content: "";
+  position: absolute;
+  left: 20px;   /* 좌측 여백 */
+  right: 20px;  /* 우측 여백 */
+  height: 1px;
+  background: var(--background, #fefeff);
+}
+.p1-description-container::before { top: 0; }
+.p1-description-container::after { bottom: 0; }
 
 .description {
   display: flex;
@@ -179,4 +192,42 @@
   color: var(--background, #fefeff);
   background: none;
   border: none;
+}
+
+/* Responsive: center description and CTA on mobile */
+@media (max-width: 768px) {
+  .p1-description {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 20px; /* 모바일에서도 좌우 여백 확보 */
+    text-align: center;
+  }
+  .p1-description-container {
+    width: 100%;
+    max-width: none; /* 줄바꿈 없이 표시 위해 폭 제한 해제 */
+    margin: 0 auto;
+    justify-content: center;
+  }
+  .description {
+    text-align: center;
+    word-break: keep-all;
+    white-space: nowrap; /* 모바일에서 한 줄 유지 */
+    max-width: none;
+    margin: 0 auto;
+    font-size: clamp(13px, 3.8vw, 19px); /* 살짝 크게 조정 */
+  }
+  .BtnContainer {
+    width: auto; /* 텍스트에 맞게 */
+    max-width: none;
+    margin: 0 auto;
+    height: auto;
+    padding: 12px 16px; /* 터치 타겟 유지 */
+  }
+  .BtnText {
+    width: auto;
+    white-space: nowrap; /* 버튼 텍스트 한 줄 */
+    font-size: clamp(14px, 3.8vw, 16px);
+  }
 }
