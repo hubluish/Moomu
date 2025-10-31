@@ -27,11 +27,6 @@ const FolderGrid = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 20px;
   }
-
-  @media (max-width: 379px) {
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 20px;
-  }
 `;
 
 const Wrapper = styled.div`
@@ -43,6 +38,10 @@ const Wrapper = styled.div`
 
   @media (max-width: 439px) {
     padding: 30px 50px;
+  }
+
+  @media (max-width: 379px) {
+    padding: 30px 22px;
   }
 `;
 

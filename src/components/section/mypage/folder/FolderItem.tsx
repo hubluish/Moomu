@@ -43,11 +43,6 @@ const FolderIconWrapper = styled.div`
     width: 130px;
     height: 130px;
   }
-
-  @media (max-width: 379px) {
-    width: 110px;
-    height: 110px;
-  }
 `;
 
 const FolderIcon = styled(Image)`
@@ -62,11 +57,6 @@ const FolderIcon = styled(Image)`
   @media (max-width: 439px) {
     width: 60px;
     height: 60px;
-  }
-
-  @media (max-width: 379px) {
-    width: 55px;
-    height: 55px;
   }
 `;
 
