@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/utils/supabase";
+import styled from "styled-components";
 import Footer from "@/components/common/footer/Footer";
 import { restoreMoodboard, permanentDeleteMoodboard } from "@/utils/moodboard";
 import Sidebar from "@/components/section/mypage/Sidebar";
@@ -16,6 +17,46 @@ interface MoodboardResult {
   tags: string[];
   created_at: string;
 }
+
+const MoodboardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
+  gap: 28px;
+
+  @media (max-width: 1421px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1309px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1249px) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 1121px) {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  }
+`;
+
+const Wrapper = styled.div`
+  flex: 1;
+  padding: 50px 70px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  @media (max-width: 439px) {
+    padding: 30px 50px;
+  }
+
+  @media (max-width: 379px) {
+    padding: 30px 22px;
+  }
+`;
 
 const RestoreIcon = () => (
   <Image src="/assets/icons/restore.svg" alt="복구" width={25} height={25} />
@@ -136,15 +177,7 @@ const TrashPage = ({}) => {
     <div>
       <div style={{ display: "flex", marginTop: "64px", minHeight: "100vh" }}>
         <Sidebar />
-        <main
-          style={{
-            flex: 1,
-            padding: "50px 70px",
-            display: "flex",
-            flexDirection: "column",
-            overflowY: "auto",
-          }}
-        >
+        <Wrapper>
           <h1 style={{ marginBottom: "30px", userSelect: "none" }}>휴지통</h1>
 
           <div style={{ flex: 1, display: "grid" }}>
@@ -164,13 +197,7 @@ const TrashPage = ({}) => {
                 <p>휴지통이 비어있습니다.</p>
               </div>
             ) : (
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
-                  gap: "45px 28px",
-                }}
-              >
+              <MoodboardGrid>
                 {trashedMoodboards.map((board) => {
                   const allKeywords = (board.tags || []).slice(0, 4);
                   return (
@@ -191,10 +218,10 @@ const TrashPage = ({}) => {
                     />
                   );
                 })}
-              </div>
+              </MoodboardGrid>
             )}
           </div>
-        </main>
+        </Wrapper>
 
         <ConfirmModal
           isOpen={isConfirmOpen}

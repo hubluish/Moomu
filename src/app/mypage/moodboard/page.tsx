@@ -26,6 +26,46 @@ interface MoodboardResult {
   title: string;
 }
 
+const MoodboardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
+  gap: 28px;
+
+  @media (max-width: 1421px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1309px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1249px) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 1121px) {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  }
+`;
+
+const Wrapper = styled.div`
+  flex: 1;
+  padding: 50px 70px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  @media (max-width: 439px) {
+    padding: 30px 50px;
+  }
+
+  @media (max-width: 379px) {
+    padding: 30px 22px;
+  }
+`;
+
 const TrashIcon = () => (
   <Image
     src="/assets/icons/trash.svg"
@@ -230,46 +270,6 @@ const MoodboardPage = () => {
     displayToast(`'${folderName}' 폴더에 추가했어요.`, <FolderIcon />);
     handleCloseFolderModal();
   };
-
-  const MoodboardGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
-    gap: 28px;
-
-    @media (max-width: 1421px) {
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    @media (max-width: 1309px) {
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    @media (max-width: 1249px) {
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
-    }
-    @media (max-width: 1121px) {
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    }
-  `;
-
-  const Wrapper = styled.div`
-    flex: 1;
-    padding: 50px 70px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-
-    @media (max-width: 439px) {
-      padding: 30px 50px;
-    }
-
-    @media (max-width: 379px) {
-      padding: 30px 22px;
-    }
-  `;
 
   return (
     <div>

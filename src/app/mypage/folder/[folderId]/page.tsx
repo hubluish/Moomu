@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback, ReactNode } from "react";
 import { useParams } from "next/navigation";
+import styled from "styled-components";
 import Footer from "@/components/common/footer/Footer";
 import { getFolderById, getMoodboardsByFolder } from "@/utils/folders";
 import { removeMoodboardFromFolder } from "@/utils/folders";
@@ -22,6 +23,46 @@ interface MoodboardResult {
   created_at: string;
   is_public: boolean;
 }
+
+const MoodboardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
+  gap: 28px;
+
+  @media (max-width: 1421px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1309px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1249px) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 1121px) {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  }
+`;
+
+const Wrapper = styled.div`
+  flex: 1;
+  padding: 50px 70px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  @media (max-width: 439px) {
+    padding: 30px 50px;
+  }
+
+  @media (max-width: 379px) {
+    padding: 30px 22px;
+  }
+`;
 
 const TrashIcon = () => (
   <Image
@@ -184,15 +225,7 @@ const FolderDetailPage = () => {
       >
         <Sidebar />
 
-        <main
-          style={{
-            flex: 1,
-            padding: "50px 70px",
-            display: "flex",
-            flexDirection: "column",
-            overflowY: "auto",
-          }}
-        >
+        <Wrapper>
           <h1
             style={{
               marginBottom: "30px",
@@ -231,13 +264,7 @@ const FolderDetailPage = () => {
                 <p>이 폴더에 무드보드가 없습니다.</p>
               </div>
             ) : (
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
-                  gap: "45px 28px",
-                }}
-              >
+              <MoodboardGrid>
                 {moodboards.map((board) => {
                   const allKeywords = (board.tags || []).slice(0, 4);
 
@@ -265,10 +292,10 @@ const FolderDetailPage = () => {
                     </div>
                   );
                 })}
-              </div>
+              </MoodboardGrid>
             )}
           </div>
-        </main>
+        </Wrapper>
 
         {isFolderModalOpen && selectedMoodboardId && (
           <FolderListModal
