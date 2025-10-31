@@ -97,7 +97,7 @@ export const MenuList = styled.div`
   gap: 8px; /* 메뉴 아이템 사이 간격 */
 `;
 
-export const MenuItem = styled.div<{ isLogout?: boolean }>`
+export const MenuItem = styled.div<{ $isLogout?: boolean }>`
   display: flex;
   width: 100%;
   padding: 12px 8px;
@@ -106,15 +106,13 @@ export const MenuItem = styled.div<{ isLogout?: boolean }>`
   border-radius: 10px;
   cursor: pointer;
 
-  /* 호버 애니메이션 추가 */
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
     background: #ebebff;
   }
 
-  /* isLogout이 true일 때만 글자색 변경 */
-  color: ${({ isLogout }) => (isLogout ? "#F73A32" : "#000")};
+  color: ${({ $isLogout }) => ($isLogout ? "#F73A32" : "#000")};
 `;
 
 export const MenuLabel = styled.span`

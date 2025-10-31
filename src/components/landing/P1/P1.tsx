@@ -43,8 +43,15 @@ const P1 = ({ openLoginModal }: P1Props) => {
     "/assets/carousel/img8.png",
   ];
 
-  const loopImages = [...images, ...images];
-
+  const loopImages = [
+    ...images,
+    ...images,
+    images[0],
+    images[1],
+    images[2],
+    images[3],
+    images[4],
+  ];
   return (
     <section className="P1">
       <div className="P1-title-container">
