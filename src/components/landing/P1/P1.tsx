@@ -41,8 +41,11 @@ const P1 = ({ openLoginModal }: P1Props) => {
     "/assets/carousel/img7.png",
     "/assets/carousel/img8.png",
   ];
-  const slideWidth = 300;
-  const gap = 10;
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [cardWidth, setCardWidth] = useState(300); // desktop default width
+  const [containerH, setContainerH] = useState(180); // desktop default height
+  const [gap, setGap] = useState(10); // desktop default gap
 
   const loopImages = [...images, ...images, ...images];
 
@@ -51,8 +54,32 @@ const P1 = ({ openLoginModal }: P1Props) => {
   const lastTsRef = useRef<number | null>(null);
   const speedPxPerSec = 120;
 
+  // Compute responsive sizes: desktop = rectangle (as-is), mobile = square
   useEffect(() => {
-    const track = images.length * (slideWidth + gap);
+    const computeSizes = () => {
+      const vw = window.innerWidth;
+      const width = containerRef.current?.clientWidth || vw;
+      const mobile = vw < 768;
+      setIsMobile(mobile);
+      if (mobile) {
+        const size = Math.max(88, Math.min(140, Math.round(width * 0.24)));
+        const g = Math.max(6, Math.min(12, Math.round(size * 0.08)));
+        setCardWidth(size);
+        setContainerH(size);
+        setGap(g);
+      } else {
+        setCardWidth(300);
+        setContainerH(180);
+        setGap(10);
+      }
+    };
+    computeSizes();
+    window.addEventListener("resize", computeSizes);
+    return () => window.removeEventListener("resize", computeSizes);
+  }, []);
+
+  useEffect(() => {
+    const track = images.length * (cardWidth + gap);
     const loop = (ts: number) => {
       if (lastTsRef.current == null) lastTsRef.current = ts;
       const dt = (ts - lastTsRef.current) / 1000;
@@ -70,7 +97,7 @@ const P1 = ({ openLoginModal }: P1Props) => {
       rafRef.current = null;
       lastTsRef.current = null;
     };
-  }, [images.length, slideWidth, gap]);
+  }, [images.length, cardWidth, gap]);
 
   return (
     <section className="P1">
@@ -81,9 +108,10 @@ const P1 = ({ openLoginModal }: P1Props) => {
 
       <div
         className="image-gallery"
+        ref={containerRef}
         style={{
           position: "relative",
-          height: "180px",
+          height: `${containerH}px`,
           margin: "0 auto",
           overflow: "hidden",
           borderRadius: "16px",
@@ -103,10 +131,10 @@ const P1 = ({ openLoginModal }: P1Props) => {
             <div
               key={idx}
               style={{
-                width: `${slideWidth}px`,
+                width: `${cardWidth}px`,
                 height: "100%",
                 flexShrink: 0,
-                borderRadius: "12px",
+                borderRadius: isMobile ? "16px" : "12px",
                 overflow: "hidden",
                 background: "#ddd",
               }}
