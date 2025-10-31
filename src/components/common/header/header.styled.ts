@@ -30,6 +30,10 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   background: transparent;
   z-index: 100;
 
+  @media (max-width: 375px) {
+    padding: 0 16px;
+  }
+
   ${({ $mode }) =>
     $mode.startsWith("dark")
       ? css`
