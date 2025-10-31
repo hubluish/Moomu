@@ -204,7 +204,7 @@ export default function HeaderModal({
               />
               <MenuLabel>{settingsMenu.label}</MenuLabel>
             </MenuItem>
-            <MenuItem isLogout onClick={onLogout}>
+            <MenuItem $isLogout onClick={onLogout}>
               <Image
                 src="/assets/icons/logout-icon.svg"
                 alt="로그아웃"
@@ -243,7 +243,7 @@ export default function HeaderModal({
               />
               <MenuLabel>{settingsMenu.label}</MenuLabel>
             </MenuItem>
-            <MenuItem isLogout onClick={onLogout}>
+            <MenuItem $isLogout onClick={onLogout}>
               <Image
                 src="/assets/icons/logout-icon.svg"
                 alt="로그아웃"
