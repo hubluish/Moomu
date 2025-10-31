@@ -32,6 +32,7 @@ const FolderIconWrapper = styled.div`
   background-color: #fff;
   border: 1px solid rgba(136, 101, 243, 0.5);
   border-radius: 16px;
+  position: relative;
 `;
 
 const FolderName = styled.span`
@@ -46,42 +47,6 @@ const SettingsButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 5px;
-
-  @media (max-width: 965px) {
-    right: 57px;
-  }
-
-  @media (max-width: 900px) {
-    right: 42px;
-  }
-
-  @media (max-width: 865px) {
-    right: 30px;
-  }
-
-  @media (max-width: 800px) {
-    right: 22px;
-  }
-
-  @media (max-width: 757px) {
-    right: 110px;
-  }
-
-  @media (max-width: 735px) {
-    right: 97px;
-  }
-
-  @media (max-width: 700px) {
-    right: 80px;
-  }
-
-  @media (max-width: 650px) {
-    right: 50px;
-  }
-
-  @media (max-width: 600px) {
-    right: 30px;
-  }
 `;
 
 const PopoverMenu = styled.div`
@@ -166,19 +131,18 @@ const FolderItem = ({ id, name, onDelete, onUpdate }: FolderItemProps) => {
             height={120}
             draggable={false}
           />
+          <SettingsButton onClick={handleSettingsClick}>
+            <Image
+              src="/assets/icons/dots-vertical.svg"
+              alt="설정"
+              width={24}
+              height={24}
+              draggable={false}
+            />
+          </SettingsButton>
         </FolderIconWrapper>
         <FolderName>{name}</FolderName>
       </FolderLink>
-
-      <SettingsButton onClick={handleSettingsClick}>
-        <Image
-          src="/assets/icons/dots-vertical.svg"
-          alt="설정"
-          width={24}
-          height={24}
-          draggable={false}
-        />
-      </SettingsButton>
 
       {isPopoverOpen && (
         <PopoverMenu>
