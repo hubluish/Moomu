@@ -72,12 +72,41 @@
   padding: 0;
 }
 
-.gallery-container {
-  display: flex;
-  align-items: center;
+.image-gallery {
+  position: relative;
+  height: 180px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 16px;
   width: 100%;
+  margin-bottom: 40px;
+}
+
+@keyframes infiniteScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-2480px);
+  }
+}
+
+.image-track {
+  display: flex;
+  gap: 10px;
   height: 100%;
-  gap: 8px;
+  will-change: transform;
+  animation: infiniteScroll 20.67s linear infinite;
+}
+
+.image-slide {
+  width: 300px;
+  height: 100%;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ddd;
+  position: relative;
 }
 
 @keyframes slideRight {
