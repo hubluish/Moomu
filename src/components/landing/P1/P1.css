@@ -23,7 +23,6 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* 제목-부제 세트를 비율 고정으로 스케일 */
   font-size: clamp(14px, min(4.8vw, 3.8vh), 32px);
   gap: 0.55em;
 }
@@ -31,7 +30,6 @@
 .p1-title {
   display: flex;
   width: 100%;
-  /* 고정 높이 대신 최소 높이로 */
   min-height: 80px;
   flex-direction: column;
   justify-content: center;
@@ -40,7 +38,6 @@
   color: var(--main, #3d38f5);
   text-align: center;
   font-family: MuseoModerno;
-  /* 컨테이너 폰트 크기에 비례 (비율 고정) */
   font-size: 5.2em;
   font-style: normal;
   font-weight: 800;
@@ -59,7 +56,6 @@
 
   /* Title1 */
   font-family: Pretendard;
-  /* 컨테이너 폰트 크기에 비례 (비율 고정) */
   font-size: 1.25em;
   font-style: normal;
   font-weight: 800;
@@ -140,16 +136,15 @@
   justify-content: center;
   align-items: center;
   gap: 9.429px;
-  position: relative; /* 가짜 보더를 위해 */
+  position: relative;
 }
 
-/* 상·하 흰 선을 좌우 여백을 두고 그리기 */
 .p1-description-container::before,
 .p1-description-container::after {
   content: "";
   position: absolute;
-  left: 20px;   /* 좌측 여백 */
-  right: 20px;  /* 우측 여백 */
+  left: 20px;  
+  right: 20px;  
   height: 1px;
   background: var(--background, #fefeff);
 }
@@ -196,38 +191,42 @@
 
 /* Responsive: center description and CTA on mobile */
 @media (max-width: 768px) {
+  .P1 { gap: 24px; margin: 0 auto 24px auto; }
+  .P1-title-container { gap: 0.45em; }
+  .image-gallery { margin-bottom: 20px; }
   .p1-description {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 0 20px; /* 모바일에서도 좌우 여백 확보 */
+    gap: 8px;
+    padding: 0 12px;
     text-align: center;
   }
   .p1-description-container {
     width: 100%;
-    max-width: none; /* 줄바꿈 없이 표시 위해 폭 제한 해제 */
+    max-width: none; 
     margin: 0 auto;
     justify-content: center;
   }
   .description {
     text-align: center;
     word-break: keep-all;
-    white-space: nowrap; /* 모바일에서 한 줄 유지 */
+    white-space: nowrap; 
     max-width: none;
     margin: 0 auto;
-    font-size: clamp(13px, 3.8vw, 19px); /* 살짝 크게 조정 */
+    font-size: clamp(13px, 3.8vw, 19px); 
   }
   .BtnContainer {
-    width: auto; /* 텍스트에 맞게 */
+    width: auto; 
     max-width: none;
     margin: 0 auto;
     height: auto;
-    padding: 12px 16px; /* 터치 타겟 유지 */
+    padding: 12px 16px; 
   }
   .BtnText {
     width: auto;
-    white-space: nowrap; /* 버튼 텍스트 한 줄 */
+    white-space: nowrap; 
     font-size: clamp(14px, 3.8vw, 16px);
   }
 }
+
