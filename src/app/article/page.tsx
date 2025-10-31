@@ -1,6 +1,7 @@
 "use client";
 import { Suspense } from "react";
 import ArticleClient from "./ArticleClient";
+import Footer from "@/components/common/footer/Footer";
 import "@/styles/variable.css";
 import Script from "next/script";
 
@@ -22,6 +23,7 @@ export default function ArticlePage() {
       </Script>
       <Suspense fallback={<div>로딩 중...</div>}>
         <ArticleClient />
+        <Footer />
       </Suspense>
     </>
   );

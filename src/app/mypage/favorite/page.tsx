@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/utils/supabase";
+import Footer from "@/components/common/footer/Footer";
 import { getLikedFeeds, unlikeFeed } from "@/utils/feeds";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import MoodboardModal from "@/app/feed/MoodboardModal";
@@ -113,82 +114,87 @@ const FavoritePage = ({}) => {
   };
 
   return (
-    <div style={{ display: "flex", marginTop: "64px" }}>
-      <Sidebar />
-      <main
-        style={{
-          flex: 1,
-          padding: "50px 70px",
-          display: "flex",
-          flexDirection: "column",
-          overflowY: "auto",
-        }}
-      >
-        <h1 style={{ marginBottom: "30px", userSelect: "none" }}>찜한 피드</h1>
+    <div>
+      <div style={{ display: "flex", marginTop: "64px" }}>
+        <Sidebar />
+        <main
+          style={{
+            flex: 1,
+            padding: "50px 70px",
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+          }}
+        >
+          <h1 style={{ marginBottom: "30px", userSelect: "none" }}>
+            찜한 피드
+          </h1>
 
-        <div style={{ flex: 1, display: "grid" }}>
-          {isLoading ? (
-            <MoodboardGridSkeleton count={6} />
-          ) : likedFeeds.length === 0 ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                height: "100%",
-                color: "#888",
-              }}
-            >
-              <p>찜한 피드가 없습니다.</p>
-            </div>
-          ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
-                gap: "45px 28px",
-              }}
-            >
-              {likedFeeds.map((feed) => (
-                <div
-                  key={feed.id}
-                  onClick={() => handleMoodboardClick(feed.id)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <Moodboard
+          <div style={{ flex: 1, display: "grid" }}>
+            {isLoading ? (
+              <MoodboardGridSkeleton count={6} />
+            ) : likedFeeds.length === 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  color: "#888",
+                }}
+              >
+                <p>찜한 피드가 없습니다.</p>
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
+                  gap: "45px 28px",
+                }}
+              >
+                {likedFeeds.map((feed) => (
+                  <div
                     key={feed.id}
-                    id={feed.id}
-                    imageUrl={feed.image_url}
-                    keywords={(feed.categories || []).slice(0, 4)}
-                    date={feed.created_at}
-                    type="favorite"
-                    authorName={feed.authorName}
-                    onAddToFolder={() => {}}
-                    onMoveToTrash={() => {}}
-                    onRemoveFromFolder={() => {}}
-                    onUnlike={() => handleUnlikeFeed(feed.id)}
-                    isPublic={true}
-                    onTogglePublic={(_moodboardId: string) => {}}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </main>
+                    onClick={() => handleMoodboardClick(feed.id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <Moodboard
+                      key={feed.id}
+                      id={feed.id}
+                      imageUrl={feed.image_url}
+                      keywords={(feed.categories || []).slice(0, 4)}
+                      date={feed.created_at}
+                      type="favorite"
+                      authorName={feed.authorName}
+                      onAddToFolder={() => {}}
+                      onMoveToTrash={() => {}}
+                      onRemoveFromFolder={() => {}}
+                      onUnlike={() => handleUnlikeFeed(feed.id)}
+                      isPublic={true}
+                      onTogglePublic={(_moodboardId: string) => {}}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </main>
 
-      <MoodboardModal
-        moodboardId={selectedBoardIdForModal}
-        open={isBoardModalOpen}
-        onClose={handleCloseBoardModal}
-      />
+        <MoodboardModal
+          moodboardId={selectedBoardIdForModal}
+          open={isBoardModalOpen}
+          onClose={handleCloseBoardModal}
+        />
 
-      <Toast
-        message={toastInfo.message}
-        show={toastInfo.show}
-        icon={toastInfo.icon}
-      />
+        <Toast
+          message={toastInfo.message}
+          show={toastInfo.show}
+          icon={toastInfo.icon}
+        />
+      </div>
+      <Footer />
     </div>
   );
 };

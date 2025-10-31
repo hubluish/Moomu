@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/utils/supabase";
+import Footer from "@/components/common/footer/Footer";
 import { restoreMoodboard, permanentDeleteMoodboard } from "@/utils/moodboard";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
@@ -132,84 +133,87 @@ const TrashPage = ({}) => {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh", marginTop: "64px" }}>
-      <Sidebar />
-      <main
-        style={{
-          flex: 1,
-          padding: "50px 70px",
-          display: "flex",
-          flexDirection: "column",
-          overflowY: "auto",
-        }}
-      >
-        <h1 style={{ marginBottom: "30px", userSelect: "none" }}>휴지통</h1>
+    <div>
+      <div style={{ display: "flex", height: "100vh", marginTop: "64px" }}>
+        <Sidebar />
+        <main
+          style={{
+            flex: 1,
+            padding: "50px 70px",
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+          }}
+        >
+          <h1 style={{ marginBottom: "30px", userSelect: "none" }}>휴지통</h1>
 
-        <div style={{ flex: 1, display: "grid" }}>
-          {isLoading ? (
-            <MoodboardGridSkeleton count={6} />
-          ) : trashedMoodboards.length === 0 ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                height: "100%",
-                color: "#888",
-              }}
-            >
-              <p>휴지통이 비어있습니다.</p>
-            </div>
-          ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
-                gap: "45px 28px",
-              }}
-            >
-              {trashedMoodboards.map((board) => {
-                const allKeywords = (board.tags || []).slice(0, 4);
-                return (
-                  <Moodboard
-                    key={board.id}
-                    id={board.id}
-                    imageUrl={board.cover_image_url}
-                    keywords={allKeywords}
-                    date={board.created_at}
-                    type="trash"
-                    onAddToFolder={() => {}}
-                    onMoveToTrash={() => {}}
-                    onRemoveFromFolder={() => {}}
-                    onRestore={() => openRestoreConfirmModal(board.id)}
-                    onPermanentDelete={() => openDeleteConfirmModal(board.id)}
-                    isPublic={false}
-                    onTogglePublic={(_moodboardId: string) => {}}
-                  />
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </main>
+          <div style={{ flex: 1, display: "grid" }}>
+            {isLoading ? (
+              <MoodboardGridSkeleton count={6} />
+            ) : trashedMoodboards.length === 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  color: "#888",
+                }}
+              >
+                <p>휴지통이 비어있습니다.</p>
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
+                  gap: "45px 28px",
+                }}
+              >
+                {trashedMoodboards.map((board) => {
+                  const allKeywords = (board.tags || []).slice(0, 4);
+                  return (
+                    <Moodboard
+                      key={board.id}
+                      id={board.id}
+                      imageUrl={board.cover_image_url}
+                      keywords={allKeywords}
+                      date={board.created_at}
+                      type="trash"
+                      onAddToFolder={() => {}}
+                      onMoveToTrash={() => {}}
+                      onRemoveFromFolder={() => {}}
+                      onRestore={() => openRestoreConfirmModal(board.id)}
+                      onPermanentDelete={() => openDeleteConfirmModal(board.id)}
+                      isPublic={false}
+                      onTogglePublic={(_moodboardId: string) => {}}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </main>
 
-      <ConfirmModal
-        isOpen={isConfirmOpen}
-        onClose={() => setIsConfirmOpen(false)}
-        onConfirm={() => {
-          confirmAction();
-          setIsConfirmOpen(false);
-        }}
-        title={modalTitle}
-        confirmText={modalVariant === "danger" ? "영구 삭제" : "복구"}
-        variant={modalVariant}
-      />
-      <Toast
-        message={toastInfo.message}
-        show={toastInfo.show}
-        icon={toastInfo.icon}
-      />
+        <ConfirmModal
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={() => {
+            confirmAction();
+            setIsConfirmOpen(false);
+          }}
+          title={modalTitle}
+          confirmText={modalVariant === "danger" ? "영구 삭제" : "복구"}
+          variant={modalVariant}
+        />
+        <Toast
+          message={toastInfo.message}
+          show={toastInfo.show}
+          icon={toastInfo.icon}
+        />
+      </div>
+      <Footer />
     </div>
   );
 };

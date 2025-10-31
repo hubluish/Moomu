@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
+import Footer from "@/components/common/footer/Footer";
 import { supabase } from "@/utils/supabase";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import FolderListModal from "@/components/section/mypage/folder/FolderListModal";
@@ -318,6 +319,7 @@ const MoodboardPage = () => {
         show={toastInfo.show}
         icon={toastInfo.icon}
       />
+      <Footer />
     </div>
   );
 };

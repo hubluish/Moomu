@@ -5,13 +5,11 @@ import Pagenation from "../../../common/pagenation";
 import styles from "./pagenation.module.css";
 import Image from "next/image";
 
-
-
 const SLUGS = [
-  "652b6248eee1811bd0e7bf6ee800408240d2213b5d62de0b94b4a7477ab004c8",
-  "8daaff9697228fc9e6c4ff683fa4e3eb5974dfaa5a02b7cc6027dcd7429c8113",
-  "5e1a72be79857fa3054f030526a6f4b7e709fbf39bbeaf47a600461d5fa72892",
-  "2f8df547dedc0280ebb020bcaf9a47b3bd9051b62f033cc97c0960438bb77e3e"
+  "신뢰를-주는-토스",
+  "어딘가-친근한-이-앱",
+  "요즘-IT-스타트업은",
+  "글래스모피즘",
 ];
 
 interface SlideData {
@@ -46,7 +44,9 @@ export default function ImageSlider() {
             const title1 = titleArr.slice(0, titleMid).join(" ");
             const title2 = titleArr.slice(titleMid).join(" ");
 
-            const descArr = data.description ? data.description.split(" ") : [""];
+            const descArr = data.description
+              ? data.description.split(" ")
+              : [""];
             const descMid = Math.ceil(descArr.length / 2);
             const desc1 = descArr.slice(0, descMid).join(" ");
             const desc2 = descArr.slice(descMid).join(" ");

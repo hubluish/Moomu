@@ -5,6 +5,7 @@ import Sidebar from "@/components/section/mypage/Sidebar";
 import { getFolders, deleteFolder, renameFolder } from "@/utils/folders";
 import FolderItem from "@/components/section/mypage/folder/FolderItem";
 import { FolderGridSkeleton } from "@/components/section/mypage/folder/FolderSkeleton";
+import Footer from "@/components/common/footer/Footer";
 
 interface Folder {
   id: string;
@@ -56,45 +57,57 @@ const MyFolderPage = ({}) => {
   }, []);
 
   return (
-    <div style={{ display: "flex", marginTop: "64px" }}>
-      <Sidebar />
-      <main style={{ flex: 1, padding: "50px 70px" }}>
-        <h1 style={{ marginBottom: "30px", userSelect: "none" }}>내 폴더</h1>
-        {isLoading ? (
-          <FolderGridSkeleton count={6} />
-        ) : folders.length === 0 ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              height: "100%",
-              color: "#888",
-            }}
-          >
-            <p>생성된 폴더가 없습니다.</p>
-          </div>
-        ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-              gap: "28px",
-            }}
-          >
-            {folders.map((folder) => (
-              <FolderItem
-                key={folder.id}
-                id={folder.id}
-                name={folder.name}
-                onDelete={handleDeleteFolder}
-                onUpdate={handleUpdateFolder}
-              />
-            ))}
-          </div>
-        )}
-      </main>
+    <div>
+      <div style={{ display: "flex", marginTop: "64px", minHeight: "100vh" }}>
+        <Sidebar />
+
+        <main
+          style={{
+            flex: 1,
+            padding: "50px 70px",
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+          }}
+        >
+          <h1 style={{ marginBottom: "30px", userSelect: "none" }}>내 폴더</h1>
+          {isLoading ? (
+            <FolderGridSkeleton count={6} />
+          ) : folders.length === 0 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                color: "#888",
+              }}
+            >
+              <p>생성된 폴더가 없습니다.</p>
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+                gap: "28px",
+              }}
+            >
+              {folders.map((folder) => (
+                <FolderItem
+                  key={folder.id}
+                  id={folder.id}
+                  name={folder.name}
+                  onDelete={handleDeleteFolder}
+                  onUpdate={handleUpdateFolder}
+                />
+              ))}
+            </div>
+          )}
+        </main>
+      </div>
+      <Footer />
     </div>
   );
 };
