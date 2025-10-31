@@ -27,6 +27,12 @@ export const ModalContainer = styled.div`
   align-items: center;
   justify-content: center;
 
+  @media (max-width: 375px) {
+    width: 90%;
+    height: 50%;
+    padding: 25px;
+  }
+
   user-select: none;
   -webkit-user-select: none; /* Safari/Chrome */
   -moz-user-select: none; /* Firefox */
@@ -143,7 +149,7 @@ export const FolderList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  width: 300px;
+  width: 285px;
   overflow-y: auto; /* 폴더가 많아지면 스크롤 */
 `;
 

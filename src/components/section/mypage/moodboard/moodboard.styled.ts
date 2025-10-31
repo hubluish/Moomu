@@ -33,7 +33,7 @@ export const MoodboardWrapper = styled.div`
   }
   @media (max-width: 527px) {
     width: 100%;
-    height: auto;
+    height: 204px;
   }
 
   user-select: none;
