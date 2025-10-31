@@ -8,6 +8,7 @@ import {
   Logo,
   SocialLink,
   FooterBottom,
+  BottomSection,
   Dot,
   PolicyText,
   EmailButton,
@@ -29,7 +30,7 @@ const Footer = () => {
       <FooterTop>
         <Logo>Moomu</Logo>
         <SocialLink
-          href="https://instagram.com"
+          href="https://www.instagram.com/your_moomu/"
           target="_blank"
           rel="noreferrer noopener"
         >
@@ -44,17 +45,25 @@ const Footer = () => {
       </FooterTop>
 
       <FooterBottom>
-        <PolicyText>개인정보 처리 방침</PolicyText>
-        <Dot />
-        <EmailButton
-          type="button"
-          onClick={handleCopyEmail}
-          title="클릭하면 복사됩니다"
-        >
-          이메일: yourmoomu@gmail.com
-        </EmailButton>
-        <Dot />
-        <CopyrightText>© 2025, Moomu. All rights reserved.</CopyrightText>
+        <BottomSection>
+          <PolicyText>개인정보 처리 방침</PolicyText>
+          <Dot />
+        </BottomSection>
+
+        <BottomSection>
+          <EmailButton
+            type="button"
+            onClick={handleCopyEmail}
+            title="클릭하면 복사됩니다"
+          >
+            이메일: yourmoomu@gmail.com
+          </EmailButton>
+          <Dot />
+        </BottomSection>
+
+        <BottomSection>
+          <CopyrightText>© 2025, Moomu. All rights reserved.</CopyrightText>
+        </BottomSection>
       </FooterBottom>
 
       <FooterToast $show={showToast}>복사되었습니다</FooterToast>

@@ -36,24 +36,36 @@ export const SocialLink = styled.a`
     width: 25px;
     height: 25px;
     opacity: 0.9;
+    display: flex;
+    justify-content: center;
   }
 `;
 
 export const FooterBottom = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   color: #000;
   font-size: 12px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   padding: 25px 0;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
+export const BottomSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
 `;
 
 export const Dot = styled.span`
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
+  width: 1px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.12);
   display: inline-block;
 `;
 
