@@ -60,17 +60,17 @@
 
 @media (max-width: 480px) {
     .wrapper {
-        height: 34px;
+        height: 30px;
         padding: 2px 8px;
         gap: 4px;
     }
 
     .icon {
-        width: 22px;
-        height: 20px;
+        width: 18px;
+        height: 16px;
     }
 
     .text {
-        font-size: 14px;
+        font-size: 12px;
     }
 }
