@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -12,6 +12,8 @@ import {
   MenuItem,
   MenuLabel,
 } from "./headermodal.styled";
+import AlarmModal from "../headerAlarm/AlarmModal";
+import { mockAlarms } from "../headerAlarm/mock-alarms";
 
 type HeaderModalProps = {
   userName?: string;
@@ -27,6 +29,7 @@ export default function HeaderModal({
   onClose,
 }: HeaderModalProps) {
   const router = useRouter();
+  const [isAlarmModalOpen, setIsAlarmModalOpen] = useState(false);
 
   const handleNavigate = (path: string) => {
     router.push(path);
@@ -60,6 +63,7 @@ export default function HeaderModal({
           alt="알림"
           width={32}
           height={32}
+          onClick={() => setIsAlarmModalOpen(true)}
         />
       </TopRow>
 
@@ -86,6 +90,7 @@ export default function HeaderModal({
           <MenuLabel>로그아웃</MenuLabel>
         </MenuItem>
       </MenuList>
+      {isAlarmModalOpen && <AlarmModal alarms={mockAlarms} onClose={() => setIsAlarmModalOpen(false)} />}
     </Wrapper>
   );
 }

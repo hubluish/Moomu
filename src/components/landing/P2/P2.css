@@ -8,56 +8,59 @@
 .about-main-title {
   gap: 10px;
   font-family: Pretendard;
-  font-size: 75px;
+  font-size: clamp(32px, 6vw, 75px);
   font-style: normal;
   font-weight: 800;
-  line-height: normal;
+  line-height: 1.2;
   color: white;
   background: none;
   transition: color 0.2s;
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 
 .about-section {
-  margin: 100px 0px;
+  margin: 100px 20px;
   user-select: none;
   -webkit-user-select: none; /* Safari/Chrome */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE */
+  max-width: 100%;
 }
 
 .about-sub-title {
   color: var(--background, #fefeff);
   font-family: Pretendard;
-  font-size: 54.613px;
+  font-size: clamp(28px, 5vw, 54.613px);
   font-style: normal;
   font-weight: 600;
-  line-height: 98.985px; /* 181.25% */
-  line-height: 1.2;
+  line-height: 1.3;
   display: flex;
   align-items: baseline;
   gap: 10px;
-  white-space: nowrap;
+  white-space: normal;
   overflow: visible;
   transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
 }
 
 .about-main-title .highlight {
-  font-size: 65px;
+  font-size: clamp(28px, 5.5vw, 65px);
   letter-spacing: -0.02em;
-  white-space: nowrap;
+  white-space: normal;
   overflow: visible;
 }
 
 .about-description {
-  font-size: 53px;
+  font-size: clamp(26px, 4.5vw, 53px);
   letter-spacing: -0.02em;
-
   font-weight: 600;
   color: white;
   margin-bottom: 20px;
-  white-space: nowrap;
+  white-space: normal;
   overflow: visible;
 }
 
@@ -65,13 +68,13 @@
 .about-description.infinity-text {
   text-align: center;
   font-family: MuseoModerno;
-  font-size: 53px;
+  font-size: clamp(26px, 4.5vw, 53px);
   font-style: normal;
   font-weight: 800;
   line-height: normal;
   letter-spacing: -0.03em;
   margin-bottom: 20px;
-  white-space: nowrap;
+  white-space: normal;
   overflow: visible;
 }
 
@@ -110,4 +113,55 @@
 
 .about-sub-title:hover {
   color: #6d63ff;
+}
+
+/* P2 반응형 디자인 */
+@media (max-width: 1200px) {
+  .about-section {
+    margin: 80px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-section {
+    margin: 60px 16px;
+  }
+  
+  .about-sub-title {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .about-title {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .about-subdescription {
+    font-size: 14px;
+    margin-bottom: 60px;
+    text-align: center;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    margin: 40px 12px;
+  }
+  
+  .about-sub-title {
+    gap: 2px;
+  }
+  
+  .about-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .about-subdescription {
+    font-size: 13px;
+    margin-bottom: 40px;
+  }
 }
