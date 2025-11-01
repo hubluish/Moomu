@@ -6,12 +6,14 @@ type ColorOptionProps = {
     colors: string[];
     isSelected?: boolean;
     onClick?: () => void;
+    screenWidth?: number;
 };
 
 
-export default function ColorOption({ title, description, colors, isSelected, onClick }: ColorOptionProps) {
+export default function ColorOption({ title, description, colors, isSelected, onClick, screenWidth }: ColorOptionProps) {
     
     const imageUrl = `/data/images/color/${title.toLowerCase()}.jpg`;
+    const svgSize = screenWidth && screenWidth <= 480 ? "25" : "42";
     
     return (
         <div className={`${styles.container} ${isSelected ? styles.selected : ''}`} onClick={onClick}>
@@ -34,8 +36,8 @@ export default function ColorOption({ title, description, colors, isSelected, on
                 <svg
                 key={index}
                 xmlns="http://www.w3.org/2000/svg"
-                width="42"
-                height="42"
+                width={svgSize}
+                height={svgSize}
                 viewBox="0 0 42 42"
                 fill="none"
                 >

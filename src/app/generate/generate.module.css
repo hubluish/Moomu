@@ -21,9 +21,9 @@
         position: relative;
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* 3열 고정 */
-        gap: 40px;
-        width: 1118px;
+        gap: 4px;
         justify-items: center;
+        overflow: hidden;
     }
 
     .grid2x2{
@@ -34,4 +34,30 @@
 
     .seeMoreButton {
         display: flex;
+    }
+
+    @media (max-width: 1023px) {
+        .grid3columns {
+            grid-template-columns: repeat(2, 1fr); /* 2열로 변경 */
+            width: 740px; /* 2열에 맞게 너비 조정 */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .grid2x2 {
+            grid-template-columns: repeat(1, 1fr); /* 1열로 변경 */
+            width: 100%; /* 너비 100% */
+            gap: 20px; /* 간격 조정 */
+            justify-items: center; /* 가운데 정렬 */
+        }
+        
+        .grid3columns {
+            width: 280px;
+            row-gap: 16px;
+        }
+
+        .gridContainer {
+            margin: 20px auto; /* 마진 조정 */
+            padding: 10px 0; /* 패딩 조정 */
+        }
     }

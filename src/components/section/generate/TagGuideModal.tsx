@@ -6,15 +6,19 @@ import styles from './TagGuideModal.module.css';
 
 interface TagGuideModalProps {
     onClose: () => void;
+    screenWidth: number;
 }
 
-export default function TagGuideModal({ onClose }: TagGuideModalProps) {
+export default function TagGuideModal({ onClose, screenWidth }: TagGuideModalProps) {
     const router = useRouter();
 
     const handleFeedClick = () => {
         onClose();
         router.push('/article');
     };
+
+    const titleText = "태그를 선택하기 어렵나요?";
+    const subText = screenWidth <= 480 ? "만들어진 무드보드를 참고해보아요!" : "피드에서 제작된 무드보드를 참고해 볼 수도 있어요!";
 
     return (
         <div className={styles.wrapper}>
@@ -30,8 +34,8 @@ export default function TagGuideModal({ onClose }: TagGuideModalProps) {
                 </svg>
             </div>
             <div className={styles.textContainer}>
-                <div className={styles.title}>태그를 선택하기 어렵나요?</div>
-                <div className={styles.subtext}>피드에서 제작된 무드보드를 참고해 볼 수도 있어요!</div>
+                <div className={styles.title}>{titleText}</div>
+                <div className={styles.subtext}>{subText}</div>
             </div>
             <div className={styles.closeIconWrapper} role="button" aria-label="닫기" onClick={onClose}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 25 25" fill="none">

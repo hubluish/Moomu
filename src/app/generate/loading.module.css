@@ -38,3 +38,29 @@
         opacity: 1;
     }
 }
+
+
+
+@media (max-width: 1023px) {
+    .typingText {
+        font-size: 24px;
+        margin: 25px auto;
+    }
+
+    .fadeText {
+        font-size: 16px;
+        line-height: 22px;
+    }
+}
+
+@media (max-width: 479px) {
+    .typingText {
+        font-size: 16px;
+        margin: 20px auto;
+    }
+
+    .fadeText {
+        font-size: 15px;
+        line-height: 20px;
+    }
+}
