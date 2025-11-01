@@ -24,6 +24,9 @@
   }
 
   @media (max-width: 1023px) {
+    .container {
+      margin-top: 120px;
+    }
     .title {
       font-size: 28px;
     }
@@ -33,6 +36,9 @@
   }
 
   @media (max-width: 479px) {
+    .container {
+      margin-top: 60px;
+    }
     .title {
       font-size: 24px;
     }

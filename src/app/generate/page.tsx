@@ -303,6 +303,18 @@ function GeneratePage() {
         return <Loading />;
     }
 
+  const getTopPosition = () => {
+    if (screenWidth > 1024) {
+      return 140;
+    }
+    if (screenWidth > 480) {
+      return 100;
+    }
+    return 80;
+  };
+
+  const topPosition = getTopPosition();
+
   return (
     <main>
       {/* Google Analytics */}
@@ -320,12 +332,18 @@ function GeneratePage() {
       </Script>
       
       <ProgressBar step={step} />
-      <PopAlert visible={showAlert} top={125} zIndex={1002} screenWidth={screenWidth} />
+      <PopAlert
+        visible={showAlert}
+        top={topPosition}
+        zIndex={1002}
+        screenWidth={screenWidth}
+      />
       <PopCheer
         visible={cheerVisible}
         message={cheerMsg}
-        top={125}
+        top={topPosition}
         zIndex={1001}
+        screenWidth={screenWidth}
       />
       <TitleBlock title={meta.title} subtitle={meta.subtitle} />
       <NextButton

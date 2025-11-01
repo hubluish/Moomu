@@ -5,9 +5,10 @@ interface PopCheerProps {
     message: React.ReactNode;
     top?: number;
     zIndex?: number;
+    screenWidth?: number;
 }
 
-export default function PopCheer({ visible, message, top=70, zIndex=1001 }: PopCheerProps) {
+export default function PopCheer({ visible, message, top=70, zIndex=1001, screenWidth }: PopCheerProps) {
     return (
         <div
             className={`${styles.alertContainer} ${visible ? styles.alertVisible : styles.alertHidden}`}
