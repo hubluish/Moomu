@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Footer.css';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Footer = () => {
   // const footerSections = [
@@ -85,7 +86,7 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <div className="footer-bottom-content">
-          <a href="/privacy-policy" className="policy">개인정보 처리 방침</a>
+          <Link href="/privacy-policy" className="policy">개인정보 처리 방침</Link>
           <span className="line" />
           <button type="button" className="email" onClick={handleCopyEmail} title="클릭하면 복사됩니다">이메일: yourmoomu@gmail.com</button>
           <span className="line" />
