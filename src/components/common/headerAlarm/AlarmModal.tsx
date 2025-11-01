@@ -18,12 +18,11 @@ export interface AlarmData {
 
 // AlarmModal.tsx 컴포넌트 Props 정의
 interface AlarmModalProps {
-  isOpen: boolean; // 모달 열림/닫힘 상태
   onClose: () => void; // 모달 닫기 핸들러
   alarms: AlarmData[]; // 알림 데이터 목록
 }
 
-const AlarmModal: React.FC<AlarmModalProps> = ({ isOpen, onClose, alarms }) => {
+const AlarmModal: React.FC<AlarmModalProps> = ({ onClose, alarms }) => {
   const [processedAlarms, setProcessedAlarms] = useState<AlarmData[]>([]);
 
   // 템플릿 문자열을 처리하는 함수
@@ -136,22 +135,20 @@ const AlarmModal: React.FC<AlarmModalProps> = ({ isOpen, onClose, alarms }) => {
       }
     };
 
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscKey);
-      // 모달이 열릴 때 모든 알림을 읽음 처리
-      const filteredAlarms = filterRecentAlarms(alarms);
-      const readAlarms = filteredAlarms.map(alarm => ({ ...alarm, isRead: true }));
-      setProcessedAlarms(readAlarms);
-    }
+    document.addEventListener('keydown', handleEscKey);
+    // 모달이 열릴 때 모든 알림을 읽음 처리
+    const filteredAlarms = filterRecentAlarms(alarms);
+    const readAlarms = filteredAlarms.map(alarm => ({ ...alarm, isRead: true }));
+    setProcessedAlarms(readAlarms);
 
     return () => {
       document.removeEventListener('keydown', handleEscKey);
     };
-  }, [isOpen, alarms, onClose]);
+  }, [alarms, onClose]);
 
  
 
-  if (!isOpen) return null;
+  
 
   return (
     <div className="alarm-modal__overlay" onClick={handleOverlayClick}>
