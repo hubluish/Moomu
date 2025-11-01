@@ -1,11 +1,11 @@
 .wrapper {
     display: inline-flex;
     width: max-content;
-    height: 53px;
-    padding: 15.288px 20.385px;
+    height: 41px;
+    padding: 4px 12px;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
     flex-shrink: 0;
 
     border-radius: 40.769px;
@@ -14,8 +14,8 @@
 }
 
 .icon {
-    width: 20px;
-    height: 20px;
+    width: 27px;
+    height: 24px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -23,9 +23,9 @@
 }
 
 .text {
-    color: #666;
+    color: #484848;
     font-family: Inter, sans-serif;
-    font-size: 20px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -56,4 +56,21 @@
 .alertHidden {
     transform: translateX(-50%) translateY(-100%);
     opacity: 0;
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        height: 34px;
+        padding: 2px 8px;
+        gap: 4px;
+    }
+
+    .icon {
+        width: 22px;
+        height: 20px;
+    }
+
+    .text {
+        font-size: 14px;
+    }
 }

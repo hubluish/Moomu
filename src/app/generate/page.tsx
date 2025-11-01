@@ -57,7 +57,15 @@ function GeneratePage() {
   const cheerTimerRef = useRef<number | null>(null);
   const alertTimerRef = useRef<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(0);
   const meta = stepMeta[step - 1];
+
+  useEffect(() => {
+    setScreenWidth(window.innerWidth);
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const getStepContent = (): Array<{
     title: string;
@@ -151,25 +159,26 @@ function GeneratePage() {
           ? "image"
           : ("text" as "color" | "image" | "text");
       const moodText = toastMessages[category]?.[selectedTitle];
-      const thingLabel =
-        category === "color"
-          ? "컬러"
-          : category === "image"
-          ? "이미지 태그"
-          : "텍스트";
-      const msg = moodText ? (
-        <>
-          좋은 선택이에요! 이 <strong>{thingLabel}</strong>는{" "}
-          <strong>{moodText}</strong> 느낌을 잘 담아줘요.
-        </>
-      ) : (
-        <>
-          좋은 선택이에요! <strong>{selectedTitle}</strong> {thingLabel}를
-          선택했어요.
-        </>
-      );
+      if (moodText) {
+        const thingLabel =
+          category === "color"
+            ? "컬러"
+            : category === "image"
+            ? "이미지 태그"
+            : "텍스트";
+        const msg = screenWidth <= 480 ? (
+          <>
+            좋은 선택이에요! <strong>{moodText}</strong> 느낌을 잘 담아줘요.
+          </>
+        ) : (
+          <>
+            좋은 선택이에요! 이 <strong>{thingLabel}</strong>는{" "}
+            <strong>{moodText}</strong> 느낌을 잘 담아줘요.
+          </>
+        );
 
-      showCheer(msg, 1200);
+        showCheer(msg, 1200);
+      }
     }
 
     if (step < 4) {
