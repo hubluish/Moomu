@@ -5,7 +5,6 @@ import LoginModal from "../Login/LoginModal";
 import AlarmModal from "../headerAlarm/AlarmModal";
 import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/utils/supabase";
-import { useAlarms } from "@/hooks/useAlarms";
 import styles from "./Header.module.css";
 
 // Constants
@@ -199,9 +198,7 @@ export default function Header() {
   
   const bgMode = useBackgroundMode(pathname);
   const { isLoggedIn, userName, userId, handleLogout } = useAuth();
-  
-  // 알림 데이터 가져오기
-  const { alarms, markAsRead } = useAlarms(userId);
+
   
   const [showDropdown, setShowDropdown] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -246,18 +243,6 @@ export default function Header() {
     setShowDropdown(false);
   };
   
-  const handleCloseAlarmModal = () => {
-    // 모달 닫을 때 안 읽은 알림들 읽음 처리
-    const unreadAlarmIds = alarms
-      .filter(alarm => !alarm.isRead)
-      .map(alarm => alarm.id);
-    
-    if (unreadAlarmIds.length > 0) {
-      markAsRead(unreadAlarmIds);
-    }
-    
-    setIsAlarmModalOpen(false);
-  };
   const handleLogoutClick = () => {
     handleLogout();
     setShowDropdown(false);
@@ -345,11 +330,6 @@ export default function Header() {
         </div>
         
         <LoginModal isOpen={isModalOpen} onClose={handleCloseModal} />
-        <AlarmModal 
-          isOpen={isAlarmModalOpen} 
-          onClose={handleCloseAlarmModal} 
-          alarms={alarms} 
-        />
       </header>
     </>
   );
