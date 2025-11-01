@@ -372,6 +372,7 @@ function GeneratePage() {
                 colors={opt.colors || []}
                 isSelected={selections[0] === opt.title}
                 onClick={() => handleSelect(opt.title)}
+                screenWidth={screenWidth}
               />
             ))}
           </div>
