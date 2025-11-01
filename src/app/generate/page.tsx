@@ -320,11 +320,11 @@ function GeneratePage() {
       </Script>
       
       <ProgressBar step={step} />
-      <PopAlert visible={showAlert} top={70} zIndex={1002} screenWidth={screenWidth} />
+      <PopAlert visible={showAlert} top={125} zIndex={1002} screenWidth={screenWidth} />
       <PopCheer
         visible={cheerVisible}
         message={cheerMsg}
-        top={70}
+        top={125}
         zIndex={1001}
       />
       <TitleBlock title={meta.title} subtitle={meta.subtitle} />
