@@ -350,7 +350,6 @@ function GeneratePage() {
         message={cheerMsg}
         top={topPosition}
         zIndex={1001}
-        screenWidth={screenWidth}
       />
       <TitleBlock
         title={screenWidth <= 480 && meta.title_mobile ? meta.title_mobile : meta.title}

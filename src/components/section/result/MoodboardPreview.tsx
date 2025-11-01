@@ -6,11 +6,10 @@ import Image from 'next/image';
 
 type Props = {
     coverUrl?: string | null;
-    loading?: boolean;
     categories?: string[];
 };
 
-const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading, categories = [] }) => {
+const MoodboardPreview: React.FC<Props> = ({ coverUrl, categories = [] }) => {
     const viewportRef = useRef<HTMLDivElement>(null);
     const isDown = useRef(false);
     const startX = useRef(0);
