@@ -373,7 +373,7 @@ function GeneratePage() {
         </div>
       )}
 
-      {showModal && <TagGuideModal onClose={() => setShowModal(false)} />}
+      {showModal && <TagGuideModal onClose={() => setShowModal(false)} screenWidth={screenWidth} />}
     </main>
   );
 }

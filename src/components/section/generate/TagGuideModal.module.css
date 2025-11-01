@@ -3,7 +3,7 @@
     height: 177px;
     position: absolute;
     top: 80px; 
-    right: 20px;
+    right: 5px;
     z-index: 1000;
     border-radius: 30px;
     background: var(--notice, #F1F3F5);
@@ -31,7 +31,6 @@
     height: 92px;
     }
 
-    /* 모든 텍스트 18px, 줄바꿈 방지 */
     .title,
     .subtext,
     .leftButton,
@@ -39,9 +38,9 @@
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
     font-size: 16px;
     line-height: 1.2;
-    white-space: nowrap;      /* 줄바꿈 X */
-    overflow: hidden;         /* 혹시 넘칠 때 대비 */
-    text-overflow: ellipsis;  /* 아주 길면 말줄임 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: var(--main-text, #1C1C1E);
     }
 
@@ -60,7 +59,6 @@
     gap: 10px;
 }
 
-    /* 버튼 영역: 하단 중앙 정렬 */
     .buttonRow {
     position: relative;
     left: 0;
@@ -74,7 +72,6 @@
     align-items: center;
     }
 
-    /* 버튼 크기 및 배치: 요청 스펙 그대로 */
     .leftButton,
     .rightButton {
     display: flex;
@@ -125,7 +122,6 @@
     100% { opacity: 1; transform: scale(1); }
     }
 
-    /* (선택) 모달 오버레이가 필요한 경우 */
     .modalOverlay {
     position: fixed;
     inset: 0;
@@ -135,3 +131,59 @@
     justify-content: center;
     background-color: rgba(0,0,0,0.1);
     }
+
+    @media (max-width: 768px) {
+    .wrapper {
+        width: 450px;
+    }
+
+    .content
+    {
+        padding: 24px 15px;
+    }
+
+    .icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .closeIconWrapper {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+    }
+
+    .leftButton,
+    .rightButton {
+        width: 196px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        width: 300px;
+        margin: 0 auto;
+        left: 0;
+    }
+
+    .content {
+        height: 100px;
+        padding: 16px 12px;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .leftButton,
+    .rightButton {
+        width: 130px;
+        font-size: 15px;
+    }
+
+    .title {
+        font-size: 14px;
+        }
+    .subtext {
+        font-size: 13px;
+        }
+}
