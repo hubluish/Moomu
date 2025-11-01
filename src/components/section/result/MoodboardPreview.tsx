@@ -62,9 +62,7 @@ const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading, categories = [] 
         )}
 
         <div className={styles.content}>
-            {loading ? (
-            <div className={styles.skeleton}></div>
-            ) : coverUrl ? (
+            {coverUrl ? (
             <Image
                 src={coverUrl}
                 alt="Moodboard cover"
@@ -73,7 +71,7 @@ const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading, categories = [] 
                 height={176}
             />
             ) : (
-            <p className={styles.placeholder}>커버 이미지가 아직 없어요</p>
+            <div className={styles.skeleton}></div>
             )}
         </div>
         </div>
