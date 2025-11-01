@@ -18,7 +18,6 @@ export default function SaveClient() {
     const shareBtnRef = useRef<HTMLDivElement>(null);
     const [coverUrl, setCoverUrl] = useState<string | null>(null);
     const [categories, setCategories] = useState<string[]>([]);
-    const [loadingCover, setLoadingCover] = useState<boolean>(true);
     const coverRequestedRef = useRef<boolean>(false);
 
     useEffect(() => {
@@ -28,7 +27,6 @@ export default function SaveClient() {
             if (typeof window === 'undefined') return;
             const mid = searchParams.get('mid');
             if (!mid) {
-            setLoadingCover(false);
             return;
             }
             const { data, error } = await supabase
@@ -85,7 +83,6 @@ export default function SaveClient() {
         } catch (e) {
             console.error('moodboard 조회 에러:', e);
         } finally {
-            setLoadingCover(false);
         }
         };
         run();
@@ -299,7 +296,7 @@ export default function SaveClient() {
                         )}
                     </div>
                 </div>
-                <MoodboardPreview coverUrl={coverUrl} loading={loadingCover} categories={categories} />
+                <MoodboardPreview coverUrl={coverUrl} categories={categories} />
             </div>
         </main>
     );

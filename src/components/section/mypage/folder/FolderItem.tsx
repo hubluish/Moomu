@@ -46,6 +46,42 @@ const SettingsButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 5px;
+
+  @media (max-width: 965px) {
+    right: 57px;
+  }
+
+  @media (max-width: 900px) {
+    right: 42px;
+  }
+
+  @media (max-width: 865px) {
+    right: 30px;
+  }
+
+  @media (max-width: 800px) {
+    right: 22px;
+  }
+
+  @media (max-width: 757px) {
+    right: 110px;
+  }
+
+  @media (max-width: 735px) {
+    right: 97px;
+  }
+
+  @media (max-width: 700px) {
+    right: 80px;
+  }
+
+  @media (max-width: 650px) {
+    right: 50px;
+  }
+
+  @media (max-width: 600px) {
+    right: 30px;
+  }
 `;
 
 const PopoverMenu = styled.div`

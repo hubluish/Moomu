@@ -6,11 +6,10 @@ import Image from 'next/image';
 
 type Props = {
     coverUrl?: string | null;
-    loading?: boolean;
     categories?: string[];
 };
 
-const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading, categories = [] }) => {
+const MoodboardPreview: React.FC<Props> = ({ coverUrl, categories = [] }) => {
     const viewportRef = useRef<HTMLDivElement>(null);
     const isDown = useRef(false);
     const startX = useRef(0);
@@ -62,9 +61,7 @@ const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading, categories = [] 
         )}
 
         <div className={styles.content}>
-            {loading ? (
-            <div className={styles.skeleton}></div>
-            ) : coverUrl ? (
+            {coverUrl ? (
             <Image
                 src={coverUrl}
                 alt="Moodboard cover"
@@ -73,7 +70,7 @@ const MoodboardPreview: React.FC<Props> = ({ coverUrl, loading, categories = [] 
                 height={176}
             />
             ) : (
-            <p className={styles.placeholder}>커버 이미지가 아직 없어요</p>
+            <div className={styles.skeleton}></div>
             )}
         </div>
         </div>

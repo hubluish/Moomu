@@ -15,6 +15,7 @@ import SeeMoreButton from "@/components/section/generate/SeeMoreButton";
 import { saveToSupabase } from "@/utils/saveToSupabase";
 import PopCheer from "@/components/section/generate/PopCheer";
 import Loading from './loading';
+import Script from "next/script";
 
 import stepMeta from "../../../public/data/stepMeta.json";
 import colorThemes from "../../../public/data/colorThemes.json";
@@ -31,6 +32,13 @@ type ToastMessages = {
 };
 
 const toastMessages = rawtoastMessages as ToastMessages;
+
+interface StepMeta {
+  title: string;
+  subtitle: string;
+  title_mobile?: string;
+  subtitle_mobile?: string;
+}
 
 interface Option {
   title: string;
@@ -56,7 +64,15 @@ function GeneratePage() {
   const cheerTimerRef = useRef<number | null>(null);
   const alertTimerRef = useRef<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const meta = stepMeta[step - 1];
+  const [screenWidth, setScreenWidth] = useState(0);
+  const meta: StepMeta = stepMeta[step - 1];
+
+  useEffect(() => {
+    setScreenWidth(window.innerWidth);
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const getStepContent = (): Array<{
     title: string;
@@ -150,25 +166,26 @@ function GeneratePage() {
           ? "image"
           : ("text" as "color" | "image" | "text");
       const moodText = toastMessages[category]?.[selectedTitle];
-      const thingLabel =
-        category === "color"
-          ? "컬러"
-          : category === "image"
-          ? "이미지 태그"
-          : "텍스트";
-      const msg = moodText ? (
-        <>
-          좋은 선택이에요! 이 <strong>{thingLabel}</strong>는{" "}
-          <strong>{moodText}</strong> 느낌을 잘 담아줘요.
-        </>
-      ) : (
-        <>
-          좋은 선택이에요! <strong>{selectedTitle}</strong> {thingLabel}를
-          선택했어요.
-        </>
-      );
+      if (moodText) {
+        const thingLabel =
+          category === "color"
+            ? "컬러"
+            : category === "image"
+            ? "이미지 태그"
+            : "텍스트";
+        const msg = screenWidth <= 480 ? (
+          <>
+            좋은 선택이에요! <strong>{moodText}</strong> 느낌을 잘 담아줘요.
+          </>
+        ) : (
+          <>
+            좋은 선택이에요! 이 <strong>{thingLabel}</strong>는{" "}
+            <strong>{moodText}</strong> 느낌을 잘 담아줘요.
+          </>
+        );
 
-      showCheer(msg, 1200);
+        showCheer(msg, 1200);
+      }
     }
 
     if (step < 4) {
@@ -293,17 +310,51 @@ function GeneratePage() {
         return <Loading />;
     }
 
+  const getTopPosition = () => {
+    if (screenWidth > 1024) {
+      return 140;
+    }
+    if (screenWidth > 480) {
+      return 100;
+    }
+    return 80;
+  };
+
+  const topPosition = getTopPosition();
+
   return (
     <main>
+      {/* Google Analytics */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-V50JJSBVK4"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-V50JJSBVK4');
+        `}
+      </Script>
+      
       <ProgressBar step={step} />
-      <PopAlert visible={showAlert} top={70} zIndex={1002} />
+      <PopAlert
+        visible={showAlert}
+        top={topPosition}
+        zIndex={1002}
+        screenWidth={screenWidth}
+      />
       <PopCheer
         visible={cheerVisible}
         message={cheerMsg}
-        top={70}
+        top={topPosition}
         zIndex={1001}
       />
-      <TitleBlock title={meta.title} subtitle={meta.subtitle} />
+      <TitleBlock
+        title={screenWidth <= 480 && meta.title_mobile ? meta.title_mobile : meta.title}
+        subtitle={screenWidth <= 480 && meta.subtitle_mobile ? meta.subtitle_mobile : meta.subtitle}
+      />
       <NextButton
         onClick={handleNext}
         variant={step < 4 ? "black" : "gradient"}
@@ -320,6 +371,7 @@ function GeneratePage() {
                 colors={opt.colors || []}
                 isSelected={selections[0] === opt.title}
                 onClick={() => handleSelect(opt.title)}
+                screenWidth={screenWidth}
               />
             ))}
           </div>
@@ -349,7 +401,7 @@ function GeneratePage() {
         </div>
       )}
 
-      {showModal && <TagGuideModal onClose={() => setShowModal(false)} />}
+      {showModal && <TagGuideModal onClose={() => setShowModal(false)} screenWidth={screenWidth} />}
     </main>
   );
 }

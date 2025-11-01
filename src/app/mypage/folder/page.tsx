@@ -63,7 +63,18 @@ const MyFolderPage = ({}) => {
         {isLoading ? (
           <FolderGridSkeleton count={6} />
         ) : folders.length === 0 ? (
-          <p>생성된 폴더가 없습니다.</p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
+              color: "#888",
+            }}
+          >
+            <p>생성된 폴더가 없습니다.</p>
+          </div>
         ) : (
           <div
             style={{

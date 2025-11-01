@@ -217,15 +217,20 @@ export default function ResultClient() {
       }
 
       // 저장 성공 시 이동 (원하면 여기서 피드/상세로 라우팅)
-      const pageState = {
-        revealedCount,
-        currentIndex,
-        fontIndex,
-        conceptIndex,
-        colorIndex,
-      };
-      sessionStorage.setItem('resultPageState', JSON.stringify(pageState));
-      router.push(`/result/save?mid=${data?.id}`);
+      if (data && data.id) {
+        const pageState = {
+          revealedCount,
+          currentIndex,
+          fontIndex,
+          conceptIndex,
+          colorIndex,
+        };
+        sessionStorage.setItem('resultPageState', JSON.stringify(pageState));
+        router.push(`/result/save?mid=${data.id}`);
+      } else {
+        console.error("Failed to get ID after saving moodboard.");
+        alert("저장에 실패했습니다: ID를 받아오지 못했습니다.");
+      }
     } catch (e) {
       console.error(e);
       alert("저장 중 오류가 발생했습니다.");

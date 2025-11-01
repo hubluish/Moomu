@@ -4,9 +4,16 @@ interface PopAlertProps {
     visible: boolean;
     top?: number;
     zIndex?: number;
+    screenWidth: number;
 }
 
-export default function PopAlert({ visible, top=70, zIndex=1002 }: PopAlertProps) {
+export default function PopAlert({ visible, top=70, zIndex=1002, screenWidth }: PopAlertProps) {
+    const message = screenWidth <= 480 ? (
+        <><strong>1개 이상</strong>의 태그를 선택해주세요!</>
+    ) : (
+        <>정확한 결과를 위해 <strong>1개 이상</strong>의 태그를 선택해주세요!</>
+    );
+
     return (
         <div
         className={`${styles.alertContainer} ${visible ? styles.alertVisible : styles.alertHidden}`}
@@ -28,7 +35,7 @@ export default function PopAlert({ visible, top=70, zIndex=1002 }: PopAlertProps
                 </svg>
             </div>
             <p className={styles.text}>
-            정확한 결과를 위해 <strong>1개 이상</strong>의 태그를 선택해주세요!
+            {message}
             </p>
         </div>
         </div>

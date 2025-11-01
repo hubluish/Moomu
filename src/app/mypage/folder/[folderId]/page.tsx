@@ -5,6 +5,7 @@ import { getFolderById, getMoodboardsByFolder } from "@/utils/folders";
 import { removeMoodboardFromFolder } from "@/utils/folders";
 import { moveMoodboardToTrash } from "@/utils/moodboard";
 import Sidebar from "@/components/section/mypage/Sidebar";
+import MoodboardModal from "@/app/feed/MoodboardModal";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import FolderListModal from "@/components/section/mypage/folder/FolderListModal";
 import Toast from "@/components/common/toast/Toast";
@@ -64,6 +65,11 @@ const FolderDetailPage = () => {
     null
   );
 
+  const [isBoardModalOpen, setBoardModalOpen] = useState(false);
+  const [selectedBoardIdForModal, setSelectedBoardIdForModal] = useState<
+    string | null
+  >(null);
+
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [confirmAction, setConfirmAction] = useState<() => void>(() => {});
   const [modalTitle, setModalTitle] = useState("");
@@ -117,6 +123,16 @@ const FolderDetailPage = () => {
   const handleCloseFolderModal = () => {
     setIsFolderModalOpen(false);
     setSelectedMoodboardId(null);
+  };
+
+  const handleMoodboardClick = (moodboardId: string) => {
+    setSelectedBoardIdForModal(moodboardId);
+    setBoardModalOpen(true);
+  };
+
+  const handleCloseBoardModal = () => {
+    setBoardModalOpen(false);
+    setSelectedBoardIdForModal(null);
   };
 
   const handleRemoveFromCurrentFolder = async (moodboardId: string) => {
@@ -217,19 +233,27 @@ const FolderDetailPage = () => {
                 const allKeywords = (board.tags || []).slice(0, 4);
 
                 return (
-                  <Moodboard
+                  <div
                     key={board.id}
-                    id={board.id}
-                    imageUrl={board.cover_image_url}
-                    keywords={allKeywords}
-                    date={board.created_at}
-                    type="folder"
-                    onRemoveFromFolder={() => openRemoveConfirmModal(board.id)}
-                    onMoveToTrash={() => openTrashConfirmModal(board.id)}
-                    onAddToFolder={() => handleOpenFolderModal(board.id)}
-                    isPublic={board.is_public}
-                    onTogglePublic={() => {}}
-                  />
+                    onClick={() => handleMoodboardClick(board.id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <Moodboard
+                      key={board.id}
+                      id={board.id}
+                      imageUrl={board.cover_image_url}
+                      keywords={allKeywords}
+                      date={board.created_at}
+                      type="folder"
+                      onRemoveFromFolder={() =>
+                        openRemoveConfirmModal(board.id)
+                      }
+                      onMoveToTrash={() => openTrashConfirmModal(board.id)}
+                      onAddToFolder={() => handleOpenFolderModal(board.id)}
+                      isPublic={board.is_public}
+                      onTogglePublic={(_moodboardId: string) => {}}
+                    />
+                  </div>
                 );
               })}
             </div>
@@ -264,6 +288,12 @@ const FolderDetailPage = () => {
         title={modalTitle}
         confirmText="삭제"
         variant={modalVariant}
+      />
+
+      <MoodboardModal
+        moodboardId={selectedBoardIdForModal}
+        open={isBoardModalOpen}
+        onClose={handleCloseBoardModal}
       />
 
       <Toast

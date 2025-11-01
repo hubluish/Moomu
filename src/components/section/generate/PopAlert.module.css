@@ -1,11 +1,11 @@
 .wrapper {
     display: flex;
-    width: 514px;
-    height: 53px;
-    padding: 15.288px 20.385px;
+    height: 41px;
+    padding: 8px 8px;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 5px;
     flex-shrink: 0;
 
     border-radius: 40.769px;
@@ -14,8 +14,8 @@
 }
 
 .icon {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -25,11 +25,12 @@
 .text {
     color: #666;
     font-family: Inter, sans-serif;
-    font-size: 20px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     margin: 0;
+    white-space: nowrap;
 }
 
 .text strong {

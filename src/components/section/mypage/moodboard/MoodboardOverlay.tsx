@@ -21,7 +21,7 @@ type MoodboardOverlayProps = {
   onRestore?: (moodboardId: string) => void;
   onPermanentDelete?: (moodboardId: string) => void;
   isPublic: boolean;
-  onTogglePublic: () => void;
+  onTogglePublic: (moodboardId: string) => void;
   onUnlike?: () => void;
 };
 
@@ -47,12 +47,18 @@ const MoodboardOverlay = ({
         return (
           <>
             <IconButton
-              onClick={onAddToFolder}
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToFolder();
+              }}
               src="/assets/icons/folder-icon.svg"
               alt="폴더에 추가"
             />
             <IconButton
-              onClick={onTogglePublic}
+              onClick={(e) => {
+                e.stopPropagation();
+                onTogglePublic(moodboardId);
+              }}
               src={
                 isPublic
                   ? "/assets/icons/open-icon.svg"
@@ -61,7 +67,10 @@ const MoodboardOverlay = ({
               alt="공개/비공개"
             />
             <IconButton
-              onClick={() => onMoveToTrash(moodboardId)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onMoveToTrash(moodboardId);
+              }}
               src="/assets/icons/trash-icon.svg"
               alt="휴지통으로"
             />
@@ -72,7 +81,7 @@ const MoodboardOverlay = ({
       case "folder":
         if (showDeleteOptions) {
           return (
-            <DeleteOptionsWrapper>
+            <DeleteOptionsWrapper onClick={(e) => e.stopPropagation()}>
               <DeleteOptionButton
                 onClick={() => onRemoveFromFolder?.(moodboardId)}
               >
@@ -95,12 +104,18 @@ const MoodboardOverlay = ({
         return (
           <>
             <IconButton
-              onClick={onAddToFolder}
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToFolder();
+              }}
               src="/assets/icons/folder-icon.svg"
               alt="폴더 이동"
             />
             <IconButton
-              onClick={() => setShowDeleteOptions(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowDeleteOptions(true);
+              }}
               src="/assets/icons/trash-icon.svg"
               alt="삭제 옵션"
             />
@@ -114,7 +129,10 @@ const MoodboardOverlay = ({
             <HeartIcon
               src="/assets/icons/heart-filled.svg"
               alt="찜 취소"
-              onClick={onUnlike}
+              onClick={(e) => {
+                e.stopPropagation();
+                onUnlike?.();
+              }}
             />
           </>
         );
@@ -123,12 +141,18 @@ const MoodboardOverlay = ({
         return (
           <>
             <IconButton
-              onClick={() => onRestore?.(moodboardId)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onRestore?.(moodboardId);
+              }}
               src="/assets/icons/restore.svg"
               alt="복구"
             />
             <IconButton
-              onClick={() => onPermanentDelete?.(moodboardId)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onPermanentDelete?.(moodboardId);
+              }}
               src="/assets/icons/delete-forever.svg"
               alt="영구 삭제"
               variant="danger"

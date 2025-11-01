@@ -4,6 +4,7 @@ import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import { supabase } from "@/utils/supabase";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import FolderListModal from "@/components/section/mypage/folder/FolderListModal";
+import MoodboardModal from "@/app/feed/MoodboardModal";
 import {
   moveMoodboardToTrash,
   toggleMoodboardPublicStatus,
@@ -79,6 +80,12 @@ const MoodboardPage = () => {
   const [selectedMoodboardId, setSelectedMoodboardId] = useState<string | null>(
     null
   );
+
+  const [isBoardModalOpen, setBoardModalOpen] = useState(false);
+  const [selectedBoardIdForModal, setSelectedBoardIdForModal] = useState<
+    string | null
+  >(null);
+
   const [isLoading, setIsLoading] = useState(true);
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -118,7 +125,22 @@ const MoodboardPage = () => {
     }, 3000);
   };
 
-  const handleTogglePublic = async (board: MoodboardResult) => {
+  const handleMoodboardClick = (moodboardId: string) => {
+    setSelectedBoardIdForModal(moodboardId);
+    setBoardModalOpen(true);
+  };
+
+  const handleCloseBoardModal = () => {
+    setBoardModalOpen(false);
+    setSelectedBoardIdForModal(null);
+  };
+
+  const handleTogglePublic = async (moodboardId: string) => {
+    const board = moodboards.find((m) => m.id === moodboardId);
+    if (!board) {
+      displayToast("무드보드를 찾을 수 없습니다.", <ErrorIcon />);
+      return;
+    }
     try {
       const {
         data: { session },
@@ -199,13 +221,34 @@ const MoodboardPage = () => {
       <div style={{ display: "flex", marginTop: "64px" }}>
         <Sidebar />
 
-        <main style={{ flex: 1, padding: "50px 70px" }}>
+        <main
+          style={{
+            flex: 1,
+            padding: "50px 70px",
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+          }}
+        >
           <h1 style={{ marginBottom: "30px", userSelect: "none" }}>
             내 무드보드
           </h1>
-          <div>
+          <div style={{ flex: 1, display: "grid" }}>
             {isLoading ? (
               <MoodboardGridSkeleton count={6} />
+            ) : moodboards.length === 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  color: "#888",
+                }}
+              >
+                <p>생성된 무드보드가 없습니다.</p>
+              </div>
             ) : (
               <div
                 style={{
@@ -218,18 +261,24 @@ const MoodboardPage = () => {
                   const allKeywords = (board.tags || []).slice(0, 4);
 
                   return (
-                    <Moodboard
+                    <div
                       key={board.id}
-                      id={board.id}
-                      imageUrl={board.cover_image_url}
-                      keywords={allKeywords}
-                      date={board.created_at}
-                      type="mymoodboard"
-                      onAddToFolder={() => handleOpenFolderModal(board.id)}
-                      onMoveToTrash={() => openTrashConfirmModal(board.id)}
-                      isPublic={board.is_public}
-                      onTogglePublic={() => handleTogglePublic(board)}
-                    />
+                      onClick={() => handleMoodboardClick(board.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <Moodboard
+                        key={board.id}
+                        id={board.id}
+                        imageUrl={board.cover_image_url}
+                        keywords={allKeywords}
+                        date={board.created_at}
+                        type="mymoodboard"
+                        onAddToFolder={() => handleOpenFolderModal(board.id)}
+                        onMoveToTrash={() => openTrashConfirmModal(board.id)}
+                        isPublic={board.is_public}
+                        onTogglePublic={handleTogglePublic}
+                      />
+                    </div>
                   );
                 })}
               </div>
@@ -256,6 +305,12 @@ const MoodboardPage = () => {
         }}
         title={modalTitle}
         confirmText="이동"
+      />
+
+      <MoodboardModal
+        moodboardId={selectedBoardIdForModal}
+        open={isBoardModalOpen}
+        onClose={handleCloseBoardModal}
       />
 
       <Toast
