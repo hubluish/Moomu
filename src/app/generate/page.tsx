@@ -33,6 +33,13 @@ type ToastMessages = {
 
 const toastMessages = rawtoastMessages as ToastMessages;
 
+interface StepMeta {
+  title: string;
+  subtitle: string;
+  title_mobile?: string;
+  subtitle_mobile?: string;
+}
+
 interface Option {
   title: string;
   description: string;
@@ -58,7 +65,7 @@ function GeneratePage() {
   const alertTimerRef = useRef<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
-  const meta = stepMeta[step - 1];
+  const meta: StepMeta = stepMeta[step - 1];
 
   useEffect(() => {
     setScreenWidth(window.innerWidth);
@@ -345,7 +352,10 @@ function GeneratePage() {
         zIndex={1001}
         screenWidth={screenWidth}
       />
-      <TitleBlock title={meta.title} subtitle={meta.subtitle} />
+      <TitleBlock
+        title={screenWidth <= 480 && meta.title_mobile ? meta.title_mobile : meta.title}
+        subtitle={screenWidth <= 480 && meta.subtitle_mobile ? meta.subtitle_mobile : meta.subtitle}
+      />
       <NextButton
         onClick={handleNext}
         variant={step < 4 ? "black" : "gradient"}
