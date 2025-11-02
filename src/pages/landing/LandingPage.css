@@ -72,17 +72,29 @@
 
 /* Text Gradient Styles */
 .gradient-text {
-  background: linear-gradient(180deg, #e5e4ff 43.27%, #5b57ff 100%);
+  color: #E5E4FF;
+  background: linear-gradient(180deg, #E5E4FF 43.27%, #5B57FF 100%);
   background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   font-family: MuseoModerno;
   font-weight: 800;
   font-style: normal;
   line-height: normal;
 }
 
-.line {
+@supports (-webkit-background-clip: text) {
+  .gradient-text {
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@supports (background-clip: text) {
+  .gradient-text {
+    color: transparent;
+  }
+}
+
+.line{
   width: 200%;
   height: 2px;
   background: #fff;

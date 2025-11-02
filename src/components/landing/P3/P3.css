@@ -1,13 +1,16 @@
 /* P3 Component Styles */
 
 .features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px;
-  max-width: 1200px;
-  margin: 40px auto 0;
-  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: clamp(12px, 2.4vw, 48px);
   width: 100%;
+  max-width: clamp(360px, 80vw, 1360px);
+  margin: clamp(24px, 6vw, 48px) auto 0;
+  padding: 0 clamp(12px, 3vw, 32px);
+  box-sizing: border-box;
 }
 
 /* 3D Card Container */
@@ -15,6 +18,8 @@
   perspective: 1000px;
   height: auto;
   aspect-ratio: 3 / 4;
+  flex: 0 0 clamp(120px, 24vw, 420px);
+  max-width: clamp(120px, 24vw, 420px);
 }
 
 .card-inner {
@@ -69,14 +74,14 @@
   position: relative;
   display: block;
   text-align: center;
-  margin-top: 12px;
+  margin-top: clamp(6px, 1.5vw, 16px);
   color: #FFF;
   font-family: Pretendard;
-  font-size: 22.41px;
+  font-size: clamp(10px, 2.4vw, 22px);
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: 2.465px;
+  letter-spacing: clamp(1px, 0.6vw, 2.5px);
   pointer-events: none;
 }
 
@@ -103,10 +108,12 @@
 .item-description { display: none; }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .features {
-    grid-template-columns: 1fr;
-    gap: 30px;
+    gap: clamp(10px, 4vw, 18px);
   }
-  .feature-card { aspect-ratio: 3 / 4; }
+  .feature-card {
+    flex-basis: clamp(88px, 30vw, 240px);
+    max-width: clamp(88px, 30vw, 240px);
+  }
 }

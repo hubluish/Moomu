@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { supabase } from "@/utils/supabase";
+﻿import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/utils/supabase';
+import './P5.css';
 
 interface P5Props {
   openLoginModal?: () => void;
 }
-import "./P5.css";
 
 const P5 = ({ openLoginModal }: P5Props) => {
   const router = useRouter();
@@ -25,7 +25,7 @@ const P5 = ({ openLoginModal }: P5Props) => {
 
   const handleStartClick = () => {
     if (isLoggedIn) {
-      router.push("/generate");
+      router.push('/generate');
     } else {
       openLoginModal?.();
     }
@@ -34,9 +34,9 @@ const P5 = ({ openLoginModal }: P5Props) => {
   return (
     <section className="section">
       <div className="title">
-        <h2 className="cta-title">당신의 아이디어가 멈추지 않도록,</h2>
+        <h2 className="cta-title">당신의 아이디어가 멈추지 않도록</h2>
         <h2 className="cta-title">
-          <span className="oo">oo</span> 와 함께 시작하세요!
+          <span className="oo">oo</span>와 함께 지금 시작해 보세요
         </h2>
       </div>
 

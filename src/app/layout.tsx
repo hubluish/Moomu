@@ -5,6 +5,7 @@ import Header from "@/components/common/header/header";
 import Script from "next/script";
 
 import StyledComponentsRegistry from "@/components/common/registry/registry";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,6 +64,7 @@ export default function RootLayout({
             <Header />
           </div>
           {children}
+          <SpeedInsights />
         </StyledComponentsRegistry>
       </body>
     </html>
