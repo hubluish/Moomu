@@ -19,7 +19,6 @@ import {
   SubMenuItem,
 } from "./headermodal.styled";
 
-
 type HeaderModalProps = {
   isOpen: boolean; // 열림 상태
   isMobile: boolean; // 모바일 여부
@@ -48,6 +47,11 @@ const settingsMenu = {
   label: "설정",
   icon: "setting-icon.svg",
   path: "/settings",
+};
+const feedbackMenu = {
+  label: "피드백",
+  icon: "feedback-icon.svg",
+  path: "/survey",
 };
 
 export default function HeaderModal({
@@ -205,6 +209,15 @@ export default function HeaderModal({
               />
               <MenuLabel>{settingsMenu.label}</MenuLabel>
             </MenuItem>
+            <MenuItem onClick={() => handleNavigate(feedbackMenu.path)}>
+              <Image
+                src={`/assets/icons/${feedbackMenu.icon}`}
+                alt={feedbackMenu.label}
+                width={24}
+                height={24}
+              />
+              <MenuLabel>{feedbackMenu.label}</MenuLabel>
+            </MenuItem>
             <MenuItem $isLogout onClick={onLogout}>
               <Image
                 src="/assets/icons/logout-icon.svg"
@@ -243,6 +256,15 @@ export default function HeaderModal({
                 height={24}
               />
               <MenuLabel>{settingsMenu.label}</MenuLabel>
+            </MenuItem>
+            <MenuItem onClick={() => handleNavigate(feedbackMenu.path)}>
+              <Image
+                src={`/assets/icons/${feedbackMenu.icon}`}
+                alt={feedbackMenu.label}
+                width={24}
+                height={24}
+              />
+              <MenuLabel>{feedbackMenu.label}</MenuLabel>
             </MenuItem>
             <MenuItem $isLogout onClick={onLogout}>
               <Image

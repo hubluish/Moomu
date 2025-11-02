@@ -33,9 +33,10 @@ export const ModalContainer = styled.div`
 `;
 
 export const ModalTitle = styled.h2`
-  font-size: 17px;
-  font-weight: var(--font-weight-medium);
+  font-size: 20px;
+  font-weight: var(--font-weight-semi-bold, 600);
   margin: 0 0 30px 0;
+  color: var(--color-text-main);
 
   @media (max-width: 375px) {
     font-size: 14px;

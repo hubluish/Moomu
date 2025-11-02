@@ -1,291 +1,338 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import BackButton from '@/components/section/result/save/BackButton';
-import ActionButtons from '@/components/section/result/save/ActionButtons';
-import ShareButton from '@/components/section/result/save/ShareButton';
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import BackButton from "@/components/section/result/save/BackButton";
+import ActionButtons from "@/components/section/result/save/ActionButtons";
+import ShareButton from "@/components/section/result/save/ShareButton";
+import ConfirmModal from "@/components/common/ConfirmModal/ConfirmModal";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import MoodboardPreview from '@/components/section/result/save/MoodboardPreview';
-import { supabase } from '@/utils/supabase';
-import styles from './page.module.css';
+import MoodboardPreview from "@/components/section/result/save/MoodboardPreview";
+import { supabase } from "@/utils/supabase";
+import styles from "./page.module.css";
 
 export default function SaveClient() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [showShare, setShowShare] = useState(false);
+  const shareBtnRef = useRef<HTMLDivElement>(null);
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
+  const [isCoverReady, setIsCoverReady] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
+  const coverRequestedRef = useRef<boolean>(false);
 
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const [showShare, setShowShare] = useState(false);
-    const shareBtnRef = useRef<HTMLDivElement>(null);
-    const [coverUrl, setCoverUrl] = useState<string | null>(null);
-    const [isCoverReady, setIsCoverReady] = useState(false);
-    const [categories, setCategories] = useState<string[]>([]);
-    const coverRequestedRef = useRef<boolean>(false);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
-    useEffect(() => {
-        if (!searchParams) return;
-        const run = async () => {
-        try {
-            if (typeof window === 'undefined') return;
-            const mid = searchParams.get('mid');
-            if (!mid) {
-            return;
-            }
-            const { data, error } = await supabase
-                .from('moodboard')
-                .select('cover_image_url, images_json, palette_json, tags')
-                .eq('id', mid)
-                .single();
-                if (error) {
-                console.error('moodboard 불러오기 실패:', error);
-                } else {
-                const curUrl = data?.cover_image_url ?? null;
-                if (curUrl && /\/storage\/v1\/object\/public\/moodboard\//.test(curUrl)) {
+  useEffect(() => {
+    setIsFeedbackModalOpen(true);
+  }, []);
+
+  const handleGoToFeedback = () => {
+    window.open("/survey", "_blank"); // '/survey' 경로를 새 탭으로 엽니다.
+    setIsFeedbackModalOpen(false); // 모달을 닫습니다.
+  };
+
+  useEffect(() => {
+    if (!searchParams) return;
+    const run = async () => {
+      try {
+        if (typeof window === "undefined") return;
+        const mid = searchParams.get("mid");
+        if (!mid) {
+          return;
+        }
+        const { data, error } = await supabase
+          .from("moodboard")
+          .select("cover_image_url, images_json, palette_json, tags")
+          .eq("id", mid)
+          .single();
+        if (error) {
+          console.error("moodboard 불러오기 실패:", error);
+        } else {
+          const curUrl = data?.cover_image_url ?? null;
+          if (
+            curUrl &&
+            /\/storage\/v1\/object\/public\/moodboard\//.test(curUrl)
+          ) {
+            setIsCoverReady(true);
+          }
+
+          setCoverUrl(curUrl);
+          setCategories(data?.tags ?? []);
+          const shouldGenerate =
+            !curUrl ||
+            !/\/storage\/v1\/object\/public\/moodboard\//.test(
+              String(curUrl)
+            ) ||
+            !String(curUrl).toLowerCase().endsWith(".webp");
+          if (!coverRequestedRef.current && shouldGenerate) {
+            coverRequestedRef.current = true;
+            try {
+              const thumbs = Array.isArray(data?.images_json)
+                ? (data.images_json as { thumb?: string; url?: string }[])
+                    .map((img) => img.thumb || img.url)
+                    .filter(Boolean)
+                    .slice(0, 9)
+                : [];
+              const palette = Array.isArray(data?.palette_json)
+                ? (data.palette_json as { hex?: string }[])
+                    .map((p) => p.hex)
+                    .filter(Boolean)
+                    .slice(0, 4)
+                : [];
+              const categories = Array.isArray(data?.tags)
+                ? data.tags.slice(0, 6)
+                : [];
+              const res = await fetch("/api/generate-cover", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  boardId: mid,
+                  categories,
+                  thumbs,
+                  palette,
+                }),
+              });
+              if (res.ok) {
+                const j = await res.json();
+                if (j?.cover_image_url) {
+                  setCoverUrl(j.cover_image_url);
                   setIsCoverReady(true);
                 }
-
-                setCoverUrl(curUrl);
-                setCategories(data?.tags ?? []);
-                const shouldGenerate = !curUrl
-                    || !/\/storage\/v1\/object\/public\/moodboard\//.test(String(curUrl))
-                    || !String(curUrl).toLowerCase().endsWith('.webp');
-                if (!coverRequestedRef.current && shouldGenerate) {
-                    coverRequestedRef.current = true;
-                    try {
-                    const thumbs = Array.isArray(data?.images_json)
-                        ? (data.images_json as { thumb?: string; url?: string }[])
-                            .map((img) => img.thumb || img.url)
-                            .filter(Boolean)
-                            .slice(0, 9)
-                        : [];
-                        const palette = Array.isArray(data?.palette_json)
-                        ? (data.palette_json as { hex?: string }[])
-                            .map((p) => p.hex)
-                            .filter(Boolean)
-                            .slice(0, 4)
-                        : [];
-                    const categories = Array.isArray(data?.tags) ? data.tags.slice(0, 6) : [];
-                    const res = await fetch('/api/generate-cover', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                        boardId: mid,
-                        categories,
-                        thumbs,
-                        palette,
-                        }),
-                    });
-                    if (res.ok) {
-                        const j = await res.json();
-                        if (j?.cover_image_url) {
-                          setCoverUrl(j.cover_image_url);
-                          setIsCoverReady(true);
-                        }
-                    } else {
-                        console.warn('generate-cover failed with status', res.status);
-                    }
-                    } catch (e) {
-                    console.warn('generate-cover error:', e);
-                    }
-                }
+              } else {
+                console.warn("generate-cover failed with status", res.status);
+              }
+            } catch (e) {
+              console.warn("generate-cover error:", e);
             }
-        } catch (e) {
-            console.error('moodboard 조회 에러:', e);
-        } finally {
+          }
         }
-        };
-        run();
-    }, [searchParams]);
-    
-    // ESC로 공유 패널 닫기
-    useEffect(() => {
-        if (!showShare) return;
-        const onKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') setShowShare(false);
-        };
-        window.addEventListener('keydown', onKeyDown);
-        return () => window.removeEventListener('keydown', onKeyDown);
-    }, [showShare]);
+      } catch (e) {
+        console.error("moodboard 조회 에러:", e);
+      } finally {
+      }
+    };
+    run();
+  }, [searchParams]);
 
-    // 바깥 클릭(터치/펜 포함) 시 닫기
-    useEffect(() => {
-        if (!showShare) return;
-        const onPointer = (e: Event) => {
-            if (
-                shareBtnRef.current &&
-                !shareBtnRef.current.contains(e.target as Node)
-            ) {
-                setShowShare(false);
-            }
-        };
-        document.addEventListener('pointerdown', onPointer as EventListener);
-        return () => document.removeEventListener('pointerdown', onPointer as EventListener);
-    }, [showShare]);
+  // ESC로 공유 패널 닫기
+  useEffect(() => {
+    if (!showShare) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowShare(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [showShare]);
 
-    const handleToggleShare = useCallback(() => setShowShare(prev => !prev), []);
+  // 바깥 클릭(터치/펜 포함) 시 닫기
+  useEffect(() => {
+    if (!showShare) return;
+    const onPointer = (e: Event) => {
+      if (
+        shareBtnRef.current &&
+        !shareBtnRef.current.contains(e.target as Node)
+      ) {
+        setShowShare(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointer as EventListener);
+    return () =>
+      document.removeEventListener("pointerdown", onPointer as EventListener);
+  }, [showShare]);
 
-    const handleBack = useCallback(async () => {
-        if (!searchParams) return;
-        // 1) Try to delete the just-created moodboard by mid
-        try {
-            const mid = searchParams.get('mid');
-            if (mid) {
-                const { error } = await supabase.from('moodboard').delete().eq('id', mid);
-                if (error) {
-                    console.error('Failed to delete moodboard:', error);
-                }
-            }
-        } catch (e) {
-            console.error('Error deleting moodboard:', e);
-        }
+  const handleToggleShare = useCallback(
+    () => setShowShare((prev) => !prev),
+    []
+  );
 
-        // 2) Navigate back to result with a safe rid
-        try {
-            const ref = typeof document !== 'undefined' ? document.referrer : '';
-            let rid: string | null = null;
-            if (ref) {
-                try {
-                    const url = new URL(ref);
-                    rid = url.searchParams.get('rid');
-                } catch {}
-            }
-            if (!rid && typeof window !== 'undefined') {
-                try {
-                    rid = window.localStorage.getItem('last_request_id');
-                } catch {}
-            }
-            if (rid) {
-                router.push(`/result?rid=${encodeURIComponent(rid)}`);
-                return;
-            }
-        } catch {}
-        if (typeof window !== 'undefined' && window.history.length > 1) {
-            router.back();
-        } else {
-            router.push('/result');
-        }
-    }, [router, searchParams]);
-
-    const handlePostFeed = useCallback(async () => {
+  const handleBack = useCallback(async () => {
     if (!searchParams) return;
-  // 로그인 확인
-    const { data: { user }, error: uerr } = await supabase.auth.getUser();
-    if (uerr || !user) {
-        alert("로그인이 필요합니다.");
+    // 1) Try to delete the just-created moodboard by mid
+    try {
+      const mid = searchParams.get("mid");
+      if (mid) {
+        const { error } = await supabase
+          .from("moodboard")
+          .delete()
+          .eq("id", mid);
+        if (error) {
+          console.error("Failed to delete moodboard:", error);
+        }
+      }
+    } catch (e) {
+      console.error("Error deleting moodboard:", e);
+    }
+
+    // 2) Navigate back to result with a safe rid
+    try {
+      const ref = typeof document !== "undefined" ? document.referrer : "";
+      let rid: string | null = null;
+      if (ref) {
+        try {
+          const url = new URL(ref);
+          rid = url.searchParams.get("rid");
+        } catch {}
+      }
+      if (!rid && typeof window !== "undefined") {
+        try {
+          rid = window.localStorage.getItem("last_request_id");
+        } catch {}
+      }
+      if (rid) {
+        router.push(`/result?rid=${encodeURIComponent(rid)}`);
         return;
+      }
+    } catch {}
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/result");
+    }
+  }, [router, searchParams]);
+
+  const handlePostFeed = useCallback(async () => {
+    if (!searchParams) return;
+    // 로그인 확인
+    const {
+      data: { user },
+      error: uerr,
+    } = await supabase.auth.getUser();
+    if (uerr || !user) {
+      alert("로그인이 필요합니다.");
+      return;
     }
 
     // mid 가져오기 (방금 만든 moodboard id)
     const mid = searchParams.get("mid");
     if (!mid) {
-        alert("잘못된 접근입니다. (mid 없음)");
-        return;
+      alert("잘못된 접근입니다. (mid 없음)");
+      return;
     }
 
     // moodboard 불러오기
     const { data: mb, error: mberr } = await supabase
-        .from("moodboard")
-        .select("id, request_id, owner_id, title, cover_image_url, tags")
-        .eq("id", mid)
-        .single();
+      .from("moodboard")
+      .select("id, request_id, owner_id, title, cover_image_url, tags")
+      .eq("id", mid)
+      .single();
 
     if (mberr || !mb) {
-        console.error("moodboard 로드 실패:", mberr);
-        alert("무드보드 정보를 불러오지 못했습니다.");
-        return;
+      console.error("moodboard 로드 실패:", mberr);
+      alert("무드보드 정보를 불러오지 못했습니다.");
+      return;
     }
 
     if (mb.owner_id !== user.id) {
-        alert("본인 무드보드만 게시할 수 있습니다.");
-        return;
+      alert("본인 무드보드만 게시할 수 있습니다.");
+      return;
     }
 
     // feed_posts payload 만들기
     // Supabase Auth의 사용자 메타데이터에서 표시 이름 추출
     const authorName =
-        (user.user_metadata && (
-            (user.user_metadata.full_name as string | undefined) ||
-            (user.user_metadata.name as string | undefined) ||
-            (user.user_metadata.display_name as string | undefined) ||
-            (user.user_metadata.nickname as string | undefined)
-        )) ||
-        (user.email ? (user.email as string).split("@")[0] : "Unknown");
+      (user.user_metadata &&
+        ((user.user_metadata.full_name as string | undefined) ||
+          (user.user_metadata.name as string | undefined) ||
+          (user.user_metadata.display_name as string | undefined) ||
+          (user.user_metadata.nickname as string | undefined))) ||
+      (user.email ? (user.email as string).split("@")[0] : "Unknown");
 
     const payload = {
-        id: mb.id,
-        moodboard_id: mb.id,
-        request_id: mb.request_id,
-        user_id: user.id,
-        authorName,
-        title: mb.title || "무드보드",
-        image_url: mb.cover_image_url,
-        categories: mb.tags ?? [], // feed_posts.categories가 text[]라면 그대로 저장
-        is_public: true,
+      id: mb.id,
+      moodboard_id: mb.id,
+      request_id: mb.request_id,
+      user_id: user.id,
+      authorName,
+      title: mb.title || "무드보드",
+      image_url: mb.cover_image_url,
+      categories: mb.tags ?? [], // feed_posts.categories가 text[]라면 그대로 저장
+      is_public: true,
     };
 
     // upsert: moodboard_id 중복이면 덮어씀
     const { error: perr } = await supabase
-        .from("feed_posts")
-        .upsert(payload, { onConflict: "moodboard_id" })
-        .select("id")
-        .single();
+      .from("feed_posts")
+      .upsert(payload, { onConflict: "moodboard_id" })
+      .select("id")
+      .single();
 
     if (perr) {
-        console.error("feed_posts 저장 실패:", perr);
-        alert("피드 게시에 실패했습니다.");
-        return;
+      console.error("feed_posts 저장 실패:", perr);
+      alert("피드 게시에 실패했습니다.");
+      return;
     }
 
     alert("피드에 게시했어요!");
-    sessionStorage.removeItem('resultPageState');
+    sessionStorage.removeItem("resultPageState");
     // 예: 피드 상세 페이지로 이동
     router.push(`/feed`);
-    }, [router, searchParams]);
+  }, [router, searchParams]);
 
+  // Clipboard API 실패 시 textarea fallback 제공
+  const handleCopyLink = useCallback(() => {
+    alert("링크 공유는 준비 중이에요.");
+  }, []);
 
-    // Clipboard API 실패 시 textarea fallback 제공
-    const handleCopyLink = useCallback(() => {
-        alert('링크 공유는 준비 중이에요.');
-    }, []);
+  const handleShareKakao = useCallback(() => {
+    alert("카카오톡 공유는 준비 중이에요.");
+  }, []);
 
-    const handleShareKakao = useCallback(() => {
-        alert('카카오톡 공유는 준비 중이에요.');
-    }, []);
+  return (
+    <main className={styles.pageBg}>
+      <div className={styles.topWrapper}>
+        {/* 이전 페이지로 돌아가기. 특정 경로로 이동하려면 push 유지 */}
+        <BackButton onClick={handleBack} />
+      </div>
+      <div className={styles.mainContainer}>
+        <div className={styles.content}>
+          <h1 className={styles.h1}>하나뿐인 무드보드가 완성되었어요</h1>
+          <p className={styles.p}>지금 바로 저장하고 멋진 디자인을 만들어요!</p>
+        </div>
+        <div className={styles.actionButtons}>
+          <div
+            style={{ display: "inline-block", position: "relative" }}
+            ref={shareBtnRef}
+          >
+            <ActionButtons
+              // TODO: 이미지 저장/피드 게시 기능 구현 필요
+              onSaveImage={() => {
+                alert("이미지 저장 기능은 준비 중이에요.");
+              }}
+              onPostFeed={handlePostFeed}
+              onShare={handleToggleShare}
+              isCoverReady={isCoverReady}
+            />
 
-    return (
-        <main className={styles.pageBg}>
-            <div className={styles.topWrapper}>
-                {/* 이전 페이지로 돌아가기. 특정 경로로 이동하려면 push 유지 */}
-                <BackButton onClick={handleBack} />
-            </div>
-            <div className={styles.mainContainer}>
-                <div className={styles.content}>
-                    <h1 className={styles.h1}>하나뿐인 무드보드가 완성되었어요</h1>
-                    <p className={styles.p}>지금 바로 저장하고 멋진 디자인을 만들어요!</p>
-                </div>
-                <div className={styles.actionButtons}>
-                    <div style={{ display: 'inline-block', position: 'relative' }} ref={shareBtnRef}>
-                        <ActionButtons
-                        // TODO: 이미지 저장/피드 게시 기능 구현 필요
-                            onSaveImage={() => { alert('이미지 저장 기능은 준비 중이에요.'); }}
-                        onPostFeed={handlePostFeed}
-                            onShare={handleToggleShare}
-                            isCoverReady={isCoverReady}
-                        />
+            {showShare && (
+              <div
+                className={styles.shareContainer}
+                onClick={(e) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-label="공유 옵션"
+              >
+                <ShareButton
+                  onClickLink={handleCopyLink}
+                  onClickKakao={handleShareKakao}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+        <MoodboardPreview coverUrl={coverUrl} categories={categories} />
+      </div>
 
-                        {showShare && (
-                            <div
-                                className={styles.shareContainer}
-                                onClick={e => e.stopPropagation()}
-                                role="dialog" aria-modal="true" aria-label="공유 옵션"
-                            >
-                                <ShareButton onClickLink={handleCopyLink} onClickKakao={handleShareKakao} />
-                            </div>
-                        )}
-                    </div>
-                </div>
-                <MoodboardPreview coverUrl={coverUrl} categories={categories} />
-            </div>
-        </main>
-    );
-
+      <ConfirmModal
+        isOpen={isFeedbackModalOpen}
+        onClose={() => setIsFeedbackModalOpen(false)} // 닫기 버튼
+        onConfirm={handleGoToFeedback} // 확인 버튼
+        title="Moomu 피드백 하러가기!"
+        message="서비스 개선에 큰 도움이 됩니다! (약 2~3분 소요)"
+        confirmText="피드백 하러가기"
+        cancelText="닫기"
+        variant="default"
+      />
+    </main>
+  );
 }
