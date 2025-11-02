@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase";
-import Image from "next/image";
-import "./P1.css";
-import "./P1.mobile.css";
 
 interface P1Props {
   openLoginModal?: () => void;
 }
+import "./P1.css";
 
 const P1 = ({ openLoginModal }: P1Props) => {
   const router = useRouter();
@@ -101,15 +99,6 @@ const P1 = ({ openLoginModal }: P1Props) => {
     };
   }, [images.length, cardWidth, gap]);
 
-  const loopImages = [
-    ...images,
-    ...images,
-    images[0],
-    images[1],
-    images[2],
-    images[3],
-    images[4],
-  ];
   return (
     <section className="P1">
       <div className="P1-title-container">
@@ -153,10 +142,8 @@ const P1 = ({ openLoginModal }: P1Props) => {
               <img
                 src={src}
                 alt={`image${(idx % images.length) + 1}`}
-                fill
-                objectFit="cover"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 draggable={false}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // 최적화를 위한 sizes prop
               />
             </div>
           ))}
