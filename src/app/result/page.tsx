@@ -37,7 +37,6 @@ export default function ResultPage() {
       >
         <ResultClient />
       </Suspense>
-      <Footer />
     </>
   );
 }
