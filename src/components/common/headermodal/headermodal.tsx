@@ -43,11 +43,11 @@ const planMenu = {
   icon: "plan-icon.svg",
   path: "/planupgrade",
 };
-const settingsMenu = {
-  label: "설정",
-  icon: "setting-icon.svg",
-  path: "/settings",
-};
+// const settingsMenu = {
+//   label: "설정",
+//   icon: "setting-icon.svg",
+//   path: "/settings",
+// };
 const feedbackMenu = {
   label: "피드백",
   icon: "feedback-icon.svg",
@@ -58,7 +58,6 @@ export default function HeaderModal({
   isOpen,
   isMobile,
   userName = "User Name",
-  hasNotification = false,
   onLogout,
   onClose,
 }: HeaderModalProps) {
@@ -102,16 +101,6 @@ export default function HeaderModal({
             />
             <UserName>{userName}</UserName>
           </UserLeft>
-          <Image
-            src={
-              hasNotification
-                ? "/assets/icons/bell-active-icon.svg"
-                : "/assets/icons/bell-icon.svg"
-            }
-            alt="알림"
-            width={32}
-            height={32}
-          />
         </TopRow>
 
         {isMobile ? (
@@ -200,15 +189,6 @@ export default function HeaderModal({
               />
               <MenuLabel>{planMenu.label}</MenuLabel>
             </MenuItem>
-            <MenuItem onClick={() => handleNavigate(settingsMenu.path)}>
-              <Image
-                src={`/assets/icons/${settingsMenu.icon}`}
-                alt={settingsMenu.label}
-                width={24}
-                height={24}
-              />
-              <MenuLabel>{settingsMenu.label}</MenuLabel>
-            </MenuItem>
             <MenuItem onClick={() => handleNavigate(feedbackMenu.path)}>
               <Image
                 src={`/assets/icons/${feedbackMenu.icon}`}
@@ -247,15 +227,6 @@ export default function HeaderModal({
                 height={24}
               />
               <MenuLabel>{planMenu.label}</MenuLabel>
-            </MenuItem>
-            <MenuItem onClick={() => handleNavigate(settingsMenu.path)}>
-              <Image
-                src={`/assets/icons/${settingsMenu.icon}`}
-                alt={settingsMenu.label}
-                width={24}
-                height={24}
-              />
-              <MenuLabel>{settingsMenu.label}</MenuLabel>
             </MenuItem>
             <MenuItem onClick={() => handleNavigate(feedbackMenu.path)}>
               <Image
