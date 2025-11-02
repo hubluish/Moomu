@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import styles from "./ArticleDetail.module.css";
-import Footer from "@/components/common/footer/Footer";
+import BannerResponsive from "@/components/adfit/BannerResponsive";
 
 interface Article {
   id: string | number;
@@ -125,7 +125,7 @@ export default function ArticleDetail() {
           </button>
         </div>
       </div>
-      <Footer />
+      <BannerResponsive />
     </div>
   );
 }
