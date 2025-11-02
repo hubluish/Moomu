@@ -7,6 +7,7 @@ import { getFolders, deleteFolder, renameFolder } from "@/utils/folders";
 import FolderItem from "@/components/section/mypage/folder/FolderItem";
 import { FolderGridSkeleton } from "@/components/section/mypage/folder/FolderSkeleton";
 import Footer from "@/components/common/footer/Footer";
+import BannerResponsive from "@/components/adfit/BannerResponsive";
 
 interface Folder {
   id: string;
@@ -126,6 +127,7 @@ const MyFolderPage = ({}) => {
           )}
         </Wrapper>
       </div>
+      <BannerResponsive />
       <Footer />
     </div>
   );

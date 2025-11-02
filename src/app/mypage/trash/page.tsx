@@ -10,6 +10,7 @@ import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import Toast from "@/components/common/toast/Toast";
 import ConfirmModal from "@/components/common/ConfirmModal/ConfirmModal";
 import { MoodboardGridSkeleton } from "@/components/section/mypage/moodboard/MoodboardSkeleton";
+import BannerResponsive from "@/components/adfit/BannerResponsive";
 
 interface MoodboardResult {
   id: string;
@@ -240,6 +241,7 @@ const TrashPage = ({}) => {
           icon={toastInfo.icon}
         />
       </div>
+      <BannerResponsive />
       <Footer />
     </div>
   );
