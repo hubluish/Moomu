@@ -50,7 +50,7 @@ export const ModalContainer = styled.div`
 
   animation: ${fadeIn} 0.4s ease-out;
 
-  @media (max-width: 375px) {
+  @media (max-width: 430px) {
     width: 90%;
   }
 `;
@@ -82,7 +82,7 @@ export const TitleContent = styled.div`
   -webkit-backdrop-filter: blur(2px) hue-rotate(5deg);
   border-right: 1px solid rgba(167, 164, 255, 0.1);
 
-  @media (max-width: 375px) {
+  @media (max-width: 430px) {
     display: none;
   }
 `;
@@ -96,7 +96,7 @@ export const ModalContent = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media (max-width: 375px) {
+  @media (max-width: 430px) {
     width: 100%;
     padding: 32px 24px;
   }
@@ -127,7 +127,7 @@ export const BackgroundText = styled.div`
   user-select: none;
   -webkit-user-select: none;
 
-  @media (max-width: 375px) {
+  @media (max-width: 430px) {
     display: none;
   }
 `;
@@ -179,7 +179,7 @@ export const InputGroup = styled.div`
   width: 390px;
   margin-bottom: 22px;
 
-  @media (max-width: 375px) {
+  @media (max-width: 430px) {
     width: 100%;
   }
 `;
