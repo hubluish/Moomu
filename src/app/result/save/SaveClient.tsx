@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import BackButton from '@/components/section/result/BackButton';
-import ActionButtons from '@/components/section/result/ActionButtons';
-import ShareButton from '@/components/section/result/ShareButton';
+import BackButton from '@/components/section/result/save/BackButton';
+import ActionButtons from '@/components/section/result/save/ActionButtons';
+import ShareButton from '@/components/section/result/save/ShareButton';
 import { useRouter, useSearchParams } from "next/navigation";
 
-import MoodboardPreview from '@/components/section/result/MoodboardPreview';
+import MoodboardPreview from '@/components/section/result/save/MoodboardPreview';
 import { supabase } from '@/utils/supabase';
 import styles from './page.module.css';
 

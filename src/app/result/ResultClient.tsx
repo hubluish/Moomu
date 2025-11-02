@@ -1,16 +1,16 @@
 'use client';
 
-import KeywordBox from "@/components/section/result/KeywordBox";
-import ConceptBox from "@/components/section/result/ConceptBox";
-import FontBox from "@/components/section/result/FontBox";
-import ImageBox from "@/components/section/result/ImageBox";
-import ColorPaletteBox from "@/components/section/result/ColorPaletteBox";
-import TitleBox from "@/components/section/result/TitleBox";
-import ExampleBox from "@/components/section/result/ExampleBox";
+import KeywordBox from "@/components/section/result/result/KeywordBox";
+import ConceptBox from "@/components/section/result/result/ConceptBox";
+import FontBox from "@/components/section/result/result/FontBox";
+import ImageBox from "@/components/section/result/result/ImageBox";
+import ColorPaletteBox from "@/components/section/result/result/ColorPaletteBox";
+import TitleBox from "@/components/section/result/result/TitleBox";
+import ExampleBox from "@/components/section/result/result/ExampleBox";
 import styles from "./page.module.css";
-import RefreshButton from "@/components/section/result/RefreshButton";
-import RefreshCount from "@/components/section/result/RefreshCount";
-import SaveButton from "@/components/section/result/SaveButton";
+import RefreshButton from "@/components/section/result/result/RefreshButton";
+import RefreshCount from "@/components/section/result/result/RefreshCount";
+import SaveButton from "@/components/section/result/result/SaveButton";
 import Spinner from "@/components/common/spinner/Spinner";
 
 import React, { useEffect, useState, useCallback } from "react";

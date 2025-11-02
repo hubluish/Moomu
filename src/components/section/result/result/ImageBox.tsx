@@ -6,7 +6,7 @@ import styles from './ImageBox.module.css';
 import TopRightArrows from '@/components/common/TopRightArrows';
 import type { GeminiSet } from '@/types/result';
 import ImageGridSkeleton from './ImageGridSkeleton';
-import { fetchWithCache } from './imageCache';
+import { fetchWithCache } from '../imageCache';
 
 interface PinterestImage {
     thumbnail_url: string;
