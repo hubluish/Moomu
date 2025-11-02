@@ -23,3 +23,15 @@
     opacity: 0.5;
   }
 }
+
+@media (max-width: 480px) {
+  .skeletonGrid {
+    grid-template-columns: repeat(4, 67px);
+    gap: 5px;
+  }
+
+  .skeletonItem {
+    width: 67px;
+    height: 67px;
+  }
+}

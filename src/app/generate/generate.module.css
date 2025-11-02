@@ -21,7 +21,7 @@
         position: relative;
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* 3열 고정 */
-        gap: 4px;
+        gap: 20px;
         justify-items: center;
         overflow: hidden;
     }

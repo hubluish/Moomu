@@ -65,7 +65,7 @@ colors, image, font, sentences
 
         const outputJson = JSON.parse(jsonStr);
         
-        console.log("파싱된 JSON 응답 : ", outputJson)
+        // console.log("파싱된 JSON 응답 : ", outputJson)
 
         return new Response(JSON.stringify(outputJson), { status: 200 });
     } catch (error) {

@@ -204,11 +204,11 @@ function GeneratePage() {
         .join(", "),
     };
 
-    console.log(
-      "%c✅ Gemini 요청 payload:",
-      "color: blue; font-weight: bold;",
-      payload
-    );
+    // console.log(
+    //   "%c✅ Gemini 요청 payload:",
+    //   "color: blue; font-weight: bold;",
+    //   payload
+    // );
 
     try {
       const response = await fetch("/api/gemini_proxy", {
@@ -218,7 +218,7 @@ function GeneratePage() {
         });
 
         const result = await response.json();
-        console.log('%c🎨 Gemini 응답 결과:', 'color: green; font-weight: bold;', result);
+        // console.log('%c🎨 Gemini 응답 결과:', 'color: green; font-weight: bold;', result);
 
         try {
                 const selectedColor = selections[0] ?? undefined;
@@ -239,10 +239,10 @@ function GeneratePage() {
                 console.warn('선택 키워드 저장 실패:', e);
             }
 
-        console.log('%c💾 Supabase 저장 시작:', 'color: blue; font-weight: bold;');
+        // console.log('%c💾 Supabase 저장 시작:', 'color: blue; font-weight: bold;');
         try {
         const rid = await saveToSupabase(result);
-        console.log('%c✅ Supabase 저장 성공:', 'color: green; font-weight: bold;');
+        // console.log('%c✅ Supabase 저장 성공:', 'color: green; font-weight: bold;');
         if (rid) {
             router.push(`/result?rid=${encodeURIComponent(rid)}`);
         } else {
