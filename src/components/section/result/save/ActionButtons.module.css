@@ -48,3 +48,13 @@
   white-space: nowrap;
   user-select: none;
 }
+
+@media (max-width: 480px) {
+  .container {
+    gap: 10px;
+  }
+
+  .label {
+    font-size: 10px;
+  }
+}
