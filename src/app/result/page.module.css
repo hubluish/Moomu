@@ -171,9 +171,21 @@
     align-items: start;
     justify-items: center;
     padding: 0;
+    margin-top: 20px;
   }
 
   .exampleBox {
     display: block;
   }
+
+  .topRightWrapper {
+    width: 327px;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  .topWrapper {
+    margin:  80px auto 0px auto;
+  }
 }
+
