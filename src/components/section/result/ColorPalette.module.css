@@ -68,3 +68,39 @@
 .show {
     opacity: 1;
 }
+
+@media (max-width: 480px) {
+
+  .container {
+    display: block;
+  }
+
+  /* 각 아이템을 2열 그리드로 → [block][code] */
+  .colorItem {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 0;
+  }
+
+  .colorBlock {
+    width: 80px;
+    height: 35px;
+    border-radius: 0;
+  }
+
+  .colorCode {
+    font-size: 10px;
+    margin: 0;
+    text-align: left;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }s
+
+  .title {
+      font-size: 14px;
+  }
+}

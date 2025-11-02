@@ -159,13 +159,13 @@
   .gridContainer {
     width: 327px;
     grid-template-rows: repeat(2, auto);
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
-      ' title title'
-      ' images images'
-      ' concept font '
-      ' color keyword '
-      ' examples examples ';
+      ' title title title'
+      ' images images images'
+      ' concept concept font '
+      ' palette keyword keyword '
+      ' examples examples examples ';
     gap: 10px;
     height: 100%;
     align-items: start;

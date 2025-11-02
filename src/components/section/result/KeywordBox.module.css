@@ -104,3 +104,33 @@
 .show {
     opacity: 1;
 }
+
+@media (max-width: 480px) {
+    .container {
+        width: 158px;
+        height: 206px;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .title {
+        font-size: 14px;
+    }
+
+    .chip {
+        height: 27px;
+        padding: 4px 8px;
+        flex: 0 0 auto; 
+    }
+
+    .chipText {
+        font-size: 16px;
+    }
+    
+    .chipContainer {
+        gap: 5px;
+        flex-flow: row wrap;
+        align-items: center;
+    }
+    
+}
