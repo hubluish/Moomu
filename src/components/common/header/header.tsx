@@ -155,52 +155,69 @@ export default function Header() {
         </LogoName>
       </LogoSection>
 
-      <NavFrame>
-        <Nav>
-          {NAV_ITEMS.map(({ href, label }) => (
-            <NavLink
-              key={href}
-              href={href}
-              $active={pathname === href}
-              $mode={headerMode}
-            >
-              {label}
-            </NavLink>
-          ))}
-        </Nav>
+      {isMobile ? (
+        /* --- 모바일일 때 (375px 이하) --- */
         <RightSection>
           {isLoggedIn ? (
-            <AccountWrapper>
-              <Avatar
-                src={avatarSrc}
-                alt="계정"
-                onClick={() => setShowDropdown((prev) => !prev)}
+            // 모바일 + 로그인 상태 = 메뉴 버튼
+            <MenuButton onClick={() => setShowMobileMenu(true)}>
+              <Image
+                src={
+                  headerMode.startsWith("dark")
+                    ? "/assets/icons/menu-dark-icon.svg"
+                    : "/assets/icons/menu-light-icon.svg"
+                }
+                alt="메뉴"
+                width={28}
+                height={28}
               />
-            </AccountWrapper>
+            </MenuButton>
           ) : (
+            // 모바일 + 로그아웃 상태 = 로그인 버튼
             <LoginButton $mode={headerMode} onClick={handleLoginClick}>
-              로그인/회원가입
+              로그인
             </LoginButton>
           )}
         </RightSection>
-      </NavFrame>
+      ) : (
+        /* --- 데스크톱일 때 (375px 초과) --- */
+        <NavFrame>
+          <Nav>
+            {NAV_ITEMS.map(({ href, label }) => (
+              <NavLink
+                key={href}
+                href={href}
+                $active={pathname === href}
+                $mode={headerMode}
+              >
+                {label}
+              </NavLink>
+            ))}
+          </Nav>
+          <RightSection>
+            {isLoggedIn ? (
+              // 데스크톱 + 로그인 상태 = 아바타 + 드롭다운
+              <AccountWrapper>
+                <Avatar
+                  src={avatarSrc}
+                  alt="계정"
+                  onClick={() => setShowDropdown((prev) => !prev)}
+                />
+              </AccountWrapper>
+            ) : (
+              // 데스크톱 + 로그아웃 상태 = 로그인 버튼
+              <LoginButton $mode={headerMode} onClick={handleLoginClick}>
+                로그인/회원가입
+              </LoginButton>
+            )}
+          </RightSection>
+        </NavFrame>
+      )}
 
-      <MenuButton onClick={() => setShowMobileMenu(true)}>
-        <Image
-          src={
-            headerMode.startsWith("dark")
-              ? "/assets/icons/menu-dark-icon.svg"
-              : "/assets/icons/menu-light-icon.svg"
-          }
-          alt="메뉴"
-          width={28}
-          height={28}
-        />
-      </MenuButton>
-
+      {/* --- 👇 2. 모달 렌더링 로직을 하나로 통합합니다. --- */}
       {isLoggedIn && (
         <HeaderModal
-          isOpen={isMobile ? showMobileMenu : showDropdown} // 👈 열림 상태 전달
+          isOpen={isMobile ? showMobileMenu : showDropdown} // 모바일/데스크톱 상태에 맞게 전달
           isMobile={isMobile}
           userName={userName}
           hasNotification={hasNotification}
