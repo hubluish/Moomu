@@ -178,7 +178,7 @@
   }
   .leftColumn {
     width: 100%;
-    gap: 34px;
+    gap: 75px;
   }
   .rightColumn {
     flex-direction: column;

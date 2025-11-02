@@ -109,7 +109,7 @@
 
 @media (max-width: 450px) {
   .card {
-    width: 200px;
+    width: 180px;
     height: 300px;
   }
   .imageContainer {

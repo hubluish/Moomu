@@ -142,6 +142,43 @@
   }
 }
 
+@media (max-width: 450px) {
+  .wrapper {
+    width: 400px;
+  }
+
+  .titleRow {
+    padding: 20px;
+  }
+  .titleCol {
+    gap: 15px;
+  }
+  .bigTitle {
+    width: 100%;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .desc {
+    width: 100%;
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .field {
+    padding: 30px 2px 20px 2px;
+  }
+
+  .cardGrid {
+    width: 400px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  .moreBtnWrap {
+    padding: 20px 0px;
+  }
+}
+
 @media (max-width: 375px) {
   .wrapper {
     width: 331px;

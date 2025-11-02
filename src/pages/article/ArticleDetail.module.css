@@ -223,6 +223,115 @@
   background: #f5f5ff88;
 }
 
+@media (max-width: 450px) {
+  .container {
+    width: 400px;
+  }
+  .imageWrap {
+    width: 400px;
+    height: 235px;
+    margin-top: 90px;
+  }
+  .mainImage {
+    width: 100%;
+    height: 235px;
+    border-radius: 10px;
+  }
+  .imageOverlay {
+    width: 400px;
+    height: 235px;
+    border-radius: 10px;
+  }
+  .backIcon {
+    left: 16px;
+    top: 20px;
+    width: 18px;
+    height: 20px;
+  }
+  .titleSection {
+    width: 400px;
+    height: auto;
+    padding: 20px 0;
+    gap: 24px;
+  }
+
+  .titleInner {
+    width: 100%;
+    gap: 16px;
+  }
+
+  .titleText {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .dateText {
+    font-size: 12px;
+  }
+
+  .categoryBox {
+    width: auto;
+    padding: 6px 20px;
+  }
+
+  .categoryText {
+    font-size: 12px;
+  }
+
+  .contentSection {
+    width: 400px;
+    padding: 20px 0;
+    gap: 24px;
+  }
+
+  .contentHtml {
+    font-size: 16px;
+  }
+
+  .keywordSection {
+    width: 400px;
+    padding: 40px 0px;
+    gap: 8px;
+  }
+
+  .keywordBox {
+    width: 100%;
+    height: auto;
+    padding: 30px 0px;
+    gap: 8px;
+  }
+
+  .keywordTitle {
+    font-size: 18px;
+  }
+
+  .keywordDesc {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .keywordList {
+    width: 250px;
+    justify-content: center;
+  }
+
+  .keywordItem {
+    width: auto;
+    padding: 6px 20px;
+    gap: 2px;
+  }
+
+  .keywordText {
+    font-size: 14px;
+  }
+
+  .backBtn {
+    width: 150px;
+    font-size: 15px;
+    margin-bottom: 40px;
+  }
+}
+
 @media (max-width: 375px) {
   .container {
     width: 331px;
