@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image'; // Added import
 import SectionTitle from '../sectionTitle/SectionTitle';
 import './P4.css';
 const P4 = () => {
@@ -63,7 +64,7 @@ const P4 = () => {
 				<div className="p4-container" ref={containerRef}>
 					<div className="p4-scroller" ref={scrollerRef}>
 						{images.map((src, idx) => (
-							<img key={idx} className="p4-image" src={src} alt={`p4 horizontal ${idx + 1}`} />
+							<Image key={idx} className="p4-image" src={src} alt={`p4 horizontal ${idx + 1}`} width={500} height={300} />
 						))}
 					</div>
 				</div>
