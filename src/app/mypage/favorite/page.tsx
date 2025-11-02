@@ -10,7 +10,7 @@ import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
 import Toast from "@/components/common/toast/Toast";
 import { MoodboardGridSkeleton } from "@/components/section/mypage/moodboard/MoodboardSkeleton";
 import Image from "next/image";
-
+import BannerResponsive from "@/components/adfit/BannerResponsive";
 interface FeedPost {
   id: string;
   image_url: string | null;
@@ -222,6 +222,7 @@ const FavoritePage = ({}) => {
           icon={toastInfo.icon}
         />
       </div>
+      <BannerResponsive />
       <Footer />
     </div>
   );

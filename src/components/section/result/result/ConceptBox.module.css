@@ -70,4 +70,8 @@
         font-size: 16px;
         line-height: 20px;
     }
+
+    .content{
+        padding: 0;
+    }
 }

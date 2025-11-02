@@ -15,6 +15,7 @@ import React, { useState, useEffect, ReactNode } from "react";
 import Toast from "@/components/common/toast/Toast";
 import ConfirmModal from "@/components/common/ConfirmModal/ConfirmModal";
 import { MoodboardGridSkeleton } from "@/components/section/mypage/moodboard/MoodboardSkeleton";
+import BannerResponsive from "@/components/adfit/BannerResponsive";
 interface MoodboardResult {
   id: string;
   cover_image_url: string | null;
@@ -359,6 +360,7 @@ const MoodboardPage = () => {
         show={toastInfo.show}
         icon={toastInfo.icon}
       />
+      <BannerResponsive />
       <Footer />
     </div>
   );
