@@ -45,7 +45,8 @@ function detectBgMode(path: string) {
     ["/feed", "/generate", "/planupgrade"].includes(path) ||
     path.startsWith("/mypage") ||
     path.startsWith("/settings") ||
-    path.startsWith("/article")
+    path.startsWith("/article") ||
+    path.startsWith("/survey")
   ) {
     return "light";
   }
