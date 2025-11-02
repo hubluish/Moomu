@@ -66,13 +66,11 @@
   position: relative;
 }
 
-.cardRow {
-  display: flex;
-  align-items: flex-start;
-  align-self: stretch;
-  width: 100%;
-  margin-bottom: 24px;
-  gap: 19px; /* 카드 사이 간격 추가 */
+.cardGrid {
+  display: grid;
+  width: 1192px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
 }
 
 .moreBtnWrap {
@@ -111,4 +109,69 @@
   font-style: normal;
   font-weight: 500;
   line-height: 24px; /* 150% */
+}
+
+@media (max-width: 1220px) {
+  .cardGrid {
+    width: 900px;
+  }
+}
+
+@media (max-width: 950px) {
+  .titleRow {
+    padding: 20px;
+  }
+  .titleCol {
+    gap: 20px;
+  }
+  .bigTitle {
+    width: 100%;
+    font-size: 23px;
+    line-height: 44px;
+  }
+  .desc {
+    width: 100%;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .cardGrid {
+    width: 800px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 375px) {
+  .titleRow {
+    padding: 20px;
+    width: 331px;
+  }
+  .titleCol {
+    gap: 15px;
+  }
+  .bigTitle {
+    width: 100%;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .desc {
+    width: 100%;
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .field {
+    padding: 30px 0px 20px 0px;
+    width: 331px;
+  }
+
+  .cardGrid {
+    width: 331px;
+    grid-template-columns: repeat(auto-fill, minmax(157px, 1fr));
+    gap: 16px;
+  }
+
+  .moreBtnWrap {
+    padding: 20px 0px;
+  }
 }

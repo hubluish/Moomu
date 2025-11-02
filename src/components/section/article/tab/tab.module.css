@@ -1,5 +1,6 @@
 .wrapper {
   width: 100%;
+  position: relative;
 }
 
 .tabRow {
@@ -8,7 +9,6 @@
   align-items: center;
   gap: 12px;
   align-self: stretch;
-  position: relative;
 }
 
 .tabBtn {
@@ -61,19 +61,15 @@
     padding: 6px 22px;
   }
 
-  .tabRow::after {
+  .wrapper::after {
     content: "";
     position: absolute;
     top: 0;
     right: 0;
-    height: 100%;
-    width: 40px; /* 그라데이션 너비 */
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0),
-      #fff
-    ); /* 투명 -> 흰색 */
-    pointer-events: none; /* 클릭 이벤트를 통과시키도록 설정 */
-    z-index: 10; /* 다른 요소 위에 표시되도록 z-index 설정 */
+    height: 35px;
+    width: 40px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), #fff);
+    pointer-events: none;
+    z-index: 10;
   }
 }
