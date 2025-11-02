@@ -64,9 +64,9 @@
 
 .p4-container {
   position: relative;
-  width: min(96vw, 1220px);
-  height: clamp(220px, 48vw, 520px);
-  margin: clamp(20px, 5vw, 44px) auto 0;
+  width: clamp(280px, 98vw, 1380px);
+  height: clamp(260px, 56vw, 620px);
+  margin: clamp(20px, 5vw, 48px) clamp(8px, 2.6vw, 36px) 0 clamp(6px, 1.2vw, 12px);
   overflow: hidden;
   cursor: url('/assets/landing/mouse1.svg') 12 12, auto;
   border-radius: clamp(12px, 2vw, 30px);
@@ -90,7 +90,7 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  padding: 0 clamp(14px, 4.4vw, 34px);
+  padding: 0 clamp(10px, 3vw, 24px) 0 clamp(4px, 1.4vw, 12px);
   box-sizing: border-box;
 }
 
@@ -100,35 +100,45 @@
 
 .p4-image {
   flex: 0 0 auto;
-  height: 102%;
-  width: auto;
-  object-fit: contain;
+  width: clamp(3800px, 640vw, 7800px);
+  max-width: none;
+  height: auto;
+  max-height: 100%;
+  object-fit: cover;
   border-radius: clamp(11px, 2vw, 26px);
   box-shadow: 0 16px 42px rgba(0, 0, 0, 0.38);
 }
 
 @media (max-width: 768px) {
   .p4-container {
-    height: clamp(190px, 60vw, 420px);
+    height: clamp(210px, 70vw, 480px);
+    margin-left: clamp(8px, 3vw, 24px);
     border-radius: clamp(10px, 3vw, 24px);
   }
 
   .p4-scroller {
     gap: clamp(14px, 4.4vw, 26px);
+    padding: 0 clamp(8px, 4vw, 24px) 0 clamp(4px, 2vw, 14px);
+  }
+
+  .p4-image {
+    width: clamp(2800px, 680vw, 6600px);
   }
 }
 
 @media (max-width: 480px) {
   .p4-container {
-    height: clamp(170px, 82vw, 320px);
-    margin-top: clamp(16px, 6.4vw, 30px);
+    height: clamp(190px, 92vw, 360px);
+    margin-top: clamp(18px, 7vw, 34px);
+    margin-left: clamp(8px, 4vw, 28px);
   }
 
   .p4-scroller {
-    padding: 0 clamp(12px, 5.4vw, 24px);
+    padding: 0 clamp(6px, 4.6vw, 20px) 0 clamp(4px, 3.2vw, 14px);
   }
 
   .p4-image {
     border-radius: clamp(9px, 3.4vw, 18px);
+    width: clamp(2100px, 760vw, 4800px);
   }
 }
