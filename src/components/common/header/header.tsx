@@ -42,9 +42,10 @@ function detectBgMode(path: string) {
   }
 
   if (
-    ["/feed", "/article", "/generate", "/planupgrade"].includes(path) ||
+    ["/feed", "/generate", "/planupgrade"].includes(path) ||
     path.startsWith("/mypage") ||
-    path.startsWith("/settings")
+    path.startsWith("/settings") ||
+    path.startsWith("/article")
   ) {
     return "light";
   }

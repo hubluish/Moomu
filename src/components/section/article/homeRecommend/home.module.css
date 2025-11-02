@@ -30,7 +30,7 @@
 .leftColumn {
   flex: 1;
   display: flex;
-  justify-content: space-between;
+  gap: 70px;
 }
 
 .rightColumn {
@@ -178,6 +178,7 @@
   }
   .leftColumn {
     width: 100%;
+    gap: 34px;
   }
   .rightColumn {
     flex-direction: column;
