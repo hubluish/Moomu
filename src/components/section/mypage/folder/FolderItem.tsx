@@ -32,56 +32,50 @@ const FolderIconWrapper = styled.div`
   background-color: #fff;
   border: 1px solid rgba(136, 101, 243, 0.5);
   border-radius: 16px;
+  position: relative;
+
+  @media (max-width: 527px) {
+    width: 140px;
+    height: 140px;
+  }
+
+  @media (max-width: 439px) {
+    width: 130px;
+    height: 130px;
+  }
+`;
+
+const FolderIcon = styled(Image)`
+  width: 100px;
+  height: 100px;
+
+  @media (max-width: 527px) {
+    width: 80px;
+    height: 80px;
+  }
+
+  @media (max-width: 439px) {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
 const FolderName = styled.span`
   font-weight: bold;
+
+  @media (max-width: 500px) {
+    font-size: 14px;
+  }
 `;
 
 const SettingsButton = styled.button`
   position: absolute;
-  top: 2px;
-  right: 22px;
+  top: 0px;
+  right: 2px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 5px;
-
-  @media (max-width: 965px) {
-    right: 57px;
-  }
-
-  @media (max-width: 900px) {
-    right: 42px;
-  }
-
-  @media (max-width: 865px) {
-    right: 30px;
-  }
-
-  @media (max-width: 800px) {
-    right: 22px;
-  }
-
-  @media (max-width: 757px) {
-    right: 110px;
-  }
-
-  @media (max-width: 735px) {
-    right: 97px;
-  }
-
-  @media (max-width: 700px) {
-    right: 80px;
-  }
-
-  @media (max-width: 650px) {
-    right: 50px;
-  }
-
-  @media (max-width: 600px) {
-    right: 30px;
-  }
 `;
 
 const PopoverMenu = styled.div`
@@ -159,26 +153,25 @@ const FolderItem = ({ id, name, onDelete, onUpdate }: FolderItemProps) => {
     <Wrapper>
       <FolderLink href={`/mypage/folder/${id}`}>
         <FolderIconWrapper>
-          <Image
+          <FolderIcon
             src="/assets/icons/fill-folder.svg"
             alt="폴더"
-            width={120}
-            height={120}
+            width={80}
+            height={80}
             draggable={false}
           />
+          <SettingsButton onClick={handleSettingsClick}>
+            <Image
+              src="/assets/icons/dots-vertical.svg"
+              alt="설정"
+              width={24}
+              height={24}
+              draggable={false}
+            />
+          </SettingsButton>
         </FolderIconWrapper>
         <FolderName>{name}</FolderName>
       </FolderLink>
-
-      <SettingsButton onClick={handleSettingsClick}>
-        <Image
-          src="/assets/icons/dots-vertical.svg"
-          alt="설정"
-          width={24}
-          height={24}
-          draggable={false}
-        />
-      </SettingsButton>
 
       {isPopoverOpen && (
         <PopoverMenu>

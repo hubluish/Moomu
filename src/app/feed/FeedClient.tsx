@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import SearchBar from "@/components/common/searchBar/SearchBar";
@@ -326,36 +326,36 @@ export default function FeedClient() {
     // TODO: 좋아요 저장 로직 연동 (feed_likes 등)
   };
 
-  // Fuzzy search helpers
-  const normalize = (s: string) => s.normalize('NFC').toLowerCase().trim();
-  const splitTokens = (s: string): string[] => normalize(s).split(/[^0-9a-zA-Z가-힣#]+/).filter(Boolean);
-  const withinLevenshtein = (a: string, b: string, maxDist: number): boolean => {
-    a = normalize(a); b = normalize(b);
-    const aLen = a.length, bLen = b.length;
-    if (Math.abs(aLen - bLen) > maxDist) return false;
-    if (aLen > bLen) { const tmp = a; a = b; b = tmp; }
-    const v0 = new Array(b.length + 1);
-    const v1 = new Array(b.length + 1);
-    for (let i = 0; i <= b.length; i++) v0[i] = i;
-    for (let i = 0; i < a.length; i++) {
-      v1[0] = i + 1;
-      let rowMin = v1[0];
-      for (let j = 0; j < b.length; j++) {
-        const cost = a[i] === b[j] ? 0 : 1;
-        v1[j + 1] = Math.min(
-          v1[j] + 1,
-          v0[j + 1] + 1,
-          v0[j] + cost
-        );
-        if (v1[j + 1] < rowMin) rowMin = v1[j + 1];
+  const fuzzyMatch = useCallback((query: string, text: string): boolean => {
+    const normalize = (s: string) => s.normalize('NFC').toLowerCase().trim();
+    const splitTokens = (s: string): string[] => normalize(s).split(/[^0-9a-zA-Z가-힣#]+/).filter(Boolean);
+    const withinLevenshtein = (a: string, b: string, maxDist: number): boolean => {
+      a = normalize(a); b = normalize(b);
+      const aLen = a.length, bLen = b.length;
+      if (Math.abs(aLen - bLen) > maxDist) return false;
+      if (aLen > bLen) { const tmp = a; a = b; b = tmp; }
+      const v0 = new Array(b.length + 1);
+      const v1 = new Array(b.length + 1);
+      for (let i = 0; i <= b.length; i++) v0[i] = i;
+      for (let i = 0; i < a.length; i++) {
+        v1[0] = i + 1;
+        let rowMin = v1[0];
+        for (let j = 0; j < b.length; j++) {
+          const cost = a[i] === b[j] ? 0 : 1;
+          v1[j + 1] = Math.min(
+            v1[j] + 1,
+            v0[j + 1] + 1,
+            v0[j] + cost
+          );
+          if (v1[j + 1] < rowMin) rowMin = v1[j + 1];
+        }
+        if (rowMin > maxDist) return false;
+        for (let j = 0; j <= b.length; j++) v0[j] = v1[j];
       }
-      if (rowMin > maxDist) return false;
-      for (let j = 0; j <= b.length; j++) v0[j] = v1[j];
-    }
-    return v0[b.length] <= maxDist;
-  };
-  const thresholdFor = (q: string): number => q.length <= 3 ? 1 : q.length <= 6 ? 2 : 3;
-  const fuzzyMatch = (query: string, text: string): boolean => {
+      return v0[b.length] <= maxDist;
+    };
+    const thresholdFor = (q: string): number => q.length <= 3 ? 1 : q.length <= 6 ? 2 : 3;
+
     const q = normalize(query);
     if (!q) return true;
     const t = normalize(text);
@@ -374,8 +374,7 @@ export default function FeedClient() {
       }
     }
     return false;
-  };
-
+  }, []); // Empty dependency array as fuzzyMatch does not depend on any component state or props.
   const filteredItems = useMemo(() => {
     const q = search.trim();
     if (!q) return feedItems;
@@ -386,7 +385,7 @@ export default function FeedClient() {
       if (item.creator && fuzzyMatch(q, item.creator)) return true;
       return false;
     });
-  }, [feedItems, search]);
+  }, [feedItems, search, fuzzyMatch]);
 
   const totalPages = useMemo(() => {
     if (typeof totalCount === "number" && totalCount > 0) {

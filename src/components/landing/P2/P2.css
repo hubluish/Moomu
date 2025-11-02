@@ -44,6 +44,9 @@
   white-space: nowrap;
   overflow: hidden;
   transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
 }
 
 .about-description {
@@ -88,4 +91,55 @@
 
 .about-section .category-text {
   font-size: clamp(14px, 3.4vw, 23px);
+}
+
+/* P2 반응형 디자인 */
+@media (max-width: 1200px) {
+  .about-section {
+    margin: 80px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-section {
+    margin: 60px 16px;
+  }
+  
+  .about-sub-title {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .about-title {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .about-subdescription {
+    font-size: 14px;
+    margin-bottom: 60px;
+    text-align: center;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    margin: 40px 12px;
+  }
+  
+  .about-sub-title {
+    gap: 2px;
+  }
+  
+  .about-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .about-subdescription {
+    font-size: 13px;
+    margin-bottom: 40px;
+  }
 }

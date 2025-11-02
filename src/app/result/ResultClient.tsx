@@ -1,16 +1,16 @@
 'use client';
 
-import KeywordBox from "@/components/section/result/KeywordBox";
-import ConceptBox from "@/components/section/result/ConceptBox";
-import FontBox from "@/components/section/result/FontBox";
-import ImageBox from "@/components/section/result/ImageBox";
-import ColorPaletteBox from "@/components/section/result/ColorPaletteBox";
-import TitleBox from "@/components/section/result/TitleBox";
-import ExampleBox from "@/components/section/result/ExampleBox";
+import KeywordBox from "@/components/section/result/result/KeywordBox";
+import ConceptBox from "@/components/section/result/result/ConceptBox";
+import FontBox from "@/components/section/result/result/FontBox";
+import ImageBox from "@/components/section/result/result/ImageBox";
+import ColorPaletteBox from "@/components/section/result/result/ColorPaletteBox";
+import TitleBox from "@/components/section/result/result/TitleBox";
+import ExampleBox from "@/components/section/result/result/ExampleBox";
 import styles from "./page.module.css";
-import RefreshButton from "@/components/section/result/RefreshButton";
-import RefreshCount from "@/components/section/result/RefreshCount";
-import SaveButton from "@/components/section/result/SaveButton";
+import RefreshButton from "@/components/section/result/result/RefreshButton";
+import RefreshCount from "@/components/section/result/result/RefreshCount";
+import SaveButton from "@/components/section/result/result/SaveButton";
 import Spinner from "@/components/common/spinner/Spinner";
 
 import React, { useEffect, useState, useCallback } from "react";
@@ -217,15 +217,20 @@ export default function ResultClient() {
       }
 
       // 저장 성공 시 이동 (원하면 여기서 피드/상세로 라우팅)
-      const pageState = {
-        revealedCount,
-        currentIndex,
-        fontIndex,
-        conceptIndex,
-        colorIndex,
-      };
-      sessionStorage.setItem('resultPageState', JSON.stringify(pageState));
-      router.push(`/result/save?mid=${data?.id}`);
+      if (data && data.id) {
+        const pageState = {
+          revealedCount,
+          currentIndex,
+          fontIndex,
+          conceptIndex,
+          colorIndex,
+        };
+        sessionStorage.setItem('resultPageState', JSON.stringify(pageState));
+        router.push(`/result/save?mid=${data.id}`);
+      } else {
+        console.error("Failed to get ID after saving moodboard.");
+        alert("저장에 실패했습니다: ID를 받아오지 못했습니다.");
+      }
     } catch (e) {
       console.error(e);
       alert("저장 중 오류가 발생했습니다.");

@@ -1,0 +1,175 @@
+/* 알림 모달 오버레이 */
+.alarm-modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* 알림 모달 컨테이너 */
+.alarm-modal {
+  display: flex;
+  width: 354px;
+  height: 656px;
+  padding: 38px 19px 0 19px;
+  flex-direction: column;
+  align-items: center;
+  gap: 33px;
+  border-radius: 30px;
+  background: #FFF;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.20);
+  overflow: hidden;
+}
+
+/* 알림 모달 헤더 */
+.alarm-modal__header {
+  align-self: stretch;
+  color: var(--main-text, #1C1C1E);
+  font-family: Pretendard;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.84px;
+}
+
+/* 알림 모달 콘텐츠 */
+.alarm-modal__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 1 0 0;
+  align-self: stretch;
+  height: calc(656px - 38px - 33px - 28px); /* 모달 높이 - 상단패딩 - gap - 헤더높이 */
+  /* overflow-y: auto; 스크롤은 리스트에만 적용 */
+}
+
+/* 빈 상태 */
+.alarm-modal__empty {
+  padding: 60px 24px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.alarm-modal__empty p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* 알림 목록 */
+.alarm-modal__list {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  overflow-y: auto;
+  height: 100%; /* 부모 컨테이너의 전체 높이 사용 */
+  flex-shrink: 1; /* 필요시 축소 가능 */
+}
+
+.alarm_frame{
+  display: flex;
+  width: 301px;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 알림 아이템 */
+.alarm-modal__item {
+  display: flex;
+  min-height: 74px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  align-self: stretch;
+  transition: background-color 0.2s ease;
+}
+
+
+.alarm-modal__item:last-child {
+  border-bottom: none;
+}
+
+/* 읽지 않은 알림 */
+.alarm-modal__item--unread {}
+
+.alarm-modal__item--unread .alarm-modal__item-message {
+  font-weight: 600;
+  color: #1e40af;
+}
+
+/* 클릭 가능한 알림 (결제 관련) */
+
+
+/* 알림 아이콘 컨테이너 */
+.alarm-modal__item-icon {
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+}
+
+/* 알림 타입별 아이콘 스타일 */
+.alarm-modal__icon {
+  width: 100%;
+}
+
+/* 알림 콘텐츠 */
+.alarm-modal__item-content {
+  display: flex;
+  padding-left: 12px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px;
+  flex: 1 0 0;
+}
+
+.alarm-modal__item-message {
+  width: 231px;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 25px; /* 156.25% */
+}
+
+.alarm-modal__item-time {
+  color: #6E6E6E;
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 166.667% */
+}
+
+
+/* 스크롤바 스타일링 */
+.alarm-modal__list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.alarm-modal__list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.alarm-modal__list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+.alarm-modal__list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

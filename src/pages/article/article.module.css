@@ -1,11 +1,11 @@
 .container {
-  width: 1200px;
   display: flex;
-  padding: 0px 10px 60px 10px;
+  padding: 80px 10px 60px 10px;
   flex-direction: column;
   justify-content: flex-start;
   gap: 24px;
-  overflow: hidden; 
+  overflow: hidden;
+  margin: 64px auto;
 }
 
 .title {
@@ -17,7 +17,7 @@
   color: var(--color-main);
 }
 
-.title:hover{
+.title:hover {
   color: var(--color-point);
 }
 
@@ -46,8 +46,18 @@
   font-weight: bold;
 }
 
-.button{
-background: none;
-border:  none;
+.button {
+  background: none;
+  border: none;
 }
 
+@media (max-width: 375px) {
+  .container {
+    gap: 20px;
+    padding: 0 22px;
+  }
+
+  .title {
+    font-size: 23px;
+  }
+}

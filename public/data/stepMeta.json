@@ -1,18 +1,26 @@
 [
     {
         "title": "어떤 색상이 들어가면 좋을까요?",
-        "subtitle": "컬러는 무드의 시작이에요. 마음을 끄는 색을 골라보세요.\n처음 떠오른 색이 정답일 수 있어요!"
+        "subtitle": "컬러는 무드의 시작이에요. 마음을 끄는 색을 골라보세요. 처음 떠오른 색이 정답일 수 있어요!",
+        "title_mobile": "어떤 색상이<br>들어가면 좋을까요?",
+        "subtitle_mobile": "컬러는 무드의 시작이에요.<br>마음을 끄는 색을 골라보세요.<br>처음 떠오른 색이 정답일 수 있어요!"
     },
     {
         "title": "이 무드를 사진으로 표현한다면 어떤 모습인가요?",
-        "subtitle": "Define the vibe of your moodboard by selecting emotional tags."
+        "subtitle": "이미지는 감정을 시각화하는 창이에요. 원하는 분위기의 장면을 골라보세요! 직감적으로 끌리는 사진이면 충분해요.",
+        "title_mobile": "이 무드를 사진으로 표현한다면<br>어떤 모습인가요?",
+        "subtitle_mobile": "이미지는 감정을 시각화하는 창이에요.<br>원하는 분위기의 장면을 골라보세요!<br>직감적으로 끌리는 사진이면 충분해요."
     },
     {
         "title": "텍스트는 어떤 느낌인가요?",
-        "subtitle": "Select additional styles for fonts and image concepts"
+        "subtitle": "글자는 무드에 온도를 더해줘요. 당신이 원하는 무드에 어울리는 글꼴을 선택해보세요!",
+        "title_mobile": "텍스트는<br>어떤 느낌인가요?",
+        "subtitle_mobile": "글자는 무드에 온도를 더해줘요.<br>당신이 원하는 무드에 어울리는<br>글꼴을 선택해보세요!"
     },
     {
         "title": "마지막으로, 무드보드를 완성시킬 요소가 있을까요?",
-        "subtitle": "Select additional styles for fonts and image concepts."
+        "subtitle": "마지막으로 어울리는 포인트를 더해보세요!",
+        "title_mobile": "마지막으로, 무드보드를<br>완성시킬 요소가 있을까요?",
+        "subtitle_mobile": "마지막으로 어울리는<br>포인트를 더해보세요!"
     }
 ]

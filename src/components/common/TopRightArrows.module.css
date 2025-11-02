@@ -34,3 +34,21 @@
   width: 10px; /* updated size */
   height: 16px;
 }
+
+@media (max-width: 480px) {
+  .container {
+    height: 18px;
+    top: 18px;
+    right: 7px;
+  }
+
+  .btn {
+    width: 12px;
+    height: 16px;
+  }
+
+  .icon {
+    width: 8px;
+    height: 12px;
+  }
+}

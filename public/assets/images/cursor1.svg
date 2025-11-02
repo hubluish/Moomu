@@ -1,11 +1,11 @@
-<svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_n_4046_7557)">
-<path d="M20.4337 12.5033V6.81134C20.4337 4.01216 15.9688 3.83887 15.9688 6.81134" stroke="#3A35EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.9703 10.9702V4.28156C15.9703 1.48237 11.5053 1.30909 11.5053 4.28156V6.55834M11.5041 11.9341V6.81132C11.5041 4.01214 6.82031 3.83885 6.82031 6.81132V14.7649" stroke="#3A35EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M20.4334 10.1002C20.4334 7.12769 24.8984 7.30098 24.8984 10.1002V15.6656C24.8984 24.3212 12.6496 27.7807 7.05089 22.1089L3.03214 18.0107C1.17089 15.9085 3.70339 11.6028 6.81964 14.765L8.06964 16.0299" stroke="#3A35EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.5486 10.2024V5.64888C16.5486 3.40953 12.9766 3.2709 12.9766 5.64888" stroke="#3A35EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.9762 8.97615V3.6252C12.9762 1.38585 9.40425 1.24722 9.40425 3.6252V5.44662M9.40325 9.74722V5.64901C9.40325 3.40966 5.65625 3.27103 5.65625 5.64901V12.0119" stroke="#3A35EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.5471 8.27998C16.5471 5.90201 20.1191 6.04064 20.1191 8.27998V12.7324C20.1191 19.6568 10.3201 22.4244 5.8411 17.887L2.6261 14.6084C1.1371 12.9266 3.1631 9.48212 5.6561 12.0119L6.6561 13.0238" stroke="#3A35EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 <defs>
-<filter id="filter0_n_4046_7557" x="0.898438" y="0.616699" width="25.5" height="25.7644" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_n_4046_7557" x="0.619141" y="0.393311" width="21" height="21.2112" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feTurbulence type="fractalNoise" baseFrequency="6.0577983856201172 6.0577983856201172" stitchTiles="stitch" numOctaves="3" result="noise" seed="2025" />

@@ -1,7 +1,8 @@
-import React, { Suspense } from 'react';
-import ResultClient from './ResultClient';
-import Spinner from '@/components/common/spinner/Spinner';
-import Script from 'next/script';
+import React, { Suspense } from "react";
+import ResultClient from "./ResultClient";
+import Spinner from "@/components/common/spinner/Spinner";
+import Footer from "@/components/common/footer/Footer";
+import Script from "next/script";
 
 export default function ResultPage() {
   return (
@@ -19,10 +20,24 @@ export default function ResultPage() {
           gtag('config', 'G-V50JJSBVK4');
         `}
       </Script>
-      
-      <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><Spinner /></div>}>
+
+      <Suspense
+        fallback={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <Spinner />
+          </div>
+        }
+      >
         <ResultClient />
       </Suspense>
+      <Footer />
     </>
   );
 }

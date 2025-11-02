@@ -37,3 +37,17 @@
     font-weight: 500;
     line-height: normal;
 }
+
+@media (max-width: 480px) {
+    .button {
+        width: 113px;
+        height: 37px;
+        background: rgba(0, 0, 0, 0.00);
+    }
+
+    .text {
+        font-size: 20px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+}

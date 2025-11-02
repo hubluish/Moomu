@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const MoodboardWrapper = styled.div`
   width: 332px;
   height: 204px;
-  gap: 5px;
+  gap: 4px;
   border-radius: 20px;
   border: 0.5px solid #c5c2ff;
   overflow: hidden;
@@ -14,6 +14,27 @@ export const MoodboardWrapper = styled.div`
   box-sizing: border-box;
   background: rgba(0, 0, 0, 0);
   position: relative;
+
+  @media (max-width: 1375px) {
+    width: 300px;
+    height: 184px;
+  }
+  @media (max-width: 1309px) {
+    width: 280px;
+    height: 164px;
+  }
+  @media (max-width: 1249px) {
+    width: 240px;
+    height: 144px;
+  }
+  @media (max-width: 1121px) {
+    width: 210px;
+    height: 132px;
+  }
+  @media (max-width: 527px) {
+    width: 100%;
+    height: 204px;
+  }
 
   user-select: none;
   -webkit-user-select: none; /* Safari/Chrome */
@@ -26,8 +47,20 @@ export const CategoryContainer = styled.div`
   display: flex;
   gap: 12px;
   flex-wrap: nowrap;
-  overflopxw-x: auto;
   padding: 10px 10px 4px 10px;
+
+  @media (max-width: 1309px) {
+    gap: 10px;
+    padding: 8px 8px 4px 8px;
+  }
+  @media (max-width: 1249px) {
+    gap: 8px;
+    padding: 6px 6px 4px 6px;
+  }
+  @media (max-width: 527px) {
+    gap: 12px;
+    padding: 10px 10px 4px 10px;
+  }
 
   /* 👇 스크롤바 스타일링 (선택 사항) */
   &::-webkit-scrollbar {
@@ -54,6 +87,27 @@ export const CategoryChip = styled.span`
   font-size: 14px;
   font-family: var(--font-family-base);
   font-weight: var(--font-weight-medium);
+
+  @media (max-width: 1309px) {
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 10px;
+  }
+  @media (max-width: 1249px) {
+    font-size: 11px;
+    padding: 4px;
+    border-radius: 8px;
+  }
+  @media (max-width: 527px) {
+    font-size: 14px;
+    padding: 6px;
+    border-radius: 12px;
+  }
+  @media (max-width: 323px) {
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 10px;
+  }
 `;
 
 // 썸네일 이미지를 감싸는 컨테이너
@@ -61,6 +115,22 @@ export const ImageWrapper = styled.div`
   flex-grow: 1;
   position: relative;
   padding: 5px 10px;
+
+  @media (max-width: 1309px) {
+    padding: 4px 8px;
+  }
+  @media (max-width: 1249px) {
+    padding: 3px 6px;
+  }
+  @media (max-width: 527px) {
+    padding: 5px 10px;
+  }
+`;
+
+export const ThumbnailImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 export const OverlayWrapper = styled.div`

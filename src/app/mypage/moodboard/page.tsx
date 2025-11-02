@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
+import styled from "styled-components";
 import Moodboard from "@/components/section/mypage/moodboard/Moodboard";
+import Footer from "@/components/common/footer/Footer";
 import { supabase } from "@/utils/supabase";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import FolderListModal from "@/components/section/mypage/folder/FolderListModal";
@@ -23,6 +25,46 @@ interface MoodboardResult {
   request_id: string;
   title: string;
 }
+
+const MoodboardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
+  gap: 28px;
+
+  @media (max-width: 1421px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1309px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1249px) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 1121px) {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  }
+`;
+
+const Wrapper = styled.div`
+  flex: 1;
+  padding: 50px 70px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  @media (max-width: 439px) {
+    padding: 30px 50px;
+  }
+
+  @media (max-width: 379px) {
+    padding: 30px 22px;
+  }
+`;
 
 const TrashIcon = () => (
   <Image
@@ -107,11 +149,24 @@ const MoodboardPage = () => {
       setIsLoading(true);
       const { data, error } = await supabase
         .from("moodboard")
-        .select("*")
+        .select(
+          `
+          *, 
+          feed_posts ( moodboard_id ) 
+        `
+        )
         .is("deleted_at", null);
 
-      if (error) console.error("Error fetching moodboards:", error);
-      else if (data) setMoodboards(data);
+      if (error) {
+        console.error("Error fetching moodboards:", error);
+        setMoodboards([]);
+      } else if (data) {
+        const augmentedMoodboards = data.map((board) => ({
+          ...board,
+          is_public: board.feed_posts.length > 0,
+        }));
+        setMoodboards(augmentedMoodboards as MoodboardResult[]);
+      }
       setIsLoading(false);
     };
     fetchMoodboards();
@@ -150,9 +205,8 @@ const MoodboardPage = () => {
         return;
       }
 
-      let authorName = "익명 사용자"; // 기본값
+      let authorName = "익명 사용자";
 
-      // 1. profiles 테이블에서 이름 먼저 조회
       const { data: profile } = await supabase
         .from("profiles")
         .select("name")
@@ -161,14 +215,15 @@ const MoodboardPage = () => {
 
       if (profile?.name) {
         authorName = profile.name;
-      }
-      // 2. profiles에 없으면, Auth 메타데이터(소셜 로그인 시 저장된 이름)를 사용
-      else if (session.user.user_metadata?.full_name) {
+      } else if (session.user.user_metadata?.full_name) {
         authorName = session.user.user_metadata.full_name;
       }
 
-      // API 함수에 찾은 authorName을 전달
-      const newStatus = await toggleMoodboardPublicStatus(board, authorName);
+      const newStatus = await toggleMoodboardPublicStatus(
+        board,
+        authorName,
+        board.is_public
+      );
 
       setMoodboards((prev) =>
         prev.map((m) =>
@@ -221,15 +276,7 @@ const MoodboardPage = () => {
       <div style={{ display: "flex", marginTop: "64px" }}>
         <Sidebar />
 
-        <main
-          style={{
-            flex: 1,
-            padding: "50px 70px",
-            display: "flex",
-            flexDirection: "column",
-            overflowY: "auto",
-          }}
-        >
+        <Wrapper>
           <h1 style={{ marginBottom: "30px", userSelect: "none" }}>
             내 무드보드
           </h1>
@@ -250,13 +297,7 @@ const MoodboardPage = () => {
                 <p>생성된 무드보드가 없습니다.</p>
               </div>
             ) : (
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
-                  gap: "45px 28px",
-                }}
-              >
+              <MoodboardGrid>
                 {moodboards.map((board) => {
                   const allKeywords = (board.tags || []).slice(0, 4);
 
@@ -281,10 +322,10 @@ const MoodboardPage = () => {
                     </div>
                   );
                 })}
-              </div>
+              </MoodboardGrid>
             )}
           </div>
-        </main>
+        </Wrapper>
 
         {isFolderModalOpen && selectedMoodboardId && (
           <FolderListModal
@@ -318,6 +359,7 @@ const MoodboardPage = () => {
         show={toastInfo.show}
         icon={toastInfo.icon}
       />
+      <Footer />
     </div>
   );
 };

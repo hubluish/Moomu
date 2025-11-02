@@ -1,11 +1,11 @@
-'use client';
-import { useEffect } from 'react';
-import { redirect } from 'next/navigation';
-import Script from 'next/script';
+"use client";
+import { useEffect } from "react";
+import { redirect } from "next/navigation";
+import Script from "next/script";
 
 export default function Mypage() {
   useEffect(() => {
-    redirect('/mypage/moodboard');
+    redirect("/mypage/moodboard");
   }, []);
 
   return (
@@ -25,4 +25,4 @@ export default function Mypage() {
       </Script>
     </>
   );
-} 
+}

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./tabPage.module.css";
 import ArticleCard from "../bigCard/big";
 import Dropdown from "@/components/common/dropdown/dropdown";
@@ -48,6 +48,11 @@ export default function TabPage({
   const [sort, setSort] = useState("추천순");
   const [articleList, setArticleList] = useState(articles);
 
+  useEffect(() => {
+    setArticleList(articles);
+    setShowAll(false);
+  }, [articles, tabIdx]);
+
   const handleDelete = (id: string | number) => {
     setArticleList((prev) => prev.filter((a) => a.id !== id));
   };
@@ -81,11 +86,10 @@ export default function TabPage({
     });
   }
 
-  const chunked = [];
-  for (let i = 0; i < filtered.length; i += 4) {
-    chunked.push(filtered.slice(i, i + 4));
-  }
-  const visibleChunks = showAll ? chunked : chunked.slice(0, 4);
+  const initialItemCount = 12;
+  const visibleArticles = showAll
+    ? filtered
+    : filtered.slice(0, initialItemCount);
 
   return (
     <div className={styles.wrapper}>
@@ -99,21 +103,21 @@ export default function TabPage({
 
       <div className={styles.field}>
         <Dropdown value={sort} onChange={setSort} />
-        {visibleChunks.map((chunk, idx) => (
-          <div className={styles.cardRow} key={idx}>
-            {chunk.map((article: Article) => (
-              <ArticleCard
-                key={article.id}
-                {...article}
-                slug={article.slug}
-                onDelete={handleDelete}
-                imageUrl={article.imageUrl ?? ""}
-                description={article.description ?? ""}
-              />
-            ))}
-          </div>
-        ))}
-        {!showAll && chunked.length > 3 && (
+
+        <div className={styles.cardGrid}>
+          {visibleArticles.map((article: Article) => (
+            <ArticleCard
+              key={article.id}
+              {...article}
+              slug={article.slug}
+              onDelete={handleDelete}
+              imageUrl={article.imageUrl ?? ""}
+              description={article.description ?? ""}
+            />
+          ))}
+        </div>
+
+        {!showAll && filtered.length > initialItemCount && (
           <div className={styles.moreBtnWrap}>
             <button className={styles.moreBtn} onClick={() => setShowAll(true)}>
               <span className={styles.moreBtnText}>더보기</span>

@@ -8,7 +8,6 @@ import ImageSlider from "@/components/section/article/pagenationCard/pagenationC
 import TabPage from "@/components/section/article/tabPage/tabPage";
 import ArticleCreate from "@/components/section/article/create/ArticleCreate";
 import styles from "../../pages/article/article.module.css";
-import confetti from "canvas-confetti";
 import { useSearchParams } from "next/navigation";
 import { toSlug } from "@/utils/slug";
 import {
@@ -28,30 +27,18 @@ export default function ArticleClient() {
   const titleRef = useRef<HTMLSpanElement | null>(null);
   const searchParams = useSearchParams();
 
-  // Article 텍스트에 마우스 호버 시 콘페티 효과
-  const handleTitleHover = () => {
-    if (!titleRef.current) return;
-    const rect = titleRef.current.getBoundingClientRect();
-    const x = (rect.left + rect.width / 2) / window.innerWidth;
-    const y = (rect.top + rect.height / 2) / window.innerHeight;
-    confetti({
-      particleCount: 50,
-      spread: 50,
-      origin: { x, y },
-      shapes: ["circle", "square"],
-      startVelocity: 20,
-      gravity: 1.5,
-    });
-  };
-
   // 게시글 목록 불러오기
   useEffect(() => {
     fetch("/api/articles")
       .then((res) => res.json())
-      .then((data) => setArticles(data));
+      .then((data) => setArticles(Array.isArray(data) ? data : []))
+      .catch((err) => {
+        console.error('게시글 데이터 로드 실패:', err);
+        setArticles([]);
+      });
   }, []);
 
-  const articlesForTabPage: Article[] = articles.map(({ _id, ...rest }) => ({
+  const articlesForTabPage: Article[] = (articles || []).map(({ _id, ...rest }) => ({
     id: _id,
     slug: toSlug(rest.title),
     ...rest,
@@ -72,8 +59,8 @@ export default function ArticleClient() {
   // 현재 탭에 해당하는 게시글만 필터링
   const filteredArticles =
     activeTab === 0
-      ? articles
-      : articles.filter(
+      ? (articles || [])
+      : (articles || []).filter(
           (article) => article.category === TAB_LABELS[activeTab]
         );
 
@@ -107,20 +94,14 @@ export default function ArticleClient() {
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         width: "100%",
-        marginTop: "64px",
       }}
     >
       <div className={styles.container}>
         {/* 상단 Article 타이틀 */}
         <button className={styles.button} onClick={() => setActiveTab(0)}>
           <h1 className={styles.title}>
-            <span
-              ref={titleRef}
-              onMouseEnter={handleTitleHover}
-              style={{ display: "inline-block" }}
-            >
+            <span ref={titleRef} style={{ display: "inline-block" }}>
               Article
             </span>
           </h1>
@@ -160,7 +141,10 @@ export default function ArticleClient() {
               // 새 글 등록 후 목록 새로고침
               fetch("/api/articles")
                 .then((res) => res.json())
-                .then((data) => setArticles(data));
+                .then((data) => setArticles(Array.isArray(data) ? data : []))
+                .catch((err) => {
+                  console.error('게시글 데이터 새로고침 실패:', err);
+                });
             }}
           />
         )}

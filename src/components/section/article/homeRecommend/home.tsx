@@ -25,12 +25,22 @@ interface SectionProps {
 }
 
 // 추천 섹션 컴포넌트
-function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }: SectionProps) {
+function Section({
+  title,
+  imageUrl,
+  bigCard,
+  smallCards,
+  onMoreClick,
+}: SectionProps) {
   const btnRef = useRef<HTMLButtonElement>(null);
 
   // 더보기 버튼 호버 애니메이션
   const handleMouseEnter = () => {
-    gsap.to(btnRef.current, { scale: 1.08, duration: 0.18, ease: "power1.out" });
+    gsap.to(btnRef.current, {
+      scale: 1.08,
+      duration: 0.18,
+      ease: "power1.out",
+    });
   };
   const handleMouseLeave = () => {
     gsap.to(btnRef.current, { scale: 1, duration: 0.18, ease: "power1.in" });
@@ -60,19 +70,26 @@ function Section({ title, imageUrl, bigCard, smallCards, onMoreClick }: SectionP
           Browse through a collection of trending design resources.
         </h2>
       </div>
-      <div className={styles.container2}>
-        <Image
-          src={imageUrl}
-          alt="추천 이미지"
-          width={510}
-          height={400}
-          style={{
-            marginRight: "8px",
-            verticalAlign: "middle",
-          }}
-        />
-        <div className={styles.row}>
+      <div className={styles.contentRow}>
+        {/* 1. 왼쪽 컬럼 (이미지) */}
+        <div className={styles.leftColumn}>
+          <div className={styles.imageWrapper}>
+            <Image
+              src={imageUrl}
+              alt="추천 이미지"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 510px"
+              style={{
+                objectFit: "cover",
+                borderRadius: "16px",
+              }}
+            />
+          </div>
           <ArticleTab {...bigCard} onDelete={() => {}} />
+        </div>
+
+        {/* 2. 오른쪽 컬럼 (카드 목록) */}
+        <div className={styles.rightColumn}>
           <div className={styles.col}>
             {smallCards.map((card: CardData, idx: number) => (
               <ArticleTabs key={idx} {...card} />
@@ -96,44 +113,57 @@ export default function Articlehome({ setActiveTab }: ArticlehomeProps) {
   // 용어사전/트렌드 최신글 불러오기
   useEffect(() => {
     fetch("/api/articles?category=용어사전&limit=4")
-      .then(res => res.json())
-      .then(data => setDictArticles(data));
+      .then((res) => res.json())
+      .then((data) => setDictArticles(Array.isArray(data) ? data : []))
+      .catch((err) => {
+        console.error("용어사전 데이터 로드 실패:", err);
+        setDictArticles([]);
+      });
+
     fetch("/api/articles?category=트렌드&limit=4")
-      .then(res => res.json())
-      .then(data => setTrendArticles(data));
+      .then((res) => res.json())
+      .then((data) => setTrendArticles(Array.isArray(data) ? data : []))
+      .catch((err) => {
+        console.error("트렌드 데이터 로드 실패:", err);
+        setTrendArticles([]);
+      });
   }, []);
 
   return (
     <div className={styles.container}>
       <Section
         title="디자인 용어 사전 ✒️"
-        imageUrl="https://i.pinimg.com/736x/5b/ae/c4/5baec48bdac5e5f23a3f91aeaab1166b.jpg"
-        bigCard={dictArticles[0] || {
-          imageUrl: "",
-          title: "",
-          description: "",
-          category: "",
-          date: "",
-          id: "",
-          slug: "",
-        }}
-        smallCards={dictArticles.slice(1, 4)}
+        imageUrl="/assets/images/article_dictionary.png"
+        bigCard={
+          (dictArticles && dictArticles[0]) || {
+            imageUrl: "",
+            title: "",
+            description: "",
+            category: "",
+            date: "",
+            id: "",
+            slug: "",
+          }
+        }
+        smallCards={(dictArticles || []).slice(1, 4)}
         onMoreClick={() => setActiveTab(4)}
       />
       <div className={styles.line} />
       <Section
         title="트렌드 탐험대 🔍 "
-        imageUrl="https://i.pinimg.com/736x/9c/19/d1/9c19d1cc03ca1ebfd8507afdb483b272.jpg"
-        bigCard={trendArticles[0] || {
-          imageUrl: "",
-          title: "",
-          description: "",
-          category: "",
-          date: "",
-          id: "",
-          slug: "",
-        }}
-        smallCards={trendArticles.slice(1, 4)}
+        imageUrl="/assets/images/article_trend.png"
+        bigCard={
+          (trendArticles && trendArticles[0]) || {
+            imageUrl: "",
+            title: "",
+            description: "",
+            category: "",
+            date: "",
+            id: "",
+            slug: "",
+          }
+        }
+        smallCards={(trendArticles || []).slice(1, 4)}
         onMoreClick={() => setActiveTab(5)}
       />
     </div>
