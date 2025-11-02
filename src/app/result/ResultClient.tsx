@@ -334,6 +334,7 @@ export default function ResultClient() {
             onNext={() => setFontIndex((idx) => Math.min(revealedCount - 1, idx + 1))}
             disablePrev={fontIndex <= 0}
             disableNext={fontIndex >= revealedCount - 1}
+            fontIndex={fontIndex}
           />
         </div>
         <div className={styles.paletteBox}>

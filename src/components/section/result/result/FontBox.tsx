@@ -19,9 +19,10 @@ interface FontBoxProps {
     onNext?: () => void;
     disablePrev?: boolean;
     disableNext?: boolean;
+    fontIndex?: number;
 }
 
-export default function FontBox({ geminiSet, onResolved, onPrev, onNext, disablePrev, disableNext }: FontBoxProps) {
+export default function FontBox({ geminiSet, onResolved, onPrev, onNext, disablePrev, disableNext, fontIndex = 0 }: FontBoxProps) {
     const [font, setFont] = useState<FontData | null>(null);
     const fontKeyword = geminiSet.font;
 
@@ -36,7 +37,7 @@ export default function FontBox({ geminiSet, onResolved, onPrev, onNext, disable
             .then(data => {
                 const matched: FontData[] = data[fontKeyword] || [];
                 if (matched.length > 0) {
-                    const picked = matched[Math.floor(Math.random() * matched.length)];
+                    const picked = matched[fontIndex % matched.length];
                     setFont(picked);
                     onResolved?.({
                         name: fontKeyword,
@@ -52,7 +53,7 @@ export default function FontBox({ geminiSet, onResolved, onPrev, onNext, disable
                 console.error('폰트 데이터 로드 실패:', err);
                 setFont(null);
             });
-    }, [fontKeyword, onResolved]);
+    }, [fontKeyword, onResolved, fontIndex]);
 
     return (
         <div className={styles.container}>

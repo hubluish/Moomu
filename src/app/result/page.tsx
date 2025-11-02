@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import ResultClient from "./ResultClient";
 import Spinner from "@/components/common/spinner/Spinner";
-import Footer from "@/components/common/footer/Footer";
 import Script from "next/script";
 
 export default function ResultPage() {
