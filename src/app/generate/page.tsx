@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./generate.module.css";
-import Footer from "@/components/common/footer/Footer";
 import PopAlert from "@/components/section/generate/PopAlert";
 import ColorOption from "@/components/section/generate/ColorOption";
 import TitleBlock from "@/components/section/generate/TitleBlock";

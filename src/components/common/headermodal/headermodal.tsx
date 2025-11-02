@@ -18,6 +18,8 @@ import {
   SubMenuList,
   SubMenuItem,
 } from "./headermodal.styled";
+import AlarmModal from "../headerAlarm/AlarmModal";
+import { mockAlarms } from "../headerAlarm/mock-alarms";
 
 type HeaderModalProps = {
   isOpen: boolean; // 열림 상태
