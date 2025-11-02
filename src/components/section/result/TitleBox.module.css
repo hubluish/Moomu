@@ -52,6 +52,8 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: left;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .textarea {
@@ -79,18 +81,32 @@
 @media (max-width: 480px) {
     .container {
         width: 327px;
-        height: 53px;
+        min-height: 53px;
+        max-height: 85px;
+        overflow-y: auto;
         gap: 11px;
         border-radius: 11px;
-        justify-content: center;
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: 12px;
     }
 
     .title {
-        font-size: 29px;
+        font-size: 24px;
+        line-height: normal;
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
 
     .textarea {
-        font-size: 29px;
+        font-size: 24px;
+        line-height: 1.2;
+        height: auto !important;   
+        max-height: none;        
+        overflow: visible;         
+        white-space: normal;          
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
     
 }
