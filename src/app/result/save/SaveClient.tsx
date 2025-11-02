@@ -17,6 +17,7 @@ export default function SaveClient() {
     const [showShare, setShowShare] = useState(false);
     const shareBtnRef = useRef<HTMLDivElement>(null);
     const [coverUrl, setCoverUrl] = useState<string | null>(null);
+    const [isCoverReady, setIsCoverReady] = useState(false);
     const [categories, setCategories] = useState<string[]>([]);
     const coverRequestedRef = useRef<boolean>(false);
 
@@ -38,6 +39,10 @@ export default function SaveClient() {
                 console.error('moodboard 불러오기 실패:', error);
                 } else {
                 const curUrl = data?.cover_image_url ?? null;
+                if (curUrl && /\/storage\/v1\/object\/public\/moodboard\//.test(curUrl)) {
+                  setIsCoverReady(true);
+                }
+
                 setCoverUrl(curUrl);
                 setCategories(data?.tags ?? []);
                 const shouldGenerate = !curUrl
@@ -71,7 +76,10 @@ export default function SaveClient() {
                     });
                     if (res.ok) {
                         const j = await res.json();
-                        if (j?.cover_image_url) setCoverUrl(j.cover_image_url);
+                        if (j?.cover_image_url) {
+                          setCoverUrl(j.cover_image_url);
+                          setIsCoverReady(true);
+                        }
                     } else {
                         console.warn('generate-cover failed with status', res.status);
                     }
@@ -261,6 +269,7 @@ export default function SaveClient() {
                             onSaveImage={() => { alert('이미지 저장 기능은 준비 중이에요.'); }}
                         onPostFeed={handlePostFeed}
                             onShare={handleToggleShare}
+                            isCoverReady={isCoverReady}
                         />
 
                         {showShare && (

@@ -7,12 +7,14 @@ type Props = {
     onSaveImage?: () => void;
     onPostFeed?: () => void;
     onShare?: () => void;
+    isCoverReady?: boolean;
 };
 
 export default function ActionButtons({
     onSaveImage,
     onPostFeed,
     onShare,
+    isCoverReady,
     }: Props) {
     return (
         <div className={styles.container}>
@@ -44,6 +46,7 @@ export default function ActionButtons({
             className={styles.btn}
             aria-label="피드에 게시"
             onClick={onPostFeed}
+            disabled={!isCoverReady}
         >
             <div className={styles.iconCircle}>
             {/* 30 x 30 아이콘 */}

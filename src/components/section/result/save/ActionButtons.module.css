@@ -17,6 +17,11 @@
   cursor: pointer;
 }
 
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 .btn:focus-visible {
   outline: 2px solid rgba(61, 56, 245, 0.35);
   outline-offset: 4px;
