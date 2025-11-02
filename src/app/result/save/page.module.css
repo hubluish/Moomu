@@ -22,8 +22,8 @@
 }
 
 .topWrapper{
-    width: 327px;
-    margin: 75px auto 0 auto;
+    width: 1338px;
+    margin: 94px auto 0 auto;
 }
 
 .p{
@@ -94,4 +94,8 @@
         height: 389px;
     }
 
+    .topWrapper{
+        width: 327px;
+        margin: 75px auto 0 auto;
+    }
 }
