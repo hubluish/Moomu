@@ -54,6 +54,7 @@
 @media (max-width: 375px) {
   .container {
     gap: 20px;
+    padding: 0 22px;
   }
 
   .title {

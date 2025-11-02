@@ -138,6 +138,9 @@
   .title {
     font-size: 14px;
     margin-bottom: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .description {
     font-size: 10px;

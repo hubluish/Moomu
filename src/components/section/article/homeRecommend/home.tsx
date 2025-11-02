@@ -70,19 +70,21 @@ function Section({
           Browse through a collection of trending design resources.
         </h2>
       </div>
-      <div className={styles.container2}>
-        <Image
-          src={imageUrl}
-          alt="추천 이미지"
-          width={510}
-          height={400}
-          style={{
-            width: "400px",
-            marginRight: "8px",
-            verticalAlign: "middle",
-          }}
-        />
-        <div className={styles.row}>
+      <div className={styles.contentRow}>
+        {/* 1. 왼쪽 컬럼 (이미지) */}
+        <div className={styles.leftColumn}>
+          <div className={styles.imageWrapper}>
+            <Image
+              src={imageUrl}
+              alt="추천 이미지"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 510px"
+              style={{
+                objectFit: "cover",
+                borderRadius: "16px",
+              }}
+            />
+          </div>
           <ArticleTab {...bigCard} onDelete={() => {}} />
         </div>
 
