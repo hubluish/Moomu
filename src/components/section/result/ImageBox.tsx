@@ -42,6 +42,33 @@ const ImageBox: React.FC<Props> = ({
     const [images, setImages] = useState<PinterestImage[]>([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState<string | null>(null);
+    const [theme, setTheme] = useState('light');
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 480px)');
+        const handleMediaChange = (e: MediaQueryListEvent) => {
+            setIsMobile(e.matches);
+        };
+        mediaQuery.addEventListener('change', handleMediaChange);
+        setIsMobile(mediaQuery.matches); // Initial check
+
+        return () => {
+            mediaQuery.removeEventListener('change', handleMediaChange);
+        };
+    }, []);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleChange = (e: MediaQueryListEvent) => {
+            setTheme(e.matches ? 'dark' : 'light');
+        };
+        mediaQuery.addEventListener('change', handleChange);
+        setTheme(mediaQuery.matches ? 'dark' : 'light');
+        return () => {
+            mediaQuery.removeEventListener('change', handleChange);
+        };
+    }, []);
 
     const query = useMemo(() => (geminiSet?.image || '').trim(), [geminiSet]);
     const colorHex = useMemo(() => (useColorFilter ? geminiSet?.colors?.[0] : ''), [geminiSet, useColorFilter]);
@@ -151,8 +178,9 @@ const ImageBox: React.FC<Props> = ({
             )}
 
             <div className={styles.credit}>
+                <span style={{ color: theme === 'dark' ? 'white' : 'black', bottom: 10 }}>Powered by</span>
                 <a href="https://www.pexels.com" target="_blank" rel="noreferrer">
-                    Photos provided by Pexels
+                    <Image src={theme === 'dark' ? '/data/images/icons/pexels-logo-white.png' : '/data/images/icons/pexels-logo-black.png'} alt="Pexels Logo" width={isMobile ? 25 : 30} height={isMobile ? 7 : 10} />
                 </a>
             </div>
         </div>

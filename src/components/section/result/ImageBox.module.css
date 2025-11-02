@@ -174,8 +174,10 @@
     bottom: 10px;
     right: 10px;
     font-size: 10px;
-    color: #fff;
+    gap: 10px;
 }
+
+
 
 @media (max-width: 480px) {
     .container {
