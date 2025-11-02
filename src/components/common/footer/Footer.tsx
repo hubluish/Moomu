@@ -46,7 +46,7 @@ const Footer = () => {
 
       <FooterBottom>
         <BottomSection>
-          <PolicyText>개인정보 처리 방침</PolicyText>
+          <PolicyText href="/privacy-policy">개인정보 처리 방침</PolicyText>
           <Dot />
         </BottomSection>
 

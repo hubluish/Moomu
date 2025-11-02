@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "../bottom/Bottom.styled";
 
 export const FooterContainer = styled.footer`
   padding: 32px 40px;
@@ -69,8 +70,15 @@ export const Dot = styled.span`
   display: inline-block;
 `;
 
-export const PolicyText = styled.span`
-  /* 특별한 스타일이 없으면 일반 span으로 사용해도 됩니다. */
+export const PolicyText = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    font-weight: 600;
+    text-decoration: none;
+  }
 `;
 
 export const EmailButton = styled.button`

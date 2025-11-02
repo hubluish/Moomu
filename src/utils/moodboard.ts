@@ -2,14 +2,26 @@ import { supabase } from "@/utils/supabase";
 
 // 무드보드를 휴지통으로 보냄 (soft delete).
 export const moveMoodboardToTrash = async (moodboardId: string) => {
-  const { error } = await supabase
+  const { error: updateError } = await supabase
     .from("moodboard")
-    .update({ deleted_at: new Date().toISOString() }) // 현재 시간을 기록
+    .update({ deleted_at: new Date().toISOString() })
     .eq("id", moodboardId);
 
-  if (error) {
-    console.error("Error moving moodboard to trash:", error);
-    throw error;
+  if (updateError) {
+    console.error("Error moving moodboard to trash:", updateError);
+    throw updateError;
+  }
+
+  const { error: deleteError } = await supabase
+    .from("feed_posts")
+    .delete()
+    .eq("moodboard_id", moodboardId);
+
+  if (deleteError) {
+    console.warn(
+      "Could not delete from feed_posts (might be ok):",
+      deleteError.message
+    );
   }
 };
 
@@ -50,7 +62,7 @@ export const toggleMoodboardPublicStatus = async (
     tags?: string[];
   },
   authorName: string,
-  isCurrentlyPublic: boolean // 현재 공개 상태를 인자로 받음
+  isCurrentlyPublic: boolean
 ) => {
   if (isCurrentlyPublic) {
     // 현재 공개 상태 -> 비공개로 (DELETE)
@@ -81,6 +93,16 @@ export const toggleMoodboardPublicStatus = async (
       console.error("Error publishing to feed:", insertError);
       throw insertError;
     }
+  }
+
+  const { error: updateError } = await supabase
+    .from("moodboard")
+    .update({ is_public: !isCurrentlyPublic }) // 👈 현재 상태의 반대로 업데이트
+    .eq("id", moodboard.id);
+
+  if (updateError) {
+    console.error("Error updating moodboard public status:", updateError);
+    throw updateError;
   }
 
   return !isCurrentlyPublic;
