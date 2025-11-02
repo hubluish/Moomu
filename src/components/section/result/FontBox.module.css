@@ -54,3 +54,17 @@
 }
 
 /* arrows replaced by shared TopRightArrows */
+@media (max-width: 480px) {
+    .container {
+        width: 114px;
+        height: 151px;
+    }
+
+    .title {
+        font-size: 15px;
+    }
+
+    .image {
+        width: 90px;
+    }
+}
