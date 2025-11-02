@@ -24,6 +24,7 @@
   align-self: stretch;
   width: 100%;
   gap: 24px;
+  padding-right: 2px;
 }
 
 .leftColumn {
@@ -179,7 +180,7 @@
     width: 100%;
   }
   .rightColumn {
-    flex-direction: column; /* 모바일에서 큰 카드와 작은 카드들을 세로로 쌓음 */
+    flex-direction: column;
     width: 100%;
   }
   .imageWrapper {

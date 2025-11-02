@@ -64,6 +64,7 @@
   padding: 30px 0px 20px 0px;
   width: 100%;
   position: relative;
+  padding-right: 2px;
 }
 
 .cardGrid {
@@ -142,9 +143,12 @@
 }
 
 @media (max-width: 375px) {
+  .wrapper {
+    width: 331px;
+  }
+
   .titleRow {
     padding: 20px;
-    width: 331px;
   }
   .titleCol {
     gap: 15px;
@@ -161,8 +165,7 @@
   }
 
   .field {
-    padding: 30px 0px 20px 0px;
-    width: 331px;
+    padding: 30px 2px 20px 0px;
   }
 
   .cardGrid {
