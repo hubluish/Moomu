@@ -4,11 +4,11 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import styles from "../MoodboardModal.module.css";
-import TitleBox from "@/components/section/result/TitleBox";
-import ConceptBox from "@/components/section/result/ConceptBox";
-import ColorPaletteBox from "@/components/section/result/ColorPaletteBox";
-import KeywordBox from "@/components/section/result/KeywordBox";
-import ExampleBox from "@/components/section/result/ExampleBox";
+import TitleBox from "@/components/section/result/result/TitleBox";
+import ConceptBox from "@/components/section/result/result/ConceptBox";
+import ColorPaletteBox from "@/components/section/result/result/ColorPaletteBox";
+import KeywordBox from "@/components/section/result/result/KeywordBox";
+import ExampleBox from "@/components/section/result/result/ExampleBox";
 import type { GeminiSet } from "@/types/result";
 
 interface Image {
