@@ -8,13 +8,13 @@
   align-items: center;
   gap: 12px;
   align-self: stretch;
+  position: relative;
 }
 
 .tabBtn {
   display: flex;
   width: 110px;
   height: 35px;
-  padding: 8px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -36,4 +36,44 @@
 
 .tabBtn:hover {
   background: var(--color-main);
+}
+
+@media (max-width: 375px) {
+  .tabRow {
+    width: 331px;
+    height: 35px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-right: 20px;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .tabRow::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tabBtn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: auto;
+    padding: 6px 22px;
+  }
+
+  .tabRow::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 40px; /* 그라데이션 너비 */
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0),
+      #fff
+    ); /* 투명 -> 흰색 */
+    pointer-events: none; /* 클릭 이벤트를 통과시키도록 설정 */
+    z-index: 10; /* 다른 요소 위에 표시되도록 z-index 설정 */
+  }
 }

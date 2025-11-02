@@ -9,15 +9,14 @@
   border-radius: 4.401px;
   border: 0.734px solid var(--color-outline);
   background: var(--color-background);
-  transition:
-    border var(--anim-speed-fast) var(--anim-ease-default),
+  transition: border var(--anim-speed-fast) var(--anim-ease-default),
     box-shadow var(--anim-speed-fast) var(--anim-ease-default),
     transform var(--anim-speed-fast) var(--anim-ease-default);
 }
 
 .card:hover {
   border: 0.734px solid var(--color-point);
-  box-shadow: 0 4px 12px 0 rgba(123, 104, 238, 0.10);
+  box-shadow: 0 4px 12px 0 rgba(123, 104, 238, 0.1);
   transform: scale(1.01);
 }
 
@@ -88,4 +87,29 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 180px;
+}
+
+@media (max-width: 375px) {
+  .card {
+    width: 100%;
+    height: 90px;
+    padding: 10px;
+  }
+
+  .image {
+    min-width: 60px;
+    max-width: 60px;
+  }
+
+  .row {
+    height: 18px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .description {
+    font-size: 12px;
+  }
 }

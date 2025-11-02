@@ -45,13 +45,13 @@
 }
 
 .line {
-  width: 1200px;
+  width: 100%;
   height: 0px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   bottom: 0px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   margin-top: 16px;
 }
 
@@ -73,7 +73,6 @@
   width: 100%;
   margin-bottom: 24px;
   gap: 19px; /* 카드 사이 간격 추가 */
-
 }
 
 .moreBtnWrap {
@@ -95,7 +94,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 8px;
-  border: 1px solid var(--main, #3D38F5);
+  border: 1px solid var(--main, #3d38f5);
   background: #fff;
   cursor: pointer;
   transition: background 0.2s;

@@ -1,29 +1,54 @@
-.allConatiner{
+.allConatiner {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 30px;
   align-self: stretch;
-  width: 1180px;
-  height:auto;
+  width: 100%;
+  height: auto;
 }
-.container{
+.container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 30px;
   align-self: stretch;
-  width: 1180px;
-  margin-top:20px;
+  width: 100%;
+  margin-top: 20px;
 }
 
-.container2{
+.contentRow {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   align-self: stretch;
+  width: 100%;
+  gap: 24px;
 }
-.textContainer{
+
+.leftColumn {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.rightColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  padding-right: 2px;
+}
+
+.imageWrapper {
+  width: 500px;
+  height: 400px;
+  position: relative;
+  flex-shrink: 0;
+  margin: auto 0;
+}
+
+.textContainer {
   display: flex;
   padding-top: 0.034px;
   flex-direction: column;
@@ -31,11 +56,10 @@
   align-items: flex-start;
   gap: 6px;
   align-self: stretch;
-  width: 1180px;
-
+  width: 100%;
 }
 
-.text1Container{
+.text1Container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,22 +67,13 @@
 }
 
 .title {
-  font:var(--text-title1);
+  font: var(--text-title1);
 }
 
-.sub{
+.sub {
   font: var(--text-body1);
   width: 295px;
   color: var(--color-text-sub);
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-  align-items: flex-start;
-  /* width: 650px; */
-  justify-content: space-between;
 }
 
 .col {
@@ -66,45 +81,51 @@
   justify-content: space-between;
   flex-direction: column;
   gap: 28px;
-  padding-right: 5px;
-  height: 410px;
+  height: 400px;
+  flex: 1;
 }
 
-.button{
+.button {
   display: flex;
-width: 240px;
-padding: 12px;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-border-radius: 8px;
-background: var(--color-background);
-border: 1px solid var(--color-main);
-position: relative;
-overflow: hidden;
+  width: 240px;
+  padding: 12px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: var(--color-background);
+  border: 1px solid var(--color-main);
+  position: relative;
+  overflow: hidden;
 }
 
 .button::before {
   content: "";
   position: absolute;
-  left: 0; top: 0; bottom: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
   width: 150%; /* 평행사변형이 자연스럽게 보이도록 살짝 더 넓게 */
   height: 100%;
-  background: linear-gradient(45deg, var(--color-point) 0%, var(--color-main) 100%);
+  background: linear-gradient(
+    45deg,
+    var(--color-point) 0%,
+    var(--color-main) 100%
+  );
   z-index: 0;
   /* 평행사변형(사선) clip-path */
   clip-path: polygon(0 0, 80% 0, 70% 100%, 0% 100%);
   transform: translateX(-100%);
-  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .button:hover::before {
   transform: translateX(0);
 }
 
-.buttonText{
-  font:var(--text-notice);
-  color:var(--color-main);
+.buttonText {
+  font: var(--text-notice);
+  color: var(--color-main);
   position: relative;
   z-index: 1;
   transition: color 0.2s;
@@ -115,12 +136,58 @@ overflow: hidden;
 }
 
 .line {
-  width: 1200px;
+  width: 100%;
   height: 0px;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   bottom: 0px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   margin: 30px 0px;
+}
+
+@media (max-width: 375px) {
+  .textContainer {
+    width: 331px;
+  }
+  .text1Container {
+    align-items: center;
+    width: 100%;
+  }
+  .title {
+    font-size: 16px;
+  }
+  .sub {
+    font-size: 12px;
+    width: 200px;
+  }
+  .button {
+    width: 100px;
+    height: 40px;
+    padding: 12px;
+  }
+
+  .contentRow {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .leftColumn {
+    width: 100%;
+  }
+  .rightColumn {
+    flex-direction: column; /* 모바일에서 큰 카드와 작은 카드들을 세로로 쌓음 */
+    width: 100%;
+  }
+  .imageWrapper {
+    width: 100%;
+    max-width: 140px;
+    height: 140px;
+  }
+
+  .col {
+    height: auto;
+    width: 100%;
+    padding-right: 0;
+  }
 }

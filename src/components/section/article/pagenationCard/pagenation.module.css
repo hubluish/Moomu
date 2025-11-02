@@ -1,6 +1,6 @@
 .frame {
-  width: 100%;
-  height: 500px;
+  width: 1100px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,8 +8,8 @@
 }
 
 .imageFrame {
-  width: 1180px;
-  height: 540px;
+  width: 100%;
+  height: 450px;
   position: relative;
   overflow: hidden;
   border-radius: 16px;
@@ -76,7 +76,7 @@
   z-index: 0;
   position: relative;
   width: 100%;
-  height: 500px;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
@@ -102,7 +102,7 @@
   left: 0;
   bottom: 0;
   z-index: 2;
-  width: 1080px;
+  width: 90%;
   color: #fff;
   margin: 0 60px 60px 40px;
   display: flex;
@@ -165,6 +165,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  text-align: right;
 }
 
 .pagenationBar {
@@ -186,7 +187,7 @@
   transition: width 0.2s, background 0.2s;
 }
 .dot.active {
-  width: 31.818px;
+  width: 32px;
   background: #fff;
 }
 
@@ -196,4 +197,61 @@
   bottom: 20px;
   transform: translateX(-50%);
   z-index: 10;
+}
+
+@media (max-width: 375px) {
+  .frame {
+    width: 331px;
+    height: 250px;
+  }
+  .imageFrame {
+    width: 331px;
+    height: 250px;
+  }
+
+  .textFrame {
+    width: 90%;
+    color: #fff;
+    margin: 0 15px 25px 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .text1 {
+    height: 50px;
+  }
+  .text1_1 {
+    font-size: 16px;
+    font-weight: 500;
+    height: 20px;
+  }
+  .text1_2 {
+    font-size: 14px;
+    width: auto;
+    height: 29px;
+  }
+
+  .text2 {
+    width: auto;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .text2_1 {
+    height: 20px;
+    font-size: 15px;
+  }
+  .text2_2 {
+    width: auto;
+    height: 29px;
+    font-size: 13px;
+  }
+
+  .pagenationOverlay {
+    left: 50%;
+    bottom: 10px;
+  }
 }
