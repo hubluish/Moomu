@@ -7,6 +7,7 @@ import P4 from "../../components/landing/P4/P4";
 import P5 from "../../components/landing/P5/P5";
 import Footer from "../../components/common/footer/Footer";
 import LoginModal from "../../components/common/Login/LoginModal";
+import LandingBannerResponsive from "@/components/adfit/LandingBannerResponsive";
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -29,6 +30,7 @@ const LandingPage = () => {
         <div className="line"></div>
 
         <P5 openLoginModal={openModal} />
+        <LandingBannerResponsive />
         <Footer />
       </div>
     </div>
