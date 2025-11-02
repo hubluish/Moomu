@@ -1,11 +1,12 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase";
+import Image from "next/image";
+import "./P1.css";
 
 interface P1Props {
   openLoginModal?: () => void;
 }
-import "./P1.css";
 
 const P1 = ({ openLoginModal }: P1Props) => {
   const router = useRouter();
@@ -41,37 +42,16 @@ const P1 = ({ openLoginModal }: P1Props) => {
     "/assets/carousel/img7.png",
     "/assets/carousel/img8.png",
   ];
-  const slideWidth = 300;
-  const gap = 10;
 
-  const loopImages = [...images, ...images, ...images];
-
-  const [offset, setOffset] = useState(0);
-  const rafRef = useRef<number | null>(null);
-  const lastTsRef = useRef<number | null>(null);
-  const speedPxPerSec = 120;
-
-  useEffect(() => {
-    const track = images.length * (slideWidth + gap);
-    const loop = (ts: number) => {
-      if (lastTsRef.current == null) lastTsRef.current = ts;
-      const dt = (ts - lastTsRef.current) / 1000;
-      lastTsRef.current = ts;
-      setOffset((prev) => {
-        let next = prev + speedPxPerSec * dt;
-        if (next >= track) next -= track;
-        return next;
-      });
-      rafRef.current = requestAnimationFrame(loop);
-    };
-    rafRef.current = requestAnimationFrame(loop);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = null;
-      lastTsRef.current = null;
-    };
-  }, [images.length, slideWidth, gap]);
-
+  const loopImages = [
+    ...images,
+    ...images,
+    images[0],
+    images[1],
+    images[2],
+    images[3],
+    images[4],
+  ];
   return (
     <section className="P1">
       <div className="P1-title-container">
@@ -79,43 +59,17 @@ const P1 = ({ openLoginModal }: P1Props) => {
         <div className="p1-title">Moomu</div>
       </div>
 
-      <div
-        className="image-gallery"
-        style={{
-          position: "relative",
-          height: "180px",
-          margin: "0 auto",
-          overflow: "hidden",
-          borderRadius: "16px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            gap: `${gap}px`,
-            transition: "none",
-            transform: `translateX(-${offset}px)`,
-            height: "100%",
-            willChange: "transform",
-          }}
-        >
+      <div className="image-gallery">
+        <div className="image-track">
           {loopImages.map((src, idx) => (
-            <div
-              key={idx}
-              style={{
-                width: `${slideWidth}px`,
-                height: "100%",
-                flexShrink: 0,
-                borderRadius: "12px",
-                overflow: "hidden",
-                background: "#ddd",
-              }}
-            >
-              <img
+            <div className="image-slide" key={idx}>
+              <Image
                 src={src}
                 alt={`image${(idx % images.length) + 1}`}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                fill
+                objectFit="cover"
                 draggable={false}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // 최적화를 위한 sizes prop
               />
             </div>
           ))}

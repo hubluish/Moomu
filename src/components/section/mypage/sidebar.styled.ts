@@ -12,6 +12,10 @@ export const SidebarWrapper = styled.nav`
   -webkit-user-select: none; /* Safari/Chrome */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE */
+
+  @media (max-width: 900px) {
+    display: none;
+  }
 `;
 
 export const MenuList = styled.div`

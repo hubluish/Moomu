@@ -8,7 +8,6 @@ import ImageSlider from "@/components/section/article/pagenationCard/pagenationC
 import TabPage from "@/components/section/article/tabPage/tabPage";
 import ArticleCreate from "@/components/section/article/create/ArticleCreate";
 import styles from "../../pages/article/article.module.css";
-import confetti from "canvas-confetti";
 import { useSearchParams } from "next/navigation";
 import { toSlug } from "@/utils/slug";
 import {
@@ -27,22 +26,6 @@ export default function ArticleClient() {
   const rTimeout = useRef<NodeJS.Timeout | null>(null);
   const titleRef = useRef<HTMLSpanElement | null>(null);
   const searchParams = useSearchParams();
-
-  // Article 텍스트에 마우스 호버 시 콘페티 효과
-  const handleTitleHover = () => {
-    if (!titleRef.current) return;
-    const rect = titleRef.current.getBoundingClientRect();
-    const x = (rect.left + rect.width / 2) / window.innerWidth;
-    const y = (rect.top + rect.height / 2) / window.innerHeight;
-    confetti({
-      particleCount: 50,
-      spread: 50,
-      origin: { x, y },
-      shapes: ["circle", "square"],
-      startVelocity: 20,
-      gravity: 1.5,
-    });
-  };
 
   // 게시글 목록 불러오기
   useEffect(() => {
@@ -111,20 +94,14 @@ export default function ArticleClient() {
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         width: "100%",
-        marginTop: "64px",
       }}
     >
       <div className={styles.container}>
         {/* 상단 Article 타이틀 */}
         <button className={styles.button} onClick={() => setActiveTab(0)}>
           <h1 className={styles.title}>
-            <span
-              ref={titleRef}
-              onMouseEnter={handleTitleHover}
-              style={{ display: "inline-block" }}
-            >
+            <span ref={titleRef} style={{ display: "inline-block" }}>
               Article
             </span>
           </h1>

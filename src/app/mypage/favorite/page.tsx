@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/utils/supabase";
+import styled from "styled-components";
+import Footer from "@/components/common/footer/Footer";
 import { getLikedFeeds, unlikeFeed } from "@/utils/feeds";
 import Sidebar from "@/components/section/mypage/Sidebar";
 import MoodboardModal from "@/app/feed/MoodboardModal";
@@ -16,6 +18,46 @@ interface FeedPost {
   created_at: string;
   authorName: string;
 }
+
+const MoodboardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
+  gap: 28px;
+
+  @media (max-width: 1421px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1309px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1249px) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 1121px) {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  }
+`;
+
+const Wrapper = styled.div`
+  flex: 1;
+  padding: 50px 70px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  @media (max-width: 439px) {
+    padding: 30px 50px;
+  }
+
+  @media (max-width: 379px) {
+    padding: 30px 22px;
+  }
+`;
 
 const TrashIcon = () => (
   <Image
@@ -113,82 +155,74 @@ const FavoritePage = ({}) => {
   };
 
   return (
-    <div style={{ display: "flex", marginTop: "64px" }}>
-      <Sidebar />
-      <main
-        style={{
-          flex: 1,
-          padding: "50px 70px",
-          display: "flex",
-          flexDirection: "column",
-          overflowY: "auto",
-        }}
-      >
-        <h1 style={{ marginBottom: "30px", userSelect: "none" }}>찜한 피드</h1>
+    <div>
+      <div style={{ display: "flex", marginTop: "64px", minHeight: "100vh" }}>
+        <Sidebar />
 
-        <div style={{ flex: 1, display: "grid" }}>
-          {isLoading ? (
-            <MoodboardGridSkeleton count={6} />
-          ) : likedFeeds.length === 0 ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                height: "100%",
-                color: "#888",
-              }}
-            >
-              <p>찜한 피드가 없습니다.</p>
-            </div>
-          ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
-                gap: "45px 28px",
-              }}
-            >
-              {likedFeeds.map((feed) => (
-                <div
-                  key={feed.id}
-                  onClick={() => handleMoodboardClick(feed.id)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <Moodboard
+        <Wrapper>
+          <h1 style={{ marginBottom: "30px", userSelect: "none" }}>
+            찜한 피드
+          </h1>
+
+          <div style={{ flex: 1, display: "grid" }}>
+            {isLoading ? (
+              <MoodboardGridSkeleton count={6} />
+            ) : likedFeeds.length === 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  color: "#888",
+                }}
+              >
+                <p>찜한 피드가 없습니다.</p>
+              </div>
+            ) : (
+              <MoodboardGrid>
+                {likedFeeds.map((feed) => (
+                  <div
                     key={feed.id}
-                    id={feed.id}
-                    imageUrl={feed.image_url}
-                    keywords={(feed.categories || []).slice(0, 4)}
-                    date={feed.created_at}
-                    type="favorite"
-                    authorName={feed.authorName}
-                    onAddToFolder={() => {}}
-                    onMoveToTrash={() => {}}
-                    onRemoveFromFolder={() => {}}
-                    onUnlike={() => handleUnlikeFeed(feed.id)}
-                    isPublic={true}
-                    onTogglePublic={(_moodboardId: string) => {}}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </main>
+                    onClick={() => handleMoodboardClick(feed.id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <Moodboard
+                      key={feed.id}
+                      id={feed.id}
+                      imageUrl={feed.image_url}
+                      keywords={(feed.categories || []).slice(0, 4)}
+                      date={feed.created_at}
+                      type="favorite"
+                      authorName={feed.authorName}
+                      onAddToFolder={() => {}}
+                      onMoveToTrash={() => {}}
+                      onRemoveFromFolder={() => {}}
+                      onUnlike={() => handleUnlikeFeed(feed.id)}
+                      isPublic={true}
+                      onTogglePublic={(_moodboardId: string) => {}}
+                    />
+                  </div>
+                ))}
+              </MoodboardGrid>
+            )}
+          </div>
+        </Wrapper>
 
-      <MoodboardModal
-        moodboardId={selectedBoardIdForModal}
-        open={isBoardModalOpen}
-        onClose={handleCloseBoardModal}
-      />
+        <MoodboardModal
+          moodboardId={selectedBoardIdForModal}
+          open={isBoardModalOpen}
+          onClose={handleCloseBoardModal}
+        />
 
-      <Toast
-        message={toastInfo.message}
-        show={toastInfo.show}
-        icon={toastInfo.icon}
-      />
+        <Toast
+          message={toastInfo.message}
+          show={toastInfo.show}
+          icon={toastInfo.icon}
+        />
+      </div>
+      <Footer />
     </div>
   );
 };

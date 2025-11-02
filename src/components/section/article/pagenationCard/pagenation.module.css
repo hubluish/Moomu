@@ -1,6 +1,6 @@
 .frame {
-  width: 1180px;
-  height: 540px;
+  width: 1177px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,8 +8,8 @@
 }
 
 .imageFrame {
-  width: 1180px;
-  height: 540px;
+  width: 100%;
+  height: 450px;
   position: relative;
   overflow: hidden;
   border-radius: 16px;
@@ -27,8 +27,6 @@
 }
 
 .slide {
-  width: 1180px;
-  height: 540px;
   flex-shrink: 0;
   position: relative;
   display: flex;
@@ -43,7 +41,7 @@
   transform: translateY(-50%);
   width: 48px;
   height: 48px;
-  background: rgba(0,0,0,0.15);
+  background: rgba(0, 0, 0, 0.15);
   border: none;
   border-radius: 50%;
   color: #fff;
@@ -58,7 +56,7 @@
 }
 .arrowLeft:hover,
 .arrowRight:hover {
-  background: rgba(0,0,0,0.35);
+  background: rgba(0, 0, 0, 0.35);
   opacity: 1;
 }
 .arrowLeft {
@@ -77,13 +75,14 @@
 .image {
   z-index: 0;
   position: relative;
-  width: 1180px;
-  height: 540px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.gradient1, .gradient2 {
+.gradient1,
+.gradient2 {
   position: absolute;
   left: 0;
   top: 0;
@@ -92,10 +91,10 @@
   z-index: 1;
 }
 .gradient1 {
-  background: linear-gradient(180deg, rgba(0,0,0,0.00) 44.18%, #000 93.54%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 44.18%, #000 93.54%);
 }
 .gradient2 {
-  background: rgba(0,0,0,0.20);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .textFrame {
@@ -103,9 +102,9 @@
   left: 0;
   bottom: 0;
   z-index: 2;
-  width: 1120px;
+  width: 90%;
   color: #fff;
-  margin: 0 40px 60px 40px;
+  margin: 0 60px 60px 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -114,15 +113,15 @@
 
 .text1 {
   width: auto;
-  height: 111.271px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 .text1_1 {
-  color: #FFF;
-  font-family: Inter;
-  font-size: 51.139px;
+  color: #fff;
+  font-family: pretendard;
+  font-size: 40px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -130,9 +129,9 @@
   height: 50.251px;
 }
 .text1_2 {
-  color: #FFF;
-  font-family: Inter;
-  font-size: 51.139px;
+  color: #fff;
+  font-family: pretendard;
+  font-size: 52px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -142,16 +141,16 @@
 
 .text2 {
   width: auto;
-  height: 47.085px;
+  height: 48px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 .text2_1 {
   width: auto;
-  height: 23.504px;
-  color: #F9F9F9;
-  font-family: Outfit;
+  height: 24px;
+  color: #f9f9f9;
+  font-family: pretendard;
   font-size: 22.924px;
   font-style: normal;
   font-weight: 400;
@@ -159,43 +158,100 @@
 }
 .text2_2 {
   width: auto;
-  height: 23.504px;
-  color: #F9F9F9;
-  font-family: Outfit;
+  height: 24px;
+  color: #f9f9f9;
+  font-family: pretendard;
   font-size: 22.924px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  text-align: right;
 }
 
 .pagenationBar {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6.364px;
+  gap: 6px;
   margin-top: 12px;
 }
 
 .dot {
-  width: 6.364px;
-  height: 6.364px;
+  width: 6px;
+  height: 6px;
   border-radius: 159.091px;
-  background: #DEDEDE;
+  background: #dedede;
   border: none;
   padding: 0;
   cursor: pointer;
   transition: width 0.2s, background 0.2s;
 }
 .dot.active {
-  width: 31.818px;
-  background: #FFF;
+  width: 32px;
+  background: #fff;
 }
 
 .pagenationOverlay {
   position: absolute;
   left: 50%;
-  bottom: 20px; /* 이미지 하단에서 24px 위 */
+  bottom: 20px;
   transform: translateX(-50%);
   z-index: 10;
-  /* 필요하다면 width, pointer-events 등 추가 */
+}
+
+@media (max-width: 375px) {
+  .frame {
+    width: 331px;
+    height: 250px;
+  }
+  .imageFrame {
+    width: 331px;
+    height: 250px;
+  }
+
+  .textFrame {
+    width: 90%;
+    color: #fff;
+    margin: 0 15px 25px 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .text1 {
+    height: 50px;
+  }
+  .text1_1 {
+    font-size: 16px;
+    font-weight: 500;
+    height: 20px;
+  }
+  .text1_2 {
+    font-size: 14px;
+    width: auto;
+    height: 29px;
+  }
+
+  .text2 {
+    width: auto;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .text2_1 {
+    height: 20px;
+    font-size: 15px;
+  }
+  .text2_2 {
+    width: auto;
+    height: 29px;
+    font-size: 13px;
+  }
+
+  .pagenationOverlay {
+    left: 50%;
+    bottom: 10px;
+  }
 }

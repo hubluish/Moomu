@@ -1,26 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@700&display=swap');
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import url("https://fonts.googleapis.com/css2?family=MuseoModerno:wght@700&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
   /* 🎨 Color System */
-  --color-main: #3D38F5; /*타이틀 텍스트, 기본 버튼, 헤더*/
-  --color-point: #7B68EE; /*호버, 포인트 텍스트*/
-  --color-background: #FEFEFF;
-  --color-text-main: #1C1C1E;
-  --color-text-sub: #6B7280;
-  --color-outline: #E6E8EC; /*모달, 네모 박스 등 (weight : 2)로 사용하세요*/
-  --color-notice: #F1F3F5; /*비활성, 논모달, 안내*/
-  --color-disable-button: #3D38F5; /*비활성 버튼*/
+  --color-main: #3d38f5; /*타이틀 텍스트, 기본 버튼, 헤더*/
+  --color-point: #7b68ee; /*호버, 포인트 텍스트*/
+  --color-background: #fefeff;
+  --color-text-main: #1c1c1e;
+  --color-text-sub: #6b7280;
+  --color-outline: #e6e8ec; /*모달, 네모 박스 등 (weight : 2)로 사용하세요*/
+  --color-notice: #f1f3f5; /*비활성, 논모달, 안내*/
+  --color-disable-button: #3d38f5; /*비활성 버튼*/
   --color-main-hover: #251fc1;
-  --color-disable-sub: #C7C7C7; /*비활성 서브*/
-  --color-disable-sub-button: #EBEBFF;
-  
+  --color-disable-sub: #c7c7c7; /*비활성 서브*/
+  --color-disable-sub-button: #ebebff;
 
   /* 🅰️ Font Family */
-  --font-family-base: 'Pretendard', sans-serif;
-  --font-family-logo: 'MuseoModerno', sans-serif;
+  --font-family-base: "Pretendard", sans-serif;
+  --font-family-logo: "MuseoModerno", sans-serif;
 
   /* 🔤 Font Sizes */
   --font-title1: 32px;
@@ -36,11 +35,16 @@
   --font-weight-regular: 400;
 
   /* 🧩 Text Style Shorthands */
-  --text-title1: var(--font-weight-extrabold) var(--font-title1)/1.2 var(--font-family-base);
-  --text-title2: var(--font-weight-bold) var(--font-title2)/1.2 var(--font-family-base);
-  --text-body1: var(--font-weight-medium) var(--font-body1)/1.4 var(--font-family-base);
-  --text-body2: var(--font-weight-medium) var(--font-body2)/1.4 var(--font-family-base);
-  --text-notice: var(--font-weight-bold) var(--font-notice)/1.4 var(--font-family-base);
+  --text-title1: var(--font-weight-extrabold) var(--font-title1) / 1.2
+    var(--font-family-base);
+  --text-title2: var(--font-weight-bold) var(--font-title2) / 1.2
+    var(--font-family-base);
+  --text-body1: var(--font-weight-medium) var(--font-body1) / 1.4
+    var(--font-family-base);
+  --text-body2: var(--font-weight-medium) var(--font-body2) / 1.4
+    var(--font-family-base);
+  --text-notice: var(--font-weight-bold) var(--font-notice) / 1.4
+    var(--font-family-base);
 
   /* 🕓 Animation Duration */
   --anim-speed-immediate: 0s;
@@ -76,8 +80,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body, * {
-  cursor: url('/assets/images/cursor2.svg'), auto;
+body,
+* {
+  cursor: url("/assets/images/cursor2.svg"), auto;
 }
 
 * {
@@ -86,34 +91,62 @@ body, * {
   margin: 0;
 }
 
-button:hover, .BtnContainer:hover, .BtnText:hover, a:hover {
-  cursor: url('/assets/images/cursor1.svg') 8 8, pointer;
+button:hover,
+.BtnContainer:hover,
+.BtnText:hover,
+a:hover {
+  cursor: url("/assets/images/cursor1.svg") 8 8, pointer;
 }
 
-.p4-image, .image-card, .image-placeholder {
-  cursor: url('/assets/images/cursor2.svg'), auto;
+.p4-image,
+.image-card,
+.image-placeholder {
+  cursor: url("/assets/images/cursor2.svg"), auto;
 }
-
 
 .image-card:hover {
-  cursor: url('/assets/images/cursor1.svg'), pointer;
+  cursor: url("/assets/images/cursor1.svg"), pointer;
 }
 
 .markdown-title1 {
   font: var(--text-title1);
   margin: 24px 0 12px 0;
+
+  @media (max-width: 375px) {
+    font-size: 20px;
+    margin: 10px 0 10px 0;
+  }
 }
+
 .markdown-title2 {
   font: var(--text-title2);
   margin: 20px 0 10px 0;
+
+  @media (max-width: 375px) {
+    font-size: 18px;
+    margin: 30px 0 10px 0;
+  }
 }
+
 .markdown-body1 {
   font: var(--text-body1);
   margin: 16px 0 8px 0;
+
+  @media (max-width: 375px) {
+    font-size: 16px;
+    font-weight: var(--font-weight-regular);
+    margin: 6px 0 0 0;
+  }
 }
+
 .markdown-body2 {
   font: var(--text-body2);
   margin: 12px 0 6px 0;
+
+  @media (max-width: 375px) {
+    font-size: 14px;
+    font-weight: var(--font-weight-regular);
+  }
 }
 
 @media (prefers-color-scheme: dark) {

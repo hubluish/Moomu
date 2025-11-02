@@ -2,6 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 import Sidebar from "@/components/section/settings/Sidebar";
+import Footer from "@/components/common/footer/Footer";
 
 const Main = styled.main`
   flex: 1;
@@ -27,14 +28,17 @@ const ComingSoonWrapper = styled.div`
 
 const SettingsPage = () => {
   return (
-    <div style={{ display: "flex", height: "100vh", marginTop: "64px" }}>
-      <Sidebar />
-      <Main>
-        <Title>결제 정보 설정</Title>
-        <ComingSoonWrapper>
-          <p>페이지 준비중입니다.</p>
-        </ComingSoonWrapper>
-      </Main>
+    <div>
+      <div style={{ display: "flex", height: "100vh", marginTop: "64px" }}>
+        <Sidebar />
+        <Main>
+          <Title>결제 정보 설정</Title>
+          <ComingSoonWrapper>
+            <p>페이지 준비중입니다.</p>
+          </ComingSoonWrapper>
+        </Main>
+      </div>
+      <Footer />
     </div>
   );
 };

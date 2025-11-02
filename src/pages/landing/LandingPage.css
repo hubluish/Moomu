@@ -1,13 +1,20 @@
 .app {
   width: 100%;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(180deg, #2F0B5B 0%, #000 12.02%, #000 65.87%, #1F1D69 100%);
+  box-sizing: border-box;
+  background: linear-gradient(
+    180deg,
+    #2f0b5b 0%,
+    #000 12.02%,
+    #000 65.87%,
+    #1f1d69 100%
+  );
 }
 
-.app-content{
+.app-content {
   display: flex;
   padding: 170px 20px 50px 20px;
   flex-direction: column;
@@ -21,7 +28,7 @@
 /* Button Styles */
 .gradient-button {
   border-radius: 30px;
-  background: linear-gradient(90deg, #6047AC 0%, #3D38F5 100%);
+  background: linear-gradient(90deg, #6047ac 0%, #3d38f5 100%);
   border: none;
   color: white;
   font-size: 16px;
@@ -33,13 +40,13 @@
 }
 
 .gradient-button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -200%;
   left: -300%;
   width: 600%;
   height: 600%;
-  background: #3D38F5;
+  background: #3d38f5;
   transition: left 0.3s ease;
   z-index: -1;
   transform: rotate(-30deg);
@@ -65,7 +72,7 @@
 
 /* Text Gradient Styles */
 .gradient-text {
-  background: linear-gradient(180deg, #E5E4FF 43.27%, #5B57FF 100%);
+  background: linear-gradient(180deg, #e5e4ff 43.27%, #5b57ff 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -75,10 +82,10 @@
   line-height: normal;
 }
 
-.line{
+.line {
   width: 200%;
   height: 2px;
-  background: #FFF;
+  background: #fff;
 }
 
 .about-section {
@@ -98,11 +105,11 @@
     padding: 120px 16px 40px 16px;
     gap: 40px;
   }
-  
+
   .about-section {
     margin: 40px 16px;
   }
-  
+
   .line {
     width: 150%;
   }
@@ -113,19 +120,19 @@
     padding: 80px 16px 30px 16px;
     gap: 30px;
   }
-  
+
   .gradient-button.start-button {
     width: 180px;
     height: 50px;
     font-size: 14px;
     padding: 15px 18px;
   }
-  
+
   .about-section {
     margin: 30px 16px;
     max-width: none;
   }
-  
+
   .line {
     width: 120%;
   }
@@ -136,24 +143,153 @@
     padding: 60px 12px 20px 12px;
     gap: 20px;
   }
-  
+
   .gradient-button.start-button {
     width: 160px;
     height: 45px;
     font-size: 13px;
     padding: 12px 16px;
   }
-  
+
   .gradient-text {
     font-size: clamp(24px, 6vw, 48px);
   }
-  
+
   .about-section {
     margin: 20px 12px;
   }
-  
+
   .line {
     width: 100%;
   }
 }
 
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+  .app-content {
+    padding: 120px 16px 40px 16px;
+    gap: 40px;
+  }
+
+  .about-section {
+    margin: 40px 16px;
+  }
+
+  .line {
+    width: 150%;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-content {
+    padding: 80px 16px 30px 16px;
+    gap: 30px;
+  }
+
+  .gradient-button.start-button {
+    width: 180px;
+    height: 50px;
+    font-size: 14px;
+    padding: 15px 18px;
+  }
+
+  .about-section {
+    margin: 30px 16px;
+    max-width: none;
+  }
+
+  .line {
+    width: 120%;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-content {
+    padding: 60px 12px 20px 12px;
+    gap: 20px;
+  }
+
+  .gradient-button.start-button {
+    width: 160px;
+    height: 45px;
+    font-size: 13px;
+    padding: 12px 16px;
+  }
+
+  .gradient-text {
+    font-size: clamp(24px, 6vw, 48px);
+  }
+
+  .about-section {
+    margin: 20px 12px;
+  }
+
+  .line {
+    width: 100%;
+  }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+  .app-content {
+    padding: 120px 16px 40px 16px;
+    gap: 40px;
+  }
+
+  .about-section {
+    margin: 40px 16px;
+  }
+
+  .line {
+    width: 150%;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-content {
+    padding: 80px 16px 30px 16px;
+    gap: 30px;
+  }
+
+  .gradient-button.start-button {
+    width: 180px;
+    height: 50px;
+    font-size: 14px;
+    padding: 15px 18px;
+  }
+
+  .about-section {
+    margin: 30px 16px;
+    max-width: none;
+  }
+
+  .line {
+    width: 120%;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-content {
+    padding: 60px 12px 20px 12px;
+    gap: 20px;
+  }
+
+  .gradient-button.start-button {
+    width: 160px;
+    height: 45px;
+    font-size: 13px;
+    padding: 12px 16px;
+  }
+
+  .gradient-text {
+    font-size: clamp(24px, 6vw, 48px);
+  }
+
+  .about-section {
+    margin: 20px 12px;
+  }
+
+  .line {
+    width: 100%;
+  }
+}

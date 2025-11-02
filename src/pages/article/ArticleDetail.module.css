@@ -10,6 +10,7 @@
   position: relative;
   width: 1200px;
   height: 550px;
+  margin-top: 64px;
 }
 
 .mainImage {
@@ -26,7 +27,7 @@
   left: 0;
   width: 1200px;
   height: 550px;
-  background: rgba(0,0,0,0.20);
+  background: rgba(0, 0, 0, 0.2);
   pointer-events: none;
 }
 
@@ -50,7 +51,7 @@
   justify-content: center;
   align-items: flex-start;
   gap: 40px;
-  border-bottom: 1px solid var(--outline, #E6E8EC);
+  border-bottom: 1px solid var(--outline, #e6e8ec);
 }
 
 .titleInner {
@@ -92,7 +93,7 @@
   align-items: center;
   gap: 4px;
   border-radius: 76px;
-  background: var(--button, rgba(61, 56, 245, 0.10));
+  background: var(--button, rgba(61, 56, 245, 0.1));
 }
 
 .categoryText {
@@ -139,7 +140,7 @@
   align-items: center;
   gap: 4px;
   border-radius: 30px;
-  background: var(--button, rgba(61, 56, 245, 0.10));
+  background: var(--button, rgba(61, 56, 245, 0.1));
 }
 
 .keywordTitle {
@@ -169,13 +170,13 @@
   align-items: center;
   gap: 4px;
   border-radius: 76px;
-  background: var(--color-main, #3D38F5);
+  background: var(--color-main, #3d38f5);
   cursor: pointer;
   position: relative;
 }
 
 .keywordText {
-  color: #FFF;
+  color: #fff;
   font-size: 16px;
   font-weight: var(--font-weight-regular);
 }
@@ -220,4 +221,118 @@
 
 .backBtn:hover {
   background: #f5f5ff88;
+}
+
+@media (max-width: 375px) {
+  .container {
+    width: 331px;
+  }
+
+  .imageWrap {
+    width: 331px;
+    height: 235px;
+    margin-top: 90px;
+  }
+
+  .mainImage {
+    width: 100%;
+    height: 235px;
+    border-radius: 10px;
+  }
+
+  .imageOverlay {
+    width: 335px;
+    height: 235px;
+    border-radius: 10px;
+  }
+
+  .backIcon {
+    left: 16px;
+    top: 20px;
+    width: 18px;
+    height: 20px;
+  }
+
+  .titleSection {
+    width: 335px;
+    height: auto;
+    padding: 20px 0;
+    gap: 24px;
+  }
+
+  .titleInner {
+    width: 100%;
+    gap: 16px;
+  }
+
+  .titleText {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .dateText {
+    font-size: 12px;
+  }
+
+  .categoryBox {
+    width: auto;
+    padding: 6px 20px;
+  }
+
+  .categoryText {
+    font-size: 12px;
+  }
+
+  .contentSection {
+    width: 331px;
+    padding: 20px 0;
+    gap: 24px;
+  }
+
+  .contentHtml {
+    font-size: 16px;
+  }
+
+  .keywordSection {
+    width: 331px;
+    padding: 40px 0px;
+    gap: 8px;
+  }
+
+  .keywordBox {
+    width: 100%;
+    height: auto;
+    padding: 30px 0px;
+    gap: 8px;
+  }
+
+  .keywordTitle {
+    font-size: 18px;
+  }
+
+  .keywordDesc {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .keywordList {
+    width: 250px;
+    justify-content: center;
+  }
+
+  .keywordItem {
+    width: auto;
+    padding: 6px 20px;
+    gap: 2px;
+  }
+
+  .keywordText {
+    font-size: 14px;
+  }
+
+  .backBtn {
+    width: 150px;
+    font-size: 15px;
+    margin-bottom: 40px;
+  }
 }

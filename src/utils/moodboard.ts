@@ -43,35 +43,17 @@ export const permanentDeleteMoodboard = async (moodboardId: string) => {
 export const toggleMoodboardPublicStatus = async (
   moodboard: {
     id: string;
-    is_public: boolean;
     owner_id: string;
     request_id: string;
     title?: string;
     cover_image_url?: string | null;
     tags?: string[];
   },
-  authorName: string
+  authorName: string,
+  isCurrentlyPublic: boolean // 현재 공개 상태를 인자로 받음
 ) => {
-  const newStatus = !moodboard.is_public;
-
-  if (newStatus) {
-    const { error: insertError } = await supabase.from("feed_posts").insert({
-      moodboard_id: moodboard.id,
-      user_id: moodboard.owner_id,
-      request_id: moodboard.request_id,
-      title: moodboard.title || "Untitled",
-      image_url: moodboard.cover_image_url,
-      categories: moodboard.tags,
-      is_public: newStatus,
-      authorName: authorName,
-      likes: [],
-    });
-
-    if (insertError) {
-      console.error("Error publishing to feed:", insertError);
-      throw insertError;
-    }
-  } else {
+  if (isCurrentlyPublic) {
+    // 현재 공개 상태 -> 비공개로 (DELETE)
     const { error: deleteError } = await supabase
       .from("feed_posts")
       .delete()
@@ -81,17 +63,25 @@ export const toggleMoodboardPublicStatus = async (
       console.error("Error unpublishing from feed:", deleteError);
       throw deleteError;
     }
+  } else {
+    // 현재 비공개 상태 -> 공개로 (INSERT)
+    const { error: insertError } = await supabase.from("feed_posts").insert({
+      moodboard_id: moodboard.id,
+      user_id: moodboard.owner_id,
+      request_id: moodboard.request_id,
+      title: moodboard.title || "New Moodboard",
+      image_url: moodboard.cover_image_url,
+      categories: moodboard.tags,
+      is_public: true,
+      authorName: authorName,
+      likes: [],
+    });
+
+    if (insertError) {
+      console.error("Error publishing to feed:", insertError);
+      throw insertError;
+    }
   }
 
-  const { error: updateError } = await supabase
-    .from("moodboard")
-    .update({ is_public: newStatus })
-    .eq("id", moodboard.id);
-
-  if (updateError) {
-    console.error("Error updating moodboard public status:", updateError);
-    throw updateError;
-  }
-
-  return newStatus;
+  return !isCurrentlyPublic;
 };

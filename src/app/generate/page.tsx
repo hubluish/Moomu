@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./generate.module.css";
+import Footer from "@/components/common/footer/Footer";
 import PopAlert from "@/components/section/generate/PopAlert";
 import ColorOption from "@/components/section/generate/ColorOption";
 import TitleBlock from "@/components/section/generate/TitleBlock";
@@ -14,7 +15,7 @@ import TagGuideModal from "@/components/section/generate/TagGuideModal";
 import SeeMoreButton from "@/components/section/generate/SeeMoreButton";
 import { saveToSupabase } from "@/utils/saveToSupabase";
 import PopCheer from "@/components/section/generate/PopCheer";
-import Loading from './loading';
+import Loading from "./loading";
 import Script from "next/script";
 
 import stepMeta from "../../../public/data/stepMeta.json";
@@ -70,8 +71,8 @@ function GeneratePage() {
   useEffect(() => {
     setScreenWidth(window.innerWidth);
     const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const getStepContent = (): Array<{
@@ -126,11 +127,11 @@ function GeneratePage() {
     ? stepOptions.slice(0, 6)
     : stepOptions.slice(0, 4);
 
-    useEffect(() => {
-        sessionStorage.removeItem('resultPageState');
-    }, []);
+  useEffect(() => {
+    sessionStorage.removeItem("resultPageState");
+  }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setShowModal(true);
     }, 10000);
@@ -173,16 +174,17 @@ function GeneratePage() {
             : category === "image"
             ? "이미지 태그"
             : "텍스트";
-        const msg = screenWidth <= 480 ? (
-          <>
-            좋은 선택이에요! <strong>{moodText}</strong> 느낌을 잘 담아줘요.
-          </>
-        ) : (
-          <>
-            좋은 선택이에요! 이 <strong>{thingLabel}</strong>는{" "}
-            <strong>{moodText}</strong> 느낌을 잘 담아줘요.
-          </>
-        );
+        const msg =
+          screenWidth <= 480 ? (
+            <>
+              좋은 선택이에요! <strong>{moodText}</strong> 느낌을 잘 담아줘요.
+            </>
+          ) : (
+            <>
+              좋은 선택이에요! 이 <strong>{thingLabel}</strong>는{" "}
+              <strong>{moodText}</strong> 느낌을 잘 담아줘요.
+            </>
+          );
 
         showCheer(msg, 1200);
       }
@@ -215,45 +217,52 @@ function GeneratePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-        });
+      });
 
-        const result = await response.json();
-        // console.log('%c🎨 Gemini 응답 결과:', 'color: green; font-weight: bold;', result);
+      const result = await response.json();
+      // console.log('%c🎨 Gemini 응답 결과:', 'color: green; font-weight: bold;', result);
 
-        try {
-                const selectedColor = selections[0] ?? undefined;
-                const selectedFont = selections[2] ?? undefined;
-                const selectedImages = [
-                    selections[1],
-                    ...(selections[3]?.split(',') || []),
-                ].filter(Boolean) as string[];
+      try {
+        const selectedColor = selections[0] ?? undefined;
+        const selectedFont = selections[2] ?? undefined;
+        const selectedImages = [
+          selections[1],
+          ...(selections[3]?.split(",") || []),
+        ].filter(Boolean) as string[];
 
-                const selectedKeywords = [
-                    ...(selectedColor ? [selectedColor] : []),
-                    ...selectedImages,
-                    ...(selectedFont ? [selectedFont] : []),
-                ];
+        const selectedKeywords = [
+          ...(selectedColor ? [selectedColor] : []),
+          ...selectedImages,
+          ...(selectedFont ? [selectedFont] : []),
+        ];
 
-                localStorage.setItem('selected_keywords', JSON.stringify(selectedKeywords));
-            } catch (e) {
-                console.warn('선택 키워드 저장 실패:', e);
-            }
+        localStorage.setItem(
+          "selected_keywords",
+          JSON.stringify(selectedKeywords)
+        );
+      } catch (e) {
+        console.warn("선택 키워드 저장 실패:", e);
+      }
 
-        // console.log('%c💾 Supabase 저장 시작:', 'color: blue; font-weight: bold;');
-        try {
+      // console.log('%c💾 Supabase 저장 시작:', 'color: blue; font-weight: bold;');
+      try {
         const rid = await saveToSupabase(result);
         // console.log('%c✅ Supabase 저장 성공:', 'color: green; font-weight: bold;');
         if (rid) {
-            router.push(`/result?rid=${encodeURIComponent(rid)}`);
+          router.push(`/result?rid=${encodeURIComponent(rid)}`);
         } else {
-            console.error('❌ Request ID 생성 실패');
-            alert('요청 ID 생성에 실패했습니다.');
-            setIsLoading(false);
+          console.error("❌ Request ID 생성 실패");
+          alert("요청 ID 생성에 실패했습니다.");
+          setIsLoading(false);
         }
-        } catch (error) {
-        console.error('%c❌ Supabase 저장 실패:', 'color: red; font-weight: bold;', error);
+      } catch (error) {
+        console.error(
+          "%c❌ Supabase 저장 실패:",
+          "color: red; font-weight: bold;",
+          error
+        );
         setIsLoading(false);
-        }
+      }
     } catch (error) {
       console.error("❌ Gemini 서버 호출 실패:", error);
       alert("Gemini API 요청에 실패했습니다.");
@@ -261,54 +270,53 @@ function GeneratePage() {
     }
   };
 
-    const showCheer = (message: React.ReactNode, duration = 1200) => {
-        if (cheerTimerRef.current) {
-            window.clearTimeout(cheerTimerRef.current);
-            cheerTimerRef.current = null;
-          
-        }
-        setCheerMsg(message);
-        setCheerVisible(true);           
-
-        cheerTimerRef.current = window.setTimeout(() => {
-            setCheerVisible(false);
-            cheerTimerRef.current = null;
-        }, duration);
-    };
-
-    const showAlertOnce = (duration = 1000) => {
-        if (alertTimerRef.current) {
-            window.clearTimeout(alertTimerRef.current);
-            alertTimerRef.current = null;
-        }
-        setShowAlert(true);
-
-        alertTimerRef.current = window.setTimeout(() => {
-            setShowAlert(false);
-            alertTimerRef.current = null;
-        }, duration);
-    };
-
-    const handleSelect = (option: string) => {
-        setSelections((prev) => {
-          const updated = [...prev];
-          if (step === 4) {
-            const currentSelections = updated[3] ? updated[3].split(",") : [];
-            const newSelections = currentSelections.includes(option)
-              ? currentSelections.filter((item) => item !== option)
-              : [...currentSelections, option];
-            updated[3] = newSelections.join(",");
-          } else {
-            updated[step - 1] = prev[step - 1] === option ? null : option;
-            for (let i = step; i < updated.length; i++) updated[i] = null;
-          }
-          return updated;
-        });
-      };
-
-    if (isLoading) {
-        return <Loading />;
+  const showCheer = (message: React.ReactNode, duration = 1200) => {
+    if (cheerTimerRef.current) {
+      window.clearTimeout(cheerTimerRef.current);
+      cheerTimerRef.current = null;
     }
+    setCheerMsg(message);
+    setCheerVisible(true);
+
+    cheerTimerRef.current = window.setTimeout(() => {
+      setCheerVisible(false);
+      cheerTimerRef.current = null;
+    }, duration);
+  };
+
+  const showAlertOnce = (duration = 1000) => {
+    if (alertTimerRef.current) {
+      window.clearTimeout(alertTimerRef.current);
+      alertTimerRef.current = null;
+    }
+    setShowAlert(true);
+
+    alertTimerRef.current = window.setTimeout(() => {
+      setShowAlert(false);
+      alertTimerRef.current = null;
+    }, duration);
+  };
+
+  const handleSelect = (option: string) => {
+    setSelections((prev) => {
+      const updated = [...prev];
+      if (step === 4) {
+        const currentSelections = updated[3] ? updated[3].split(",") : [];
+        const newSelections = currentSelections.includes(option)
+          ? currentSelections.filter((item) => item !== option)
+          : [...currentSelections, option];
+        updated[3] = newSelections.join(",");
+      } else {
+        updated[step - 1] = prev[step - 1] === option ? null : option;
+        for (let i = step; i < updated.length; i++) updated[i] = null;
+      }
+      return updated;
+    });
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   const getTopPosition = () => {
     if (screenWidth > 1024) {
@@ -337,7 +345,7 @@ function GeneratePage() {
           gtag('config', 'G-V50JJSBVK4');
         `}
       </Script>
-      
+
       <ProgressBar step={step} />
       <PopAlert
         visible={showAlert}
@@ -352,8 +360,16 @@ function GeneratePage() {
         zIndex={1001}
       />
       <TitleBlock
-        title={screenWidth <= 480 && meta.title_mobile ? meta.title_mobile : meta.title}
-        subtitle={screenWidth <= 480 && meta.subtitle_mobile ? meta.subtitle_mobile : meta.subtitle}
+        title={
+          screenWidth <= 480 && meta.title_mobile
+            ? meta.title_mobile
+            : meta.title
+        }
+        subtitle={
+          screenWidth <= 480 && meta.subtitle_mobile
+            ? meta.subtitle_mobile
+            : meta.subtitle
+        }
       />
       <NextButton
         onClick={handleNext}
@@ -401,7 +417,12 @@ function GeneratePage() {
         </div>
       )}
 
-      {showModal && <TagGuideModal onClose={() => setShowModal(false)} screenWidth={screenWidth} />}
+      {showModal && (
+        <TagGuideModal
+          onClose={() => setShowModal(false)}
+          screenWidth={screenWidth}
+        />
+      )}
     </main>
   );
 }

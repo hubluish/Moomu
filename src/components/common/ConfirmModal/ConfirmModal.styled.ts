@@ -10,7 +10,7 @@ export const ModalBackdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1001; // 다른 모달보다 위에 오도록
+  z-index: 1001;
 `;
 
 export const ModalContainer = styled.div`
@@ -20,6 +20,11 @@ export const ModalContainer = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   width: 380px;
   text-align: center;
+
+  @media (max-width: 375px) {
+    width: 90%;
+    padding: 25px;
+  }
 
   user-select: none;
   -webkit-user-select: none; /* Safari/Chrome */
@@ -31,6 +36,10 @@ export const ModalTitle = styled.h2`
   font-size: 17px;
   font-weight: var(--font-weight-medium);
   margin: 0 0 30px 0;
+
+  @media (max-width: 375px) {
+    font-size: 14px;
+  }
 `;
 
 export const ButtonWrapper = styled.div`
@@ -48,6 +57,11 @@ export const ModalButton = styled.button<{ variant?: "default" | "danger" }>`
   cursor: pointer;
   border: 1px solid transparent;
   transition: background-color 0.2s ease-in-out;
+
+  @media (max-width: 375px) {
+    font-size: 14px;
+    padding: 8px;
+  }
 
   background-color: ${({ variant }) =>
     variant === "danger" ? "#EF4444" : "#8A4FFE"};

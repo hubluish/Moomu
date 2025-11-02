@@ -46,11 +46,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
       </head>
-      
+
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {/* Google Tag Manager (noscript) - immediately after opening body */}
         <noscript>
-          <iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`} height="0" width="0" style={{display: 'none', visibility: 'hidden'}} />
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
         </noscript>
         <StyledComponentsRegistry>
           <div style={{ position: "relative", zIndex: 30 }}>

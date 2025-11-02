@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect, useCallback, ReactNode } from "react";
 import { useParams } from "next/navigation";
+import styled from "styled-components";
+import Footer from "@/components/common/footer/Footer";
 import { getFolderById, getMoodboardsByFolder } from "@/utils/folders";
 import { removeMoodboardFromFolder } from "@/utils/folders";
 import { moveMoodboardToTrash } from "@/utils/moodboard";
@@ -21,6 +23,46 @@ interface MoodboardResult {
   created_at: string;
   is_public: boolean;
 }
+
+const MoodboardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
+  gap: 28px;
+
+  @media (max-width: 1421px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1309px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1249px) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 1121px) {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  }
+`;
+
+const Wrapper = styled.div`
+  flex: 1;
+  padding: 50px 70px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  @media (max-width: 439px) {
+    padding: 30px 50px;
+  }
+
+  @media (max-width: 379px) {
+    padding: 30px 22px;
+  }
+`;
 
 const TrashIcon = () => (
   <Image
@@ -172,135 +214,131 @@ const FolderDetailPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh", marginTop: "64px" }}>
-      <Sidebar />
-
-      <main
+    <div>
+      <div
         style={{
-          flex: 1,
-          padding: "50px 70px",
           display: "flex",
-          flexDirection: "column",
-          overflowY: "auto",
+          height: "100vh",
+          marginTop: "64px",
+          minHeight: "100vh",
         }}
       >
-        <h1
-          style={{
-            marginBottom: "30px",
-            display: "flex",
-            alignItems: "center",
-            gap: "20px",
-            userSelect: "none",
-          }}
-        >
-          <Link href="/mypage/folder">
-            <Image
-              src="/assets/icons/left.svg"
-              alt="뒤로가기"
-              width={24}
-              height={24}
-              draggable="false"
-            />
-          </Link>
-          {isLoading ? "..." : folderName}
-        </h1>
+        <Sidebar />
 
-        <div style={{ flex: 1, display: "grid" }}>
-          {isLoading ? (
-            <MoodboardGridSkeleton count={6} />
-          ) : moodboards.length === 0 ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                height: "100%",
-                color: "#888",
-              }}
-            >
-              <p>이 폴더에 무드보드가 없습니다.</p>
-            </div>
-          ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(332px, 1fr))",
-                gap: "45px 28px",
-              }}
-            >
-              {moodboards.map((board) => {
-                const allKeywords = (board.tags || []).slice(0, 4);
+        <Wrapper>
+          <h1
+            style={{
+              marginBottom: "30px",
+              display: "flex",
+              alignItems: "center",
+              gap: "20px",
+              userSelect: "none",
+            }}
+          >
+            <Link href="/mypage/folder">
+              <Image
+                src="/assets/icons/left.svg"
+                alt="뒤로가기"
+                width={24}
+                height={24}
+                draggable="false"
+              />
+            </Link>
+            {isLoading ? "..." : folderName}
+          </h1>
 
-                return (
-                  <div
-                    key={board.id}
-                    onClick={() => handleMoodboardClick(board.id)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <Moodboard
+          <div style={{ flex: 1, display: "grid" }}>
+            {isLoading ? (
+              <MoodboardGridSkeleton count={6} />
+            ) : moodboards.length === 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  color: "#888",
+                }}
+              >
+                <p>이 폴더에 무드보드가 없습니다.</p>
+              </div>
+            ) : (
+              <MoodboardGrid>
+                {moodboards.map((board) => {
+                  const allKeywords = (board.tags || []).slice(0, 4);
+
+                  return (
+                    <div
                       key={board.id}
-                      id={board.id}
-                      imageUrl={board.cover_image_url}
-                      keywords={allKeywords}
-                      date={board.created_at}
-                      type="folder"
-                      onRemoveFromFolder={() =>
-                        openRemoveConfirmModal(board.id)
-                      }
-                      onMoveToTrash={() => openTrashConfirmModal(board.id)}
-                      onAddToFolder={() => handleOpenFolderModal(board.id)}
-                      isPublic={board.is_public}
-                      onTogglePublic={(_moodboardId: string) => {}}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </main>
+                      onClick={() => handleMoodboardClick(board.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <Moodboard
+                        key={board.id}
+                        id={board.id}
+                        imageUrl={board.cover_image_url}
+                        keywords={allKeywords}
+                        date={board.created_at}
+                        type="folder"
+                        onRemoveFromFolder={() =>
+                          openRemoveConfirmModal(board.id)
+                        }
+                        onMoveToTrash={() => openTrashConfirmModal(board.id)}
+                        onAddToFolder={() => handleOpenFolderModal(board.id)}
+                        isPublic={board.is_public}
+                        onTogglePublic={(_moodboardId: string) => {}}
+                      />
+                    </div>
+                  );
+                })}
+              </MoodboardGrid>
+            )}
+          </div>
+        </Wrapper>
 
-      {isFolderModalOpen && selectedMoodboardId && (
-        <FolderListModal
-          moodboardId={selectedMoodboardId}
-          onClose={handleCloseFolderModal}
-          currentFolderId={folderId}
-          onSuccess={(movedFolderName) => {
-            displayToast(
-              `'${movedFolderName}' 폴더로 이동했어요`,
-              <FolderIcon />
-            );
-            fetchData();
-            handleCloseFolderModal();
+        {isFolderModalOpen && selectedMoodboardId && (
+          <FolderListModal
+            moodboardId={selectedMoodboardId}
+            onClose={handleCloseFolderModal}
+            currentFolderId={folderId}
+            onSuccess={(movedFolderName) => {
+              displayToast(
+                `'${movedFolderName}' 폴더로 이동했어요`,
+                <FolderIcon />
+              );
+              fetchData();
+              handleCloseFolderModal();
+            }}
+            displayToast={displayToast}
+          />
+        )}
+
+        <ConfirmModal
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={() => {
+            confirmAction();
+            setIsConfirmOpen(false);
           }}
-          displayToast={displayToast}
+          title={modalTitle}
+          confirmText="삭제"
+          variant={modalVariant}
         />
-      )}
 
-      <ConfirmModal
-        isOpen={isConfirmOpen}
-        onClose={() => setIsConfirmOpen(false)}
-        onConfirm={() => {
-          confirmAction();
-          setIsConfirmOpen(false);
-        }}
-        title={modalTitle}
-        confirmText="삭제"
-        variant={modalVariant}
-      />
+        <MoodboardModal
+          moodboardId={selectedBoardIdForModal}
+          open={isBoardModalOpen}
+          onClose={handleCloseBoardModal}
+        />
 
-      <MoodboardModal
-        moodboardId={selectedBoardIdForModal}
-        open={isBoardModalOpen}
-        onClose={handleCloseBoardModal}
-      />
-
-      <Toast
-        message={toastInfo.message}
-        show={toastInfo.show}
-        icon={toastInfo.icon}
-      />
+        <Toast
+          message={toastInfo.message}
+          show={toastInfo.show}
+          icon={toastInfo.icon}
+        />
+      </div>
+      <Footer />
     </div>
   );
 };
