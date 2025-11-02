@@ -199,6 +199,63 @@
   z-index: 10;
 }
 
+@media (max-width: 450px) {
+  .frame {
+    width: 400px;
+    height: 250px;
+  }
+  .imageFrame {
+    width: 400px;
+    height: 250px;
+  }
+
+  .textFrame {
+    width: 90%;
+    color: #fff;
+    margin: 0 15px 25px 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .text1 {
+    height: 50px;
+  }
+  .text1_1 {
+    font-size: 16px;
+    font-weight: 500;
+    height: 20px;
+  }
+  .text1_2 {
+    font-size: 14px;
+    width: auto;
+    height: 29px;
+  }
+
+  .text2 {
+    width: auto;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .text2_1 {
+    height: 20px;
+    font-size: 15px;
+  }
+  .text2_2 {
+    width: auto;
+    height: 29px;
+    font-size: 13px;
+  }
+
+  .pagenationOverlay {
+    left: 50%;
+    bottom: 10px;
+  }
+}
+
 @media (max-width: 375px) {
   .frame {
     width: 331px;

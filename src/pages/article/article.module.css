@@ -51,6 +51,17 @@
   border: none;
 }
 
+@media (max-width: 450px) {
+  .container {
+    gap: 20px;
+    padding: 20px 17px;
+  }
+
+  .title {
+    font-size: 25px;
+  }
+}
+
 @media (max-width: 375px) {
   .container {
     gap: 20px;

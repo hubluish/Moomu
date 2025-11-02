@@ -92,17 +92,24 @@
   font-weight: 700;
   line-height: normal;
   margin-bottom: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* 설명 텍스트 */
 .description {
+  width: 100%;
   font-size: 13px;
   color: var(--color-text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-@media (max-width: 950px) {
+@media (max-width: 450px) {
   .card {
-    width: 240px;
+    width: 200px;
     height: 300px;
   }
   .imageContainer {

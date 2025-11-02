@@ -38,6 +38,42 @@
   background: var(--color-main);
 }
 
+@media (max-width: 450px) {
+  .tabRow {
+    width: 400px;
+    height: 35px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-right: 20px;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .tabRow::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tabBtn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: auto;
+    padding: 6px 22px;
+  }
+
+  .wrapper::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 35px;
+    width: 40px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), #fff);
+    pointer-events: none;
+    z-index: 10;
+  }
+}
+
 @media (max-width: 375px) {
   .tabRow {
     width: 331px;
