@@ -4,6 +4,7 @@ import ArticleClient from "./ArticleClient";
 import Footer from "@/components/common/footer/Footer";
 import "@/styles/variable.css";
 import Script from "next/script";
+import BannerResponsive from "@/components/adfit/BannerResponsive";
 
 export default function ArticlePage() {
   return (
@@ -23,6 +24,7 @@ export default function ArticlePage() {
       </Script>
       <Suspense fallback={<div>로딩 중...</div>}>
         <ArticleClient />
+        <BannerResponsive />
         <Footer />
       </Suspense>
     </>

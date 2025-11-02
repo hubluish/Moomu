@@ -7,7 +7,7 @@ declare global {
     }
 }
 
-const LandingBannerResponsive: React.FC = () => {
+const BannerResponsive: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -57,4 +57,4 @@ const LandingBannerResponsive: React.FC = () => {
     );
 };
 
-export default LandingBannerResponsive;
+export default BannerResponsive;
