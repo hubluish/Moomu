@@ -75,3 +75,22 @@
     white-space: pre-line;
     overflow: hidden;
 }
+
+@media (max-width: 480px) {
+    .container {
+        width: 327px;
+        height: 53px;
+        gap: 11px;
+        border-radius: 11px;
+        justify-content: center;
+    }
+
+    .title {
+        font-size: 29px;
+    }
+
+    .textarea {
+        font-size: 29px;
+    }
+    
+}
