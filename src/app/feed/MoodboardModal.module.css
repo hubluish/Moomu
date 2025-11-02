@@ -153,8 +153,8 @@
     ' images keyword keyword examples ';
   gap: 16px;
   height: 100%;
-  align-items: start;        /* 각 셀의 세로 정렬 */
-  justify-items: center;     /* 각 셀의 가로 가운데 정렬 */
+  align-items: start;
+  justify-items: center;
 }
 
 .titleBox { grid-area: title; position: relative; left: 100px; }

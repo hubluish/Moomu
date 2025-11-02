@@ -17,6 +17,11 @@
   cursor: pointer;
 }
 
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 .btn:focus-visible {
   outline: 2px solid rgba(61, 56, 245, 0.35);
   outline-offset: 4px;
@@ -47,4 +52,14 @@
   color: #ffffff; /* 흰색 소문자 라벨 */
   white-space: nowrap;
   user-select: none;
+}
+
+@media (max-width: 480px) {
+  .container {
+    gap: 10px;
+  }
+
+  .label {
+    font-size: 10px;
+  }
 }

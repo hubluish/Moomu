@@ -174,5 +174,40 @@
     bottom: 10px;
     right: 10px;
     font-size: 10px;
-    color: #fff;
+    gap: 10px;
+}
+
+
+
+@media (max-width: 480px) {
+    .container {
+        width: 327px;
+        height: 203px;
+        border-radius: 11px;
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 15px;
+    }
+
+    .imageGrid {
+        grid-template-columns: repeat(4, 67px);
+        grid-auto-rows: 67px;
+        gap: 5px;
+        margin-top: 17px;
+    }
+
+    .imageWrapper {
+        width: 67px;
+        height: 67px;
+    }
+
+    .imageGrid > a:last-child {
+        display: none;
+    }
+
+    .credit {
+        font-size: 7px;
+    }
 }

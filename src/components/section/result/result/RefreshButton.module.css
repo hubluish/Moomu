@@ -72,3 +72,21 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+@media (max-width: 480px) {
+    .button {
+        width: 37px;
+        height: 37px;
+    }
+
+    .icon {
+        width: 17px;
+        height: 17px;
+    }
+
+    .tooltip {
+        font-size: 8px;
+        padding: 1px 3px;
+        height: 14px;
+    }
+}

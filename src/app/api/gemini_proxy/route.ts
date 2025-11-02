@@ -16,56 +16,58 @@ export async function POST(req: Request) {
     }
 
 const prompt = `
-당신은 최신 디자인 트렌드와 색채 심리학에 정통하며, ColorHunt, Pinterest, Noonnu 데이터베이스에서 실제 검색 가능한 키워드를 기반으로 감성 무드보드를 기획하는 전문 컨설턴트입니다.
+You are a professional consultant who specializes in emotional moodboard design,
+well-versed in color psychology and latest design trends,
+and familiar with searchable data from ColorHunt, Pinterest, and Noonnu databases.
 
-[입력]
-색상: ${color}
-폰트: ${font}
-이미지/감정: ${image}
+[Input]
+Color: ${color}
+Font: ${font}
+Image/Emotion: ${image}
 
-[요청사항]
-키워드 기반으로 총 3세트를 json 파일로 응답할 것
+[Task]
+Generate a JSON file containing 3 unique sets based on the given keywords.
+Each set must include the following fields in this exact order:
+colors → image → font → sentences
 
-각 세트는 아래 항목 포함 (순서: 색상 → 이미지 → 폰트 → 문장)
+colors
+You are a professional color palette designer.
+Based on the given description, create a color palette with 4 HEX codes that best express the intended mood and atmosphere.
 
-colors: You are a professional color palette designer. Based on the following description, create a color palette with 4 HEX codes.
+image
+Generate one single English word representing a real, searchable image keyword that aligns with the selected mood.
 
-image: 선택된 무드에 맞는 한 단어로 된 실제 검색 가능한 영어 이미지 키워드 1개
-
-font: 폰트 키워드 (제공 리스트 중 입력 키워드와 유사한 단어 1개 선택)
-
-선택 가능한 폰트 키워드 리스트:  
+font
+Choose one font keyword from the following list that most closely matches the input keyword:
 붓글씨, 캘리그라피, 삐뚤빼뚤, 어른 손글씨, 손글씨 바탕, 각진 손글씨, 둥근 손글씨, 장식 손글씨, 감성적인, 크레파스, 장식체, 아이 손글씨, 색연필, 필기체, 마카, 네모 폰트, 캐릭터, 별모양, 구름, 복실복실, 분필
 
-sentences: 입력된 키워드들의 분위기와 감정을 반영하여, 감성적이고 시적인 짧은 문장 3개를 만들 것.  
-- 각 문장은 15자 이내, 문장 내 쉼표 절대 포함하지 말 것
-- 시 구절처럼 따뜻하고 직관적으로 표현할 것  
-- 은유적이면서도 이해하기 쉬운 표현  
-- 키워드의 감성을 직접적으로 드러내되, 너무 설명적이지 않고 감각적으로 쓸 것 
-- The three sentences should be organically connected.
+sentences
+Create three short poetic and emotional sentences (in Korean) that reflect the mood and feeling of the given keywords.
+Each sentence must:
+- Be around 20 Korean characters
+- Never include commas (,)
+- Feel like warm, intuitive lines of poetry
+- Use metaphorical yet easily understandable language
+- Express the emotion of the keywords without being overly literal or descriptive
+- The three lines should be organically connected, forming a natural emotional flow
 
-기존 프롬프트 구조(3세트, JSON 파일로 출력) 반드시 유지  
-결과 외 다른 말 절대 출력 금지
-
-각 항목의 제목은 다음으로 설정:
-colors, image, font, sentences
-
-모든 세트는 겹치지 않도록 구성(폰트 제외), colors와 sentences는 배열로 구성할 것
-`;
+[Output Format Rules]
+- You must output exactly 3 sets, all unique (no overlap, except for fonts if contextually appropriate)
+- Each set must include: colors, image, font, and sentences
+- Both colors and sentences must be arrays
+- Output only the JSON content, and nothing else`;
 
     try {
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const text = await response.text();
-
-        // Extract JSON from the response
         const match = text.match(/```json\s*([\s\S]+?)\s*```/);
         const jsonStr = match ? match[1] : text;
 
         const outputJson = JSON.parse(jsonStr);
         
-        console.log("파싱된 JSON 응답 : ", outputJson)
+        // console.log("파싱된 JSON 응답 : ", outputJson)
 
         return new Response(JSON.stringify(outputJson), { status: 200 });
     } catch (error) {

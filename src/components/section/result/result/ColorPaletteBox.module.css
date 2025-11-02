@@ -106,3 +106,19 @@
     .show {
     opacity: 1;
     }
+
+@media (max-width: 480px) {
+    .container {
+        width: 158px;
+        height: 206px;
+    }
+
+    .colorBlock {
+        width: 80px;
+        height: 35px;
+    }
+
+    .colorCode {
+        font-size: 8px;
+    }
+}

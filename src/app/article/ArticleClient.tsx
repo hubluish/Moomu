@@ -31,10 +31,14 @@ export default function ArticleClient() {
   useEffect(() => {
     fetch("/api/articles")
       .then((res) => res.json())
-      .then((data) => setArticles(data));
+      .then((data) => setArticles(Array.isArray(data) ? data : []))
+      .catch((err) => {
+        console.error('게시글 데이터 로드 실패:', err);
+        setArticles([]);
+      });
   }, []);
 
-  const articlesForTabPage: Article[] = articles.map(({ _id, ...rest }) => ({
+  const articlesForTabPage: Article[] = (articles || []).map(({ _id, ...rest }) => ({
     id: _id,
     slug: toSlug(rest.title),
     ...rest,
@@ -55,8 +59,8 @@ export default function ArticleClient() {
   // 현재 탭에 해당하는 게시글만 필터링
   const filteredArticles =
     activeTab === 0
-      ? articles
-      : articles.filter(
+      ? (articles || [])
+      : (articles || []).filter(
           (article) => article.category === TAB_LABELS[activeTab]
         );
 
@@ -137,7 +141,10 @@ export default function ArticleClient() {
               // 새 글 등록 후 목록 새로고침
               fetch("/api/articles")
                 .then((res) => res.json())
-                .then((data) => setArticles(data));
+                .then((data) => setArticles(Array.isArray(data) ? data : []))
+                .catch((err) => {
+                  console.error('게시글 데이터 새로고침 실패:', err);
+                });
             }}
           />
         )}

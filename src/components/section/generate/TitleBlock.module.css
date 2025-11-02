@@ -1,0 +1,48 @@
+.container {
+    margin: 150px auto 0 auto;
+    text-align: center;
+  }
+  
+  .title {
+    color: #000;
+    font-family: 'Pretendard';
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    margin-bottom: 24px;
+  }
+  
+  .subtitle {
+    color: #000;
+    font-family: 'Pretendard';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+  }
+
+  @media (max-width: 1023px) {
+    .container {
+      margin-top: 120px;
+    }
+    .title {
+      font-size: 28px;
+    }
+    .subtitle {
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .container {
+      margin-top: 60px;
+    }
+    .title {
+      font-size: 24px;
+    }
+    .subtitle {
+      font-size: 14px;
+    }
+  }

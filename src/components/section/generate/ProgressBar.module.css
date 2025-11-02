@@ -1,6 +1,6 @@
     .container {
     display: flex;
-    width: 1440px;
+    width: 100%;
     padding-bottom: 170px;
     flex-direction: column;
     align-items: flex-start;
@@ -11,12 +11,13 @@
 
     .bars {
     display: flex;
-    gap: 10px;
+    gap: 3px;
     width: 100%;
+    justify-content: center;
     }
 
     .stepBox {
-    width: calc((100vw - 30px - 40px) / 4); 
+    width: calc((100vw - 12px) / 4); 
     height: 10px;
     flex-shrink: 0;
     border-radius: 80px;

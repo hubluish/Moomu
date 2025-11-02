@@ -3,7 +3,7 @@
     border: 0.5px solid var(--glass, #C5C2FF);
     background: var(--glass_backFill, rgba(255, 255, 255, 0.02));
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25) inset;
-    width: 195px;
+    width: 300px;
     height: 200px;
     flex-shrink: 0;
     position: relative;
@@ -25,32 +25,49 @@
     color: #fff;
     font-family: Pretendard, system-ui, -apple-system, Segoe UI, Roboto, 'Noto Sans KR', sans-serif;
     font-size: 16px;
+    font-style: normal;
     font-weight: 400;
     line-height: 15px;
+    letter-spacing: 0.2px;
 }
 
 .content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
-    padding: 0 24px;
+    align-items: flex-start;
+    gap: 5px;
+    text-align: left;
+    padding: 0 20px;
     width: 100%;
+    margin-top: 10px;
 }
 
-.empty {
-    color: #ddd;
-    font: 500 12px/14px Pretendard, system-ui, -apple-system, 'Noto Sans KR', sans-serif;
-    opacity: 0.9;
+.text {
+    margin: 0;
+    color: #fff;
+    font-family: Pretendard, system-ui, -apple-system, Segoe UI, Roboto, 'Noto Sans KR', sans-serif;
+    font-size: 20px;
+    line-height: 31px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.image {
-    width: 75px;
-    height: auto;
-    cursor: pointer;
-    border-radius: 10px;
-    display: block;
-}
+/* replaced per-component arrows with TopRightArrows */
 
-/* arrows replaced by shared TopRightArrows */
+@media (max-width: 480px) {
+    .container {
+        width: 203px;
+        height: 151px;
+        padding: 20px;
+    }
+    .title {
+        font-size: 15px;
+    }
+    .text {
+        font-size: 16px;
+        line-height: 20px;
+    }
+}

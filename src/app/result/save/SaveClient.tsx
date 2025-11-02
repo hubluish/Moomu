@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import BackButton from '@/components/section/result/BackButton';
-import ActionButtons from '@/components/section/result/ActionButtons';
-import ShareButton from '@/components/section/result/ShareButton';
+import BackButton from '@/components/section/result/save/BackButton';
+import ActionButtons from '@/components/section/result/save/ActionButtons';
+import ShareButton from '@/components/section/result/save/ShareButton';
 import { useRouter, useSearchParams } from "next/navigation";
 
-import MoodboardPreview from '@/components/section/result/MoodboardPreview';
+import MoodboardPreview from '@/components/section/result/save/MoodboardPreview';
 import { supabase } from '@/utils/supabase';
 import styles from './page.module.css';
 
@@ -17,8 +17,8 @@ export default function SaveClient() {
     const [showShare, setShowShare] = useState(false);
     const shareBtnRef = useRef<HTMLDivElement>(null);
     const [coverUrl, setCoverUrl] = useState<string | null>(null);
+    const [isCoverReady, setIsCoverReady] = useState(false);
     const [categories, setCategories] = useState<string[]>([]);
-    const [loadingCover, setLoadingCover] = useState<boolean>(true);
     const coverRequestedRef = useRef<boolean>(false);
 
     useEffect(() => {
@@ -28,7 +28,6 @@ export default function SaveClient() {
             if (typeof window === 'undefined') return;
             const mid = searchParams.get('mid');
             if (!mid) {
-            setLoadingCover(false);
             return;
             }
             const { data, error } = await supabase
@@ -40,6 +39,10 @@ export default function SaveClient() {
                 console.error('moodboard 불러오기 실패:', error);
                 } else {
                 const curUrl = data?.cover_image_url ?? null;
+                if (curUrl && /\/storage\/v1\/object\/public\/moodboard\//.test(curUrl)) {
+                  setIsCoverReady(true);
+                }
+
                 setCoverUrl(curUrl);
                 setCategories(data?.tags ?? []);
                 const shouldGenerate = !curUrl
@@ -73,7 +76,10 @@ export default function SaveClient() {
                     });
                     if (res.ok) {
                         const j = await res.json();
-                        if (j?.cover_image_url) setCoverUrl(j.cover_image_url);
+                        if (j?.cover_image_url) {
+                          setCoverUrl(j.cover_image_url);
+                          setIsCoverReady(true);
+                        }
                     } else {
                         console.warn('generate-cover failed with status', res.status);
                     }
@@ -85,7 +91,6 @@ export default function SaveClient() {
         } catch (e) {
             console.error('moodboard 조회 에러:', e);
         } finally {
-            setLoadingCover(false);
         }
         };
         run();
@@ -238,30 +243,8 @@ export default function SaveClient() {
 
 
     // Clipboard API 실패 시 textarea fallback 제공
-    const handleCopyLink = useCallback(async () => {
-        const url = window.location.href;
-        try {
-            if (navigator?.clipboard?.writeText) {
-                await navigator.clipboard.writeText(url);
-                alert('링크가 클립보드에 복사되었습니다.');
-                return;
-            }
-        } catch {}
-        try {
-            const textarea = document.createElement('textarea');
-            textarea.value = url;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.focus();
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            alert('링크가 클립보드에 복사되었습니다.');
-        } catch (error) {
-            console.error('링크 복사 실패:', error);
-            alert('링크 복사에 실패했어요.');
-        }
+    const handleCopyLink = useCallback(() => {
+        alert('링크 공유는 준비 중이에요.');
     }, []);
 
     const handleShareKakao = useCallback(() => {
@@ -276,8 +259,8 @@ export default function SaveClient() {
             </div>
             <div className={styles.mainContainer}>
                 <div className={styles.content}>
-                    <h1>하나뿐인 무드보드가 완성되었어요</h1>
-                    <p>지금 바로 저장하고 멋진 디자인을 만들어요!</p>
+                    <h1 className={styles.h1}>하나뿐인 무드보드가 완성되었어요</h1>
+                    <p className={styles.p}>지금 바로 저장하고 멋진 디자인을 만들어요!</p>
                 </div>
                 <div className={styles.actionButtons}>
                     <div style={{ display: 'inline-block', position: 'relative' }} ref={shareBtnRef}>
@@ -286,6 +269,7 @@ export default function SaveClient() {
                             onSaveImage={() => { alert('이미지 저장 기능은 준비 중이에요.'); }}
                         onPostFeed={handlePostFeed}
                             onShare={handleToggleShare}
+                            isCoverReady={isCoverReady}
                         />
 
                         {showShare && (
@@ -299,7 +283,7 @@ export default function SaveClient() {
                         )}
                     </div>
                 </div>
-                <MoodboardPreview coverUrl={coverUrl} loading={loadingCover} categories={categories} />
+                <MoodboardPreview coverUrl={coverUrl} categories={categories} />
             </div>
         </main>
     );

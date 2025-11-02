@@ -106,3 +106,36 @@
     line-height: normal;
     white-space: nowrap;
 }
+
+@media (max-width: 480px) {
+    .container {
+        width: 323px;
+        height: 197px;
+        padding: 10px;
+        gap: 14px;
+    }
+
+    .catViewport {
+        height: 80px;
+    }
+
+    .catTrack {
+        height: 30px;
+        gap: 10px;
+    }
+
+    .badge {
+        height: 25px;
+        padding: 5px;
+        gap: 5px;
+    }
+
+    .badgeText {
+        font-size: 15px;
+    }
+    
+    .content {
+        height: 134px;
+        width: 304px;
+    }
+}

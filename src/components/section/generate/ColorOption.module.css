@@ -1,7 +1,7 @@
 .container {
     cursor: pointer;
     display: flex;
-    width: 343px;
+    max-width: 343px;
     padding: 16px;
     justify-content: center;
     align-items: flex-start;
@@ -96,4 +96,43 @@
     font-style: normal;
     font-weight: 400;
     line-height: 24px; /* 150% */
+}
+
+@media (max-width: 479px) {
+    .container {
+        width: 126px;
+        height: 180px;
+        flex-direction: column;
+        padding: 8px;
+        gap: 12px;
+        justify-content: space-between;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .description {
+        display: none;
+    }
+
+    .imageArea {
+        width: 110px;
+        height: 90px;
+        flex: none;
+    }
+
+    .infoArea {
+        width: 110px;
+        height: 61px;
+        padding: 0;
+        flex: none;
+    }
+    
+    .title {
+        font-size: 16px;
+        white-space: nowrap;
+    }
+
+    .colorPreviewWrapper {
+        width: 110px;
+        height: 25px;
+    }
 }
