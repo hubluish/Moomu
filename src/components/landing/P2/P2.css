@@ -1,6 +1,6 @@
 .about-section {
   margin: clamp(48px, 10vw, 120px) auto;
-  width: min(94vw, 1100px);
+  width: clamp(320px, 88vw, 1920px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;

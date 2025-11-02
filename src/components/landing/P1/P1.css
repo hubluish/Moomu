@@ -5,9 +5,9 @@
   align-items: center;
   gap: 53px;
   align-self: stretch;
-  margin: 0px auto 50px auto;
+  margin: 0 auto 50px;
   width: 100%;
-  max-width: 1400px;
+  max-width: clamp(1080px, 84vw, 1920px);
 
   user-select: none;
   -webkit-user-select: none; /* Safari/Chrome */
@@ -18,7 +18,7 @@
 .P1-title-container {
   display: flex;
   width: 100%;
-  max-width: 825px;
+  max-width: clamp(680px, 48vw, 1080px);
   height: auto;
   justify-content: center;
   align-items: center;
@@ -92,12 +92,12 @@
 }
 
 .image-card {
-  width: 18vw;
+  width: clamp(160px, 18vw, 360px);
   height: 100%;
   min-width: 120px;
-  max-width: 240px;
+  max-width: clamp(220px, 18vw, 360px);
   min-height: 120px;
-  max-height: 240px;
+  max-height: clamp(220px, 18vw, 360px);
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
   display: flex;

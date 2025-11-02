@@ -64,7 +64,7 @@
 
 .p4-container {
   position: relative;
-  width: clamp(280px, 98vw, 1380px);
+  width: clamp(320px, 94vw, 2000px);
   height: clamp(260px, 56vw, 620px);
   margin: clamp(20px, 5vw, 48px) clamp(8px, 2.6vw, 36px) 0 clamp(6px, 1.2vw, 12px);
   overflow: hidden;

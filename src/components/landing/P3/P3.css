@@ -5,10 +5,11 @@
   justify-content: center;
   align-items: flex-start;
   flex-wrap: nowrap;
-  gap: clamp(12px, 3vw, 40px);
-  width: min(96vw, 1200px);
+  gap: clamp(12px, 2.4vw, 48px);
+  width: 100%;
+  max-width: clamp(360px, 80vw, 1360px);
   margin: clamp(24px, 6vw, 48px) auto 0;
-  padding: 0 clamp(8px, 4vw, 28px);
+  padding: 0 clamp(12px, 3vw, 32px);
   box-sizing: border-box;
 }
 
@@ -17,8 +18,8 @@
   perspective: 1000px;
   height: auto;
   aspect-ratio: 3 / 4;
-  flex: 0 0 clamp(82px, 26vw, 320px);
-  max-width: clamp(82px, 26vw, 320px);
+  flex: 0 0 clamp(120px, 24vw, 420px);
+  max-width: clamp(120px, 24vw, 420px);
 }
 
 .card-inner {
