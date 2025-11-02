@@ -46,7 +46,8 @@ function detectBgMode(path: string) {
     path.startsWith("/mypage") ||
     path.startsWith("/settings") ||
     path.startsWith("/article") ||
-    path.startsWith("/survey")
+    path.startsWith("/survey") ||
+    path.startsWith("/admin")
   ) {
     return "light";
   }
