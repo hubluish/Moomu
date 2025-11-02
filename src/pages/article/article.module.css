@@ -51,7 +51,11 @@
 }
 
 @media (max-width: 375px) {
+  .container {
+    gap: 20px;
+  }
+
   .title {
-    font-size: 20px;
+    font-size: 23px;
   }
 }
