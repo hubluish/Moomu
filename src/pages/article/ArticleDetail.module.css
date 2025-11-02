@@ -332,6 +332,42 @@
   }
 }
 
+@media (max-width: 395px) {
+  .container {
+    width: 350px;
+  }
+  .imageWrap {
+    width: 350px;
+    height: 235px;
+    margin-top: 90px;
+  }
+  .imageOverlay {
+    width: 350px;
+    height: 235px;
+    border-radius: 10px;
+  }
+  .titleSection {
+    width: 350px;
+    height: auto;
+    padding: 20px 0;
+    gap: 24px;
+  }
+  .contentSection {
+    width: 350px;
+    padding: 20px 0;
+    gap: 24px;
+  }
+  .keywordSection {
+    width: 350px;
+    padding: 40px 0px;
+    gap: 8px;
+  }
+  .keywordList {
+    width: 250px;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 375px) {
   .container {
     width: 331px;

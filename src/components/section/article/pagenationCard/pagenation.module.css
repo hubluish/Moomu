@@ -256,6 +256,17 @@
   }
 }
 
+@media (max-width: 395px) {
+  .frame {
+    width: 350px;
+    height: 250px;
+  }
+  .imageFrame {
+    width: 350px;
+    height: 250px;
+  }
+}
+
 @media (max-width: 375px) {
   .frame {
     width: 331px;

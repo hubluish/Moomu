@@ -126,6 +126,25 @@
   }
 }
 
+@media (max-width: 395px) {
+  .card {
+    width: 170px;
+    height: 280px;
+  }
+  .imageContainer {
+    height: 180px;
+  }
+  .row {
+    height: 20px;
+  }
+  .title {
+    font-size: 20px;
+  }
+  .description {
+    font-size: 12px;
+  }
+}
+
 @media (max-width: 375px) {
   .card {
     width: 155px;

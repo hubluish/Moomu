@@ -74,6 +74,12 @@
   }
 }
 
+@media (max-width: 395px) {
+  .tabRow {
+    width: 350px;
+  }
+}
+
 @media (max-width: 375px) {
   .tabRow {
     width: 331px;

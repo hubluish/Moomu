@@ -94,6 +94,12 @@
   }
 }
 
+@media (max-width: 395px) {
+  .textField {
+    width: 350px;
+  }
+}
+
 @media (max-width: 375px) {
   .textField {
     display: flex;

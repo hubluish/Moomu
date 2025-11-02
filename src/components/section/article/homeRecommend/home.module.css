@@ -199,6 +199,16 @@
   }
 }
 
+@media (max-width: 395px) {
+  .textContainer {
+    width: 350px;
+  }
+  .leftColumn {
+    width: 100%;
+    gap: 30px;
+  }
+}
+
 @media (max-width: 375px) {
   .container {
     margin-top: 10px;

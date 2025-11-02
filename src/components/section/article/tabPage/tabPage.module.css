@@ -179,6 +179,25 @@
   }
 }
 
+@media (max-width: 395px) {
+  .wrapper {
+    width: 356px;
+  }
+  .field {
+    padding: 30px 2px 20px 2px;
+  }
+
+  .cardGrid {
+    width: 356px;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 16px;
+  }
+
+  .moreBtnWrap {
+    padding: 20px 0px;
+  }
+}
+
 @media (max-width: 375px) {
   .wrapper {
     width: 331px;
