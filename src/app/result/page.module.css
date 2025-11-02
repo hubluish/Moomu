@@ -154,3 +154,26 @@
     gap: 20px;
   }
 }
+
+@media (max-width: 480px) {
+  .gridContainer {
+    width: 327px;
+    grid-template-rows: repeat(2, auto);
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      ' title title'
+      ' images images'
+      ' concept font '
+      ' color keyword '
+      ' examples examples ';
+    gap: 10px;
+    height: 100%;
+    align-items: start;
+    justify-items: center;
+    padding: 0;
+  }
+
+  .exampleBox {
+    display: block;
+  }
+}
