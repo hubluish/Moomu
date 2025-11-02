@@ -130,7 +130,7 @@
   .p4-container {
     height: clamp(190px, 92vw, 360px);
     margin-top: clamp(18px, 7vw, 34px);
-    margin-left: clamp(8px, 4vw, 28px);
+    margin-left: -10px;
   }
 
   .p4-scroller {
