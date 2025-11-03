@@ -104,9 +104,9 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
   const fontKeyword = useMemo(() => {
     const byName = (board?.fonts_json?.[0]?.name || "").trim();
     if (byName) return byName;
-    const hit = (board?.tags || []).find((t) => allowedFontKeywords.includes(t as any));
+    const hit = (board?.tags || []).find((t) => (allowedFontKeywords as readonly string[]).includes(t));
     return (hit || "").trim();
-  }, [board]);
+  }, [board, allowedFontKeywords]);
 
   const geminiFromBoard: GeminiSet | null = board
     ? {
