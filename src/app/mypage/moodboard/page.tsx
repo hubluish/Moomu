@@ -303,24 +303,19 @@ const MoodboardPage = () => {
                   const allKeywords = (board.tags || []).slice(0, 4);
 
                   return (
-                    <div
+                    <Moodboard
                       key={board.id}
+                      id={board.id}
+                      imageUrl={board.cover_image_url}
+                      keywords={allKeywords}
+                      date={board.created_at}
+                      type="mymoodboard"
+                      onAddToFolder={() => handleOpenFolderModal(board.id)}
+                      onMoveToTrash={() => openTrashConfirmModal(board.id)}
+                      isPublic={board.is_public}
+                      onTogglePublic={() => handleTogglePublic(board.id)}
                       onClick={() => handleMoodboardClick(board.id)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <Moodboard
-                        key={board.id}
-                        id={board.id}
-                        imageUrl={board.cover_image_url}
-                        keywords={allKeywords}
-                        date={board.created_at}
-                        type="mymoodboard"
-                        onAddToFolder={() => handleOpenFolderModal(board.id)}
-                        onMoveToTrash={() => openTrashConfirmModal(board.id)}
-                        isPublic={board.is_public}
-                        onTogglePublic={handleTogglePublic}
-                      />
-                    </div>
+                    />
                   );
                 })}
               </MoodboardGrid>
