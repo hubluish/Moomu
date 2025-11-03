@@ -80,7 +80,7 @@
 
 @media (max-width: 480px) {
     .container {
-        width: 327px;
+        max-width: 327px;
         min-height: 53px;
         max-height: 85px;
         overflow-y: auto;
@@ -107,6 +107,11 @@
         white-space: normal;          
         word-break: break-word;
         overflow-wrap: break-word;
+    }
+
+    .container.compact {
+        width: 327px;
+        max-width: 327px;
     }
     
 }

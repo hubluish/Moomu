@@ -341,8 +341,9 @@
   }
 
   .gridContainer {
+    width: 327px;
     grid-template-rows: auto auto auto auto auto;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 0.3fr 1fr;
     justify-items: start;
     grid-template-areas:
       "title title title"
@@ -408,11 +409,20 @@
     overflow:visible;
   }
 
-  .titleBox{
-    width: 353px;
+  .fontBox {
+    left: 0;
+    justify-self: start;
   }
 
   .imageBox {
-    width: 353px;
+    width: 333px;
+    height: 400px;
+  }
+
+  .closeBtn {
+    width: 30px;
+    height: 30px;
+    right: 7px;
+    top: 10px;
   }
 }
