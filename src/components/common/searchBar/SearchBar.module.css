@@ -37,3 +37,26 @@
     pointer-events: none;
     z-index: 1;
 }
+
+@media (max-width: 480px) {
+
+    .searchWrapper {
+        width: 255px;
+        height: 64px;
+        padding: 0 16px;
+    }
+
+    .searchInput {
+        font-size: 14px;
+    }
+
+    .placeholder {
+        left: 60px; /* adjusted for smaller icon */
+        font-size: 14px;
+    }
+
+    .searchIcon {
+        width: 18px;
+        height: 18px;
+    }
+}

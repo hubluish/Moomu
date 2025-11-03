@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/common/header/header";
 import Script from "next/script";
-
 import StyledComponentsRegistry from "@/components/common/registry/registry";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -35,7 +34,7 @@ export default function RootLayout({
   const GTM_ID = "GTM-M9QNXDRV";
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Google Tag Manager */}
         <Script id="gtm-script" strategy="afterInteractive">
@@ -49,7 +48,10 @@ export default function RootLayout({
         </Script>
       </head>
 
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable}`}
+        suppressHydrationWarning
+      >
         {/* Google Tag Manager (noscript) - immediately after opening body */}
         <noscript>
           <iframe
@@ -59,6 +61,7 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+
         <StyledComponentsRegistry>
           <div style={{ position: "relative", zIndex: 30 }}>
             <Header />

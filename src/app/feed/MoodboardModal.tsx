@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import styles from "./MoodboardModal.module.css";
@@ -8,6 +8,7 @@ import TitleBox from "@/components/section/result/result/TitleBox";
 import ConceptBox from "@/components/section/result/result/ConceptBox";
 import ColorPaletteBox from "@/components/section/result/result/ColorPaletteBox";
 import KeywordBox from "@/components/section/result/result/KeywordBox";
+import FontBox from "@/components/section/result/result/FontBox";
 import ExampleBox from "@/components/section/result/result/ExampleBox";
 import type { GeminiSet } from "@/types/result";
 
@@ -17,7 +18,7 @@ type Props = {
   onClose: () => void;
 };
 
-interface Image {
+interface ImageItem {
   thumb?: string;
   url?: string;
 }
@@ -37,21 +38,23 @@ type MoodboardRow = {
   title: string | null;
   cover_image_url: string | null;
   tags: string[] | null;
-  images_json?: Image[];
+  images_json?: ImageItem[];
   palette_json?: PaletteColor[];
   fonts_json?: Font[];
   concept_text?: string[] | null;
 };
 
 export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
+  // ---- Hooks (항상 최상위에서 호출) ----
   const [board, setBoard] = useState<MoodboardRow | null>(null);
   const backdropRef = useRef<HTMLDivElement | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [fontIndex, setFontIndex] = useState(0);
 
   useEffect(() => {
     if (!open || !moodboardId) return;
     let cancelled = false;
-    const run = async () => {
+    (async () => {
       try {
         const res = await fetch(
           `/api/feed/moodboard?id=${encodeURIComponent(moodboardId)}`,
@@ -59,12 +62,14 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
         );
         if (!res.ok) throw new Error(`status ${res.status}`);
         const j = await res.json();
-        if (!cancelled) setBoard(j.moodboard as MoodboardRow);
+        if (!cancelled) {
+          setBoard(j.moodboard as MoodboardRow);
+          setFontIndex(0);
+        }
       } catch (e) {
         console.error("[FeedModal] failed to load moodboard:", e);
       }
-    };
-    run();
+    })();
     return () => {
       cancelled = true;
     };
@@ -79,28 +84,29 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, onClose]);
 
-  // Ensure portal target is available (avoid SSR mismatch)
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Lock body scroll when modal is open to avoid layout shift on resize/scrollbar
   useEffect(() => {
     if (!mounted) return;
     const originalOverflow = document.body.style.overflow;
-    if (open) {
-      document.body.style.overflow = "hidden";
-    }
+    if (open) document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = originalOverflow;
     };
   }, [mounted, open]);
 
-  if (!open) return null;
+  // 훅이 아닌 상수/계산은 자유롭게 두어도 되지만,
+  // useMemo(훅)는 조건부 렌더보다 먼저 호출되어야 함
+  const allowedFontKeywords = ["붓글씨", "캘리그라피", "삐뚤빼뚤", "어른 손글씨", "손글씨 바"] as const;
 
-  const handleBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === backdropRef.current) onClose();
-  };
+  const fontKeyword = useMemo(() => {
+    const byName = (board?.fonts_json?.[0]?.name || "").trim();
+    if (byName) return byName;
+    const hit = (board?.tags || []).find((t) => allowedFontKeywords.includes(t as any));
+    return (hit || "").trim();
+  }, [board]);
 
   const geminiFromBoard: GeminiSet | null = board
     ? {
@@ -108,10 +114,17 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
           .map((p: PaletteColor) => p?.hex)
           .filter(Boolean) as string[],
         image: "",
-        font: "",
+        font: fontKeyword,
         sentences: board.concept_text || [],
       }
     : null;
+
+  // ✅ 모든 훅 호출이 끝난 다음에 조기 반환
+  if (!open) return null;
+
+  const handleBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === backdropRef.current) onClose();
+  };
 
   const modalContent = (
     <div
@@ -165,12 +178,9 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
                 <div className={`${styles.section} ${styles.imageBox}`}>
                   <div className={styles.boxTitle}>IMAGES</div>
                   <div className={styles.imageGrid}>
-                    {(Array.isArray(board?.images_json)
-                      ? board!.images_json!
-                      : []
-                    )
+                    {(Array.isArray(board?.images_json) ? board!.images_json! : [])
                       .slice(0, 9)
-                      .map((img: Image, idx: number) => (
+                      .map((img: ImageItem, idx: number) => (
                         <div className={styles.imageItem} key={idx}>
                           <Image
                             src={img?.thumb || img?.url || ""}
@@ -191,39 +201,15 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
                 </div>
 
                 <div className={`${styles.section} ${styles.fontBox}`}>
-                  <div className={styles.fontCard}>
-                    <div className={styles.boxTitle}>FONT</div>
-                    <div className={styles.fontList}>
-                      {(Array.isArray(board?.fonts_json)
-                        ? board!.fonts_json!
-                        : []
-                      )
-                        .slice(0, 3)
-                        .map((f: Font, i: number) =>
-                          f?.image_link ? (
-                            <a
-                              key={i}
-                              href={f?.link || "#"}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <Image
-                                src={f.image_link || ""}
-                                alt={f?.name || "font"}
-                                className={styles.fontImg}
-                                width={187}
-                                height={44}
-                                unoptimized
-                              />
-                            </a>
-                          ) : (
-                            <div key={i} className={styles.fontItem}>
-                              {f?.name || "Font"}
-                            </div>
-                          )
-                        )}
-                    </div>
-                  </div>
+                  <FontBox
+                    geminiSet={
+                      geminiFromBoard || { colors: [], image: "", font: fontKeyword, sentences: [] }
+                    }
+                    fontIndex={fontIndex}
+                    onPrev={() => setFontIndex((i) => Math.max(0, i - 1))}
+                    onNext={() => setFontIndex((i) => i + 1)}
+                    disablePrev={fontIndex <= 0}
+                  />
                 </div>
 
                 <div className={`${styles.section} ${styles.paletteBox}`}>
@@ -245,6 +231,5 @@ export default function MoodboardModal({ moodboardId, open, onClose }: Props) {
     </div>
   );
 
-  // Use portal so position: fixed is relative to viewport, not any transformed ancestor
   return mounted ? createPortal(modalContent, document.body) : null;
 }

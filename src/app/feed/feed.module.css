@@ -157,3 +157,70 @@
 .pagerButton {
   font-family: "Pretendard";
 }
+
+@media (max-width: 480px) {
+    .feedTitle {
+        font-size: var(--space-60, 24px);
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .feedSubtitle {
+        font-size: var(--Body1, 16px);
+        line-height: normal;
+        font-weight: 400;
+    }
+
+    .feedHeader {
+        margin-bottom: 36px;
+    }
+
+    .searchContainer {
+        margin-bottom: 98px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .feedItem {
+        max-width: 323px;
+        height: 197px;
+    }
+
+    .feedGrid {
+        gap: 50px;
+    }
+
+    .categoryContainer {
+        gap: 10px;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .categoryBar {
+        padding: 4px;
+        font-size: 15px;
+        height: 30px;
+        border-radius: 20px;
+    }
+
+    .itemImage {
+        width: 304px;
+        height: 134px;
+    }
+
+    .hoverOverlay {
+        padding: 20px 15px;
+    }
+
+    .overlayUsername {
+        font-size: 24px;
+        color: #fff;
+    }
+
+    .overlayLikeButton button img {
+        width: 30px;
+        height: 30px;
+        border: none;
+    }
+}
