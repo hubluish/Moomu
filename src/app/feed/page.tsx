@@ -6,6 +6,7 @@ import Footer from "@/components/common/footer/Footer";
 import Script from "next/script";
 
 import "@/styles/variable.css";
+import BannerResponsive from '@/components/adfit/BannerResponsive';
 
 export default function FeedPage() {
   return (
@@ -26,6 +27,7 @@ export default function FeedPage() {
       <Suspense fallback={<div>로딩 중...</div>}>
         <FeedClient />
       </Suspense>
+      <BannerResponsive />
       <Footer />
     </>
   );
