@@ -25,6 +25,7 @@ type MoodboardProps = {
   isPublic: boolean;
   onTogglePublic: (moodboardId: string) => void;
   onUnlike?: (postId: string) => void;
+  onClick?: (e: React.MouseEvent) => void;
 };
 
 const Moodboard = ({
@@ -42,11 +43,12 @@ const Moodboard = ({
   isPublic,
   onTogglePublic,
   onUnlike,
+  onClick,
 }: MoodboardProps) => {
   const displayImage = imageUrl || "/assets/images/sky.png";
 
   return (
-    <MoodboardWrapper>
+    <MoodboardWrapper onClick={onClick}>
       <CategoryContainer>
         {keywords
           .filter((keyword) => keyword)

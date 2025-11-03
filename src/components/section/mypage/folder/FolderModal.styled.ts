@@ -27,8 +27,8 @@ export const ModalContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media (max-width: 375px) {
-    width: 90%;
+  @media (max-width: 395px) {
+    width: 80%;
     height: 50%;
     padding: 25px;
   }
