@@ -26,7 +26,6 @@
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     position: relative;
     overflow: hidden;
-    height: 197px;
 }
 
 .imageWrap {
@@ -184,7 +183,7 @@
 
     .feedItem {
         max-width: 323px;
-        
+        height: 197px;
     }
 
     .feedGrid {
@@ -208,5 +207,20 @@
     .itemImage {
         width: 304px;
         height: 134px;
+    }
+
+    .hoverOverlay {
+        padding: 20px 15px;
+    }
+
+    .overlayUsername {
+        font-size: 24px;
+        color: #fff;
+    }
+
+    .overlayLikeButton button img {
+        width: 30px;
+        height: 30px;
+        border: none;
     }
 }

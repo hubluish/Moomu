@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import SearchBar from "@/components/common/searchBar/SearchBar";
@@ -54,11 +54,13 @@ export default function FeedClient() {
   const [openModal, setOpenModal] = useState(false);
     const [selectedMoodboardId, setSelectedMoodboardId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
+  const [clickedId, setClickedId] = useState<string | null>(null);
+  const feedGridRef = useRef<HTMLDivElement>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsLargeScreen(window.innerWidth >= 900);
+      setIsDesktop(window.innerWidth > 480); // Changed to 480px for mobile detection
     };
 
     checkScreenSize();
@@ -75,6 +77,21 @@ export default function FeedClient() {
       setOpenModal(true);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (feedGridRef.current && !isDesktop && clickedId) {
+        if (!feedGridRef.current.contains(event.target as Node)) {
+          setClickedId(null);
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [clickedId, isDesktop, feedGridRef]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -427,29 +444,47 @@ export default function FeedClient() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onSearch={handleSearch}
-            placeholder={isLargeScreen ? "Search moods or categories (e.g. vintage, dreamy, cute...)" : "Search moods or categories"}
+            placeholder={isDesktop ? "Search moods or categories (e.g. vintage, dreamy, cute...)" : "Search moods or categories"}
           />
         </div>
 
         {loading ? (
           <div className={styles.loading}>Loading...</div>
         ) : (
-          <div className={styles.feedGrid}>
+          <div className={styles.feedGrid} ref={feedGridRef}>
             {filteredItems.map((item) => {
               return (
                 <div
                   key={item.id}
                   className={styles.feedItem}
-                  onClick={() => handleOpenModal(item.moodboardId, item.id)}
-                  onMouseEnter={() => setHoveredId(item.id)}
-                  onMouseLeave={() => setHoveredId(null)}
-                  onFocus={() => setHoveredId(item.id)}
-                  onBlur={() => setHoveredId(null)}
+                  onClick={() => {
+                    if (isDesktop) {
+                      handleOpenModal(item.moodboardId, item.id);
+                    } else {
+                      if (clickedId === item.id) {
+                        handleOpenModal(item.moodboardId, item.id);
+                      } else {
+                        setClickedId(item.id);
+                      }
+                    }
+                  }}
+                  onMouseEnter={isDesktop ? () => setHoveredId(item.id) : undefined}
+                  onMouseLeave={isDesktop ? () => setHoveredId(null) : undefined}
                   role="button"
                   aria-label="무드보드 미리보기 열기"
                   tabIndex={0}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') handleOpenModal(item.moodboardId, item.id);
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      if (isDesktop) {
+                        handleOpenModal(item.moodboardId, item.id);
+                      } else {
+                        if (clickedId === item.id) {
+                          handleOpenModal(item.moodboardId, item.id);
+                        } else {
+                          setClickedId(item.id);
+                        }
+                      }
+                    }
                   }}
                   style={{ cursor: item.moodboardId ? 'pointer' : 'default' }}
                 >
@@ -475,7 +510,7 @@ export default function FeedClient() {
 
                   <div
                     className={`${styles.hoverOverlay} ${
-                      hoveredId === item.id ? styles.active : ""
+                      (isDesktop && hoveredId === item.id) || (!isDesktop && clickedId === item.id) ? styles.active : ""
                     }`}
                   >
                     <div className={styles.overlayFooter}>
