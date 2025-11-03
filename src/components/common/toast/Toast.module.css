@@ -40,3 +40,24 @@
   height: 33.119px;
   aspect-ratio: 1/1;
 }
+
+@media (max-width: 480px) {
+  .toastContainer {
+    padding: 8px 15px;
+    border-radius: 40px;
+    height: 40px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16);
+  }
+
+  .toastText {
+    font-size: var(--button-notice, 15px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .toastIcon {
+    width: 26px;
+    height: 26px;
+  }
+}
