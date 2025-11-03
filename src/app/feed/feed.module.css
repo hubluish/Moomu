@@ -26,6 +26,7 @@
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     position: relative;
     overflow: hidden;
+    height: 197px;
 }
 
 .imageWrap {
@@ -179,5 +180,33 @@
         margin-bottom: 98px;
         display: flex;
         justify-content: center;
+    }
+
+    .feedItem {
+        max-width: 323px;
+        
+    }
+
+    .feedGrid {
+        gap: 50px;
+    }
+
+    .categoryContainer {
+        gap: 10px;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .categoryBar {
+        padding: 4px;
+        font-size: 15px;
+        height: 30px;
+        border-radius: 20px;
+    }
+
+    .itemImage {
+        width: 304px;
+        height: 134px;
     }
 }
