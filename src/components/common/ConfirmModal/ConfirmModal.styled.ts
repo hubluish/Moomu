@@ -21,7 +21,7 @@ export const ModalContainer = styled.div`
   width: 380px;
   text-align: center;
 
-  @media (max-width: 375px) {
+  @media (max-width: 395px) {
     width: 90%;
     padding: 25px;
   }
@@ -38,7 +38,7 @@ export const ModalTitle = styled.h2`
   margin: 0 0 30px 0;
   color: var(--color-text-main);
 
-  @media (max-width: 375px) {
+  @media (max-width: 395px) {
     font-size: 14px;
   }
 `;
@@ -59,7 +59,7 @@ export const ModalButton = styled.button<{ variant?: "default" | "danger" }>`
   border: 1px solid transparent;
   transition: background-color 0.2s ease-in-out;
 
-  @media (max-width: 375px) {
+  @media (max-width: 395px) {
     font-size: 14px;
     padding: 8px;
   }
