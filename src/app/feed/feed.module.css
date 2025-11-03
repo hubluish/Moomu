@@ -157,3 +157,27 @@
 .pagerButton {
   font-family: "Pretendard";
 }
+
+@media (max-width: 480px) {
+    .feedTitle {
+        font-size: var(--space-60, 24px);
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .feedSubtitle {
+        font-size: var(--Body1, 16px);
+        line-height: normal;
+        font-weight: 400;
+    }
+
+    .feedHeader {
+        margin-bottom: 36px;
+    }
+
+    .searchContainer {
+        margin-bottom: 98px;
+        display: flex;
+        justify-content: center;
+    }
+}

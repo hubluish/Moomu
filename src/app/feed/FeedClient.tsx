@@ -54,6 +54,18 @@ export default function FeedClient() {
   const [openModal, setOpenModal] = useState(false);
     const [selectedMoodboardId, setSelectedMoodboardId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerWidth >= 900);
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
   // Open modal automatically when `open` query is present
   useEffect(() => {
@@ -415,7 +427,7 @@ export default function FeedClient() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onSearch={handleSearch}
-            placeholder="Search moods or categories (e.g. vintage, dreamy, cute...)"
+            placeholder={isLargeScreen ? "Search moods or categories (e.g. vintage, dreamy, cute...)" : "Search moods or categories"}
           />
         </div>
 
