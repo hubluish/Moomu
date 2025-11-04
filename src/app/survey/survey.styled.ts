@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
   padding: 80px 20px;
   background-color: var(--color-background, #fefeff);
   min-height: 100vh;
+  color-scheme: light;
 `;
 
 export const FormContainer = styled.form`

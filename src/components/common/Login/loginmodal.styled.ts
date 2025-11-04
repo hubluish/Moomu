@@ -38,6 +38,7 @@ export const ModalOverlay = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  color-scheme: light;
 `;
 
 export const ModalContainer = styled.div`
