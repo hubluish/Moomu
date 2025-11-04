@@ -183,17 +183,41 @@ export default function Header() {
         /* --- 데스크톱일 때 (375px 초과) --- */
         <NavFrame>
           <Nav>
-            {NAV_ITEMS.map(({ href, label }) => (
-              <NavLink
-                key={href}
-                href={href}
-                $active={pathname === href}
-                $mode={headerMode}
-              >
-                {label}
-              </NavLink>
-            ))}
+            {NAV_ITEMS.map(({ href, label }) => {
+              if (label === "Generate Moodboard") {
+                return (
+                  <NavLink
+                    key={href}
+                    href={isLoggedIn ? href : "#"}
+                    $active={pathname === href}
+                    $mode={headerMode}
+                    onClick={(e) => {
+                      e.preventDefault(); // 기본 링크 이동을 막습니다.
+                      if (isLoggedIn) {
+                        router.push(href); // 로그인 상태면 페이지 이동
+                      } else {
+                        handleLoginClick(); // 로그아웃 상태면 모달 열기
+                      }
+                    }}
+                  >
+                    {label}
+                  </NavLink>
+                );
+              }
+
+              return (
+                <NavLink
+                  key={href}
+                  href={href}
+                  $active={pathname === href}
+                  $mode={headerMode}
+                >
+                  {label}
+                </NavLink>
+              );
+            })}
           </Nav>
+
           <RightSection>
             {isLoggedIn ? (
               // 데스크톱 + 로그인 상태 = 아바타 + 드롭다운
@@ -205,7 +229,6 @@ export default function Header() {
                 />
               </AccountWrapper>
             ) : (
-              // 데스크톱 + 로그아웃 상태 = 로그인 버튼
               <LoginButton $mode={headerMode} onClick={handleLoginClick}>
                 로그인/회원가입
               </LoginButton>
@@ -214,7 +237,6 @@ export default function Header() {
         </NavFrame>
       )}
 
-      {/* --- 👇 2. 모달 렌더링 로직을 하나로 통합합니다. --- */}
       {isLoggedIn && (
         <HeaderModal
           isOpen={isMobile ? showMobileMenu : showDropdown} // 모바일/데스크톱 상태에 맞게 전달
