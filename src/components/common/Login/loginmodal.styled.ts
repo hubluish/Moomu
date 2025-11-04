@@ -50,6 +50,10 @@ export const ModalContainer = styled.div`
 
   animation: ${fadeIn} 0.4s ease-out;
 
+  @media (max-width: 720px) {
+    width: 80%;
+  }
+
   @media (max-width: 430px) {
     width: 90%;
   }
@@ -82,7 +86,7 @@ export const TitleContent = styled.div`
   -webkit-backdrop-filter: blur(2px) hue-rotate(5deg);
   border-right: 1px solid rgba(167, 164, 255, 0.1);
 
-  @media (max-width: 430px) {
+  @media (max-width: 720px) {
     display: none;
   }
 `;
@@ -95,6 +99,11 @@ export const ModalContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 720px) {
+    width: 100%;
+    padding: 32px 80px;
+  }
 
   @media (max-width: 430px) {
     width: 100%;
@@ -127,7 +136,7 @@ export const BackgroundText = styled.div`
   user-select: none;
   -webkit-user-select: none;
 
-  @media (max-width: 430px) {
+  @media (max-width: 720px) {
     display: none;
   }
 `;
