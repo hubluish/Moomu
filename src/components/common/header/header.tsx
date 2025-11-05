@@ -183,10 +183,8 @@ export default function Header() {
       </LogoSection>
 
       {isMobile ? (
-        /* --- 모바일일 때 (375px 이하) --- */
         <RightSection>
           {isLoggedIn ? (
-            // 모바일 + 로그인 상태 = 메뉴 버튼
             <MenuButton onClick={() => setShowMobileMenu(true)}>
               <Image
                 src={
@@ -200,18 +198,16 @@ export default function Header() {
               />
             </MenuButton>
           ) : (
-            // 모바일 + 로그아웃 상태 = 로그인 버튼
             <LoginButton $mode={headerMode} onClick={handleLoginClick}>
               로그인
             </LoginButton>
           )}
         </RightSection>
       ) : (
-        /* --- 데스크톱일 때 (375px 초과) --- */
         <NavFrame>
           <Nav>
             {NAV_ITEMS.map(({ href, label }) => {
-              if (label === "Generate Moodboard") {
+              if (label === "Explore Feeds" || label === "Generate Moodboard") {
                 return (
                   <NavLink
                     key={href}
@@ -247,7 +243,6 @@ export default function Header() {
 
           <RightSection>
             {isLoggedIn ? (
-              // 데스크톱 + 로그인 상태 = 아바타 + 드롭다운
               <AccountWrapper>
                 <Avatar
                   src={avatarSrc}
