@@ -96,6 +96,31 @@ export default function Header() {
       }
     };
     getSession();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session) {
+          setIsLoggedIn(true);
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("name")
+            .eq("id", session.user.id)
+            .single();
+          if (profile?.name) {
+            setUserName(profile.name);
+          } else if (session.user.user_metadata?.full_name) {
+            setUserName(session.user.user_metadata.full_name);
+          }
+        } else {
+          setIsLoggedIn(false);
+          setUserName("");
+        }
+      }
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -127,9 +152,11 @@ export default function Header() {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     handleCloseHeaderModal();
-    if (error) alert("로그아웃에 실패했습니다. 다시 시도해 주세요.");
-    setShowDropdown(false);
-    window.location.reload();
+    if (error) {
+      alert("로그아웃에 실패했습니다. 다시 시도해 주세요.");
+    } else {
+      router.push("/");
+    }
   };
 
   const headerMode = getMode(mode, isLoggedIn);

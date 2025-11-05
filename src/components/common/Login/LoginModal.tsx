@@ -127,6 +127,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
         }
         alert("로그인 성공!");
         onClose();
+        window.location.reload();
       } else {
         const { error } = await supabase.auth.signUp({
           email,
