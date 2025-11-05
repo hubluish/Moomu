@@ -19,11 +19,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Moomu",
-  description: "Moomu",
-  icons: {
-    icon: [{ url: "data:," }],
+  title: {
+    template: "%s | Moomu",
+    default: "Moomu (무무) - AI 무드보드 생성",
   },
+  description:
+    "Moomu(무무)에서 AI로 나만의 무드보드를 만들고, 새로운 디자인 영감을 발견하세요. 아티클, 피드, 생성 기능을 모두 제공합니다.",
 };
 
 export default function RootLayout({
