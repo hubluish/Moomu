@@ -128,7 +128,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
         alert("로그인 성공!");
         onClose();
       } else {
-        const { data, error } = await supabase.auth.signUp({
+        const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -141,19 +141,19 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
           return;
         }
 
-        if (data.user) {
-          const { error: profileError } = await supabase
-            .from("profiles")
-            .insert([{ id: data.user.id, name: name }]);
+        // if (data.user) {
+        //   const { error: profileError } = await supabase
+        //     .from("profiles")
+        //     .insert([{ id: data.user.id, name: name }]);
 
-          if (profileError) {
-            console.error("프로필 저장 실패:", profileError.message);
-            alert(
-              "회원가입은 성공했지만 프로필 저장에 실패했습니다. 다시 시도해 주세요."
-            );
-            return;
-          }
-        }
+        //   if (profileError) {
+        //     console.error("프로필 저장 실패:", profileError.message);
+        //     alert(
+        //       "회원가입은 성공했지만 프로필 저장에 실패했습니다. 다시 시도해 주세요."
+        //     );
+        //     return;
+        //   }
+        // }
 
         setShowVerificationMessage(true);
       }
@@ -167,6 +167,17 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     e.preventDefault();
     setIsLoginMode((prev) => !prev);
     setShowVerificationMessage(false);
+    setName("");
+    setEmail("");
+    setPassword("");
+    setEmailError("");
+    setPasswordError("");
+  };
+
+  const handleBackToLogin = () => {
+    setShowVerificationMessage(false); // "이메일 확인" 메시지 숨기기
+    setIsLoginMode(true); // 로그인 모드로 전환
+    // 모든 폼 필드와 에러 메시지 초기화
     setName("");
     setEmail("");
     setPassword("");
@@ -250,7 +261,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                 <br />
                 링크를 클릭하여 이메일 주소를 인증해 주세요.
               </p>
-              <SignUpButton onClick={onClose} $isFormValid={true}>
+              <SignUpButton onClick={handleBackToLogin} $isFormValid={true}>
                 닫기
               </SignUpButton>
             </div>
