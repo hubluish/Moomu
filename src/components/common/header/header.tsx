@@ -58,9 +58,9 @@ function detectBgMode(path: string) {
 export default function Header() {
   const pathname = usePathname() ?? "";
   const router = useRouter();
-  const [showDropdown, setShowDropdown] = useState(false); // 데스크톱 드롭다운 상태
-  const [showMobileMenu, setShowMobileMenu] = useState(false); // 모바일 사이드바 상태
-  const [isMobile, setIsMobile] = useState(false); // 모바일 여부
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
@@ -74,8 +74,10 @@ export default function Header() {
   }, [pathname]);
 
   useEffect(() => {
-    const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (session) {
         setIsLoggedIn(true);
         const { data: profile } = await supabase
@@ -88,12 +90,13 @@ export default function Header() {
         } else if (session.user.user_metadata?.full_name) {
           setUserName(session.user.user_metadata.full_name);
         }
+      } else {
+        setIsLoggedIn(false);
+        setUserName("");
       }
     };
-    getInitialSession();
-  }, []);
+    getSession();
 
-  useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (session) {
@@ -107,6 +110,8 @@ export default function Header() {
             setUserName(profile.name);
           } else if (session.user.user_metadata?.full_name) {
             setUserName(session.user.user_metadata.full_name);
+          } else {
+            setUserName("");
           }
         } else {
           setIsLoggedIn(false);
