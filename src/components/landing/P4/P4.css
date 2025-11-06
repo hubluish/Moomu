@@ -66,9 +66,10 @@
   position: relative;
   width: clamp(320px, 94vw, 2000px);
   height: clamp(260px, 56vw, 620px);
-  margin: clamp(20px, 5vw, 48px) clamp(8px, 2.6vw, 36px) 0 clamp(6px, 1.2vw, 12px);
+  margin: clamp(20px, 5vw, 48px) clamp(8px, 2.6vw, 36px) 0
+    clamp(6px, 1.2vw, 12px);
   overflow: hidden;
-  cursor: url('/assets/landing/mouse1.svg') 12 12, auto;
+  cursor: url("/assets/landing/mouse1.svg") 12 12, auto;
   border-radius: clamp(12px, 2vw, 30px);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
@@ -86,7 +87,7 @@
   gap: clamp(18px, 3.4vw, 50px);
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   -ms-overflow-style: none;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
