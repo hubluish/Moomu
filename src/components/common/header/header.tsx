@@ -121,7 +121,7 @@ export default function Header() {
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     const checkNotifications = async () => {
