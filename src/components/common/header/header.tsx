@@ -74,10 +74,8 @@ export default function Header() {
   }, [pathname]);
 
   useEffect(() => {
-    const getSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    const getInitialSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         setIsLoggedIn(true);
         const { data: profile } = await supabase
@@ -90,13 +88,12 @@ export default function Header() {
         } else if (session.user.user_metadata?.full_name) {
           setUserName(session.user.user_metadata.full_name);
         }
-      } else {
-        setIsLoggedIn(false);
-        setUserName("");
       }
     };
-    getSession();
+    getInitialSession();
+  }, []);
 
+  useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (session) {
@@ -121,7 +118,7 @@ export default function Header() {
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, [pathname]);
+  }, []);
 
   useEffect(() => {
     const checkNotifications = async () => {
