@@ -1,30 +1,26 @@
-import React from 'react';
-import './P3.css';
-import SectionTitle from '../sectionTitle/SectionTitle';
-import Image from 'next/image';
+import React from "react";
+import "./P3.css";
+import SectionTitle from "../sectionTitle/SectionTitle";
+import Image from "next/image";
 
 const P3 = () => {
-  const features = [
-    { id: 1 },
-    { id: 2 },
-    { id: 3 }
-  ];
+  const features = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
   // 이미지 경로를 public/assets/images 폴더 기준으로 수정
-  const frontImages: { [key: number]: string } = { 
-    1: '/assets/images/f_1.png', 
-    2: '/assets/images/f_2.png', 
-    3: '/assets/images/f_3.png' 
+  const frontImages: { [key: number]: string } = {
+    1: "/assets/images/f_1.png",
+    2: "/assets/images/f_2.png",
+    3: "/assets/images/f_3.png",
   };
-  const backImages: { [key: number]: string } = { 
-    1: '/assets/images/b_1.png', 
-    2: '/assets/images/b_2.png', 
-    3: '/assets/images/b_3.png' 
+  const backImages: { [key: number]: string } = {
+    1: "/assets/images/b_1.png",
+    2: "/assets/images/b_2.png",
+    3: "/assets/images/b_3.png",
   };
-  const labels: { [key: number]: string } = { 
-    1: 'data', 
-    2: 'easy', 
-    3: 'complete' 
+  const labels: { [key: number]: string } = {
+    1: "complete",
+    2: "easy",
+    3: "data",
   };
 
   return (
