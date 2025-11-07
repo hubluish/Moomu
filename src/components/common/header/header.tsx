@@ -184,7 +184,7 @@ export default function Header() {
         <NavFrame>
           <Nav>
             {NAV_ITEMS.map(({ href, label }) => {
-              if (label === "Generate Moodboard") {
+              if (label === "Generate Moodboard" || label === "Explore Feeds") {
                 return (
                   <NavLink
                     key={href}
@@ -192,11 +192,11 @@ export default function Header() {
                     $active={pathname === href}
                     $mode={headerMode}
                     onClick={(e) => {
-                      e.preventDefault(); // 기본 링크 이동을 막습니다.
+                      e.preventDefault();
                       if (isLoggedIn) {
-                        router.push(href); // 로그인 상태면 페이지 이동
+                        router.push(href);
                       } else {
-                        handleLoginClick(); // 로그아웃 상태면 모달 열기
+                        handleLoginClick();
                       }
                     }}
                   >
